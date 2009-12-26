@@ -1,0 +1,37 @@
+Android side:
+ Main activity should give preferences:
+  * Which events to notify about
+  * Notification method
+  * Start/stop service
+  * Enable/disable service startup at boot
+
+Desktop side:
+ * Mac, Linux
+ * Anyone willing to implement for windows?
+ * Mac: Menu bar app
+ * Linux: Gnome panel app
+ * Preferences:
+  * Actions when status changes:
+   * Growl/gnome notification
+   * Lower volume
+   * Run application
+  * Pair with device
+  * Event type filtering? (already done on device, though, should they sync?)
+
+Notification methods:
+ * Wifi - UDP broadcast with serial number (so multiple devices can work on the same network)
+ * Bluetooth - bluetooth sockets
+ * USB - use debug bridge port forwarding or logcat (can we redistribute the ADB binary?)
+
+Events to notify about:
+ * Phone ring
+ * (v2) Low battery
+ * (v2) SMS/MMS
+
+Security:
+ * Encryption - pair device with desktop using shared key
+ * Can't use TCP only - would require a fixed IP for the server on Wifi
+
+Power efficiency:
+ * Just sit idle or stop service if wifi+bluetooth+usb are all off
+ * If one of them is on but no connection is made, retry every X seconds
