@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Remote Notifier</string>
+
+    <!-- Notification methods -->
+    <string name="methods_title">Notification methods:</string>
+    <string name="method_wifi">Wifi (broadcast)</string>
+    <string name="method_bluetooth">Bluetooth</string>
+    <string name="method_usb">USB (see documentation)</string>
+
+    <!-- Event types -->
+    <string name="events_title">Events to notify:</string>
+    <string name="event_ring">Phone ring</string>
+    <string name="event_sms">SMS/MMS</string>
+    <string name="event_battery">Low battery</string>
+
+</resources>
