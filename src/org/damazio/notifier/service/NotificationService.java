@@ -15,11 +15,13 @@ import android.util.Log;
 
 public class NotificationService extends Service {
 
+  private NotifierPreferences preferences;
   private Notifier notifier;
   private final PhoneStateListener phoneListener = new PhoneStateListener() {
     @Override
     public void onCallStateChanged(int state, String incomingNumber) {
-      if (state == TelephonyManager.CALL_STATE_RINGING && notifier != null) {
+      if (state == TelephonyManager.CALL_STATE_RINGING && notifier != null
+          && preferences.isRingEventEnabled()) {
         Notification notification = new Notification(
             NotificationService.this, NotificationType.RING, incomingNumber);
         notifier.sendNotification(notification);
@@ -33,7 +35,7 @@ public class NotificationService extends Service {
 
     Log.i("RemoteNotifier", "Starting notification service");
 
-    NotifierPreferences preferences = new NotifierPreferences(this);
+    preferences = new NotifierPreferences(this);
     notifier = new Notifier(this, preferences);
 
     final TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
