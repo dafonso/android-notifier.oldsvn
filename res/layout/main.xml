@@ -35,6 +35,7 @@
 
       <!-- Service status -->
       <TextView android:text="@string/service_status_unknown"
+                android:id="@+id/service_status"
                 android:background="#444444"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
