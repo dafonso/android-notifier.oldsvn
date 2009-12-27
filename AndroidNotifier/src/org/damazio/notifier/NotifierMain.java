@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class NotifierMain extends Activity {
@@ -26,6 +27,8 @@ public class NotifierMain extends Activity {
   private CheckBox smsEventView;
   private CheckBox mmsEventView;
   private CheckBox batteryEventView;
+  private Button toggleServiceButton;
+  private TextView serviceStatusText;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +55,12 @@ public class NotifierMain extends Activity {
     preferences = new NotifierPreferences(this);
     loadSettings();
 
+    // Start the service
+    if (preferences.isStartAtBootEnabled()) {
+      // Ensure the service is started if it should have been auto-started
+      NotificationService.start(this);
+    }
+
     // Attach UI handlers
 	Button testButton = (Button) findViewById(R.id.send_test_notification);
 	testButton.setOnClickListener(new OnClickListener() {
@@ -60,13 +69,14 @@ public class NotifierMain extends Activity {
       }
     });
 
-	Button toggleServiceButton = (Button) findViewById(R.id.toggle_service);
+	toggleServiceButton = (Button) findViewById(R.id.toggle_service);
 	toggleServiceButton.setOnClickListener(new OnClickListener() {
       public void onClick(View v) {
         toggleServiceStatus();
       }
     });
-    // TODO: Show service status
+	serviceStatusText = (TextView) findViewById(R.id.service_status);
+	updateServiceStatus();
 
 	Button saveSettingsButton = (Button) findViewById(R.id.save_settings);
 	saveSettingsButton.setOnClickListener(new OnClickListener() {
@@ -80,9 +90,6 @@ public class NotifierMain extends Activity {
         revertSettings();
       }
     });
-
-    // Start the service
-    NotificationService.start(this);
   }
 
   private void loadSettings() {
@@ -122,7 +129,23 @@ public class NotifierMain extends Activity {
   }
 
   private void toggleServiceStatus() {
-    // TODO: Implement
+    boolean isServiceRunning = NotificationService.isRunning(this);
+    if (isServiceRunning) {
+      NotificationService.stop(this);
+    } else {
+      NotificationService.start(this);
+    }
+    updateServiceStatus();
+  }
+
+  private void updateServiceStatus() {
+    boolean isServiceRunning = NotificationService.isRunning(this);
+      serviceStatusText.setText(isServiceRunning
+        ? R.string.service_status_running
+        : R.string.service_status_stopped);
+      toggleServiceButton.setText(isServiceRunning
+          ? R.string.stop_service
+          : R.string.start_service);
   }
 
   private Notifier getNotifier() {

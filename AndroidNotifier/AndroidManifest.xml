@@ -25,6 +25,13 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </receiver>
+
+    <!-- Receiver to capture SMS messages -->
+    <receiver android:name=".service.SmsReceiver">
+      <intent-filter>
+        <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+      </intent-filter>
+    </receiver>
   </application>
 
   <uses-sdk android:minSdkVersion="4" />
