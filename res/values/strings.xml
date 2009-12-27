@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Titles -->
     <string name="app_name">Remote Notifier</string>
+    <string name="settings_title">Remote Notifier Settings</string>
+
+    <!-- Settings UI -->
+    <string name="send_test_notification">Send test notification</string>
+    <string name="service_status_unknown">Service status: unknown</string>
+    <string name="service_status">Service status: %s</string>
+    <string name="start_service">Start service</string>
+    <string name="stop_service">Stop service</string>
+    <string name="testing_title">Testing/setup:</string>
+    <string name="start_at_boot">Start service at boot</string>
+    <string name="save_settings">Save settings</string>
+    <string name="revert_settings">Revert settings</string>
+    <string name="settings_saved">Your settings have been saved.\nYou may now exit this application.</string>
 
     <!-- Notification methods -->
     <string name="methods_title">Notification methods:</string>
@@ -11,7 +25,8 @@
     <!-- Event types -->
     <string name="events_title">Events to notify:</string>
     <string name="event_ring">Phone ring</string>
-    <string name="event_sms">SMS/MMS</string>
+    <string name="event_sms">SMS</string>
+    <string name="event_mms">MMS</string>
     <string name="event_battery">Low battery</string>
 
 </resources>

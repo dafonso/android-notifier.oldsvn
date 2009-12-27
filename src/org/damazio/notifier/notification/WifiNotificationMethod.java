@@ -25,11 +25,11 @@ public class WifiNotificationMethod implements NotificationMethod {
     wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
   }
 
-  public boolean isEnabled() {
-    return preferences.isWifiMethodEnabled();
-  }
-
   public void sendNotification(Notification notification) {
+    if (!preferences.isWifiMethodEnabled()) {
+      return;
+    }
+
     if (!isWifiEnabled()) {
       Log.d("RemoteNotifier", "Not notifying over wifi - not connected.");
       return;

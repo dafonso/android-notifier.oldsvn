@@ -28,8 +28,8 @@ public class Notification {
     messageBuilder.append(DeviceIdProvider.getDeviceId(context));
     messageBuilder.append('/');
     messageBuilder.append(type);
+    messageBuilder.append("/");
     if (contents != null) {
-      messageBuilder.append("/");
       messageBuilder.append(contents);
     }
     return messageBuilder.toString();

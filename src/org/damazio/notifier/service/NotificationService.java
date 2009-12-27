@@ -1,5 +1,6 @@
 package org.damazio.notifier.service;
 
+import org.damazio.notifier.NotifierPreferences;
 import org.damazio.notifier.notification.Notification;
 import org.damazio.notifier.notification.NotificationType;
 import org.damazio.notifier.notification.Notifier;
@@ -32,7 +33,8 @@ public class NotificationService extends Service {
 
     Log.i("RemoteNotifier", "Starting notification service");
 
-    notifier = new Notifier(this);
+    NotifierPreferences preferences = new NotifierPreferences(this);
+    notifier = new Notifier(this, preferences);
 
     final TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
     tm.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
