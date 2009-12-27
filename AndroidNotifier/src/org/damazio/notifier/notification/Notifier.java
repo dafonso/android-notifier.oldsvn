@@ -11,9 +11,7 @@ public class Notifier {
 
   private final Set<NotificationMethod> allMethods;
 
-  public Notifier(Context context) {
-    NotifierPreferences preferences = new NotifierPreferences(context);
-
+  public Notifier(Context context, NotifierPreferences preferences) {
     allMethods = NotificationMethods.getAllValidMethods(context, preferences);
   }
 
@@ -21,9 +19,7 @@ public class Notifier {
     Log.d("RemoteNotifier", "Sending notification: " + notification);
 
     for (NotificationMethod method : allMethods) {
-      if (method.isEnabled()) {
-        method.sendNotification(notification);
-      }
+      method.sendNotification(notification);
     }
   }
 }

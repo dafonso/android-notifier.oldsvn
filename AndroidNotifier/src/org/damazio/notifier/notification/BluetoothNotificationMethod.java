@@ -20,12 +20,12 @@ public class BluetoothNotificationMethod implements NotificationMethod {
   public BluetoothNotificationMethod(NotifierPreferences preferences) {
     this.preferences = preferences;
   }
-  
-  public boolean isEnabled() {
-    return preferences.isBluetoothMethodEnabled();
-  }
 
   public void sendNotification(Notification notification) {
+    if (!preferences.isBluetoothMethodEnabled()) {
+      return;
+    }
+
     // TODO(rdamazio): Don't load this class in API level < 5
     BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
     if (bluetoothAdapter == null) {
