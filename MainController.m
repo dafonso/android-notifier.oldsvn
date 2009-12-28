@@ -3,6 +3,7 @@
 #import "growl.h"
 #import "NotificationManager.h"
 #import "NotificationView.h"
+#import "Preferences.h"
 
 @implementation MainController
 
@@ -30,13 +31,11 @@
   [notificationView release];
   [notificationManager release];
   [statusItem release];
-  
   [super dealloc];
 }
 
 - (IBAction)openPreferences:(id)sender {
-  [NSApp activateIgnoringOtherApps:YES];
-  [prefsWindow makeKeyAndOrderFront:sender];
+  [preferences showDialog:sender];
 }
 
 - (IBAction)quit:(id)sender {
@@ -44,6 +43,5 @@
   [ud synchronize];
   [NSApp terminate:self];
 }
-
 
 @end

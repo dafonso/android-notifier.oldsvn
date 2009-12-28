@@ -3,12 +3,13 @@
 @class Growl;
 @class NotificationView;
 @class NotificationManager;
+@class Preferences;
 
 @interface MainController : NSObject {
  @private
   IBOutlet NSMenu *menu;
   IBOutlet Growl *growl;
-  IBOutlet NSWindow *prefsWindow;
+  IBOutlet Preferences *preferences;
 
   NSStatusItem *statusItem;
   NotificationView *notificationView;

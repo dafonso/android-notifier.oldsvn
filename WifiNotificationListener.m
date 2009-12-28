@@ -6,7 +6,9 @@
 //
 
 #import "WifiNotificationListener.h"
+
 #import "AsyncUdpSocket.h"
+#import "Preferences.h"
 
 static const unsigned short kPortNumber = 10600;
 static const double kReceiveTimeout = 10.0;
@@ -41,7 +43,10 @@ static const double kReceiveTimeout = 10.0;
             withTag:(long)tag
            fromHost:(NSString *)host
                port:(UInt16)port {
-  [callback handleRawNotification:data];
+  // TODO(rdamazio): Don't even listen on the UDP port if disabled
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:kListenWifiKey]) {
+    [callback handleRawNotification:data];
+  }
   [socket receiveWithTimeout:kReceiveTimeout tag:1];
   return YES;
 }
