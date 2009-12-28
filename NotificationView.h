@@ -10,6 +10,7 @@
 
 @class Growl;
 
+// Object which handles displaying notifications.
 @interface NotificationView : NSObject<NotificationCallback> {
  @private
   Growl *growl;

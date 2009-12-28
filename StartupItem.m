@@ -85,7 +85,7 @@ static void loginItemsChanged(LSSharedFileListRef listRef, void *context) {
       }
     }
   }
-  
+
   return NULL;
 }
 
@@ -101,13 +101,13 @@ static void loginItemsChanged(LSSharedFileListRef listRef, void *context) {
                               forKey:@"com.apple.loginitem.HideOnLaunch"];
 
   LSSharedFileListItemRef itemRef =
-  LSSharedFileListInsertItemURL(loginItemsRef,
-                                kLSSharedFileListItemLast,
-                                NULL,
-                                NULL,
-                                (CFURLRef) bundleURL,
-                                (CFDictionaryRef) properties,
-                                NULL);
+      LSSharedFileListInsertItemURL(loginItemsRef,
+                                    kLSSharedFileListItemLast,
+                                    NULL,
+                                    NULL,
+                                    (CFURLRef) bundleURL,
+                                    (CFDictionaryRef) properties,
+                                    NULL);
 
   if (itemRef) {
     CFRelease(itemRef);

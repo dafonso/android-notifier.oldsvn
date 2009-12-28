@@ -10,14 +10,18 @@
 
 #import <IOBluetooth/objc/IOBluetoothDevice.h>
 
-@interface BluetoothNotificationListener (Private) 
-- (void)rfcommChannelData:(IOBluetoothRFCOMMChannel*)rfcommChannel data:(void *)dataPointer length:(size_t)dataLength;
-- (void)rfcommChannelClosed:(IOBluetoothRFCOMMChannel*)rfcommChannelParam;
-- (void) newRFCOMMChannelOpened:(IOBluetoothUserNotification *)inNotification
-                        channel:(IOBluetoothRFCOMMChannel *)newChannel;
+@interface BluetoothNotificationListener (Private)
+
+- (void)rfcommChannelData:(IOBluetoothRFCOMMChannel*)channel
+                     data:(void *)dataPointer
+                   length:(size_t)dataLength;
+- (void)rfcommChannelClosed:(IOBluetoothRFCOMMChannel*)channel;
+- (void)newRFCOMMChannelOpened:(IOBluetoothUserNotification *)inNotification
+                       channel:(IOBluetoothRFCOMMChannel *)newChannel;
 - (void)publishService;
 - (void)unpublishService;
 - (NSString *)localDeviceName;
+
 @end
 
 @implementation BluetoothNotificationListener
@@ -25,7 +29,6 @@
 - (void)startWithCallback:(NSObject<NotificationListenerCallback> *)callbackParam {
   [self publishService];
   callback = callbackParam;
-
 }
 
 - (void)stop {
@@ -47,15 +50,17 @@
   [self unpublishService];
 }
 
-- (void)rfcommChannelData:(IOBluetoothRFCOMMChannel*)rfcommChannel data:(void *)dataPointer length:(size_t)dataLength {
+- (void)rfcommChannelData:(IOBluetoothRFCOMMChannel*)channel
+                     data:(void *)dataPointer
+                   length:(size_t)dataLength {
 	NSData *data = [NSData dataWithBytes:dataPointer length:dataLength];
   // TODO: Don't even listen for rfcomm if disabled
-  if ([[NSUserDefaults standardUserDefaults] boolForKey:kListenWifiKey]) {
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:kPreferencesListenWifiKey]) {
     [callback handleRawNotification:data];
   }
 }
 
-- (void)rfcommChannelClosed:(IOBluetoothRFCOMMChannel*)rfcommChannelParam {
+- (void)rfcommChannelClosed:(IOBluetoothRFCOMMChannel*)channel {
   rfcommChannel = nil;
   [self publishService];
 }
@@ -76,9 +81,6 @@
 			// stop providing the services (this example only handles one chat connection at a time - but
 			// there's no reason a well written app can't handle any number of connections)
 			[self unpublishService];
-
-			// And notify our UI client that we have a new chat connection:
-//			[mConnectionTarget performSelector:mHandleRemoteConnectionSelector];
 		} else {
 			// The setDelegate: call failed. This is catastrophic for a server
 			// Releases the channel:
@@ -140,18 +142,17 @@
 	}
 
 	serverChannelID = 0;
-  
+
   NSLog(@"No longer listening on Bluetooth");
 }
 
 // Returns the name of the local bluetooth device
 - (NSString *)localDeviceName {
   BluetoothDeviceName localDeviceName;
-  
-  if (IOBluetoothLocalDeviceReadName( localDeviceName, NULL, NULL, NULL ) == kIOReturnSuccess) {
+  if (IOBluetoothLocalDeviceReadName(localDeviceName, NULL, NULL, NULL ) == kIOReturnSuccess) {
     return [NSString stringWithUTF8String:(const char*)localDeviceName];
   }
-  
+
   return nil;
 }
 

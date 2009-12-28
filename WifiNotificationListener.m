@@ -44,7 +44,7 @@ static const double kReceiveTimeout = 10.0;
            fromHost:(NSString *)host
                port:(UInt16)port {
   // TODO(rdamazio): Don't even listen on the UDP port if disabled
-  if ([[NSUserDefaults standardUserDefaults] boolForKey:kListenWifiKey]) {
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:kPreferencesListenWifiKey]) {
     [callback handleRawNotification:data];
   }
   [socket receiveWithTimeout:kReceiveTimeout tag:1];

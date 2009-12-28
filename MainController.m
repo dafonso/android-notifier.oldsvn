@@ -24,7 +24,9 @@
   [statusItem setMenu:menu];
 
   notificationView = [[NotificationView alloc] initWithGrowl:growl];
-  notificationManager = [[NotificationManager alloc] initWithCallback:notificationView];
+  notificationManager =
+      [[NotificationManager alloc] initWithCallback:notificationView
+                                withPairingCallback:preferences];
 }
 
 - (void)dealloc {

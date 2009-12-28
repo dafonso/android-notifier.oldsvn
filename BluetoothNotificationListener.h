@@ -11,6 +11,7 @@
 #import <IOBluetooth/objc/IOBluetoothSDPServiceRecord.h>
 #import <IOBluetooth/objc/IOBluetoothRFCOMMChannel.h>
 
+// Listener which receives notifications over Bluetooth.
 @interface BluetoothNotificationListener : NSObject<NotificationListener> {
  @private
   NSObject<NotificationListenerCallback> *callback;

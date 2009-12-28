@@ -10,6 +10,7 @@
 
 @class AsyncUdpSocket;
 
+// Listener which receives notifications over Wifi.
 @interface WifiNotificationListener : NSObject<NotificationListener> {
  @private
   NSObject<NotificationListenerCallback> *callback;

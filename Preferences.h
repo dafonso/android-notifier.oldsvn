@@ -8,20 +8,49 @@
 
 #import <Cocoa/Cocoa.h>
 
-extern NSString *const kPairedWifiDevicesKey;
-extern NSString *const kListenWifiKey;
-extern NSString *const kListenBluetoothKey;
-extern NSString *const kListenUsbKey;
-extern NSString *const kDisplayRingKey;
-extern NSString *const kDisplaySmsKey;
-extern NSString *const kDisplayMmsKey;
-extern NSString *const kDisplayBatteryKey;
+#import "NotificationManager.h"
 
-@interface Preferences : NSObject {
+// Constants for preference keys.
+extern NSString *const kPreferencesPairedDevicesKey;
+extern NSString *const kPreferencesPairingRequiredKey;
+extern NSString *const kPreferencesListenWifiKey;
+extern NSString *const kPreferencesListenBluetoothKey;
+extern NSString *const kPreferencesListenUsbKey;
+extern NSString *const kPreferencesDisplayRingKey;
+extern NSString *const kPreferencesDisplaySmsKey;
+extern NSString *const kPreferencesDisplayMmsKey;
+extern NSString *const kPreferencesDisplayBatteryKey;
+
+extern const int kPairingNotRequired;
+extern const int kPairingRequired;
+
+
+// Object which wrapps handling of the app's preferences, including its UI.
+@interface Preferences : NSObject<NotificationCallback> {
  @private
   IBOutlet NSWindow *prefsWindow;
+  IBOutlet NSWindow *pairingSheet;
+  IBOutlet NSMatrix *pairingRadioGroup;
+  IBOutlet NSTableView *pairedDevicesView;
+  IBOutlet NSArrayController *pairedDevicesModel;
+  IBOutlet NSButton *addPairedDeviceButton;
+  IBOutlet NSButton *removePairedDeviceButton;
+
+  BOOL isPairing;
 }
 
+// Shows the preferences dialog.
 - (void)showDialog:(id)sender;
 
+// Callback for when the "pairing required" option is changed
+- (IBAction)pairingRequiredToggled:(id)sender;
+
+// Callback when the user wants to add a paired device
+- (IBAction)addPairedDeviceClicked:(id)sender;
+
+- (IBAction)cancelPairing:(id)sender;
+
+- (void)didEndPairing:(NSWindow *)sheet
+           returnCode:(int)success
+          contextInfo:(void *)rowInfo;  
 @end
