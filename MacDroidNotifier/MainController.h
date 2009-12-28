@@ -5,6 +5,7 @@
 @class NotificationManager;
 @class Preferences;
 
+// Main controller for the app's UI.
 @interface MainController : NSObject {
  @private
   IBOutlet NSMenu *menu;

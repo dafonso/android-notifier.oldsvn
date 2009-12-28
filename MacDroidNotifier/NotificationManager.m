@@ -14,9 +14,11 @@
 
 @implementation NotificationManager
 
-- (id)initWithCallback:(NSObject<NotificationCallback> *)callbackParam {
+- (id)initWithCallback:(NSObject<NotificationCallback> *)callbackParam
+   withPairingCallback:(NSObject<NotificationCallback> *)pairingCallbackParam {
   if (self = [super init]) {
     callback = [callbackParam retain];
+    pairingCallback = [pairingCallbackParam retain];
 
     listeners = [[NSArray arrayWithObjects:
         [[[WifiNotificationListener alloc] init] autorelease],
@@ -36,6 +38,7 @@
   }
   [listeners release];
   [callback release];
+  [pairingCallback release];
   
   [super dealloc];
 }
@@ -44,16 +47,38 @@
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   switch (type) {
     case RING:
-      return [defaults boolForKey:kDisplayRingKey];
+      return [defaults boolForKey:kPreferencesDisplayRingKey];
     case SMS:
-      return [defaults boolForKey:kDisplaySmsKey];
+      return [defaults boolForKey:kPreferencesDisplaySmsKey];
     case MMS:
-      return [defaults boolForKey:kDisplayMmsKey];
+      return [defaults boolForKey:kPreferencesDisplayMmsKey];
     case BATTERY:
-      return [defaults boolForKey:kDisplayBatteryKey];
+      return [defaults boolForKey:kPreferencesDisplayBatteryKey];
+    case PING:
+      return YES;
     default:
       return NO;
   }
+}
+
+- (BOOL)isDevicePaired:(NSString *)deviceId {
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  int pairingRequiredValue = [defaults integerForKey:kPreferencesPairingRequiredKey];
+  BOOL pairingRequired = (pairingRequiredValue == kPairingRequired) ? YES : NO;
+
+  if (!pairingRequired) {
+    return YES;
+  }
+
+  NSArray *pairedDevices = [defaults arrayForKey:kPreferencesPairedDevicesKey];
+  for (NSDictionary *pairedDevice in pairedDevices) {
+    NSString *pairedDeviceId = [pairedDevice objectForKey:@"deviceId"];
+    if ([deviceId isEqualToString:pairedDeviceId]) {
+      return YES;
+    }
+  }
+
+  return NO;
 }
 
 - (void)handleRawNotification:(NSData *)data {
@@ -63,8 +88,13 @@
   Notification *notification = [Notification notificationFromString:notificationStr];
   [notificationStr release];
 
-  if ([self isNotificationTypeEnabled:[notification type]]) {
+  if ([self isNotificationTypeEnabled:[notification type]] &&
+      [self isDevicePaired:[notification deviceId]]) {
     [callback handleNotification:notification];
+  }
+
+  if ([notification type] == PING) {
+    [pairingCallback handleNotification:notification];
   }
 }
 
