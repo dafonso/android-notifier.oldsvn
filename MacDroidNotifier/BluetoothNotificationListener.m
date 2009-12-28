@@ -6,6 +6,7 @@
 //
 
 #import "BluetoothNotificationListener.h"
+#import "Preferences.h"
 
 #import <IOBluetooth/objc/IOBluetoothDevice.h>
 
@@ -48,7 +49,10 @@
 
 - (void)rfcommChannelData:(IOBluetoothRFCOMMChannel*)rfcommChannel data:(void *)dataPointer length:(size_t)dataLength {
 	NSData *data = [NSData dataWithBytes:dataPointer length:dataLength];
-  [callback handleRawNotification:data];
+  // TODO: Don't even listen for rfcomm if disabled
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:kListenWifiKey]) {
+    [callback handleRawNotification:data];
+  }
 }
 
 - (void)rfcommChannelClosed:(IOBluetoothRFCOMMChannel*)rfcommChannelParam {

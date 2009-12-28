@@ -24,6 +24,8 @@
 		3775426910E5D70900A21D89 /* BluetoothService.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3775426810E5D70900A21D89 /* BluetoothService.plist */; };
 		379B996E10E803DD007B1FCA /* menuicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 379B996D10E803DD007B1FCA /* menuicon.png */; };
 		379B997210E81CA7007B1FCA /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 379B997010E81CA7007B1FCA /* Localizable.strings */; };
+		379B99AC10E83A6D007B1FCA /* Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 379B99AB10E83A6D007B1FCA /* Preferences.m */; };
+		379B9A6310E87759007B1FCA /* StartupItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 379B9A6210E87759007B1FCA /* StartupItem.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -76,6 +78,10 @@
 		3775426810E5D70900A21D89 /* BluetoothService.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BluetoothService.plist; sourceTree = "<group>"; };
 		379B996D10E803DD007B1FCA /* menuicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menuicon.png; sourceTree = "<group>"; };
 		379B997110E81CA7007B1FCA /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
+		379B99AA10E83A6D007B1FCA /* Preferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Preferences.h; sourceTree = "<group>"; };
+		379B99AB10E83A6D007B1FCA /* Preferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Preferences.m; sourceTree = "<group>"; };
+		379B9A6110E87759007B1FCA /* StartupItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StartupItem.h; sourceTree = "<group>"; };
+		379B9A6210E87759007B1FCA /* StartupItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StartupItem.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* MacDroidNotifier.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacDroidNotifier.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -104,6 +110,8 @@
 				37753E6610E56CA800A21D89 /* NotificationView.m */,
 				3775407D10E5B1C800A21D89 /* Growl.h */,
 				3775407E10E5B1C800A21D89 /* Growl.m */,
+				379B99AA10E83A6D007B1FCA /* Preferences.h */,
+				379B99AB10E83A6D007B1FCA /* Preferences.m */,
 			);
 			name = "UI Classes";
 			sourceTree = "<group>";
@@ -204,6 +212,8 @@
 			children = (
 				37753F7210E5893600A21D89 /* AsyncUdpSocket.h */,
 				37753F7310E5893600A21D89 /* AsyncUdpSocket.m */,
+				379B9A6110E87759007B1FCA /* StartupItem.h */,
+				379B9A6210E87759007B1FCA /* StartupItem.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -277,6 +287,8 @@
 				37753E6F10E56E0300A21D89 /* Notification.m in Sources */,
 				37753F7410E5893600A21D89 /* AsyncUdpSocket.m in Sources */,
 				3775407F10E5B1C800A21D89 /* Growl.m in Sources */,
+				379B99AC10E83A6D007B1FCA /* Preferences.m in Sources */,
+				379B9A6310E87759007B1FCA /* StartupItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
