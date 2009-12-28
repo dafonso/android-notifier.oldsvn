@@ -15,30 +15,29 @@
 }
 
 - (NSDictionary *)dictionaryForNotification:(Notification *)notification {
-  // TODO: i18n
   NSString *title = nil;
   NSString *description = [notification contents];
   NSString *name = nil;
   NSData *icon = nil;  // TODO
   switch ([notification type]) {
     case RING:
+      title = NSLocalizedString(@"Phone is ringing", @"Phone ring title");
       name = @"PhoneRing";
-      title = @"Phone is ringing";
       break;
     case BATTERY:
-      title = @"Phone battery is low";
+      title = NSLocalizedString(@"Phone battery is low", @"Low battery title");
       name = @"PhoneBattery";
       break;
     case SMS:
-      title = @"Phone received an SMS";
+      title = NSLocalizedString(@"Phone received an SMS", @"SMS received title");
       name = @"PhoneSms";
       break;
     case MMS:
-      title = @"Phone received an MMS";
+      title = NSLocalizedString(@"Phone received an MMS", @"MMS received title");
       name = @"PhoneMms";
       break;
     case PING:
-      title = @"Phone sent a ping";
+      title = NSLocalizedString(@"Phone sent a ping", @"Ping title");
       name = @"PhonePing";
       break;
     default:

@@ -34,4 +34,16 @@
   [super dealloc];
 }
 
+- (IBAction)openPreferences:(id)sender {
+  [NSApp activateIgnoringOtherApps:YES];
+  [prefsWindow makeKeyAndOrderFront:sender];
+}
+
+- (IBAction)quit:(id)sender {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  [ud synchronize];
+  [NSApp terminate:self];
+}
+
+
 @end
