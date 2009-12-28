@@ -39,7 +39,6 @@
 }
 
 - (void)handleRawNotification:(NSData *)data {
-  NSLog(@"Handling data");
   NSString *notificationStr = [[NSString alloc] initWithBytes:[data bytes]
                                                        length:[data length]
                                                      encoding:NSUTF8StringEncoding];

@@ -11,7 +11,6 @@
 		37753DCD10E5639C00A21D89 /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37753DCC10E5639C00A21D89 /* MainController.m */; };
 		37753DD110E563E600A21D89 /* WifiNotificationListener.m in Sources */ = {isa = PBXBuildFile; fileRef = 37753DD010E563E600A21D89 /* WifiNotificationListener.m */; };
 		37753DD410E563F300A21D89 /* BluetoothNotificationListener.m in Sources */ = {isa = PBXBuildFile; fileRef = 37753DD310E563F300A21D89 /* BluetoothNotificationListener.m */; };
-		37753E3310E569B300A21D89 /* menuicon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 37753E3210E569B300A21D89 /* menuicon.jpg */; };
 		37753E6410E56C9700A21D89 /* NotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 37753E6310E56C9700A21D89 /* NotificationManager.m */; };
 		37753E6710E56CA800A21D89 /* NotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37753E6610E56CA800A21D89 /* NotificationView.m */; };
 		37753E6F10E56E0300A21D89 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 37753E6E10E56E0300A21D89 /* Notification.m */; };
@@ -23,6 +22,8 @@
 		3775423010E5D2E000A21D89 /* IOBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3775422E10E5D2E000A21D89 /* IOBluetooth.framework */; };
 		3775423110E5D2E000A21D89 /* IOBluetoothUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3775422F10E5D2E000A21D89 /* IOBluetoothUI.framework */; };
 		3775426910E5D70900A21D89 /* BluetoothService.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3775426810E5D70900A21D89 /* BluetoothService.plist */; };
+		379B996E10E803DD007B1FCA /* menuicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 379B996D10E803DD007B1FCA /* menuicon.png */; };
+		379B997210E81CA7007B1FCA /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 379B997010E81CA7007B1FCA /* Localizable.strings */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -57,7 +58,6 @@
 		37753DD010E563E600A21D89 /* WifiNotificationListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WifiNotificationListener.m; sourceTree = "<group>"; };
 		37753DD210E563F300A21D89 /* BluetoothNotificationListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BluetoothNotificationListener.h; sourceTree = "<group>"; };
 		37753DD310E563F300A21D89 /* BluetoothNotificationListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BluetoothNotificationListener.m; sourceTree = "<group>"; };
-		37753E3210E569B300A21D89 /* menuicon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = menuicon.jpg; sourceTree = "<group>"; };
 		37753E6210E56C9700A21D89 /* NotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationManager.h; sourceTree = "<group>"; };
 		37753E6310E56C9700A21D89 /* NotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationManager.m; sourceTree = "<group>"; };
 		37753E6510E56CA800A21D89 /* NotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationView.h; sourceTree = "<group>"; };
@@ -74,6 +74,8 @@
 		3775422E10E5D2E000A21D89 /* IOBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOBluetooth.framework; path = /System/Library/Frameworks/IOBluetooth.framework; sourceTree = "<absolute>"; };
 		3775422F10E5D2E000A21D89 /* IOBluetoothUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOBluetoothUI.framework; path = /System/Library/Frameworks/IOBluetoothUI.framework; sourceTree = "<absolute>"; };
 		3775426810E5D70900A21D89 /* BluetoothService.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BluetoothService.plist; sourceTree = "<group>"; };
+		379B996D10E803DD007B1FCA /* menuicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menuicon.png; sourceTree = "<group>"; };
+		379B997110E81CA7007B1FCA /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* MacDroidNotifier.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacDroidNotifier.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -161,8 +163,9 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				379B996D10E803DD007B1FCA /* menuicon.png */,
 				3775426810E5D70900A21D89 /* BluetoothService.plist */,
-				37753E3210E569B300A21D89 /* menuicon.jpg */,
+				379B997010E81CA7007B1FCA /* Localizable.strings */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				1DDD58140DA1D0A300B32029 /* UI.xib */,
@@ -252,8 +255,9 @@
 				3775412510E5BDF300A21D89 /* MacDroidNotifier.growlRegDict in Resources */,
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				1DDD58160DA1D0A300B32029 /* UI.xib in Resources */,
-				37753E3310E569B300A21D89 /* menuicon.jpg in Resources */,
 				3775426910E5D70900A21D89 /* BluetoothService.plist in Resources */,
+				379B996E10E803DD007B1FCA /* menuicon.png in Resources */,
+				379B997210E81CA7007B1FCA /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -293,6 +297,14 @@
 				1DDD58150DA1D0A300B32029 /* English */,
 			);
 			name = UI.xib;
+			sourceTree = "<group>";
+		};
+		379B997010E81CA7007B1FCA /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				379B997110E81CA7007B1FCA /* English */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
