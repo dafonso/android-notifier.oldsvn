@@ -11,14 +11,17 @@
 @implementation Notification
 
 @synthesize deviceId;
+@synthesize notificationId;
 @synthesize type;
 @synthesize contents;
 
 - (id)initWithDeviceId:(NSString *)deviceIdParam
+    withNotificationId:(NSString *)notificationIdParam
               withType:(NotificationType)typeParam
           withContents:(NSString *)contentsParam {
   if (self = [super init]) {
     deviceId = [deviceIdParam copy];
+    notificationId = [notificationIdParam copy];
     type = typeParam;
     contents = [contentsParam copy];
   }
@@ -27,6 +30,7 @@
 
 - (void)dealloc {
   [deviceId release];
+  [notificationId release];
   [contents release];
   [super dealloc];
 }
@@ -35,19 +39,20 @@
   NSArray *parts = [serialized pathComponents];
 
   NSString *deviceId = [parts objectAtIndex:0];
-  NSString *typeStr = [parts objectAtIndex:1];
+  NSString *notificationId = [parts objectAtIndex:1];
+  NSString *typeStr = [parts objectAtIndex:2];
   NSString *contents;
 
   int numParts = [parts count];
-  if (numParts < 3) {
+  if (numParts < 4) {
     NSLog(@"Malformed notification: '%@'", serialized);
     return nil;
-  } else if (numParts > 3) {
+  } else if (numParts > 4) {
     // Oops, we broke down the description, put it back together as the last item
-    NSArray *contentsParts = [parts subarrayWithRange:NSMakeRange(2, numParts - 2)];
+    NSArray *contentsParts = [parts subarrayWithRange:NSMakeRange(3, numParts - 3)];
     contents = [NSString pathWithComponents:contentsParts];
   } else {
-    contents = [parts objectAtIndex:2];
+    contents = [parts objectAtIndex:3];
   }
 
   NotificationType type;
@@ -67,8 +72,16 @@
   }
 
   return [[[Notification alloc] initWithDeviceId:deviceId
+                              withNotificationId:notificationId
                                         withType:type
                                     withContents:contents] autorelease];
+}
+
+- (BOOL)isEqualToNotification:(Notification *)notification {
+  return [[notification deviceId] isEqualToString:[self deviceId]] &&
+         [[notification notificationId] isEqualToString:[self notificationId]] &&
+         ([notification type] == type) &&
+         [[notification contents] isEqualToString:[self contents]];
 }
 
 @end

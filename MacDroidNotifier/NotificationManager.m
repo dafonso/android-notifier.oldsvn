@@ -12,6 +12,8 @@
 #import "Preferences.h"
 #import "WifiNotificationListener.h"
 
+const int kLastNotificationCount = 10;
+
 @implementation NotificationManager
 
 - (id)initWithCallback:(NSObject<NotificationCallback> *)callbackParam
@@ -19,6 +21,10 @@
   if (self = [super init]) {
     callback = [callbackParam retain];
     pairingCallback = [pairingCallbackParam retain];
+
+    lastNotifications =
+        [[NSMutableArray arrayWithCapacity:kLastNotificationCount] retain];
+    notificationCount = 0;
 
     listeners = [[NSArray arrayWithObjects:
         [[[WifiNotificationListener alloc] init] autorelease],
@@ -61,6 +67,26 @@
   }
 }
 
+- (BOOL)isNotificationDuplicate:(Notification *)notification {
+  @synchronized(self) {
+    for (Notification *lastNotification in lastNotifications) {
+      if ([notification isEqualToNotification:lastNotification]) {
+        return YES;
+      }
+    }
+
+    if ([lastNotifications count] < kLastNotificationCount) {
+      [lastNotifications addObject:notification];
+    } else {
+      int position = (notificationCount % kLastNotificationCount);
+      [lastNotifications replaceObjectAtIndex:position withObject:notification];
+    }
+
+    notificationCount++;
+  }
+  return NO;
+}
+
 - (BOOL)isDevicePaired:(NSString *)deviceId {
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   int pairingRequiredValue = [defaults integerForKey:kPreferencesPairingRequiredKey];
@@ -89,6 +115,7 @@
   [notificationStr release];
 
   if ([self isNotificationTypeEnabled:[notification type]] &&
+      ![self isNotificationDuplicate:notification] &&
       [self isDevicePaired:[notification deviceId]]) {
     [callback handleNotification:notification];
   }

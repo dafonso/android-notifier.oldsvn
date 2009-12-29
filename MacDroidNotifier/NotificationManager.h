@@ -22,6 +22,9 @@
   NSObject<NotificationCallback> *callback;
   NSObject<NotificationCallback> *pairingCallback;
   NSArray *listeners;
+
+  NSMutableArray *lastNotifications;
+  int notificationCount;
 }
 
 - (id)initWithCallback:(NSObject<NotificationCallback> *)callback
