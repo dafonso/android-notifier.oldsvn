@@ -11,6 +11,7 @@
   IBOutlet NSMenu *menu;
   IBOutlet Growl *growl;
   IBOutlet Preferences *preferences;
+  IBOutlet NSWindow *aboutDialog;
 
   NSStatusItem *statusItem;
   NotificationView *notificationView;
@@ -18,6 +19,7 @@
 }
 
 - (IBAction)openPreferences:(id)sender;
+- (IBAction)showAboutDialog:(id)sender;
 - (IBAction)quit:(id)sender;
 
 @end

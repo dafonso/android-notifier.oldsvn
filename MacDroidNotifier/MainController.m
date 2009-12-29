@@ -7,8 +7,7 @@
 
 @implementation MainController
 
-- (NSImage *)prepareImageForMenubar:(NSString *)name
-{
+- (NSImage *)prepareImageForMenubar:(NSString *)name {
 	NSImage *img = [NSImage imageNamed:name];
 	[img setScalesWhenResized:YES];
 	[img setSize:NSMakeSize(18, 18)];
@@ -38,6 +37,11 @@
 
 - (IBAction)openPreferences:(id)sender {
   [preferences showDialog:sender];
+}
+
+- (IBAction)showAboutDialog:(id)sender {
+  [NSApp activateIgnoringOtherApps:YES];
+  [aboutDialog makeKeyAndOrderFront:sender];
 }
 
 - (IBAction)quit:(id)sender {
