@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Set;
 import java.util.UUID;
 
+import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.NotifierPreferences;
 
 import android.bluetooth.BluetoothAdapter;
@@ -11,6 +12,14 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
+/**
+ * A notification method which sends notifications over a Bluetooth RFCOMM
+ * channel. The channel is opened and closed for every notification.
+ * 
+ * This class should only be loaded if we're running on API level 5 or above.
+ *
+ * @author rdamazio
+ */
 public class BluetoothNotificationMethod implements NotificationMethod {
 
   private static final String NOTIFICATION_UUID_STR = "7674047E-6E47-4BF0-831F-209E3F9DD23F";
@@ -26,23 +35,22 @@ public class BluetoothNotificationMethod implements NotificationMethod {
       return;
     }
 
-    // TODO(rdamazio): Don't load this class in API level < 5
     BluetoothAdapter bluetoothAdapter = getBluetoothAdapter();
     if (bluetoothAdapter == null) {
       // No bluetooth support
-      Log.e("RemoteNotifier", "No bluetooth support");
+      Log.e(NotifierConstants.LOG_TAG, "No bluetooth support");
       return;
     }
     if (!bluetoothAdapter.isEnabled()) {
       // Bluetooth disabled
-      Log.e("RemoteNotifier", "Not sending bluetooth notification - not enabled");
+      Log.e(NotifierConstants.LOG_TAG, "Not sending bluetooth notification - not enabled");
       return;
     }
 
     Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
     if (pairedDevices.isEmpty()) {
       // No devices
-      Log.e("RemoteNotifier", "Not sending bluetooth notification - no paired devices.");
+      Log.e(NotifierConstants.LOG_TAG, "Not sending bluetooth notification - no paired devices.");
       return;
     }
 
@@ -61,7 +69,7 @@ public class BluetoothNotificationMethod implements NotificationMethod {
     }
 
     if (socket == null) {
-      Log.e("RemoteNotifier", "Unable to find a proper bluetooth device to send notifications to");
+      Log.e(NotifierConstants.LOG_TAG, "Unable to find a proper bluetooth device to send notifications to");
       return;
     }
 
@@ -70,18 +78,21 @@ public class BluetoothNotificationMethod implements NotificationMethod {
     try {
       socket.connect();
       socket.getOutputStream().write(messageBytes);
-      Log.d("RemoteNotifier", "Sent notification over Bluetooth.");
+      Log.d(NotifierConstants.LOG_TAG, "Sent notification over Bluetooth.");
     } catch (IOException e) {
-      Log.e("RemoteNotifier", "Error sending bluetooth notification", e);
+      Log.e(NotifierConstants.LOG_TAG, "Error sending bluetooth notification", e);
     }
 
     try {
       socket.close();
     } catch (IOException e) {
-      Log.e("RemoteNotifier", "Error closing bluetooth socket", e);
+      Log.e(NotifierConstants.LOG_TAG, "Error closing bluetooth socket", e);
     }
   }
 
+  /**
+   * @return the default bluetooth adapter
+   */
   protected BluetoothAdapter getBluetoothAdapter() {
     return BluetoothAdapter.getDefaultAdapter();
   }

@@ -1,5 +1,6 @@
 package org.damazio.notifier.service;
 
+import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.R;
 import org.damazio.notifier.notification.Notification;
 import org.damazio.notifier.notification.NotificationType;
@@ -11,10 +12,15 @@ import android.os.BatteryManager;
 import android.os.Bundle;
 import android.util.Log;
 
+/**
+ * Receiver for battery state change events.
+ *
+ * @author rdamazio
+ */
 public class BatteryReceiver extends BroadcastReceiver {
 
   /**
-   * Minimum percentual battery level change for us to send a notification.
+   * Minimum percentage of battery level change for us to send a notification.
    */
   private static final int MIN_LEVEL_CHANGE = 5;
   
@@ -27,13 +33,13 @@ public class BatteryReceiver extends BroadcastReceiver {
   @Override
   public void onReceive(Context context, Intent intent) {
     if (!intent.getAction().equals(Intent.ACTION_BATTERY_CHANGED)) {
-      Log.e("RemoteNotifier", "Wrong intent received by battery receiver - " + intent.getAction());
+      Log.e(NotifierConstants.LOG_TAG, "Wrong intent received by battery receiver - " + intent.getAction());
       return;
     }
 
     NotificationService service = NotificationService.getRunningInstance();
     if (service == null) {
-      Log.w("RemoteNotifier", "Got battery status but service not found");
+      Log.w(NotifierConstants.LOG_TAG, "Got battery status but service not found");
       return;
     }
 
@@ -54,11 +60,11 @@ public class BatteryReceiver extends BroadcastReceiver {
     StringBuilder contentsBuilder = new StringBuilder();
     if (level != -1 && maxLevel != -1) {
       batteryLevelPercentage = 100 * level / maxLevel;
-      Log.d("RemoteNotifier", "Got battery level: " + batteryLevelPercentage);
+      Log.d(NotifierConstants.LOG_TAG, "Got battery level: " + batteryLevelPercentage);
       String levelString = context.getString(R.string.battery_level, batteryLevelPercentage);
       contentsBuilder.append(levelString);
     } else {
-      Log.w("RemoteNotifier", "Unknown battery level");
+      Log.w(NotifierConstants.LOG_TAG, "Unknown battery level");
       contentsBuilder.append(context.getString(R.string.battery_level_unknown));
     }
 
@@ -83,23 +89,26 @@ public class BatteryReceiver extends BroadcastReceiver {
       if (statusStringId != -1) {
         contentsBuilder.append(", ");
         String statusString = context.getString(statusStringId);
-        Log.d("RemoteNotifier", "Battery status: " + statusString);
+        Log.d(NotifierConstants.LOG_TAG, "Battery status: " + statusString);
         contentsBuilder.append(statusString);
       } else {
-        Log.w("RemoteNotifier", "Unknown battery status");
+        Log.w(NotifierConstants.LOG_TAG, "Unknown battery status");
       }
     } else {
-      Log.w("RemoteNotifier", "Unknown battery status");
+      Log.w(NotifierConstants.LOG_TAG, "Unknown battery status");
     }
 
     // Only notify if there were relevant changes
     if (status != lastBatteryStatus ||
         lastBatteryLevelPercentage - batteryLevelPercentage >= MIN_LEVEL_CHANGE) {
+      Log.d(NotifierConstants.LOG_TAG, "Notifying of battery state change");
       Notification notification = new Notification(context, NotificationType.BATTERY, contentsBuilder.toString());
       service.sendNotification(notification);
 
       lastBatteryStatus = status;
       lastBatteryLevelPercentage = batteryLevelPercentage;
+    } else {
+      Log.d(NotifierConstants.LOG_TAG, "Got battery update, but state change was not relevant");
     }
   }
 }

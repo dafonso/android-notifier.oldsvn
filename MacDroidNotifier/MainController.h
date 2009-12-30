@@ -18,8 +18,13 @@
   NotificationManager *notificationManager;
 }
 
+// Open the preferences window.
 - (IBAction)openPreferences:(id)sender;
+
+// Open the about window.
 - (IBAction)showAboutDialog:(id)sender;
+
+// Quit the application.
 - (IBAction)quit:(id)sender;
 
 @end

@@ -6,6 +6,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
+import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.NotifierPreferences;
 
 import android.content.Context;
@@ -14,6 +15,13 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.util.Log;
 
+/**
+ * Notification method which sends notifications as UDP broadcast
+ * packets.
+ * These packets are only sent if Wi-Fi is enabled and connected.
+ *
+ * @author rdamazio
+ */
 public class WifiNotificationMethod implements NotificationMethod {
 
   private static final int UDP_PORT = 10600;
@@ -31,7 +39,7 @@ public class WifiNotificationMethod implements NotificationMethod {
     }
 
     if (!isWifiEnabled()) {
-      Log.d("RemoteNotifier", "Not notifying over wifi - not connected.");
+      Log.d(NotifierConstants.LOG_TAG, "Not notifying over wifi - not connected.");
       return;
     }
 
@@ -47,20 +55,28 @@ public class WifiNotificationMethod implements NotificationMethod {
       DatagramPacket packet = new DatagramPacket(messageBytes, messageBytes.length, broadcastAddress, UDP_PORT);
       sendDatagramPacket(packet);
 
-      Log.d("RemoteNotifier", "Sent notification over WiFi.");
+      Log.d(NotifierConstants.LOG_TAG, "Sent notification over WiFi.");
     } catch (SocketException e) {
-      Log.e("RemoteNotifier", "Unable to open socket", e);
+      Log.e(NotifierConstants.LOG_TAG, "Unable to open socket", e);
     } catch (IOException e) {
-      Log.e("RemoteNotifier", "Unable to send UDP packet", e);
+      Log.e(NotifierConstants.LOG_TAG, "Unable to send UDP packet", e);
     }
   }
 
+  /**
+   * Sends an UDP packet.
+   *
+   * @param packet the packet to send
+   */
   protected void sendDatagramPacket(DatagramPacket packet) throws IOException, SocketException {
     DatagramSocket socket = new DatagramSocket();
     socket.setBroadcast(true);
     socket.send(packet);
   }
 
+  /**
+   * @return whether wifi is enabled and connected
+   */
   private boolean isWifiEnabled() {
     WifiInfo connectionInfo = wifi.getConnectionInfo();
     if (connectionInfo == null) return false;

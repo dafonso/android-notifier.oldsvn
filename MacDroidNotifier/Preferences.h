@@ -21,9 +21,9 @@ extern NSString *const kPreferencesDisplaySmsKey;
 extern NSString *const kPreferencesDisplayMmsKey;
 extern NSString *const kPreferencesDisplayBatteryKey;
 
+// Constants for preference values.
 extern const int kPairingNotRequired;
 extern const int kPairingRequired;
-
 
 // Object which wrapps handling of the app's preferences, including its UI.
 @interface Preferences : NSObject<NotificationCallback> {
@@ -48,9 +48,7 @@ extern const int kPairingRequired;
 // Callback when the user wants to add a paired device
 - (IBAction)addPairedDeviceClicked:(id)sender;
 
+// Callback for when the user cancels pairing
 - (IBAction)cancelPairing:(id)sender;
 
-- (void)didEndPairing:(NSWindow *)sheet
-           returnCode:(int)success
-          contextInfo:(void *)rowInfo;  
 @end

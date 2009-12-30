@@ -2,9 +2,9 @@ package org.damazio.notifier.service;
 
 import java.util.List;
 
+import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.NotifierPreferences;
 import org.damazio.notifier.notification.Notification;
-import org.damazio.notifier.notification.NotificationType;
 import org.damazio.notifier.notification.Notifier;
 
 import android.app.ActivityManager;
@@ -20,26 +20,22 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+/**
+ * Service which listens for relevant events and sends notifications about
+ * them.
+ *
+ * @author rdamazio
+ */
 public class NotificationService extends Service {
 
-  // TODO(rdamazio): Replace this method with an AIDL binding?
+  // TODO(rdamazio): Replace this method with an AIDL binding, or register all receivers here
   private static NotificationService runningInstance = null;
  
   private NotifierPreferences preferences;
   private Notifier notifier;
   private Handler instanceHandler;
 
-  private final PhoneStateListener phoneListener = new PhoneStateListener() {
-    @Override
-    public void onCallStateChanged(int state, String incomingNumber) {
-      if (state == TelephonyManager.CALL_STATE_RINGING && notifier != null) {
-        Notification notification = new Notification(
-            NotificationService.this, NotificationType.RING, incomingNumber);
-        notifier.sendNotification(notification);
-      }
-    }
-  };
-
+  private final PhoneStateListener phoneListener = new PhoneRingListener(this);
   private final BatteryReceiver batteryReceiver = new BatteryReceiver();
 
   public static NotificationService getRunningInstance() {
@@ -58,7 +54,7 @@ public class NotificationService extends Service {
   public void onStart(Intent intent, int startId) {
     super.onStart(intent, startId);
 
-    Log.i("RemoteNotifier", "Starting notification service");
+    Log.i(NotifierConstants.LOG_TAG, "Starting notification service");
     runningInstance = this;
     instanceHandler = new Handler();
 
@@ -87,10 +83,16 @@ public class NotificationService extends Service {
 	return null;
   }
 
+  /**
+   * Starts the service in the given context.
+   */
   public static void start(Context context) {
     context.startService(new Intent(context, NotificationService.class));
   }
-  
+
+  /**
+   * Uses the given context to determine whether the service is already running.
+   */
   public static boolean isRunning(Context context) {
     ActivityManager activityManager = (ActivityManager)context.getSystemService(ACTIVITY_SERVICE);
     List<RunningServiceInfo> services = activityManager.getRunningServices(Integer.MAX_VALUE);
@@ -106,6 +108,9 @@ public class NotificationService extends Service {
     return false;
   }
 
+  /**
+   * Stops the service in the given context.
+   */
   public static void stop(Context context) {
     context.stopService(new Intent(context, NotificationService.class));
   }

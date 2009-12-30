@@ -2,10 +2,15 @@ package org.damazio.notifier.notification;
 
 import android.content.Context;
 
+/**
+ * Data object which represents a notification.
+ *
+ * @author rdamazio
+ */
 public class Notification {
 
   private final String deviceId;
-  private final long notificationId;
+  private final String notificationId;
   private final NotificationType type;
   private final String contents;
 
@@ -16,12 +21,11 @@ public class Notification {
     this.contents = contents;
   }
 
+  /**
+   * @return the type of notification
+   */
   public NotificationType getType() {
     return type;
-  }
-
-  public String getContents() {
-    return contents;
   }
 
   @Override
@@ -39,7 +43,16 @@ public class Notification {
     return messageBuilder.toString();
   }
 
-  private static long notificationIdFor(String deviceId, long timestamp, NotificationType type,
+  /**
+   * Builds a notification ID so that this notification is uniquely identified.
+   *
+   * @param deviceId the ID of this device
+   * @param timestamp the timestamp when the notification was created
+   * @param type the type of notification
+   * @param contents the contents of the notification
+   * @return a unique notification ID
+   */
+  private static String notificationIdFor(String deviceId, long timestamp, NotificationType type,
       String contents) {
     long hashCode = deviceId.hashCode();
     hashCode = hashCode * 31 + timestamp;
@@ -47,6 +60,6 @@ public class Notification {
     if (contents != null) {
       hashCode = hashCode * 31 + contents.hashCode();
     }
-    return hashCode;
+    return Long.toHexString(hashCode);
   }
 }
