@@ -15,10 +15,10 @@
             ]]></description>
             <pubDate>Tue, 30 Dec 2009 20:00:00 +0000</pubDate>
             <enclosure
-                url="TODO"
+                url="http://android-notifier.googlecode.com/files/MacDroidNotifier-0.1.dmg"
                 sparkle:version="0.1"
-                length="1077718"
-                sparkle:dsaSignature="TODO" 
+                length="1540076"
+                sparkle:dsaSignature="MCwCFHKiCO904YPgOX1cWIWey8VIheO2AhQC2Y8Sccxmm3RR+U05zUb3lAKRYw==" 
                 type="application/octet-stream" />
          </item>
    </channel>
