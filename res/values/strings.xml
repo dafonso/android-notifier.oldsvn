@@ -2,6 +2,7 @@
 <resources>
     <!-- Titles -->
     <string name="app_name">Remote Notifier</string>
+    <string name="service_name">Remote Notification Service</string>
     <string name="settings_title">Remote Notifier Settings</string>
 
     <!-- Settings UI -->
