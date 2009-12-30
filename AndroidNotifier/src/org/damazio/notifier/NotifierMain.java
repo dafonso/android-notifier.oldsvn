@@ -181,8 +181,9 @@ public class NotifierMain extends Activity {
       notifier = new Notifier(this, preferences);
     }
 
+    String contents = getString(R.string.ping_contents);
     Notification notification =
-        new Notification(NotifierMain.this, NotificationType.PING, "Test notification");
+        new Notification(NotifierMain.this, NotificationType.PING, contents);
     notifier.sendNotification(notification);
   }
 }

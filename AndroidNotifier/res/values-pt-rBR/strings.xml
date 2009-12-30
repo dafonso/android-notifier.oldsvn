@@ -28,6 +28,7 @@
     <string name="event_battery">Bateria</string>
 
     <!-- Notification messages -->
+    <string name="ping_contents">Notificação de teste</string>
     <string name="sms_contents">SMS de %s: %s</string>
     <string name="battery_level">Nível de bateria do telefone: %d%% restantes</string>
     <string name="battery_level_unknown">Nível de bateria do telefone desconhecido</string>
