@@ -6,6 +6,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+/**
+ * Receiver for boot events, which starts the service if the user chose to have
+ * it started at boot.
+ *
+ * @author rdamazio
+ */
 public class BootServiceStarter extends BroadcastReceiver {
   private static final double MAX_STARTUP_DELAY_MS = 30000.0;
 

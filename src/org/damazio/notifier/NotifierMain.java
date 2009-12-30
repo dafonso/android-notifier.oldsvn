@@ -14,6 +14,13 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * Main activity for the notifier.
+ * This activity displays the application's settings,
+ * and allows the user to manipulate the service.
+ *
+ * @author rdamazio
+ */
 public class NotifierMain extends Activity {
   private Notifier notifier;
   private NotifierPreferences preferences;
@@ -76,7 +83,6 @@ public class NotifierMain extends Activity {
       }
     });
 	serviceStatusText = (TextView) findViewById(R.id.service_status);
-	updateServiceStatus();
 
 	Button saveSettingsButton = (Button) findViewById(R.id.save_settings);
 	saveSettingsButton.setOnClickListener(new OnClickListener() {
@@ -90,8 +96,14 @@ public class NotifierMain extends Activity {
         revertSettings();
       }
     });
+
+    // Update the status that shows whether the service is running
+    updateServiceStatus();
   }
 
+  /**
+   * Loads all settings from the preferences into the UI.
+   */
   private void loadSettings() {
     startAtBootView.setChecked(preferences.isStartAtBootEnabled());
 
@@ -105,6 +117,9 @@ public class NotifierMain extends Activity {
     batteryEventView.setChecked(preferences.isBatteryEventEnabled());
   }
 
+  /**
+   * Saves all settings from the UI into the preferences.
+   */
   private void saveSettings() {
     preferences.setStartAtBootEnabled(startAtBootView.isChecked());
 
@@ -123,11 +138,18 @@ public class NotifierMain extends Activity {
     Toast.makeText(this, R.string.settings_saved, Toast.LENGTH_LONG).show();
   }
 
+  /**
+   * Reverts any unsaved changes to settings, both in the preferences and in the
+   * UI.
+   */
   protected void revertSettings() {
     preferences.discardChanges();
     loadSettings();
   }
 
+  /**
+   * Toggles the service status between running and stopped.
+   */
   private void toggleServiceStatus() {
     boolean isServiceRunning = NotificationService.isRunning(this);
     if (isServiceRunning) {
@@ -138,6 +160,9 @@ public class NotifierMain extends Activity {
     updateServiceStatus();
   }
 
+  /**
+   * Updates the service status on the UI.
+   */
   private void updateServiceStatus() {
     boolean isServiceRunning = NotificationService.isRunning(this);
       serviceStatusText.setText(isServiceRunning
@@ -148,16 +173,16 @@ public class NotifierMain extends Activity {
           : R.string.start_service);
   }
 
-  private Notifier getNotifier() {
+  /**
+   * Sends a test notification.
+   */
+  private void sendTestNotification() {
     if (notifier == null) {
       notifier = new Notifier(this, preferences);
     }
-    return notifier;
-  }
 
-  private void sendTestNotification() {
     Notification notification =
         new Notification(NotifierMain.this, NotificationType.PING, "Test notification");
-    getNotifier().sendNotification(notification);
+    notifier.sendNotification(notification);
   }
 }

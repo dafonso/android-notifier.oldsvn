@@ -8,9 +8,22 @@ import org.damazio.notifier.NotifierPreferences;
 import android.content.Context;
 import android.os.Build;
 
+/**
+ * Factory for notification methods.
+ *
+ * @author rdamazio
+ */
 public class NotificationMethods {
   private NotificationMethods() { }
 
+  /**
+   * Create and return a set of all valid notification methods for the current
+   * environment.
+   *
+   * @param context the context to get information from
+   * @param preferences the preferences for the methods to use
+   * @return the set of notification methods
+   */
   public static Set<NotificationMethod> getAllValidMethods(
       Context context, NotifierPreferences preferences) {
     HashSet<NotificationMethod> methods = new HashSet<NotificationMethod>();

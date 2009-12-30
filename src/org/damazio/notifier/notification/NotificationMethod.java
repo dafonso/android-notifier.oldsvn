@@ -1,5 +1,10 @@
 package org.damazio.notifier.notification;
 
+/**
+ * Interface that defines a method of sending notifications.
+ *
+ * @author rdamazio
+ */
 public interface NotificationMethod {
 
   /**
