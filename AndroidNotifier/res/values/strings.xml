@@ -20,7 +20,7 @@
 
     <!-- Notification methods -->
     <string name="methods_title">Notification methods:</string>
-    <string name="method_wifi">Wifi (broadcast)</string>
+    <string name="method_wifi">Wifi</string>
     <string name="method_bluetooth">Bluetooth</string>
     <string name="method_usb">USB (see documentation)</string>
 
