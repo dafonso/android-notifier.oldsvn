@@ -26,6 +26,7 @@
 		379B996E10E803DD007B1FCA /* menuicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 379B996D10E803DD007B1FCA /* menuicon.png */; };
 		379B99AC10E83A6D007B1FCA /* Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 379B99AB10E83A6D007B1FCA /* Preferences.m */; };
 		379B9A6310E87759007B1FCA /* StartupItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 379B9A6210E87759007B1FCA /* StartupItem.m */; };
+		37A4B13F10EA94BF0058904A /* appicon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 37A4B13E10EA94BF0058904A /* appicon.icns */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -83,6 +84,7 @@
 		379B99AB10E83A6D007B1FCA /* Preferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Preferences.m; sourceTree = "<group>"; };
 		379B9A6110E87759007B1FCA /* StartupItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StartupItem.h; sourceTree = "<group>"; };
 		379B9A6210E87759007B1FCA /* StartupItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StartupItem.m; sourceTree = "<group>"; };
+		37A4B13E10EA94BF0058904A /* appicon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = appicon.icns; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* MacDroidNotifier.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacDroidNotifier.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -172,8 +174,9 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				378BBCE810E97A66008D07A1 /* Localizable.strings */,
+				37A4B13E10EA94BF0058904A /* appicon.icns */,
 				379B996D10E803DD007B1FCA /* menuicon.png */,
+				378BBCE810E97A66008D07A1 /* Localizable.strings */,
 				3775426810E5D70900A21D89 /* BluetoothService.plist */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
@@ -276,6 +279,7 @@
 				3775426910E5D70900A21D89 /* BluetoothService.plist in Resources */,
 				379B996E10E803DD007B1FCA /* menuicon.png in Resources */,
 				378BBCEA10E97A66008D07A1 /* Localizable.strings in Resources */,
+				37A4B13F10EA94BF0058904A /* appicon.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -356,6 +360,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -364,6 +369,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = MacDroidNotifier_Prefix.pch;
+				GCC_UNROLL_LOOPS = YES;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				PRODUCT_NAME = MacDroidNotifier;

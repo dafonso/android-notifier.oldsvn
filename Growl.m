@@ -7,7 +7,6 @@
 
 #import "Growl.h"
 
-
 @implementation Growl
 
 - (void)awakeFromNib {
@@ -25,7 +24,7 @@
       name = @"PhoneRing";
       break;
     case BATTERY:
-      title = NSLocalizedString(@"Phone battery is low", @"Low battery title");
+      title = NSLocalizedString(@"Phone battery state", @"Battery state title");
       name = @"PhoneBattery";
       break;
     case SMS:
