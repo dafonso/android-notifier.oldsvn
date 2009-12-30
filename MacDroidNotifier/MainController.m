@@ -1,6 +1,6 @@
 #import "MainController.h"
 
-#import "growl.h"
+#import "Growl.h"
 #import "NotificationManager.h"
 #import "NotificationView.h"
 #import "Preferences.h"

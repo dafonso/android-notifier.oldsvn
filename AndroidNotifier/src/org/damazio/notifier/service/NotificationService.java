@@ -13,6 +13,7 @@ import android.app.ActivityManager.RunningServiceInfo;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.IBinder;
 import android.telephony.PhoneStateListener;
@@ -39,6 +40,8 @@ public class NotificationService extends Service {
     }
   };
 
+  private final BatteryReceiver batteryReceiver = new BatteryReceiver();
+
   public static NotificationService getRunningInstance() {
     return runningInstance;
   }
@@ -64,10 +67,14 @@ public class NotificationService extends Service {
 
     final TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
     tm.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
+
+    registerReceiver(batteryReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
   }
 
   @Override
   public void onDestroy() {
+    unregisterReceiver(batteryReceiver);
+    
     final TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
     tm.listen(phoneListener, PhoneStateListener.LISTEN_NONE);
 

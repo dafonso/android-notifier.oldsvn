@@ -28,8 +28,14 @@
     <string name="event_ring">Phone ring</string>
     <string name="event_sms">SMS</string>
     <string name="event_mms">MMS</string>
-    <string name="event_battery">Low battery</string>
+    <string name="event_battery">Battery</string>
 
     <!-- Notification messages -->
     <string name="sms_contents">SMS from %s: %s</string>
+    <string name="battery_level">Phone battery level: %d%% remaining</string>
+    <string name="battery_level_unknown">Phone battery level unknown</string>
+    <string name="battery_charging">charging</string>
+    <string name="battery_discharging">discharging</string>
+    <string name="battery_not_charging">NOT charging</string>
+    <string name="battery_full">full</string>
 </resources>
