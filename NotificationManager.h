@@ -27,6 +27,9 @@
   int notificationCount;
 }
 
+// Initializes the notification manager, with one regular |callback| which is
+// called for every notification, and a |pairingCallback| which is called only
+// for test notifications, used for pairing.
 - (id)initWithCallback:(NSObject<NotificationCallback> *)callback
    withPairingCallback:(NSObject<NotificationCallback> *)pairingCallback;
 

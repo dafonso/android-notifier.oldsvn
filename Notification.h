@@ -7,6 +7,7 @@
 
 #import <Cocoa/Cocoa.h>
 
+// Enum for the type of notification.
 typedef enum {
   RING,
   BATTERY,
