@@ -32,6 +32,7 @@
     <string name="event_battery">Battery</string>
 
     <!-- Notification messages -->
+    <string name="ping_contents">Test notification</string>
     <string name="sms_contents">SMS from %s: %s</string>
     <string name="battery_level">Phone battery level: %d%% remaining</string>
     <string name="battery_level_unknown">Phone battery level unknown</string>
