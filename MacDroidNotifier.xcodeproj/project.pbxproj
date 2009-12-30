@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* UI.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* UI.xib */; };
+		376DF26C10EBE0DA0065B914 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 376DF26B10EBE0DA0065B914 /* Sparkle.framework */; };
+		376DF27A10EBE1190065B914 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 376DF26B10EBE0DA0065B914 /* Sparkle.framework */; };
+		376DF29210EBE5140065B914 /* sparkle_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 376DF29110EBE5140065B914 /* sparkle_pub.pem */; };
+		376DF2A510EBE54A0065B914 /* appcast.xml in Resources */ = {isa = PBXBuildFile; fileRef = 376DF2A410EBE54A0065B914 /* appcast.xml */; };
 		37753DCD10E5639C00A21D89 /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37753DCC10E5639C00A21D89 /* MainController.m */; };
 		37753DD110E563E600A21D89 /* WifiNotificationListener.m in Sources */ = {isa = PBXBuildFile; fileRef = 37753DD010E563E600A21D89 /* WifiNotificationListener.m */; };
 		37753DD410E563F300A21D89 /* BluetoothNotificationListener.m in Sources */ = {isa = PBXBuildFile; fileRef = 37753DD310E563F300A21D89 /* BluetoothNotificationListener.m */; };
@@ -40,6 +44,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				3775410110E5BDB200A21D89 /* Growl.framework in Copy Frameworks */,
+				376DF27A10EBE1190065B914 /* Sparkle.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -55,6 +60,9 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* MacDroidNotifier_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MacDroidNotifier_Prefix.pch; sourceTree = "<group>"; };
+		376DF26B10EBE0DA0065B914 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
+		376DF29110EBE5140065B914 /* sparkle_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sparkle_pub.pem; sourceTree = "<group>"; };
+		376DF2A410EBE54A0065B914 /* appcast.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = appcast.xml; sourceTree = "<group>"; };
 		37753DCB10E5639C00A21D89 /* MainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainController.h; sourceTree = "<group>"; };
 		37753DCC10E5639C00A21D89 /* MainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainController.m; sourceTree = "<group>"; };
 		37753DCF10E563E600A21D89 /* WifiNotificationListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WifiNotificationListener.h; sourceTree = "<group>"; };
@@ -98,6 +106,7 @@
 				377540C910E5B64500A21D89 /* Growl.framework in Frameworks */,
 				3775423010E5D2E000A21D89 /* IOBluetooth.framework in Frameworks */,
 				3775423110E5D2E000A21D89 /* IOBluetoothUI.framework in Frameworks */,
+				376DF26C10EBE0DA0065B914 /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -122,6 +131,7 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				376DF26B10EBE0DA0065B914 /* Sparkle.framework */,
 				3775422E10E5D2E000A21D89 /* IOBluetooth.framework */,
 				3775422F10E5D2E000A21D89 /* IOBluetoothUI.framework */,
 				377540C810E5B64500A21D89 /* Growl.framework */,
@@ -176,12 +186,14 @@
 			children = (
 				37A4B13E10EA94BF0058904A /* appicon.icns */,
 				379B996D10E803DD007B1FCA /* menuicon.png */,
-				378BBCE810E97A66008D07A1 /* Localizable.strings */,
+				376DF29110EBE5140065B914 /* sparkle_pub.pem */,
+				376DF2A410EBE54A0065B914 /* appcast.xml */,
+				3775407C10E5B10D00A21D89 /* MacDroidNotifier.growlRegDict */,
 				3775426810E5D70900A21D89 /* BluetoothService.plist */,
+				378BBCE810E97A66008D07A1 /* Localizable.strings */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				1DDD58140DA1D0A300B32029 /* UI.xib */,
-				3775407C10E5B10D00A21D89 /* MacDroidNotifier.growlRegDict */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -280,6 +292,8 @@
 				379B996E10E803DD007B1FCA /* menuicon.png in Resources */,
 				378BBCEA10E97A66008D07A1 /* Localizable.strings in Resources */,
 				37A4B13F10EA94BF0058904A /* appicon.icns in Resources */,
+				376DF29210EBE5140065B914 /* sparkle_pub.pem in Resources */,
+				376DF2A510EBE54A0065B914 /* appcast.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -26,5 +26,11 @@
 	<string>NSApplication</string>
 	<key>LSUIElement</key>
 	<true/>
+	<key>SUFeedURL</key>
+	<string>http://android-notifier.googlecode.com/svn/trunk/MacDroidNotifier/appcast.xml</string>
+	<key>SUShowReleaseNotes</key>
+	<true/>
+	<key>SUPublicDSAKeyFile</key>
+	<string>sparkle_pub.pem</string>
 </dict>
 </plist>
