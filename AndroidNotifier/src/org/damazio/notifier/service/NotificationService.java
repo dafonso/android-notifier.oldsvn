@@ -27,20 +27,14 @@ import android.util.Log;
  * @author rdamazio
  */
 public class NotificationService extends Service {
-
-  // TODO(rdamazio): Replace this method with an AIDL binding, or register all receivers here
-  private static NotificationService runningInstance = null;
  
   private NotifierPreferences preferences;
   private Notifier notifier;
   private Handler instanceHandler;
 
   private final PhoneStateListener phoneListener = new PhoneRingListener(this);
-  private final BatteryReceiver batteryReceiver = new BatteryReceiver();
-
-  public static NotificationService getRunningInstance() {
-    return runningInstance;
-  }
+  private final BatteryReceiver batteryReceiver = new BatteryReceiver(this);
+  private final SmsReceiver smsReceiver = new SmsReceiver(this);
 
   public void sendNotification(final Notification notification) {
     instanceHandler.post(new Runnable() {
@@ -55,7 +49,6 @@ public class NotificationService extends Service {
     super.onStart(intent, startId);
 
     Log.i(NotifierConstants.LOG_TAG, "Starting notification service");
-    runningInstance = this;
     instanceHandler = new Handler();
 
     preferences = new NotifierPreferences(this);
@@ -65,16 +58,17 @@ public class NotificationService extends Service {
     tm.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
 
     registerReceiver(batteryReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+    registerReceiver(smsReceiver, new IntentFilter(SmsReceiver.ACTION));
   }
 
   @Override
   public void onDestroy() {
+    unregisterReceiver(smsReceiver);
     unregisterReceiver(batteryReceiver);
-    
+
     final TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
     tm.listen(phoneListener, PhoneStateListener.LISTEN_NONE);
 
-    runningInstance = null;
     super.onDestroy();
   }
 
@@ -96,7 +90,7 @@ public class NotificationService extends Service {
   public static boolean isRunning(Context context) {
     ActivityManager activityManager = (ActivityManager)context.getSystemService(ACTIVITY_SERVICE);
     List<RunningServiceInfo> services = activityManager.getRunningServices(Integer.MAX_VALUE);
-    
+
     for (RunningServiceInfo serviceInfo : services) {
       ComponentName componentName = serviceInfo.service;
       String serviceName = componentName.getClassName();

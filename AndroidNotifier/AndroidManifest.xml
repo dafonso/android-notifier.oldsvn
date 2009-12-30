@@ -15,8 +15,9 @@
     </activity>
 
     <!-- The actual service which listens on events and sends notifications -->
-    <service android:name=".service.NotificationService" android:label="@string/app_name" android:icon="@drawable/icon">
-    </service>
+    <service android:name=".service.NotificationService"
+             android:label="@string/service_name"
+             android:icon="@drawable/icon" />
 
     <!-- Receiver which starts the service at boot -->
     <receiver android:name=".service.BootServiceStarter">
@@ -26,14 +27,7 @@
       </intent-filter>
     </receiver>
 
-    <!-- Receiver to capture SMS messages -->
-    <receiver android:name=".service.SmsReceiver">
-      <intent-filter>
-        <action android:name="android.provider.Telephony.SMS_RECEIVED" />
-      </intent-filter>
-    </receiver>
-
-    <!-- The battery state receiver has to be declared in code -->
+    <!-- Other broadcast event receivers are attached in NotificationService -->
   </application>
 
   <uses-sdk android:minSdkVersion="4" />

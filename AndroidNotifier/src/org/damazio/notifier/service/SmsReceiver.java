@@ -17,19 +17,19 @@ import android.util.Log;
  *
  * @author rdamazio
  */
-public class SmsReceiver extends BroadcastReceiver {
-  private static final String ACTION = "android.provider.Telephony.SMS_RECEIVED";
+class SmsReceiver extends BroadcastReceiver {
+  static final String ACTION = "android.provider.Telephony.SMS_RECEIVED";
+
+  private final NotificationService service;
+
+  public SmsReceiver(NotificationService service) {
+    this.service = service;
+  }
 
   @Override
   public void onReceive(Context context, Intent intent) {
     if (!intent.getAction().equals(ACTION)) {
       Log.e(NotifierConstants.LOG_TAG, "Wrong intent received by SMS receiver - " + intent.getAction());
-      return;
-    }
-
-    NotificationService service = NotificationService.getRunningInstance();
-    if (service == null) {
-      Log.i(NotifierConstants.LOG_TAG, "Got SMS but service not found");
       return;
     }
 

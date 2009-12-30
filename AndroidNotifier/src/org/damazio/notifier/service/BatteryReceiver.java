@@ -17,7 +17,7 @@ import android.util.Log;
  *
  * @author rdamazio
  */
-public class BatteryReceiver extends BroadcastReceiver {
+class BatteryReceiver extends BroadcastReceiver {
 
   /**
    * Minimum percentage of battery level change for us to send a notification.
@@ -30,16 +30,16 @@ public class BatteryReceiver extends BroadcastReceiver {
   private int lastBatteryStatus = -1;
   private int lastBatteryLevelPercentage = -1;
 
+  private final NotificationService service;
+
+  public BatteryReceiver(NotificationService service) {
+    this.service = service;
+  }
+
   @Override
   public void onReceive(Context context, Intent intent) {
     if (!intent.getAction().equals(Intent.ACTION_BATTERY_CHANGED)) {
       Log.e(NotifierConstants.LOG_TAG, "Wrong intent received by battery receiver - " + intent.getAction());
-      return;
-    }
-
-    NotificationService service = NotificationService.getRunningInstance();
-    if (service == null) {
-      Log.w(NotifierConstants.LOG_TAG, "Got battery status but service not found");
       return;
     }
 
