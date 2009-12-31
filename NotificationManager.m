@@ -68,22 +68,20 @@ const int kLastNotificationCount = 10;
 }
 
 - (BOOL)isNotificationDuplicate:(Notification *)notification {
-  @synchronized(self) {
-    for (Notification *lastNotification in lastNotifications) {
-      if ([notification isEqualToNotification:lastNotification]) {
-        return YES;
-      }
+  for (Notification *lastNotification in lastNotifications) {
+    if ([notification isEqualToNotification:lastNotification]) {
+      return YES;
     }
-
-    if ([lastNotifications count] < kLastNotificationCount) {
-      [lastNotifications addObject:notification];
-    } else {
-      int position = (notificationCount % kLastNotificationCount);
-      [lastNotifications replaceObjectAtIndex:position withObject:notification];
-    }
-
-    notificationCount++;
   }
+
+  if ([lastNotifications count] < kLastNotificationCount) {
+    [lastNotifications addObject:notification];
+  } else {
+    int position = (notificationCount % kLastNotificationCount);
+    [lastNotifications replaceObjectAtIndex:position withObject:notification];
+  }
+
+  notificationCount++;
   return NO;
 }
 
@@ -114,14 +112,16 @@ const int kLastNotificationCount = 10;
   Notification *notification = [Notification notificationFromString:notificationStr];
   [notificationStr release];
 
-  if ([self isNotificationTypeEnabled:[notification type]] &&
-      ![self isNotificationDuplicate:notification] &&
-      [self isDevicePaired:[notification deviceId]]) {
-    [callback handleNotification:notification];
-  }
+  @synchronized(self) {
+    if ([self isNotificationTypeEnabled:[notification type]] &&
+        ![self isNotificationDuplicate:notification] &&
+        [self isDevicePaired:[notification deviceId]]) {
+      [callback handleNotification:notification];
+    }
 
-  if ([notification type] == PING) {
-    [pairingCallback handleNotification:notification];
+    if ([notification type] == PING) {
+      [pairingCallback handleNotification:notification];
+    }
   }
 }
 
