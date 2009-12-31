@@ -81,6 +81,9 @@ const int kPairingRequired = 1;
 }
 
 - (IBAction)addPairedDeviceClicked:(id)sender {
+  // Save notification settings since we'll now listen for notifications
+  [[NSUserDefaults standardUserDefaults] synchronize];
+
   isPairing = YES;
   [NSApp beginSheet:pairingSheet
      modalForWindow:prefsWindow

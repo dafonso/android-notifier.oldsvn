@@ -55,7 +55,7 @@
                    length:(size_t)dataLength {
 	NSData *data = [NSData dataWithBytes:dataPointer length:dataLength];
   // TODO: Don't even listen for rfcomm if disabled
-  if ([[NSUserDefaults standardUserDefaults] boolForKey:kPreferencesListenWifiKey]) {
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:kPreferencesListenBluetoothKey]) {
     [callback handleRawNotification:data];
   }
 }
