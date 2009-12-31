@@ -9,16 +9,22 @@
       <description>Most recent changes with links to updates.</description>
       <language>en</language>
          <item>
-            <title>Version 0.1</title>
+            <title>Version 0.2</title>
             <description><![CDATA[
-              <h2>Initial version</h2>
+              <h2>Bugfix release</h2>
+              <ul>
+                <li>Bluetooth method enable fixed
+                <li>Pairing made more robust
+                <li>Pairing window no longer resizable
+                <li>Saves settings before pairing
+              </ul>
             ]]></description>
-            <pubDate>Tue, 30 Dec 2009 20:00:00 +0000</pubDate>
+            <pubDate>Thu, 31 Dec 2009 00:05:00 -0200</pubDate>
             <enclosure
-                url="http://android-notifier.googlecode.com/files/MacDroidNotifier-0.1.dmg"
-                sparkle:version="0.1"
-                length="1540076"
-                sparkle:dsaSignature="MCwCFHKiCO904YPgOX1cWIWey8VIheO2AhQC2Y8Sccxmm3RR+U05zUb3lAKRYw==" 
+                url="http://android-notifier.googlecode.com/files/MacDroidNotifier-0.2.dmg"
+                sparkle:version="0.2"
+                length="1540196"
+                sparkle:dsaSignature="MCwCFGmYw8hrh3zYWKF0rtijRJ8a0J93AhRCtqHNxgSB+PIIm5vhPo3HSvvJ9w==" 
                 type="application/octet-stream" />
          </item>
    </channel>
