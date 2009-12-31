@@ -47,8 +47,7 @@ static const double kReceiveTimeout = 10.0;
   if ([[NSUserDefaults standardUserDefaults] boolForKey:kPreferencesListenWifiKey]) {
     [callback handleRawNotification:data];
   }
-  [socket receiveWithTimeout:kReceiveTimeout tag:1];
-  return YES;
+  return NO;
 }
 
 - (void)onUdpSocket:(AsyncUdpSocket *)sock
