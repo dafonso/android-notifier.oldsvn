@@ -12,6 +12,7 @@ import android.content.SharedPreferences.Editor;
 public class NotifierPreferences {
 
   private static final String PREFERENCES_NAME = "org.damazio.notifier.preferences";
+  private static final String IS_FIRST_TIME_KEY = "isFirstTime";
   private static final String STARTUP_AT_BOOT_KEY = "startAtBoot";
   private static final String WIFI_METHOD_ENABLED = "wifiMethod";
   private static final String BLUETOOTH_METHOD_ENABLED = "bluetoothMethod";
@@ -43,7 +44,22 @@ public class NotifierPreferences {
   public void discardChanges() {
     editor = null;
   }
-  
+
+  /**
+   * @return whether this is the first time starting the app
+   */
+  public boolean isFirstTime() {
+    return preferences.getBoolean(IS_FIRST_TIME_KEY, true);
+  }
+
+  /**
+   * @param firstTime whether this is the first time starting the app
+   */
+  public void setFirstTime(boolean firstTime) {
+    ensureEditing();
+    editor.putBoolean(IS_FIRST_TIME_KEY, firstTime);
+  }
+
   /**
    * @return whether the service should start at boot
    */
