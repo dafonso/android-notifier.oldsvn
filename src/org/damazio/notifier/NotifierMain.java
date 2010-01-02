@@ -108,6 +108,7 @@ public class NotifierMain extends Activity {
       }
     });
 
+    // Show a warning when enabling bluetooth, if it's not supported
     if (!NotificationMethods.isBluetoothMethodSupported()) {
       bluetoothMethodView.setChecked(false);
       bluetoothMethodView.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -228,6 +229,13 @@ public class NotifierMain extends Activity {
     Toast.makeText(this, R.string.ping_sent, Toast.LENGTH_LONG).show();
   }
 
+  /**
+   * Shows an alert dialog with the given message and title, as well as an OK
+   * button to dismiss it.
+   *
+   * @param messageId the ID of the message resource
+   * @param titleId the ID of the title resource
+   */
   private void showAlertDialog(int messageId, int titleId) {
     AlertDialog.Builder builder = new AlertDialog.Builder(NotifierMain.this);
     builder.setMessage(messageId);
