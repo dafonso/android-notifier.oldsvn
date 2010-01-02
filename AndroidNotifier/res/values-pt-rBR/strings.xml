@@ -22,8 +22,10 @@
     <string name="eclair_required">Necessário Android 2.0</string>
     <string name="bluetooth_eclair">Notificações via Bluetooth necessitam o Android versão 2.0 ou superior.\nParece que você está usando uma versão mais antiga sem o suporte necessário. :(</string>
     <string name="ping_sent">Notificação de teste enviada</string>
-    <string name="welcome_message">Este aplicativo funciona em conjunto com um aplicativo para Mac/Linux/Windows. Por favor visite o site http://code.google.com/p/android-notifier/ para ler instruções de configuração e para realizar o download do aplicativo desktop, assim como provêr feedback ou reportar bugs.</string>
     <string name="welcome_title">Bem-vindo ao Notificações Remotas</string>
+    <string name="about_title">Notificações Remotas</string>
+    <string name="about_message">Este aplicativo funciona em conjunto com um aplicativo para Mac/Linux/Windows para exibir notificações.\n\nPor favor visite o site http://code.google.com/p/android-notifier/ para ler instruções de configuração e para realizar o download do aplicativo desktop, assim como provêr feedback ou reportar problemas.</string>
+    <string name="about_menu">Sobre Notificações Remotas</string>
 
     <!-- Notification methods -->
     <string name="methods_title">Métodos de notificação:</string>
