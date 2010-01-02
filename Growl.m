@@ -29,11 +29,11 @@
       break;
     case SMS:
       title = NSLocalizedString(@"Phone received an SMS", @"SMS received title");
-      name = @"PhoneSms";
+      name = @"PhoneSMS";
       break;
     case MMS:
       title = NSLocalizedString(@"Phone received an MMS", @"MMS received title");
-      name = @"PhoneMms";
+      name = @"PhoneMMS";
       break;
     case PING:
       title = NSLocalizedString(@"Phone sent a ping", @"Ping title");
