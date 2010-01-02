@@ -17,6 +17,8 @@
     <string name="save_settings">Salvar configurações</string>
     <string name="revert_settings">Descartar mudanças</string>
     <string name="settings_saved">Suas configurações foram salvas.\nVocê pode agora fechar este aplicativo.</string>
+    <string name="eclair_required">Necessário Android 2.0</string>
+    <string name="bluetooth_eclair">Notificações via Bluetooth necessitam o Android versão 2.0 ou superior.\nParece que você está usando uma versão mais antiga sem o suporte necessário. :(</string>
 
     <!-- Notification methods -->
     <string name="methods_title">Métodos de notificação:</string>

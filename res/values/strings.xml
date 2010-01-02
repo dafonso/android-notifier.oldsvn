@@ -17,6 +17,8 @@
     <string name="save_settings">Save settings</string>
     <string name="revert_settings">Revert settings</string>
     <string name="settings_saved">Your settings have been saved.\nYou may now exit this application.</string>
+    <string name="eclair_required">Android 2.0 required</string>
+    <string name="bluetooth_eclair">Bluetooth notifications are only supported in Android 2.0 or above.\nYou\'re currently running an older version of Android which doesn\'t support it. :(</string>
 
     <!-- Notification methods -->
     <string name="methods_title">Notification methods:</string>

@@ -33,11 +33,15 @@ public class NotificationMethods {
     methods.add(new UsbNotificationMethod());
 
     // Methods supported only in 2.0 and above
-    int sdkVersion = Integer.parseInt(Build.VERSION.SDK);
-    if (sdkVersion >= 5) {
+    if (isBluetoothMethodSupported()) {
       methods.add(new BluetoothNotificationMethod(preferences));
     }
 
     return methods;
+  }
+
+  public static boolean isBluetoothMethodSupported() {
+    int sdkVersion = Integer.parseInt(Build.VERSION.SDK);
+    return sdkVersion >= 5;
   }
 }
