@@ -9,6 +9,8 @@ import org.damazio.notifier.service.NotificationService;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -68,7 +70,7 @@ public class NotifierMain extends Activity {
       preferences.setFirstTime(false);
       preferences.saveChanges();
 
-      showAlertDialog(R.string.welcome_message, R.string.welcome_title);
+      showAlertDialog(R.string.about_message, R.string.welcome_title);
     }
 
     // Start the service
@@ -119,6 +121,19 @@ public class NotifierMain extends Activity {
 
     // Update the status that shows whether the service is running
     updateServiceStatus();
+  }
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    menu.add(R.string.about_menu).setIcon(android.R.drawable.ic_menu_info_details);
+    return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    // Right now, we only have about menu item
+    showAlertDialog(R.string.about_message, R.string.about_title);
+    return true;
   }
 
   /**
