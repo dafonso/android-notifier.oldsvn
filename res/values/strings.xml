@@ -11,7 +11,9 @@
     <string name="service_status_running">Service status: running</string>
     <string name="service_status_stopped">Service status: stopped</string>
     <string name="start_service">Start service</string>
+    <string name="service_started">Service started</string>
     <string name="stop_service">Stop service</string>
+    <string name="service_stopped">Service stopped</string>
     <string name="testing_title">Testing/setup:</string>
     <string name="start_at_boot">Start service at boot</string>
     <string name="save_settings">Save settings</string>
@@ -19,6 +21,9 @@
     <string name="settings_saved">Your settings have been saved.\nYou may now exit this application.</string>
     <string name="eclair_required">Android 2.0 required</string>
     <string name="bluetooth_eclair">Bluetooth notifications are only supported in Android 2.0 or above.\nYou\'re currently running an older version of Android which doesn\'t support it. :(</string>
+    <string name="ping_sent">Test notification sent</string>
+    <string name="welcome_message">This application works in conjunction with a PC/Mac counterpart.\nPlease visit to the website http://code.google.com/p/android-notifier/ to read setup instructions and get the desktop application, as well as give feedback or report bugs.</string>
+    <string name="welcome_title">Welcome to Remote Notifier</string>
 
     <!-- Notification methods -->
     <string name="methods_title">Notification methods:</string>

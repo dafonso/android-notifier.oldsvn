@@ -48,9 +48,6 @@ public class NotifierMain extends Activity {
     // Initialize the UI
     setContentView(R.layout.main);
 	setTitle(R.string.settings_title);
-	
-	// TODO(rdamazio): Show a first time welcome dialog telling the user to go
-	//                 to the website to get the desktop client and instructions
 
 	// Grab preference views
     startAtBootView = (CheckBox) findViewById(R.id.start_at_boot);
@@ -65,6 +62,14 @@ public class NotifierMain extends Activity {
     // Load preferences
     preferences = new NotifierPreferences(this);
     loadSettings();
+
+    // Show welcome screen if it's the first time
+    if (preferences.isFirstTime()) {
+      preferences.setFirstTime(false);
+      preferences.saveChanges();
+
+      showAlertDialog(R.string.welcome_message, R.string.welcome_title);
+    }
 
     // Start the service
     if (preferences.isStartAtBootEnabled()) {
@@ -105,11 +110,7 @@ public class NotifierMain extends Activity {
       bluetoothMethodView.setChecked(false);
       bluetoothMethodView.setOnCheckedChangeListener(new OnCheckedChangeListener() {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-          AlertDialog.Builder builder = new AlertDialog.Builder(NotifierMain.this);
-          builder.setMessage(R.string.bluetooth_eclair);
-          builder.setTitle(R.string.eclair_required);
-          builder.setNeutralButton(android.R.string.ok, null);
-          builder.create().show();
+          showAlertDialog(R.string.bluetooth_eclair, R.string.eclair_required);
 
           bluetoothMethodView.setChecked(false);
         }
@@ -173,8 +174,12 @@ public class NotifierMain extends Activity {
     boolean isServiceRunning = NotificationService.isRunning(this);
     if (isServiceRunning) {
       NotificationService.stop(this);
+
+      Toast.makeText(this, R.string.service_stopped, Toast.LENGTH_SHORT).show();
     } else {
       NotificationService.start(this);
+
+      Toast.makeText(this, R.string.service_started, Toast.LENGTH_SHORT).show();
     }
     updateServiceStatus();
   }
@@ -204,5 +209,15 @@ public class NotifierMain extends Activity {
     Notification notification =
         new Notification(NotifierMain.this, NotificationType.PING, contents);
     notifier.sendNotification(notification);
+
+    Toast.makeText(this, R.string.ping_sent, Toast.LENGTH_LONG).show();
+  }
+
+  private void showAlertDialog(int messageId, int titleId) {
+    AlertDialog.Builder builder = new AlertDialog.Builder(NotifierMain.this);
+    builder.setMessage(messageId);
+    builder.setTitle(titleId);
+    builder.setNeutralButton(android.R.string.ok, null);
+    builder.create().show();
   }
 }
