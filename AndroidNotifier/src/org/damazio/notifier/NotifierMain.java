@@ -1,18 +1,22 @@
 package org.damazio.notifier;
 
 import org.damazio.notifier.notification.Notification;
+import org.damazio.notifier.notification.NotificationMethods;
 import org.damazio.notifier.notification.NotificationType;
 import org.damazio.notifier.notification.Notifier;
 import org.damazio.notifier.service.NotificationService;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
 /**
  * Main activity for the notifier.
@@ -96,6 +100,21 @@ public class NotifierMain extends Activity {
         revertSettings();
       }
     });
+
+    if (!NotificationMethods.isBluetoothMethodSupported()) {
+      bluetoothMethodView.setChecked(false);
+      bluetoothMethodView.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+          AlertDialog.Builder builder = new AlertDialog.Builder(NotifierMain.this);
+          builder.setMessage(R.string.bluetooth_eclair);
+          builder.setTitle(R.string.eclair_required);
+          builder.setNeutralButton(android.R.string.ok, null);
+          builder.create().show();
+
+          bluetoothMethodView.setChecked(false);
+        }
+      });
+    }
 
     // Update the status that shows whether the service is running
     updateServiceStatus();
