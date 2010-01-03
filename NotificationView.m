@@ -23,7 +23,7 @@
 }
 
 - (void)handleNotification:(Notification *)notification {
-  NSLog(@"Handling notification");
+  NSLog(@"Handling notification: %@", notification);
   [growl postGrowlNotification:notification];
 }
 

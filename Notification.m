@@ -84,4 +84,31 @@
          [[notification contents] isEqualToString:[self contents]];
 }
 
+- (NSString *)description {
+  NSString *typeStr = nil;
+  switch (type) {
+    case RING:
+      typeStr = @"RING";
+      break;
+    case BATTERY:
+      typeStr = @"BATTERY";
+      break;
+    case SMS:
+      typeStr = @"SMS";
+      break;
+    case MMS:
+      typeStr = @"MMS";
+      break;
+    case PING:
+      typeStr = @"PING";
+      break;
+    default:
+      typeStr = @"UNKNOWN";
+      break;
+  }
+
+  return [NSString stringWithFormat:@"Id=%@; DeviceId=%@; Type=%@; Contents=%@",
+          notificationId, deviceId, typeStr, contents];
+}
+
 @end
