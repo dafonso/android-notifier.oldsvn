@@ -64,7 +64,7 @@ public class NotifierPreferences {
    * @return whether the service should start at boot
    */
   public boolean isStartAtBootEnabled() {
-    return preferences.getBoolean(STARTUP_AT_BOOT_KEY, false);
+    return preferences.getBoolean(STARTUP_AT_BOOT_KEY, true);
   }
 
   /**
