@@ -7,9 +7,48 @@
 
 #import "Growl.h"
 
+NSString *const kNeverAskForGrowl = @"neverAskForGrowl";
+NSString *const kGrowlUrl = @"http://growl.info/";
+
 @implementation Growl
 
+- (void)checkGrowlInstalled {
+  if (![GrowlApplicationBridge isGrowlInstalled]) {
+    NSLog(@"Growl not found");
+    
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    BOOL neverAskForGrowl = [ud boolForKey:kNeverAskForGrowl];
+    if (!neverAskForGrowl) {
+      NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+      [alert addButtonWithTitle:NSLocalizedString(@"Open Growl website", @"Dialog button for opening Growl website")];
+      [alert addButtonWithTitle:NSLocalizedString(@"Later", @"Dialog button for not opening Growl website now")];
+      [alert addButtonWithTitle:NSLocalizedString(@"Never", @"Dialog button for never opening Growl website")];
+      [alert setMessageText:NSLocalizedString(@"Growl not installed", @"Growl not installed message")];
+      [alert setInformativeText:NSLocalizedString(@"If you don't install Growl from http://growl.info/, you won't see any notifications.", @"Detailed message explaining that Growl is required")];
+      [alert setAlertStyle:NSWarningAlertStyle];
+
+      int buttonClicked = [alert runModal];
+      switch (buttonClicked) {
+        case NSAlertFirstButtonReturn: {
+          // Open the Growl website
+          NSURL *growlUrl = [NSURL URLWithString:kGrowlUrl];
+          [[NSWorkspace sharedWorkspace] openURL:growlUrl];
+          break;
+        }
+        // NSAlertSecondButtonReturn is to ask again next time
+        case NSAlertThirdButtonReturn:
+          // User said we shouldn't ask again. Ever.
+          [ud setBool:YES forKey:kNeverAskForGrowl];
+          [ud synchronize];
+          break;
+      }
+    }
+  }
+}
+
 - (void)awakeFromNib {
+  [self checkGrowlInstalled];
+
   [GrowlApplicationBridge setGrowlDelegate:self];
 }
 
