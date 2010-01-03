@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.damazio.notifier.service;
 
 import org.damazio.notifier.notification.Notification;
@@ -16,15 +13,18 @@ import android.telephony.TelephonyManager;
  */
 class PhoneRingListener extends PhoneStateListener {
   private final NotificationService service;
-  
+  private CallerId callerId;
+
   public PhoneRingListener(NotificationService context) {
     this.service = context;
+    this.callerId = CallerId.create(context);
   }
 
   @Override
   public void onCallStateChanged(int state, String incomingNumber) {
     if (state == TelephonyManager.CALL_STATE_RINGING) {
-      Notification notification = new Notification(service, NotificationType.RING, incomingNumber);
+      String notificationContents = callerId.buildCallerIdString(incomingNumber);
+      Notification notification = new Notification(service, NotificationType.RING, notificationContents);
       service.sendNotification(notification);
     }
   }

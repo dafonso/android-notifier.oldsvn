@@ -44,7 +44,6 @@ public class NotificationMethods {
    * @return whether the bluetooth method is supported on this device
    */
   public static boolean isBluetoothMethodSupported() {
-    int sdkVersion = Integer.parseInt(Build.VERSION.SDK);
-    return sdkVersion >= 5;
+    return Build.VERSION.SDK_INT >= 5;
   }
 }
