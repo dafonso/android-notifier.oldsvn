@@ -34,6 +34,7 @@
 
   <!-- Permissions for catching events -->
   <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+  <uses-permission android:name="android.permission.READ_CONTACTS" />
   <uses-permission android:name="android.permission.BATTERY_STATS" />
   <uses-permission android:name="android.permission.RECEIVE_MMS" />
   <uses-permission android:name="android.permission.RECEIVE_SMS" />
