@@ -9,19 +9,20 @@
       <description>Most recent changes with links to updates.</description>
       <language>en</language>
          <item>
-            <title>Version 0.2.1</title>
+            <title>Version 0.2.2</title>
             <description><![CDATA[
-              <h2>Bugfix release</h2>
+              <h3>Changes in this version:</h3>
               <ul>
-                <li>Wifi pairing fixed
+                <li>Fixed SMS and MMS notifications bug
+                <li>Added a startup check to ensure Growl is installed
               </ul>
             ]]></description>
-            <pubDate>Thu, 31 Dec 2009 00:38:00 -0200</pubDate>
+            <pubDate>Thu, 04 Jan 2010 10:17:24 -0200</pubDate>
             <enclosure
-                url="http://android-notifier.googlecode.com/files/MacDroidNotifier-0.2.1.dmg"
-                sparkle:version="0.2.1"
-                length="1540449"
-                sparkle:dsaSignature="MC0CFD6rUAGEWfZEJABlr+sv0CNzUWFpAhUAkZU9ElYZLWF2/mc3v31JWds873c=" 
+                url="http://android-notifier.googlecode.com/files/MacDroidNotifier-0.2.2.dmg"
+                sparkle:version="0.2.2"
+                length="1547383"
+                sparkle:dsaSignature="MCwCFBFW5GM3x+SiiwkR0wl6zNQIliFZAhQ3hzval360S82OaGChkBwVAvNVtg==" 
                 type="application/octet-stream" />
          </item>
    </channel>
