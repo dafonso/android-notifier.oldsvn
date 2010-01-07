@@ -23,7 +23,6 @@ NSString *const kPreferencesPingKey = @"ping";
 NSString *const kPreferencesDisplayKey = @"display";
 NSString *const kPreferencesMuteKey = @"mute";
 NSString *const kPreferencesExecuteKey = @"execute";
-NSString *const kPreferencesPairKey = @"pair";
 
 const int kPairingNotRequired = 0;
 const int kPairingRequired = 1;
@@ -56,10 +55,7 @@ const int kPairingRequired = 1;
   [self setBool:YES forTypeKey:kPreferencesSmsKey     forActionKey:kPreferencesDisplayKey inDictionary:settings];
   [self setBool:YES forTypeKey:kPreferencesMmsKey     forActionKey:kPreferencesDisplayKey inDictionary:settings];
   [self setBool:YES forTypeKey:kPreferencesBatteryKey forActionKey:kPreferencesDisplayKey inDictionary:settings];
-
-  // Ping is not configurable, but it's handled by the defaults
   [self setBool:YES forTypeKey:kPreferencesPingKey    forActionKey:kPreferencesDisplayKey inDictionary:settings];
-  [self setBool:YES forTypeKey:kPreferencesPingKey    forActionKey:kPreferencesPairKey    inDictionary:settings];
 
   [[NSUserDefaults standardUserDefaults] registerDefaults:settings];
   [[NSUserDefaults standardUserDefaults] synchronize];
@@ -115,7 +111,7 @@ const int kPairingRequired = 1;
         contextInfo:0];
 }
 
-- (void)handleNotification:(Notification *)notification {
+- (void)handlePairingNotification:(Notification *)notification {
   // Only let through if we're in pairing mode
   if (!isPairing) {
     return;
@@ -158,6 +154,7 @@ const int kPairingRequired = 1;
 }
 
 - (IBAction)selectExecuteAction:(id)sender {
+  // TODO(rdamazio): Implement
 }
 
 @end

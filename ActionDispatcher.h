@@ -9,6 +9,7 @@
 
 @class Growl;
 @class Notification;
+@class Preferences;
 
 @interface ActionDispatcher : NSObject {
  @private

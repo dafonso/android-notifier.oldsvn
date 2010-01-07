@@ -17,20 +17,16 @@ const int kLastNotificationCount = 10;
 
 @implementation NotificationManager
 
-- (id)initWithDispatcher:(ActionDispatcher *)dispatcherParam
-     withPairingCallback:(NSObject<NotificationCallback> *)pairingCallbackParam {
+- (id)init {
   if (self = [super init]) {
-    dispatcher = [dispatcherParam retain];
-    pairingCallback = [pairingCallbackParam retain];
-
     lastNotifications =
         [[NSMutableArray arrayWithCapacity:kLastNotificationCount] retain];
     notificationCount = 0;
 
     listeners = [[NSArray arrayWithObjects:
-        [[[WifiNotificationListener alloc] init] autorelease],
-        [[[BluetoothNotificationListener alloc] init] autorelease],
-        nil] retain];
+                  [[[WifiNotificationListener alloc] init] autorelease],
+                  [[[BluetoothNotificationListener alloc] init] autorelease],
+                  nil] retain];
     for (id<NotificationListener> listener in listeners) {
       // TODO: Only start if enabled in preferences
       [listener startWithCallback:self];
@@ -44,9 +40,8 @@ const int kLastNotificationCount = 10;
     [listener stop];
   }
   [listeners release];
-  [dispatcher release];
-  [pairingCallback release];
-  
+  [lastNotifications release];
+
   [super dealloc];
 }
 
@@ -103,7 +98,7 @@ const int kLastNotificationCount = 10;
     }
 
     if ([notification type] == PING) {
-      [pairingCallback handleNotification:notification];
+      [preferences handlePairingNotification:notification];
     }
   }
 }

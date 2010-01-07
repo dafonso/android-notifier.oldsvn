@@ -7,8 +7,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "NotificationManager.h"
-
 // Constants for preference keys.
 extern NSString *const kPreferencesPairedDevicesKey;
 extern NSString *const kPreferencesPairingRequiredKey;
@@ -23,14 +21,15 @@ extern NSString *const kPreferencesPingKey;
 extern NSString *const kPreferencesDisplayKey;
 extern NSString *const kPreferencesMuteKey;
 extern NSString *const kPreferencesExecuteKey;
-extern NSString *const kPreferencesPairKey;
 
 // Constants for preference values.
 extern const int kPairingNotRequired;
 extern const int kPairingRequired;
 
+@class Notification;
+
 // Object which wrapps handling of the app's preferences, including its UI.
-@interface Preferences : NSObject<NotificationCallback> {
+@interface Preferences : NSObject {
  @private
   IBOutlet NSWindow *prefsWindow;
   IBOutlet NSWindow *pairingSheet;
@@ -51,6 +50,10 @@ extern const int kPairingRequired;
 
 // Callback when the user wants to add a paired device
 - (IBAction)addPairedDeviceClicked:(id)sender;
+
+// Callback when a pairing notification is received, even if not currently in
+// pairing mode.
+- (void)handlePairingNotification:(Notification *)notification;
 
 // Callback for when the user cancels pairing
 - (IBAction)cancelPairing:(id)sender;

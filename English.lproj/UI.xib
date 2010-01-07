@@ -86,8 +86,11 @@
 			<object class="NSCustomObject" id="217672685">
 				<string key="NSClassName">MainController</string>
 			</object>
-			<object class="NSCustomObject" id="612349817">
+			<object class="NSCustomObject" id="1053895783">
 				<string key="NSClassName">ActionDispatcher</string>
+			</object>
+			<object class="NSCustomObject" id="206852049">
+				<string key="NSClassName">NotificationManager</string>
 			</object>
 			<object class="NSCustomObject" id="710800762">
 				<string key="NSClassName">Preferences</string>
@@ -1950,7 +1953,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">growl</string>
-						<reference key="source" ref="612349817"/>
+						<reference key="source" ref="1053895783"/>
 						<reference key="destination" ref="121588804"/>
 					</object>
 					<int key="connectionID">706</int>
@@ -1959,9 +1962,33 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">actionDispatcher</string>
 						<reference key="source" ref="217672685"/>
-						<reference key="destination" ref="612349817"/>
+						<reference key="destination" ref="1053895783"/>
 					</object>
 					<int key="connectionID">707</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">dispatcher</string>
+						<reference key="source" ref="206852049"/>
+						<reference key="destination" ref="1053895783"/>
+					</object>
+					<int key="connectionID">709</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">notificationManager</string>
+						<reference key="source" ref="217672685"/>
+						<reference key="destination" ref="206852049"/>
+					</object>
+					<int key="connectionID">712</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">preferences</string>
+						<reference key="source" ref="206852049"/>
+						<reference key="destination" ref="710800762"/>
+					</object>
+					<int key="connectionID">713</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -2837,9 +2864,15 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">705</int>
-						<reference key="object" ref="612349817"/>
+						<reference key="object" ref="1053895783"/>
 						<reference key="parent" ref="1049"/>
 						<string key="objectName">Action Dispatcher</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">708</int>
+						<reference key="object" ref="206852049"/>
+						<reference key="parent" ref="1049"/>
+						<string key="objectName">Notification Manager</string>
 					</object>
 				</object>
 			</object>
@@ -2973,6 +3006,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<string>662.IBPluginDependency</string>
 					<string>704.IBPluginDependency</string>
 					<string>705.IBPluginDependency</string>
+					<string>708.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -3104,6 +3138,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="unlocalizedProperties">
@@ -3126,7 +3161,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">707</int>
+			<int key="maxID">713</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -3174,6 +3209,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							<string>aboutDialog</string>
 							<string>actionDispatcher</string>
 							<string>menu</string>
+							<string>notificationManager</string>
 							<string>preferences</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -3181,6 +3217,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							<string>NSWindow</string>
 							<string>ActionDispatcher</string>
 							<string>NSMenu</string>
+							<string>NotificationManager</string>
 							<string>Preferences</string>
 						</object>
 					</object>
@@ -3194,6 +3231,27 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">AsyncUdpSocket.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NotificationManager</string>
+					<string key="superclassName">NSObject</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSMutableArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>dispatcher</string>
+							<string>preferences</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>ActionDispatcher</string>
+							<string>Preferences</string>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">NotificationManager.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

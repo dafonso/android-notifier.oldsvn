@@ -13,8 +13,9 @@
   IBOutlet NSWindow *aboutDialog;
 
   IBOutlet ActionDispatcher *actionDispatcher;
+  IBOutlet NotificationManager *notificationManager;
+
   NSStatusItem *statusItem;
-  NotificationManager *notificationManager;
 }
 
 // Open the about window.

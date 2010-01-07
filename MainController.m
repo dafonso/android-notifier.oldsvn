@@ -21,11 +21,6 @@
   [statusItem setHighlightMode:YES];
   [statusItem setImage:[self prepareImageForMenubar:@"menuicon"]];
   [statusItem setMenu:menu];
-
-  // TODO(rdamazio): Move to UI binding
-  notificationManager =
-      [[NotificationManager alloc] initWithDispatcher:actionDispatcher
-                                  withPairingCallback:preferences];
 }
 
 - (void)dealloc {
