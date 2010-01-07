@@ -9,10 +9,8 @@
 @interface MainController : NSObject {
  @private
   IBOutlet NSMenu *menu;
-  IBOutlet Preferences *preferences;
   IBOutlet NSWindow *aboutDialog;
 
-  IBOutlet ActionDispatcher *actionDispatcher;
   IBOutlet NotificationManager *notificationManager;
 
   NSStatusItem *statusItem;
