@@ -8,8 +8,8 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="639"/>
 			<integer value="450"/>
+			<integer value="639"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -220,14 +220,14 @@
 										<object class="NSButton" id="200326842">
 											<reference key="NSNextResponder" ref="925306912"/>
 											<int key="NSvFlags">268</int>
-											<string key="NSFrame">{{307, 268}, {23, 19}}</string>
+											<string key="NSFrame">{{308, 266}, {21, 22}}</string>
 											<reference key="NSSuperview" ref="925306912"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSButtonCell" key="NSCell" id="59384947">
-												<int key="NSCellFlags">67239424</int>
+												<int key="NSCellFlags">-2080244224</int>
 												<int key="NSCellFlags2">134217728</int>
 												<string key="NSContents">...</string>
-												<reference key="NSSupport" ref="503288196"/>
+												<reference key="NSSupport" ref="187703501"/>
 												<reference key="NSControlView" ref="200326842"/>
 												<int key="NSButtonFlags">-2033434369</int>
 												<int key="NSButtonFlags2">134</int>
@@ -1419,28 +1419,6 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 				<string key="NSMaxSize">{3.40282e+38, 3.40282e+38}</string>
 			</object>
 			<object class="NSUserDefaultsController" id="507395247">
-				<object class="NSMutableArray" key="NSDeclaredKeys">
-					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>ring.display</string>
-					<string>sms.display</string>
-					<string>mms.display</string>
-					<string>battery.display</string>
-					<string>ring.mute</string>
-					<string>ring.execute</string>
-					<string>sms.execute</string>
-					<string>mms.execute</string>
-					<string>battery.execute</string>
-					<string>battery.mute</string>
-					<string>sms.mute</string>
-					<string>mms.mute</string>
-					<string>ring</string>
-					<object class="NSMutableString">
-						<characters key="NS.bytes">display</characters>
-					</object>
-					<object class="NSMutableString">
-						<characters key="NS.bytes">mute</characters>
-					</object>
-				</object>
 				<bool key="NSSharedInstance">YES</bool>
 			</object>
 			<object class="NSArrayController" id="939260418">
@@ -1485,14 +1463,6 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						<reference key="destination" ref="268738612"/>
 					</object>
 					<int key="connectionID">505</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">preferences</string>
-						<reference key="source" ref="217672685"/>
-						<reference key="destination" ref="710800762"/>
-					</object>
-					<int key="connectionID">506</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -1957,14 +1927,6 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						<reference key="destination" ref="121588804"/>
 					</object>
 					<int key="connectionID">706</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">actionDispatcher</string>
-						<reference key="source" ref="217672685"/>
-						<reference key="destination" ref="1053895783"/>
-					</object>
-					<int key="connectionID">707</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -3019,9 +2981,9 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{157, 166}, {566, 532}}</string>
+					<string>{{234, 96}, {566, 532}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{157, 166}, {566, 532}}</string>
+					<string>{{234, 96}, {566, 532}}</string>
 					<reference ref="6"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -3207,18 +3169,14 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						<object class="NSMutableArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>aboutDialog</string>
-							<string>actionDispatcher</string>
 							<string>menu</string>
 							<string>notificationManager</string>
-							<string>preferences</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>NSWindow</string>
-							<string>ActionDispatcher</string>
 							<string>NSMenu</string>
 							<string>NotificationManager</string>
-							<string>Preferences</string>
 						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
