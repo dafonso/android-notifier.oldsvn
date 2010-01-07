@@ -1,7 +1,6 @@
 #import "MainController.h"
 
 #import "ActionDispatcher.h"
-#import "Growl.h"
 #import "NotificationManager.h"
 
 @implementation MainController
