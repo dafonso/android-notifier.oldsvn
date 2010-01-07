@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:title="@string/settings_title">
+
+  <PreferenceCategory android:title="@string/service_title">
+    <Preference android:key="@string/service_state_key"
+                android:title="@string/start_service" />
+    <CheckBoxPreference android:key="@string/start_at_boot_key"
+                        android:title="@string/start_at_boot"
+                        android:defaultValue="true"
+                        android:summaryOn="@string/start_at_boot_on"
+                        android:summaryOff="@string/start_at_boot_off" />
+  </PreferenceCategory>
+
+  <PreferenceCategory android:title="@string/methods_title">
+    <CheckBoxPreference android:key="@string/method_wifi_key"
+                        android:title="@string/method_wifi"
+                        android:defaultValue="true"
+                        android:summaryOn="@string/method_on"
+                        android:summaryOff="@string/method_off" />
+    <PreferenceScreen android:key="@string/method_wifi_options_key"
+                      android:title="@string/wifi_options">
+      <!-- TODO(rdamazio): Add IP selection, wifi sleep policy, etc -->
+    </PreferenceScreen>
+
+    <CheckBoxPreference android:key="@string/method_bluetooth_key"
+                        android:title="@string/method_bluetooth"
+                        android:defaultValue="true"
+                        android:summaryOn="@string/method_on"
+                        android:summaryOff="@string/method_off" />
+
+    <PreferenceScreen android:key="@string/method_bluetooth_options_key"
+                      android:title="@string/bluetooth_options">
+      <!-- TODO(bga): Add device selection/pairing -->
+    </PreferenceScreen>
+
+    <CheckBoxPreference android:key="@string/method_usb_key"
+                        android:title="@string/method_usb"
+                        android:defaultValue="false"
+                        android:summary="@string/not_yet_implemented"
+                        android:enabled="false" />
+  </PreferenceCategory>
+
+  <PreferenceCategory android:title="@string/events_title">
+    <CheckBoxPreference android:key="@string/event_ring_key"
+                        android:title="@string/event_ring"
+                        android:defaultValue="true"
+                        android:summaryOn="@string/event_on"
+                        android:summaryOff="@string/event_off" />
+    <CheckBoxPreference android:key="@string/event_sms_key"
+                        android:title="@string/event_sms"
+                        android:defaultValue="true"
+                        android:summaryOn="@string/event_on"
+                        android:summaryOff="@string/event_off" />
+    <CheckBoxPreference android:key="@string/event_mms_key"
+                        android:title="@string/event_mms"
+                        android:defaultValue="true"
+                        android:summaryOn="@string/event_on"
+                        android:summaryOff="@string/event_off" />
+    <CheckBoxPreference android:key="@string/event_battery_key"
+                        android:title="@string/event_battery"
+                        android:defaultValue="true"
+                        android:summaryOn="@string/event_on"
+                        android:summaryOff="@string/event_off" />
+  </PreferenceCategory>
+
+  <PreferenceCategory android:title="@string/misc_title">
+    <Preference android:key="@string/test_notification_key"
+                android:title="@string/send_test_notification"
+                android:summary="@string/test_notification_summary" />
+    <Preference android:key="@string/about_key"
+                android:title="@string/about_menu" />
+  </PreferenceCategory>
+
+</PreferenceScreen>

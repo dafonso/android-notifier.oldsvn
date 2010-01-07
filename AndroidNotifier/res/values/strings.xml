@@ -5,42 +5,52 @@
     <string name="service_name">Remote Notification Service</string>
     <string name="settings_title">Remote Notifier Settings</string>
 
-    <!-- Settings UI -->
-    <string name="send_test_notification">Send test notification</string>
-    <string name="service_status_unknown">Service status: unknown</string>
-    <string name="service_status_running">Service status: running</string>
-    <string name="service_status_stopped">Service status: stopped</string>
+    <!-- Service settings -->
+    <string name="service_title">Notification Service</string>
+    <string name="service_status_running">Service is currently running</string>
+    <string name="service_status_stopped">Service is currently stopped</string>
     <string name="start_service">Start service</string>
     <string name="service_started">Service started</string>
     <string name="stop_service">Stop service</string>
     <string name="service_stopped">Service stopped</string>
-    <string name="testing_title">Testing/setup:</string>
     <string name="start_at_boot">Start service at boot</string>
-    <string name="save_settings">Save settings</string>
-    <string name="revert_settings">Revert settings</string>
-    <string name="settings_saved">Your settings have been saved.\nYou may now exit this application.</string>
-    <string name="eclair_required">Android 2.0 required</string>
-    <string name="bluetooth_eclair">Bluetooth notifications are only supported in Android 2.0 or above.\nYou\'re currently running an older version of Android which doesn\'t support it. :(</string>
-    <string name="ping_sent">Test notification sent</string>
-    <string name="welcome_title">Welcome to Remote Notifier</string>
-    <string name="about_message">This application works in conjunction with a PC/Mac counterpart to display notifications.\n\nPlease visit the website http://code.google.com/p/android-notifier/ to read setup instructions and get the desktop application, as well as give feedback or report bugs.</string>
-    <string name="about_title">Remote Notifier</string>
-    <string name="about_menu">About Remote Notifier</string>
+    <string name="start_at_boot_on">The service will start when you turn your phone on</string>
+    <string name="start_at_boot_off">The service will have to be started manually</string>
 
     <!-- Notification methods -->
-    <string name="methods_title">Notification methods:</string>
+    <string name="methods_title">Notification methods</string>
     <string name="method_wifi">Wifi</string>
+    <string name="wifi_options">Wifi options</string>
     <string name="method_bluetooth">Bluetooth</string>
-    <string name="method_usb">USB (see documentation)</string>
+    <string name="bluetooth_options">Bluetooth options</string>
+    <string name="method_usb">USB</string>
+    <string name="method_on">Notifications will be sent with this method</string>
+    <string name="method_off">Notifications will NOT be sent with this method</string>
+    <string name="eclair_required">Only supported in Android 2.0 or above</string>
+    <string name="not_yet_implemented">Not yet implemented.</string>
 
     <!-- Event types -->
-    <string name="events_title">Events to notify:</string>
+    <string name="events_title">Events to notify</string>
     <string name="event_ring">Phone ring</string>
     <string name="event_sms">SMS</string>
     <string name="event_mms">MMS</string>
     <string name="event_battery">Battery</string>
+    <string name="event_on">This event will always be notified.</string>
+    <string name="event_off">This event will NEVER be notified.</string>
 
-    <!-- Notification messages -->
+    <!-- Misc preferences -->
+    <string name="misc_title">Miscelaneous</string>
+    <string name="send_test_notification">Send test notification</string>
+    <string name="test_notification_summary">Useful for testing and pairing</string>
+    <string name="ping_sent">Test notification sent</string>
+    <string name="about_menu">About Remote Notifier</string>
+
+    <!-- Welcome and about box contents -->
+    <string name="about_title">Remote Notifier</string>
+    <string name="welcome_title">Welcome to Remote Notifier</string>
+    <string name="about_message">This application works in conjunction with a PC/Mac counterpart to display notifications.\n\nPlease visit the website http://code.google.com/p/android-notifier/ to read setup instructions and get the desktop application, as well as give feedback or report bugs.</string>
+
+    <!-- Notification contents -->
     <string name="ping_contents">Test notification</string>
     <string name="sms_contents">SMS from %s: %s</string>
     <string name="battery_level">Phone battery level: %d%% remaining</string>

@@ -5,38 +5,47 @@
     <string name="service_name">Serviço de Notificações Remotas</string>
     <string name="settings_title">Configurações das Notificações Remotas</string>
 
-    <!-- Settings UI -->
-    <string name="send_test_notification">Enviar notificação de teste</string>
-    <string name="service_status_unknown">Estado do serviço: desconhecido</string>
-    <string name="service_status_running">Estado do serviço: em execução</string>
-    <string name="service_status_stopped">Estado do serviço: parado</string>
+    <!-- Service settings -->
+    <string name="service_title">Serviço de Notificações</string>
+    <string name="service_status_running">O serviço está em execução</string>
+    <string name="service_status_stopped">O serviço está parado</string>
     <string name="start_service">Iniciar serviço</string>
     <string name="service_started">O serviço foi iniciado</string>
     <string name="stop_service">Parar serviço</string>
     <string name="service_stopped">O serviço foi parado</string>
-    <string name="testing_title">Teste/configuração:</string>
-    <string name="start_at_boot">Iniciar serviço ao ligar o telefone</string>
-    <string name="save_settings">Salvar configurações</string>
-    <string name="revert_settings">Descartar mudanças</string>
-    <string name="settings_saved">Suas configurações foram salvas.\nVocê pode agora fechar este aplicativo.</string>
-    <string name="eclair_required">Necessário Android 2.0</string>
-    <string name="bluetooth_eclair">Notificações via Bluetooth necessitam o Android versão 2.0 ou superior.\nParece que você está usando uma versão mais antiga sem o suporte necessário. :(</string>
-    <string name="ping_sent">Notificação de teste enviada</string>
-    <string name="welcome_title">Bem-vindo ao Notificações Remotas</string>
-    <string name="about_title">Notificações Remotas</string>
-    <string name="about_message">Este aplicativo funciona em conjunto com um aplicativo para Mac/Linux/Windows para exibir notificações.\n\nPor favor visite o site http://code.google.com/p/android-notifier/ para ler instruções de configuração e para realizar o download do aplicativo desktop, assim como provêr feedback ou reportar problemas.</string>
-    <string name="about_menu">Sobre Notificações Remotas</string>
+    <string name="start_at_boot">Iniciar ao ligar</string>
+    <string name="start_at_boot_on">O serviço será iniciado ao ligar o telefone</string>
+    <string name="start_at_boot_off">O serviço terá de ser iniciado manualmente</string>
 
     <!-- Notification methods -->
     <string name="methods_title">Métodos de notificação:</string>
-    <string name="method_usb">USB (ver documentação)</string>
+    <string name="wifi_options">Opções de Wifi</string>
+    <string name="bluetooth_options">Opções de Bluetooth</string>
+    <string name="method_on">Notificações serão enviadas por este método</string>
+    <string name="method_off">Notificações NÃO serão enviadas por este método</string>
+    <string name="eclair_required">Só suportado no Android 2.0 ou superior</string>
+    <string name="not_yet_implemented">Ainda não implementado.</string>
 
     <!-- Event types -->
     <string name="events_title">Eventos a notificar:</string>
     <string name="event_ring">Toque do telefone</string>
     <string name="event_battery">Bateria</string>
+    <string name="event_on">Este evento será sempre notificado.</string>
+    <string name="event_off">Este evento não será notificado NUNCA.</string>
 
-    <!-- Notification messages -->
+    <!-- Misc preferences -->
+    <string name="misc_title">Miscelânea</string>
+    <string name="send_test_notification">Enviar notificação de teste</string>
+    <string name="test_notification_summary">Útil para testes e parear</string>
+    <string name="ping_sent">Notificação de teste enviada</string>
+    <string name="about_menu">Sobre Notificações Remotas</string>
+
+    <!-- Welcome and about box contents -->
+    <string name="about_title">Notificações Remotas</string>
+    <string name="welcome_title">Bem-vindo ao Notificações Remotas</string>
+    <string name="about_message">Este aplicativo funciona em conjunto com um aplicativo para Mac/Linux/Windows para exibir notificações.\n\nPor favor visite o site http://code.google.com/p/android-notifier/ para ler instruções de configuração e para realizar o download do aplicativo desktop, assim como provêr feedback ou reportar problemas.</string>
+
+    <!-- Notification contents -->
     <string name="ping_contents">Notificação de teste</string>
     <string name="sms_contents">SMS de %s: %s</string>
     <string name="battery_level">Nível de bateria do telefone: %d%% restantes</string>
