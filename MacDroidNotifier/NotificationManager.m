@@ -7,6 +7,7 @@
 
 #import "NotificationManager.h"
 
+#import "ActionDispatcher.h"
 #import "BluetoothNotificationListener.h"
 #import "Notification.h"
 #import "Preferences.h"
@@ -16,10 +17,10 @@ const int kLastNotificationCount = 10;
 
 @implementation NotificationManager
 
-- (id)initWithCallback:(NSObject<NotificationCallback> *)callbackParam
-   withPairingCallback:(NSObject<NotificationCallback> *)pairingCallbackParam {
+- (id)initWithDispatcher:(ActionDispatcher *)dispatcherParam
+     withPairingCallback:(NSObject<NotificationCallback> *)pairingCallbackParam {
   if (self = [super init]) {
-    callback = [callbackParam retain];
+    dispatcher = [dispatcherParam retain];
     pairingCallback = [pairingCallbackParam retain];
 
     lastNotifications =
@@ -43,28 +44,10 @@ const int kLastNotificationCount = 10;
     [listener stop];
   }
   [listeners release];
-  [callback release];
+  [dispatcher release];
   [pairingCallback release];
   
   [super dealloc];
-}
-
-- (BOOL)isNotificationTypeEnabled:(NotificationType)type {
-  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-  switch (type) {
-    case RING:
-      return [defaults boolForKey:kPreferencesDisplayRingKey];
-    case SMS:
-      return [defaults boolForKey:kPreferencesDisplaySmsKey];
-    case MMS:
-      return [defaults boolForKey:kPreferencesDisplayMmsKey];
-    case BATTERY:
-      return [defaults boolForKey:kPreferencesDisplayBatteryKey];
-    case PING:
-      return YES;
-    default:
-      return NO;
-  }
 }
 
 - (BOOL)isNotificationDuplicate:(Notification *)notification {
@@ -111,12 +94,12 @@ const int kLastNotificationCount = 10;
                                                      encoding:NSUTF8StringEncoding];
   Notification *notification = [Notification notificationFromString:notificationStr];
   [notificationStr release];
+  NSLog(@"Received notification %@", notification);
 
   @synchronized(self) {
-    if ([self isNotificationTypeEnabled:[notification type]] &&
-        ![self isNotificationDuplicate:notification] &&
+    if (![self isNotificationDuplicate:notification] &&
         [self isDevicePaired:[notification deviceId]]) {
-      [callback handleNotification:notification];
+      [dispatcher actOnNotification:notification];
     }
 
     if ([notification type] == PING) {

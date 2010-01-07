@@ -16,7 +16,6 @@
 		37753DD110E563E600A21D89 /* WifiNotificationListener.m in Sources */ = {isa = PBXBuildFile; fileRef = 37753DD010E563E600A21D89 /* WifiNotificationListener.m */; };
 		37753DD410E563F300A21D89 /* BluetoothNotificationListener.m in Sources */ = {isa = PBXBuildFile; fileRef = 37753DD310E563F300A21D89 /* BluetoothNotificationListener.m */; };
 		37753E6410E56C9700A21D89 /* NotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 37753E6310E56C9700A21D89 /* NotificationManager.m */; };
-		37753E6710E56CA800A21D89 /* NotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37753E6610E56CA800A21D89 /* NotificationView.m */; };
 		37753E6F10E56E0300A21D89 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 37753E6E10E56E0300A21D89 /* Notification.m */; };
 		37753F7410E5893600A21D89 /* AsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 37753F7310E5893600A21D89 /* AsyncUdpSocket.m */; };
 		3775407F10E5B1C800A21D89 /* Growl.m in Sources */ = {isa = PBXBuildFile; fileRef = 3775407E10E5B1C800A21D89 /* Growl.m */; };
@@ -31,6 +30,11 @@
 		379B99AC10E83A6D007B1FCA /* Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 379B99AB10E83A6D007B1FCA /* Preferences.m */; };
 		379B9A6310E87759007B1FCA /* StartupItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 379B9A6210E87759007B1FCA /* StartupItem.m */; };
 		37A4B13F10EA94BF0058904A /* appicon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 37A4B13E10EA94BF0058904A /* appicon.icns */; };
+		37CCD80010F578B400CA6404 /* DisplayAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CCD7FF10F578B400CA6404 /* DisplayAction.m */; };
+		37CCD80310F578CA00CA6404 /* MuteAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CCD80210F578CA00CA6404 /* MuteAction.m */; };
+		37CCD80610F578DE00CA6404 /* ExecuteAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CCD80510F578DE00CA6404 /* ExecuteAction.m */; };
+		37CCD80910F5790800CA6404 /* ActionDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CCD80810F5790800CA6404 /* ActionDispatcher.m */; };
+		37CCD83010F581EA00CA6404 /* PairAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CCD82F10F581EA00CA6404 /* PairAction.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -71,8 +75,6 @@
 		37753DD310E563F300A21D89 /* BluetoothNotificationListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BluetoothNotificationListener.m; sourceTree = "<group>"; };
 		37753E6210E56C9700A21D89 /* NotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationManager.h; sourceTree = "<group>"; };
 		37753E6310E56C9700A21D89 /* NotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationManager.m; sourceTree = "<group>"; };
-		37753E6510E56CA800A21D89 /* NotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationView.h; sourceTree = "<group>"; };
-		37753E6610E56CA800A21D89 /* NotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationView.m; sourceTree = "<group>"; };
 		37753E6D10E56E0300A21D89 /* Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notification.h; sourceTree = "<group>"; };
 		37753E6E10E56E0300A21D89 /* Notification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notification.m; sourceTree = "<group>"; };
 		37753E9E10E56E7300A21D89 /* NotificationListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationListener.h; sourceTree = "<group>"; };
@@ -93,6 +95,17 @@
 		379B9A6110E87759007B1FCA /* StartupItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StartupItem.h; sourceTree = "<group>"; };
 		379B9A6210E87759007B1FCA /* StartupItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StartupItem.m; sourceTree = "<group>"; };
 		37A4B13E10EA94BF0058904A /* appicon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = appicon.icns; sourceTree = "<group>"; };
+		37CCD7FD10F578A100CA6404 /* Action.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Action.h; sourceTree = "<group>"; };
+		37CCD7FE10F578B400CA6404 /* DisplayAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayAction.h; sourceTree = "<group>"; };
+		37CCD7FF10F578B400CA6404 /* DisplayAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisplayAction.m; sourceTree = "<group>"; };
+		37CCD80110F578CA00CA6404 /* MuteAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MuteAction.h; sourceTree = "<group>"; };
+		37CCD80210F578CA00CA6404 /* MuteAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MuteAction.m; sourceTree = "<group>"; };
+		37CCD80410F578DE00CA6404 /* ExecuteAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExecuteAction.h; sourceTree = "<group>"; };
+		37CCD80510F578DE00CA6404 /* ExecuteAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExecuteAction.m; sourceTree = "<group>"; };
+		37CCD80710F5790800CA6404 /* ActionDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionDispatcher.h; sourceTree = "<group>"; };
+		37CCD80810F5790800CA6404 /* ActionDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionDispatcher.m; sourceTree = "<group>"; };
+		37CCD82E10F581EA00CA6404 /* PairAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PairAction.h; sourceTree = "<group>"; };
+		37CCD82F10F581EA00CA6404 /* PairAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PairAction.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* MacDroidNotifier.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacDroidNotifier.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -113,19 +126,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		080E96DDFE201D6D7F000001 /* UI Classes */ = {
+		080E96DDFE201D6D7F000001 /* Main Classes */ = {
 			isa = PBXGroup;
 			children = (
 				37753DCB10E5639C00A21D89 /* MainController.h */,
 				37753DCC10E5639C00A21D89 /* MainController.m */,
-				37753E6510E56CA800A21D89 /* NotificationView.h */,
-				37753E6610E56CA800A21D89 /* NotificationView.m */,
-				3775407D10E5B1C800A21D89 /* Growl.h */,
-				3775407E10E5B1C800A21D89 /* Growl.m */,
 				379B99AA10E83A6D007B1FCA /* Preferences.h */,
 				379B99AB10E83A6D007B1FCA /* Preferences.m */,
+				29B97316FDCFA39411CA2CEA /* main.m */,
 			);
-			name = "UI Classes";
+			name = "Main Classes";
 			sourceTree = "<group>";
 		};
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
@@ -161,8 +171,9 @@
 		29B97314FDCFA39411CA2CEA /* MacDroidNotifier */ = {
 			isa = PBXGroup;
 			children = (
+				37CCD7F810F5786900CA6404 /* Actions */,
 				37753DBA10E562CA00A21D89 /* Notifications */,
-				080E96DDFE201D6D7F000001 /* UI Classes */,
+				080E96DDFE201D6D7F000001 /* Main Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				37753F7110E5891500A21D89 /* Utilities */,
@@ -176,7 +187,6 @@
 			isa = PBXGroup;
 			children = (
 				32CA4F630368D1EE00C91783 /* MacDroidNotifier_Prefix.pch */,
-				29B97316FDCFA39411CA2CEA /* main.m */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -232,6 +242,26 @@
 				379B9A6210E87759007B1FCA /* StartupItem.m */,
 			);
 			name = Utilities;
+			sourceTree = "<group>";
+		};
+		37CCD7F810F5786900CA6404 /* Actions */ = {
+			isa = PBXGroup;
+			children = (
+				37CCD80710F5790800CA6404 /* ActionDispatcher.h */,
+				37CCD80810F5790800CA6404 /* ActionDispatcher.m */,
+				37CCD7FD10F578A100CA6404 /* Action.h */,
+				37CCD7FE10F578B400CA6404 /* DisplayAction.h */,
+				37CCD7FF10F578B400CA6404 /* DisplayAction.m */,
+				3775407D10E5B1C800A21D89 /* Growl.h */,
+				3775407E10E5B1C800A21D89 /* Growl.m */,
+				37CCD80110F578CA00CA6404 /* MuteAction.h */,
+				37CCD80210F578CA00CA6404 /* MuteAction.m */,
+				37CCD80410F578DE00CA6404 /* ExecuteAction.h */,
+				37CCD80510F578DE00CA6404 /* ExecuteAction.m */,
+				37CCD82E10F581EA00CA6404 /* PairAction.h */,
+				37CCD82F10F581EA00CA6404 /* PairAction.m */,
+			);
+			name = Actions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -309,12 +339,16 @@
 				37753DD110E563E600A21D89 /* WifiNotificationListener.m in Sources */,
 				37753DD410E563F300A21D89 /* BluetoothNotificationListener.m in Sources */,
 				37753E6410E56C9700A21D89 /* NotificationManager.m in Sources */,
-				37753E6710E56CA800A21D89 /* NotificationView.m in Sources */,
 				37753E6F10E56E0300A21D89 /* Notification.m in Sources */,
 				37753F7410E5893600A21D89 /* AsyncUdpSocket.m in Sources */,
 				3775407F10E5B1C800A21D89 /* Growl.m in Sources */,
 				379B99AC10E83A6D007B1FCA /* Preferences.m in Sources */,
 				379B9A6310E87759007B1FCA /* StartupItem.m in Sources */,
+				37CCD80010F578B400CA6404 /* DisplayAction.m in Sources */,
+				37CCD80310F578CA00CA6404 /* MuteAction.m in Sources */,
+				37CCD80610F578DE00CA6404 /* ExecuteAction.m in Sources */,
+				37CCD80910F5790800CA6404 /* ActionDispatcher.m in Sources */,
+				37CCD83010F581EA00CA6404 /* PairAction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

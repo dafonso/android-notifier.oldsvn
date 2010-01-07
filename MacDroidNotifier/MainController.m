@@ -1,8 +1,8 @@
 #import "MainController.h"
 
+#import "ActionDispatcher.h"
 #import "Growl.h"
 #import "NotificationManager.h"
-#import "NotificationView.h"
 #import "Preferences.h"
 
 @implementation MainController
@@ -22,21 +22,16 @@
   [statusItem setImage:[self prepareImageForMenubar:@"menuicon"]];
   [statusItem setMenu:menu];
 
-  notificationView = [[NotificationView alloc] initWithGrowl:growl];
+  // TODO(rdamazio): Move to UI binding
   notificationManager =
-      [[NotificationManager alloc] initWithCallback:notificationView
-                                withPairingCallback:preferences];
+      [[NotificationManager alloc] initWithDispatcher:actionDispatcher
+                                  withPairingCallback:preferences];
 }
 
 - (void)dealloc {
-  [notificationView release];
   [notificationManager release];
   [statusItem release];
   [super dealloc];
-}
-
-- (IBAction)openPreferences:(id)sender {
-  [preferences showDialog:sender];
 }
 
 - (IBAction)showAboutDialog:(id)sender {

@@ -91,7 +91,6 @@ NSString *const kGrowlUrl = @"http://growl.info/";
 }
 
 - (void)postGrowlNotification:(Notification *)notification {
-  NSLog(@"Notifying growl");
   [GrowlApplicationBridge notifyWithDictionary:[self dictionaryForNotification:notification]];
 }
 

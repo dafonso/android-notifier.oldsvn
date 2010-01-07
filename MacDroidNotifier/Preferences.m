@@ -3,7 +3,6 @@
 //  MacDroidNotifier
 //
 //  Created by Rodrigo Damazio on 27/12/09.
-//  Copyright 2009 Google Inc. All rights reserved.
 //
 
 #import "Preferences.h"
@@ -14,30 +13,54 @@ NSString *const kPreferencesPairingRequiredKey = @"pairingRequired";
 NSString *const kPreferencesListenWifiKey = @"listenWifi";
 NSString *const kPreferencesListenBluetoothKey = @"listenBluetooth";
 NSString *const kPreferencesListenUsbKey = @"listenUsb";
-NSString *const kPreferencesDisplayRingKey = @"displayRing";
-NSString *const kPreferencesDisplaySmsKey = @"displaySms";
-NSString *const kPreferencesDisplayMmsKey = @"displayMms";
-NSString *const kPreferencesDisplayBatteryKey = @"displayBattery";
+
+NSString *const kPreferencesRingKey = @"ring";
+NSString *const kPreferencesSmsKey = @"sms";
+NSString *const kPreferencesMmsKey = @"mms";
+NSString *const kPreferencesBatteryKey = @"battery";
+NSString *const kPreferencesPingKey = @"ping";
+
+NSString *const kPreferencesDisplayKey = @"display";
+NSString *const kPreferencesMuteKey = @"mute";
+NSString *const kPreferencesExecuteKey = @"execute";
+NSString *const kPreferencesPairKey = @"pair";
 
 const int kPairingNotRequired = 0;
 const int kPairingRequired = 1;
 
 @implementation Preferences
 
-+ (void)load {
++ (void)setBool:(BOOL)value
+     forTypeKey:(NSString *)typeKey
+   forActionKey:(NSString *)actionKey
+   inDictionary:(NSMutableDictionary *)dict {
+  NSString *key = [NSString stringWithFormat:@"%@.%@", typeKey, actionKey];
+  [dict setObject:[NSNumber numberWithBool:value] forKey:key];
+}
+
++ (void)initialize {
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-  NSDictionary *settings =
-      [NSDictionary dictionaryWithObjectsAndKeys:
+
+  NSMutableDictionary *settings =
+      [NSMutableDictionary dictionaryWithObjectsAndKeys:
           [NSArray array], kPreferencesPairedDevicesKey,
           [NSNumber numberWithInt:kPairingNotRequired], kPreferencesPairingRequiredKey,
           [NSNumber numberWithBool:YES], kPreferencesListenWifiKey,
           [NSNumber numberWithBool:YES], kPreferencesListenBluetoothKey,
           [NSNumber numberWithBool:NO],  kPreferencesListenUsbKey,
-          [NSNumber numberWithBool:YES], kPreferencesDisplayRingKey,
-          [NSNumber numberWithBool:YES], kPreferencesDisplaySmsKey,
-          [NSNumber numberWithBool:YES], kPreferencesDisplayMmsKey,
-          [NSNumber numberWithBool:YES], kPreferencesDisplayBatteryKey,
           nil];
+
+  // Set defaults for actions
+  [self setBool:YES forTypeKey:kPreferencesRingKey    forActionKey:kPreferencesDisplayKey inDictionary:settings];
+  [self setBool:YES forTypeKey:kPreferencesRingKey    forActionKey:kPreferencesMuteKey    inDictionary:settings];
+  [self setBool:YES forTypeKey:kPreferencesSmsKey     forActionKey:kPreferencesDisplayKey inDictionary:settings];
+  [self setBool:YES forTypeKey:kPreferencesMmsKey     forActionKey:kPreferencesDisplayKey inDictionary:settings];
+  [self setBool:YES forTypeKey:kPreferencesBatteryKey forActionKey:kPreferencesDisplayKey inDictionary:settings];
+
+  // Ping is not configurable, but it's handled by the defaults
+  [self setBool:YES forTypeKey:kPreferencesPingKey    forActionKey:kPreferencesDisplayKey inDictionary:settings];
+  [self setBool:YES forTypeKey:kPreferencesPingKey    forActionKey:kPreferencesPairKey    inDictionary:settings];
+
   [[NSUserDefaults standardUserDefaults] registerDefaults:settings];
   [[NSUserDefaults standardUserDefaults] synchronize];
   [pool release];
@@ -132,6 +155,9 @@ const int kPairingRequired = 1;
           contextInfo:(void *)rowInfo {
   [sheet orderOut:self];
   isPairing = NO;
+}
+
+- (IBAction)selectExecuteAction:(id)sender {
 }
 
 @end

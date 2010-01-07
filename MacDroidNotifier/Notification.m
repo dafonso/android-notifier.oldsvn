@@ -85,30 +85,28 @@
 }
 
 - (NSString *)description {
-  NSString *typeStr = nil;
-  switch (type) {
-    case RING:
-      typeStr = @"RING";
-      break;
-    case BATTERY:
-      typeStr = @"BATTERY";
-      break;
-    case SMS:
-      typeStr = @"SMS";
-      break;
-    case MMS:
-      typeStr = @"MMS";
-      break;
-    case PING:
-      typeStr = @"PING";
-      break;
-    default:
-      typeStr = @"UNKNOWN";
-      break;
-  }
+  NSString *typeStr = [Notification stringFromNotificationType:type];
+  if (!typeStr) typeStr = @"UNKNOWN";
 
   return [NSString stringWithFormat:@"Id=%@; DeviceId=%@; Type=%@; Contents=%@",
           notificationId, deviceId, typeStr, contents];
+}
+
++ (NSString *)stringFromNotificationType:(NotificationType)type {
+  switch (type) {
+    case RING:
+      return @"RING";
+    case BATTERY:
+      return @"BATTERY";
+    case SMS:
+      return @"SMS";
+    case MMS:
+      return @"MMS";
+    case PING:
+      return @"PING";
+    default:
+      return nil;
+  }
 }
 
 @end
