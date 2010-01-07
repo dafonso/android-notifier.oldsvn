@@ -12,13 +12,7 @@
 #import "ExecuteAction.h"
 #import "MuteAction.h"
 #import "Notification.h"
-#import "PairAction.h"
 #import "Preferences.h"
-
-// Key for pairing preference
-// This is not a real preference, it's never stored in user defaults, but we
-// assign it an action.
-NSString *const kPairKey = @"pair";
 
 @implementation ActionDispatcher
 
@@ -27,7 +21,6 @@ NSString *const kPairKey = @"pair";
                  [[[DisplayAction alloc] initWithGrowl:growl] autorelease], kPreferencesDisplayKey,
                  [[[MuteAction alloc] init] autorelease], kPreferencesMuteKey,
                  [[[ExecuteAction alloc] init] autorelease], kPreferencesExecuteKey,
-                 [[[PairAction alloc] init] autorelease], kPairKey,
                  nil] retain];
 }
 

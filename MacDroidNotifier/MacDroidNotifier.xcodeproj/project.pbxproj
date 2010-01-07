@@ -34,7 +34,6 @@
 		37CCD80310F578CA00CA6404 /* MuteAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CCD80210F578CA00CA6404 /* MuteAction.m */; };
 		37CCD80610F578DE00CA6404 /* ExecuteAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CCD80510F578DE00CA6404 /* ExecuteAction.m */; };
 		37CCD80910F5790800CA6404 /* ActionDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CCD80810F5790800CA6404 /* ActionDispatcher.m */; };
-		37CCD83010F581EA00CA6404 /* PairAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CCD82F10F581EA00CA6404 /* PairAction.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -104,8 +103,6 @@
 		37CCD80510F578DE00CA6404 /* ExecuteAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExecuteAction.m; sourceTree = "<group>"; };
 		37CCD80710F5790800CA6404 /* ActionDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionDispatcher.h; sourceTree = "<group>"; };
 		37CCD80810F5790800CA6404 /* ActionDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionDispatcher.m; sourceTree = "<group>"; };
-		37CCD82E10F581EA00CA6404 /* PairAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PairAction.h; sourceTree = "<group>"; };
-		37CCD82F10F581EA00CA6404 /* PairAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PairAction.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* MacDroidNotifier.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacDroidNotifier.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -258,8 +255,6 @@
 				37CCD80210F578CA00CA6404 /* MuteAction.m */,
 				37CCD80410F578DE00CA6404 /* ExecuteAction.h */,
 				37CCD80510F578DE00CA6404 /* ExecuteAction.m */,
-				37CCD82E10F581EA00CA6404 /* PairAction.h */,
-				37CCD82F10F581EA00CA6404 /* PairAction.m */,
 			);
 			name = Actions;
 			sourceTree = "<group>";
@@ -348,7 +343,6 @@
 				37CCD80310F578CA00CA6404 /* MuteAction.m in Sources */,
 				37CCD80610F578DE00CA6404 /* ExecuteAction.m in Sources */,
 				37CCD80910F5790800CA6404 /* ActionDispatcher.m in Sources */,
-				37CCD83010F581EA00CA6404 /* PairAction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

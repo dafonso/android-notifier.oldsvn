@@ -10,21 +10,17 @@
 
 @class ActionDispatcher;
 @class Notification;
-
-// The callback which receives notifications from this manager.
-@protocol NotificationCallback
-- (void)handleNotification:(Notification *)notification;
-@end
+@class Preferences;
 
 // Notification manager, which receives raw notifications from the listeners,
 // decodes them, and forwards them to the given notification callback.
 @interface NotificationManager : NSObject<NotificationListenerCallback> {
  @private
   // Dispatcher which takes action on notifications
-  ActionDispatcher *dispatcher;
+  IBOutlet ActionDispatcher *dispatcher;
 
-  // TODO(rdamazio): Replace this with PairAction.
-  NSObject<NotificationCallback> *pairingCallback;
+  // Preferences, for pairing with new devices
+  IBOutlet Preferences *preferences;
 
   // Listeners which receive notifications and pass them to this object
   NSArray *listeners;
@@ -35,10 +31,5 @@
   // Total count of received notifications
   int notificationCount;
 }
-
-// Initializes the notification manager, with an action dispatcher which is
-// called to handle every notification, including for pairing.
-- (id)initWithDispatcher:(ActionDispatcher *)dispatcher
-     withPairingCallback:(NSObject<NotificationCallback> *)pairingCallback;
 
 @end
