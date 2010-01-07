@@ -1,7 +1,7 @@
 #import <Cocoa/Cocoa.h>
 
+@class ActionDispatcher;
 @class Growl;
-@class NotificationView;
 @class NotificationManager;
 @class Preferences;
 
@@ -9,17 +9,13 @@
 @interface MainController : NSObject {
  @private
   IBOutlet NSMenu *menu;
-  IBOutlet Growl *growl;
   IBOutlet Preferences *preferences;
   IBOutlet NSWindow *aboutDialog;
 
+  IBOutlet ActionDispatcher *actionDispatcher;
   NSStatusItem *statusItem;
-  NotificationView *notificationView;
   NotificationManager *notificationManager;
 }
-
-// Open the preferences window.
-- (IBAction)openPreferences:(id)sender;
 
 // Open the about window.
 - (IBAction)showAboutDialog:(id)sender;

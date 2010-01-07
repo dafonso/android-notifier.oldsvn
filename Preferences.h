@@ -3,7 +3,6 @@
 //  MacDroidNotifier
 //
 //  Created by Rodrigo Damazio on 27/12/09.
-//  Copyright 2009 Google Inc. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
@@ -16,10 +15,15 @@ extern NSString *const kPreferencesPairingRequiredKey;
 extern NSString *const kPreferencesListenWifiKey;
 extern NSString *const kPreferencesListenBluetoothKey;
 extern NSString *const kPreferencesListenUsbKey;
-extern NSString *const kPreferencesDisplayRingKey;
-extern NSString *const kPreferencesDisplaySmsKey;
-extern NSString *const kPreferencesDisplayMmsKey;
-extern NSString *const kPreferencesDisplayBatteryKey;
+extern NSString *const kPreferencesRingKey;
+extern NSString *const kPreferencesSmsKey;
+extern NSString *const kPreferencesMmsKey;
+extern NSString *const kPreferencesBatteryKey;
+extern NSString *const kPreferencesPingKey;
+extern NSString *const kPreferencesDisplayKey;
+extern NSString *const kPreferencesMuteKey;
+extern NSString *const kPreferencesExecuteKey;
+extern NSString *const kPreferencesPairKey;
 
 // Constants for preference values.
 extern const int kPairingNotRequired;
@@ -40,7 +44,7 @@ extern const int kPairingRequired;
 }
 
 // Shows the preferences dialog.
-- (void)showDialog:(id)sender;
+- (IBAction)showDialog:(id)sender;
 
 // Callback for when the "pairing required" option is changed
 - (IBAction)pairingRequiredToggled:(id)sender;
@@ -50,5 +54,8 @@ extern const int kPairingRequired;
 
 // Callback for when the user cancels pairing
 - (IBAction)cancelPairing:(id)sender;
+
+// Callback to select what to execute
+- (IBAction)selectExecuteAction:(id)sender;
 
 @end

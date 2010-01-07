@@ -1,14 +1,15 @@
 //
-//  NotificationView.m
+//  DisplayAction.m
 //  MacDroidNotifier
 //
-//  Created by Rodrigo Damazio on 25/12/09.
+//  Created by Rodrigo Damazio on 07/01/10.
 //
 
-#import "NotificationView.h"
+#import "DisplayAction.h"
+
 #import "Growl.h"
 
-@implementation NotificationView
+@implementation DisplayAction
 
 - (id)initWithGrowl:(Growl *)growlParam {
   if (self = [super init]) {
@@ -22,8 +23,8 @@
   [super dealloc];
 }
 
-- (void)handleNotification:(Notification *)notification {
-  NSLog(@"Handling notification: %@", notification);
+- (void)executeForNotification:(Notification *)notification {
+  NSLog(@"Displaying with Growl");
   [growl postGrowlNotification:notification];
 }
 

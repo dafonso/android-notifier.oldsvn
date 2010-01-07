@@ -43,4 +43,7 @@ typedef enum {
 // Compares this notification to another and tells if they're equal
 - (BOOL)isEqualToNotification:(Notification *)notification;
 
+// Returns the string equivalent of the type enum
++ (NSString *)stringFromNotificationType:(NotificationType)type;
+
 @end
