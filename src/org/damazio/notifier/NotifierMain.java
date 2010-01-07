@@ -6,19 +6,14 @@ import org.damazio.notifier.notification.NotificationType;
 import org.damazio.notifier.notification.Notifier;
 import org.damazio.notifier.service.NotificationService;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.TextView;
+import android.preference.CheckBoxPreference;
+import android.preference.Preference;
+import android.preference.PreferenceActivity;
+import android.preference.Preference.OnPreferenceChangeListener;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.widget.Toast;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 
 /**
  * Main activity for the notifier.
@@ -27,48 +22,24 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
  *
  * @author rdamazio
  */
-public class NotifierMain extends Activity {
+public class NotifierMain extends PreferenceActivity {
   private Notifier notifier;
   private NotifierPreferences preferences;
-
-  // Widgets that hold preferences
-  private CheckBox startAtBootView;
-  private CheckBox wifiMethodView;
-  private CheckBox bluetoothMethodView;
-  private CheckBox usbMethodView;
-  private CheckBox ringEventView;
-  private CheckBox smsEventView;
-  private CheckBox mmsEventView;
-  private CheckBox batteryEventView;
-  private Button toggleServiceButton;
-  private TextView serviceStatusText;
+  private Preference serviceStatePreference;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    // Initialize the UI
-    setContentView(R.layout.main);
-	setTitle(R.string.settings_title);
-
-	// Grab preference views
-    startAtBootView = (CheckBox) findViewById(R.id.start_at_boot);
-    wifiMethodView = (CheckBox) findViewById(R.id.method_wifi);
-    bluetoothMethodView = (CheckBox) findViewById(R.id.method_bluetooth);
-    usbMethodView = (CheckBox) findViewById(R.id.method_usb);
-    ringEventView = (CheckBox) findViewById(R.id.event_ring);
-    smsEventView = (CheckBox) findViewById(R.id.event_sms);
-    mmsEventView = (CheckBox) findViewById(R.id.event_mms);
-    batteryEventView = (CheckBox) findViewById(R.id.event_battery);
+    // Initialize the preferences UI
+    addPreferencesFromResource(R.xml.preferences);
 
     // Load preferences
     preferences = new NotifierPreferences(this);
-    loadSettings();
 
     // Show welcome screen if it's the first time
     if (preferences.isFirstTime()) {
       preferences.setFirstTime(false);
-      preferences.saveChanges();
 
       showAlertDialog(R.string.about_message, R.string.welcome_title);
     }
@@ -79,108 +50,69 @@ public class NotifierMain extends Activity {
       NotificationService.start(this);
     }
 
-    // Attach UI handlers
-	Button testButton = (Button) findViewById(R.id.send_test_notification);
-	testButton.setOnClickListener(new OnClickListener() {
-      public void onClick(View v) {
-        sendTestNotification();
-      }
-    });
-
-	toggleServiceButton = (Button) findViewById(R.id.toggle_service);
-	toggleServiceButton.setOnClickListener(new OnClickListener() {
-      public void onClick(View v) {
-        toggleServiceStatus();
-      }
-    });
-	serviceStatusText = (TextView) findViewById(R.id.service_status);
-
-	Button saveSettingsButton = (Button) findViewById(R.id.save_settings);
-	saveSettingsButton.setOnClickListener(new OnClickListener() {
-      public void onClick(View v) {
-        saveSettings();
-      }
-    });
-    Button revertSettingsButton = (Button) findViewById(R.id.revert_settings);
-    revertSettingsButton.setOnClickListener(new OnClickListener() {
-      public void onClick(View v) {
-        revertSettings();
-      }
-    });
-
-    // Show a warning when enabling bluetooth, if it's not supported
+    CheckBoxPreference bluetoothPreference = (CheckBoxPreference) findPreference(getString(R.string.method_bluetooth_key));
+    Preference bluetoothOptionsPreference = findPreference(getString(R.string.method_bluetooth_options_key));
     if (!NotificationMethods.isBluetoothMethodSupported()) {
-      bluetoothMethodView.setChecked(false);
-      bluetoothMethodView.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-          showAlertDialog(R.string.bluetooth_eclair, R.string.eclair_required);
-
-          bluetoothMethodView.setChecked(false);
-        }
-      });
+      // Disallow enabling bluetooth, if it's not supported
+      bluetoothPreference.setChecked(false);
+      bluetoothPreference.setEnabled(false);
+      bluetoothPreference.setSummaryOff(R.string.eclair_required);
+      bluetoothOptionsPreference.setEnabled(false);
+    } else {
+      // Disable bluetooth options if bluetooth is disabled
+      attachCheckboxToEnable(bluetoothPreference, bluetoothOptionsPreference);
     }
 
-    // Update the status that shows whether the service is running
+    // Disable wifi options if wifi is disabled
+    attachCheckboxToEnable((CheckBoxPreference) findPreference(getString(R.string.method_wifi_key)),
+                        findPreference(getString(R.string.method_wifi_options_key)));
+
+    // Attach an action to send the test notification
+    Preference testNotificationPreference = findPreference(getString(R.string.test_notification_key));
+    testNotificationPreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+      public boolean onPreferenceClick(Preference preference) {
+        sendTestNotification();
+        return true;
+      }
+    });
+
+    // Attach an action to open the about screen
+    Preference aboutPreference = findPreference(getString(R.string.about_key));
+    aboutPreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+      public boolean onPreferenceClick(Preference preference) {
+        showAlertDialog(R.string.about_message, R.string.about_title);
+        return true;
+      }
+    });
+
+    // Attach an action to start and stop the service
+    serviceStatePreference = findPreference(getString(R.string.service_state_key));
+    serviceStatePreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+      public boolean onPreferenceClick(Preference preference) {
+        toggleServiceStatus();
+        return true;
+      }
+    });
+
+    // Update the status that shows whether the service is initially running
     updateServiceStatus();
   }
 
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    menu.add(R.string.about_menu).setIcon(android.R.drawable.ic_menu_info_details);
-    return true;
-  }
-
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    // Right now, we only have about menu item
-    showAlertDialog(R.string.about_message, R.string.about_title);
-    return true;
-  }
-
   /**
-   * Loads all settings from the preferences into the UI.
+   * Makes changing of the values on the given checkbox enable and disable
+   * the given destination preference.
+   * 
+   * @param checkbox the checkbox to listen for value changes
+   * @param dest the destination which will be enabled/disabled with it
    */
-  private void loadSettings() {
-    startAtBootView.setChecked(preferences.isStartAtBootEnabled());
-
-    wifiMethodView.setChecked(preferences.isWifiMethodEnabled());
-    bluetoothMethodView.setChecked(preferences.isBluetoothMethodEnabled());
-    usbMethodView.setChecked(preferences.isUsbMethodEnabled());
-
-    ringEventView.setChecked(preferences.isRingEventEnabled());
-    smsEventView.setChecked(preferences.isSmsEventEnabled());
-    mmsEventView.setChecked(preferences.isMmsEventEnabled());
-    batteryEventView.setChecked(preferences.isBatteryEventEnabled());
-  }
-
-  /**
-   * Saves all settings from the UI into the preferences.
-   */
-  private void saveSettings() {
-    preferences.setStartAtBootEnabled(startAtBootView.isChecked());
-
-    // TODO(rdamazio): Give a warning about bluetooth not working in android < 2.0
-    preferences.setWifiMethodEnabled(wifiMethodView.isChecked());
-    preferences.setBluetoothMethodEnabled(bluetoothMethodView.isChecked());
-    preferences.setUsbMethodEnabled(usbMethodView.isChecked());
-
-    preferences.setRingEventEnabled(ringEventView.isChecked());
-    preferences.setSmsEventEnabled(smsEventView.isChecked());
-    preferences.setMmsEventEnabled(mmsEventView.isChecked());
-    preferences.setBatteryEventEnabled(batteryEventView.isChecked());
-
-    preferences.saveChanges();
-
-    Toast.makeText(this, R.string.settings_saved, Toast.LENGTH_LONG).show();
-  }
-
-  /**
-   * Reverts any unsaved changes to settings, both in the preferences and in the
-   * UI.
-   */
-  protected void revertSettings() {
-    preferences.discardChanges();
-    loadSettings();
+  private void attachCheckboxToEnable(CheckBoxPreference checkbox, final Preference dest) {
+    checkbox.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+      public boolean onPreferenceChange(Preference preference, Object newValue) {
+        boolean value = ((Boolean) newValue).booleanValue();
+        dest.setEnabled(value);
+        return true;
+      }
+    });
   }
 
   /**
@@ -205,10 +137,10 @@ public class NotifierMain extends Activity {
    */
   private void updateServiceStatus() {
     boolean isServiceRunning = NotificationService.isRunning(this);
-      serviceStatusText.setText(isServiceRunning
-        ? R.string.service_status_running
-        : R.string.service_status_stopped);
-      toggleServiceButton.setText(isServiceRunning
+      serviceStatePreference.setSummary(isServiceRunning
+          ? R.string.service_status_running
+          : R.string.service_status_stopped);
+      serviceStatePreference.setTitle(isServiceRunning
           ? R.string.stop_service
           : R.string.start_service);
   }
