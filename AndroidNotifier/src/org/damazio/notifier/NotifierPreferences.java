@@ -48,6 +48,18 @@ public class NotifierPreferences {
     return preferences.getBoolean(context.getString(R.string.method_wifi_key), true);
   }
 
+  public String getWifiTargetIpAddress() {
+    return preferences.getString(context.getString(R.string.target_ip_address_key), "global");
+  }
+  
+  public String getCustomWifiTargetIpAddress() {
+    return preferences.getString(context.getString(R.string.target_custom_ip_address_key), "255.255.255.255");
+  }
+
+  public void setCustomWifiTargetIpAddress(String address) {
+    preferences.edit().putString(context.getString(R.string.target_custom_ip_address_key), address).commit();
+  }
+
   /**
    * @return whether notifications should be sent over bluetooth
    */

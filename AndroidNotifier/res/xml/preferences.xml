@@ -21,7 +21,11 @@
                         android:summaryOff="@string/method_off" />
     <PreferenceScreen android:key="@string/method_wifi_options_key"
                       android:title="@string/wifi_options">
-      <!-- TODO(rdamazio): Add IP selection, wifi sleep policy, etc -->
+      <ListPreference android:key="@string/target_ip_address_key"
+                      android:title="Target IP address"
+                      android:entries="@array/targetIps"
+                      android:entryValues="@array/targetIpValues"
+                      android:defaultValue="global" />
     </PreferenceScreen>
 
     <CheckBoxPreference android:key="@string/method_bluetooth_key"

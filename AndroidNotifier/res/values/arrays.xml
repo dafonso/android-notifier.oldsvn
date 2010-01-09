@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="targetIps">
+    <item>Global broadcast address</item>
+    <item>DHCP broadcast address</item>
+    <item>Custom IP</item>
+  </string-array>
+
+  <string-array name="targetIpValues">
+    <item>global</item>
+    <item>dhcp</item>
+    <item>custom</item>
+  </string-array>
+</resources>
