@@ -29,6 +29,9 @@
     <string name="eclair_required">Only supported in Android 2.0 or above</string>
     <string name="not_yet_implemented">Not yet implemented.</string>
 
+    <string name="custom_ip_title">Custom IP address</string>
+    <string name="custom_ip">Please type in the address to send notifications to:</string>
+
     <!-- Event types -->
     <string name="events_title">Events to notify</string>
     <string name="event_ring">Phone ring</string>

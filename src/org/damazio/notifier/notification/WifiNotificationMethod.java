@@ -5,11 +5,13 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 
 import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.NotifierPreferences;
 
 import android.content.Context;
+import android.net.DhcpInfo;
 import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -48,10 +50,7 @@ public class WifiNotificationMethod implements NotificationMethod {
       byte[] messageBytes = notification.toString().getBytes();
 
       // TODO(rdamazio): Do we want/need to support IPv6 as well?
-      // TODO(rdamazio): Allow the user to pick whether to use:
-      //                 255.255.255.255, the DHCP-provided broadcast address,
-      //                 or a fixed broadcast address
-      InetAddress broadcastAddress = InetAddress.getByAddress(new byte[] { -1, -1, -1, -1 });
+      InetAddress broadcastAddress = getTargetAddress();
       DatagramPacket packet = new DatagramPacket(messageBytes, messageBytes.length, broadcastAddress, UDP_PORT);
       sendDatagramPacket(packet);
 
@@ -60,6 +59,43 @@ public class WifiNotificationMethod implements NotificationMethod {
       Log.e(NotifierConstants.LOG_TAG, "Unable to open socket", e);
     } catch (IOException e) {
       Log.e(NotifierConstants.LOG_TAG, "Unable to send UDP packet", e);
+    }
+  }
+
+  /**
+   * Returns the proper address to send the notification to according to the
+   * user's preferences, or null if it cannot be determined.
+   */
+  private InetAddress getTargetAddress() {
+    String addressStr = preferences.getWifiTargetIpAddress();
+    try {
+      if (addressStr.equals("global")) {
+        return InetAddress.getByAddress(new byte[] { -1, -1, -1, -1 });
+      } else if (addressStr.equals("dhcp")) {
+        // Get the DHCP info from Wi-fi
+        DhcpInfo dhcp = wifi.getDhcpInfo();
+        if (dhcp == null) {
+          Log.e(NotifierConstants.LOG_TAG, "Could not obtain DHCP info");
+          return null;
+        }
+
+        // Calculate the broadcast address
+        int broadcast = (dhcp.ipAddress & dhcp.netmask) | ~dhcp.netmask;
+        byte[] quads = new byte[4];
+        for (int k = 0; k < 4; k++) {
+          quads[k] = (byte) ((broadcast >> k * 8) & 0xFF);
+        }
+        return InetAddress.getByAddress(quads);
+      } else if (addressStr.equals("custom")) {
+        addressStr = preferences.getCustomWifiTargetIpAddress();
+        return InetAddress.getByName(addressStr);
+      } else {
+        Log.e(NotifierConstants.LOG_TAG, "Invalid value for IP target: " + addressStr);
+        return null;
+      }
+    } catch (UnknownHostException e) {
+      Log.e(NotifierConstants.LOG_TAG, "Could not resolve address " + addressStr, e);
+      return null;
     }
   }
 

@@ -7,12 +7,14 @@ import org.damazio.notifier.notification.Notifier;
 import org.damazio.notifier.service.NotificationService;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.widget.EditText;
 import android.widget.Toast;
 
 /**
@@ -66,6 +68,42 @@ public class NotifierMain extends PreferenceActivity {
     // Disable wifi options if wifi is disabled
     attachCheckboxToEnable((CheckBoxPreference) findPreference(getString(R.string.method_wifi_key)),
                         findPreference(getString(R.string.method_wifi_options_key)));
+
+    Preference ipAddressPreference = findPreference(getString(R.string.target_ip_address_key));
+    ipAddressPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+      public boolean onPreferenceChange(Preference preference, Object newValue) {
+        String value = (String) newValue;
+        if (value.equals("custom")) {
+          AlertDialog.Builder alert = new AlertDialog.Builder(NotifierMain.this);
+          alert.setTitle(R.string.custom_ip_title);
+          alert.setMessage(R.string.custom_ip);
+
+          // Set an EditText view to get user input 
+          final EditText input = new EditText(NotifierMain.this);
+          input.setText(preferences.getCustomWifiTargetIpAddress());
+          alert.setView(input);
+
+          alert.setPositiveButton(android.R.string.ok,
+              new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                  String value = input.getText().toString();
+                  preferences.setCustomWifiTargetIpAddress(value);
+                }
+              });
+
+          alert.setNegativeButton(android.R.string.cancel,
+              new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                  // TODO
+                }
+              });
+
+          alert.show();
+        }
+
+        return true;
+      }
+    });
 
     // Attach an action to send the test notification
     Preference testNotificationPreference = findPreference(getString(R.string.test_notification_key));
