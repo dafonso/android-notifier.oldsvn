@@ -93,7 +93,7 @@ public class NotifierMain extends PreferenceActivity {
         return false;
       }
     });
-    
+
     // Attach an action to send the test notification
     Preference testNotificationPreference = findPreference(getString(R.string.test_notification_key));
     testNotificationPreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
