@@ -17,6 +17,7 @@
   <!-- Fake preference keys - never saved, but show options in the preferences screen -->
   <string name="method_bluetooth_options_key">bluetoothOptions</string>
   <string name="method_wifi_options_key">wifiOptions</string>
+  <string name="wifi_sleep_policy_key">wifiSleepPolicy</string>
   <string name="test_notification_key">testNotification</string>
   <string name="about_key">about</string>
 </resources>

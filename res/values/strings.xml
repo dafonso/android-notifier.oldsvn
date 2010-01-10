@@ -31,6 +31,8 @@
 
     <string name="custom_ip_title">Custom IP address</string>
     <string name="custom_ip">Please type in the address to send notifications to:</string>
+    <string name="wifi_sleep_policy">Wifi sleep policy</string>
+    <string name="wifi_sleep_policy_summary">Controls when Android turns Wifi off, which by default is whenever the screen turns off</string>
 
     <!-- Event types -->
     <string name="events_title">Events to notify</string>

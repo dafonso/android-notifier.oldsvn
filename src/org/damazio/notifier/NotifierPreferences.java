@@ -2,6 +2,8 @@ package org.damazio.notifier;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.provider.Settings;
+import android.util.Log;
 
 /**
  * Application preferences, used both by the service and by the settings UI.
@@ -58,6 +60,39 @@ public class NotifierPreferences {
 
   public void setCustomWifiTargetIpAddress(String address) {
     preferences.edit().putString(context.getString(R.string.target_custom_ip_address_key), address).commit();
+  }
+
+  public String getWifiSleepPolicy() {
+    int value = Settings.System.getInt(context.getContentResolver(),
+        Settings.System.WIFI_SLEEP_POLICY, Settings.System.WIFI_SLEEP_POLICY_DEFAULT);
+    switch (value) {
+      case Settings.System.WIFI_SLEEP_POLICY_DEFAULT:
+        return "screen";
+      case Settings.System.WIFI_SLEEP_POLICY_NEVER_WHILE_PLUGGED:
+        return "plugged";
+      case Settings.System.WIFI_SLEEP_POLICY_NEVER:
+        return "never";
+      default:
+        Log.e(NotifierConstants.LOG_TAG, "Unknown sleep policy value " + value);
+        return null;
+    }
+  }
+
+  public void setWifiSleepPolicy(String value) {
+    int intValue = -1;
+    if (value.equals("screen")) {
+      intValue = Settings.System.WIFI_SLEEP_POLICY_DEFAULT;
+    } else if (value.equals("plugged")) {
+      intValue = Settings.System.WIFI_SLEEP_POLICY_NEVER_WHILE_PLUGGED;
+    } else if (value.equals("never")) {
+      intValue = Settings.System.WIFI_SLEEP_POLICY_NEVER;
+    } else {
+      Log.e(NotifierConstants.LOG_TAG, "Unknown sleep policy value " + value);
+      return;
+    }
+
+    Settings.System.putInt(context.getContentResolver(),
+        Settings.System.WIFI_SLEEP_POLICY, intValue);
   }
 
   /**

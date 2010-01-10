@@ -26,6 +26,12 @@
                       android:entries="@array/targetIps"
                       android:entryValues="@array/targetIpValues"
                       android:defaultValue="global" />
+
+      <ListPreference android:key="@string/wifi_sleep_policy_key"
+                      android:title="@string/wifi_sleep_policy"
+                      android:summary="@string/wifi_sleep_policy_summary"
+                      android:entries="@array/wifiSleepPolicies"
+                      android:entryValues="@array/wifiSleepPolicyValues" />
     </PreferenceScreen>
 
     <CheckBoxPreference android:key="@string/method_bluetooth_key"

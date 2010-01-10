@@ -11,4 +11,16 @@
     <item>dhcp</item>
     <item>custom</item>
   </string-array>
+
+  <string-array name="wifiSleepPolicies">
+    <item>When screen turns off</item>
+    <item>Never when plugged in</item>
+    <item>Never (battery-intensive)</item>
+  </string-array>
+
+  <string-array name="wifiSleepPolicyValues">
+    <item>screen</item>
+    <item>plugged</item>
+    <item>never</item>
+  </string-array>
 </resources>
