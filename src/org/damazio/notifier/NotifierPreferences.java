@@ -2,6 +2,7 @@ package org.damazio.notifier;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
 
@@ -11,15 +12,16 @@ import android.util.Log;
  * @author rdamazio
  */
 public class NotifierPreferences {
-
-  private static final String PREFERENCES_NAME = "org.damazio.notifier.preferences";
+  // TODO(rdamazio): Migrate from old preferences file when detected
+  private static final String OLD_PREFERENCES_NAME = "org.damazio.notifier.preferences";
 
   private final SharedPreferences preferences;
   private final Context context;
 
   public NotifierPreferences(Context context) {
     this.context = context;
-    preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+
+    this.preferences = PreferenceManager.getDefaultSharedPreferences(context);
   }
 
   /**
@@ -95,6 +97,10 @@ public class NotifierPreferences {
         Settings.System.WIFI_SLEEP_POLICY, intValue);
   }
 
+  public boolean getEnableWifi() {
+    return preferences.getBoolean(context.getString(R.string.enable_wifi_key), false);
+  }
+ 
   /**
    * @return whether notifications should be sent over bluetooth
    */

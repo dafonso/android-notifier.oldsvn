@@ -11,10 +11,12 @@ import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.NotifierPreferences;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
 import android.net.DhcpInfo;
-import android.net.wifi.SupplicantState;
-import android.net.wifi.WifiInfo;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
+import android.net.wifi.WifiManager.WifiLock;
+import android.os.CountDownTimer;
 import android.util.Log;
 
 /**
@@ -26,13 +28,72 @@ import android.util.Log;
  */
 public class WifiNotificationMethod implements NotificationMethod {
 
+  /**
+   * Class which waits for wifi to be enabled before sending a notification.
+   * It will only wait up to a certain time (60 seconds) before giving up.
+   */
+  private class WifiDelayedNotifier extends CountDownTimer {
+    private static final long MAX_WIFI_WAIT_TIME_MS = 60000;
+    private static final long WIFI_CHECK_INTERVAL_MS = 500;
+    private static final String WIFI_LOCK_TAG = "org.damazio.notifier.WifiEnable";
+
+    private final Notification notification;
+    private final boolean previousWifiEnabledState;
+    private final WifiLock wifiLock;
+    private boolean notificationSent = false;
+
+    private WifiDelayedNotifier(Notification notification, boolean previousWifiEnabledState) {
+      super(MAX_WIFI_WAIT_TIME_MS, WIFI_CHECK_INTERVAL_MS);
+
+      this.notification = notification;
+      this.previousWifiEnabledState = previousWifiEnabledState;
+      this.wifiLock = wifi.createWifiLock(WIFI_LOCK_TAG);
+
+      // Ensure nobody will turn wifi off until we're done
+      wifiLock.acquire();
+    }
+
+    @Override
+    public void onTick(long millisUntilFinished) {
+      if (!notificationSent && isWifiConnected()) {
+        Log.d(NotifierConstants.LOG_TAG, "Wifi connected, sending delayed notification after " + (MAX_WIFI_WAIT_TIME_MS - millisUntilFinished) + "ms");
+
+        // Ignore next ticks
+        notificationSent = true;
+
+        // Send notification
+        sendNotification(notification);
+
+        restorePreviousWifiState();
+      }
+    }
+
+    @Override
+    public void onFinish() {
+      // Give it one last chance
+      onTick(0);
+
+      if (!notificationSent) {
+        Log.e(NotifierConstants.LOG_TAG, "Timed out while waiting for wifi to connect");
+        restorePreviousWifiState();
+      }
+    }
+
+    private void restorePreviousWifiState() {
+      wifiLock.release();
+      wifi.setWifiEnabled(previousWifiEnabledState);
+    }
+  }
+
   private static final int UDP_PORT = 10600;
   private final NotifierPreferences preferences;
-  private WifiManager wifi;
+  private final WifiManager wifi;
+  private final ConnectivityManager connectivity;
 
   public WifiNotificationMethod(Context context, NotifierPreferences preferences) {
     this.preferences = preferences;
-    wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+    this.wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+    this.connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
   }
 
   public void sendNotification(Notification notification) {
@@ -40,26 +101,64 @@ public class WifiNotificationMethod implements NotificationMethod {
       return;
     }
 
-    if (!isWifiEnabled()) {
+    // Check if wifi is disabled
+    if (!isWifiConnected()) {
+      // Check if we should enable it, or if it's already being enabled
+      // (in which case we just send it after a little while)
+      if (preferences.getEnableWifi() || isWifiConnecting()) {
+        enableWifiThenSendNotification(notification);
+        return;
+      }
+
       Log.d(NotifierConstants.LOG_TAG, "Not notifying over wifi - not connected.");
       return;
     }
 
+    // Wifi is connected, so try to send notification now
     try {
       // TODO(rdamazio): Add an end-of-message marker in case the packets get split
       byte[] messageBytes = notification.toString().getBytes();
 
-      // TODO(rdamazio): Do we want/need to support IPv6 as well?
+      // Get the address to send it to
       InetAddress broadcastAddress = getTargetAddress();
+      Log.d(NotifierConstants.LOG_TAG, "Sending wifi notification to IP " + broadcastAddress.getHostAddress());
+
+      // Create the packet to send
       DatagramPacket packet = new DatagramPacket(messageBytes, messageBytes.length, broadcastAddress, UDP_PORT);
+
+      // Send it
       sendDatagramPacket(packet);
 
-      Log.d(NotifierConstants.LOG_TAG, "Sent notification over WiFi.");
+      Log.i(NotifierConstants.LOG_TAG, "Sent notification over WiFi.");
     } catch (SocketException e) {
       Log.e(NotifierConstants.LOG_TAG, "Unable to open socket", e);
     } catch (IOException e) {
       Log.e(NotifierConstants.LOG_TAG, "Unable to send UDP packet", e);
     }
+  }
+
+  /**
+   * Enables wifi, then sends the given notification only after it's connected.
+   *
+   * @param notification the notification to send
+   */
+  private void enableWifiThenSendNotification(Notification notification) {
+    Log.d(NotifierConstants.LOG_TAG, "Enabling wifi and delaying notification");
+
+    // Enable wifi
+    boolean isEnabled = wifi.isWifiEnabled();
+    if (!wifi.setWifiEnabled(true)) {
+      Log.d(NotifierConstants.LOG_TAG, "Unable to enable wifi");
+    }
+
+    if (!isEnabled) {
+      // If not previously enabled, for a scan to connect more quickly
+      // TODO(rdamazio): Make this more reliable - sometimes it will enable but not connect
+      wifi.startScan();
+    }
+
+    // Check periodically if wifi connected, then try to send it
+    new WifiDelayedNotifier(notification, isEnabled).start();
   }
 
   /**
@@ -70,10 +169,14 @@ public class WifiNotificationMethod implements NotificationMethod {
     String addressStr = preferences.getWifiTargetIpAddress();
     try {
       if (addressStr.equals("global")) {
+        // Send to 255.255.255.255
         return InetAddress.getByAddress(new byte[] { -1, -1, -1, -1 });
       } else if (addressStr.equals("dhcp")) {
         // Get the DHCP info from Wi-fi
-        DhcpInfo dhcp = wifi.getDhcpInfo();
+        DhcpInfo dhcp = null;
+        if (wifi != null) {
+          dhcp = wifi.getDhcpInfo();
+        }
         if (dhcp == null) {
           Log.e(NotifierConstants.LOG_TAG, "Could not obtain DHCP info");
           return null;
@@ -87,6 +190,7 @@ public class WifiNotificationMethod implements NotificationMethod {
         }
         return InetAddress.getByAddress(quads);
       } else if (addressStr.equals("custom")) {
+        // Get the custom IP address from the other preference key
         addressStr = preferences.getCustomWifiTargetIpAddress();
         return InetAddress.getByName(addressStr);
       } else {
@@ -113,11 +217,24 @@ public class WifiNotificationMethod implements NotificationMethod {
   /**
    * @return whether wifi is enabled and connected
    */
-  private boolean isWifiEnabled() {
-    WifiInfo connectionInfo = wifi.getConnectionInfo();
-    if (connectionInfo == null) return false;
+  private boolean isWifiConnected() {
+    // Check if wifi is supported and enabled
+    if (wifi == null || connectivity == null) return false;
+    if (!wifi.isWifiEnabled()) return false;
+    if (wifi.getWifiState() != WifiManager.WIFI_STATE_ENABLED) return false;
 
-    SupplicantState state = connectionInfo.getSupplicantState();
-    return (state == SupplicantState.COMPLETED);
+    // Check if wifi is connected
+    NetworkInfo wifiInfo = connectivity.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+    return (wifiInfo.getState() == NetworkInfo.State.CONNECTED);
+  }
+
+  /**
+   * @return whether wifi is in the processing of being connected
+   */
+  private boolean isWifiConnecting() {
+    if (wifi == null || connectivity == null) return false;
+    if (wifi.getWifiState() == WifiManager.WIFI_STATE_ENABLING) return true;
+    NetworkInfo wifiInfo = connectivity.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+    return (wifiInfo.getState() == NetworkInfo.State.CONNECTING);
   }
 }

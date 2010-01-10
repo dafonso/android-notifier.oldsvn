@@ -32,6 +32,12 @@
                       android:summary="@string/wifi_sleep_policy_summary"
                       android:entries="@array/wifiSleepPolicies"
                       android:entryValues="@array/wifiSleepPolicyValues" />
+
+      <CheckBoxPreference android:key="@string/enable_wifi_key"
+                          android:title="@string/enable_wifi"
+                          android:summaryOn="@string/enable_wifi_summary_on"
+                          android:summaryOff="@string/enable_wifi_summary_off"
+                          android:defaultValue="false" />
     </PreferenceScreen>
 
     <CheckBoxPreference android:key="@string/method_bluetooth_key"
