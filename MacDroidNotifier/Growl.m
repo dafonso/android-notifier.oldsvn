@@ -46,10 +46,39 @@ NSString *const kGrowlUrl = @"http://growl.info/";
   }
 }
 
+- (void)checkGrowlRunning {
+  if (![GrowlApplicationBridge isGrowlRunning]) {
+    NSLog(@"Growl not running");
+
+    // Notify only once
+    if (growlNotRunningNotified) return;
+    growlNotRunningNotified = YES;
+
+    NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+    [alert addButtonWithTitle:NSLocalizedString(@"Dismiss", @"Dialog button for dismissing Growl not running warning")];
+    [alert setMessageText:NSLocalizedString(@"Growl not running", @"Growl not running message")];
+    [alert setInformativeText:NSLocalizedString(@"Tried to display a notification, but Growl is not running - please start it...\nThis warning will only be displayed once.", @"Detailed message explaining that Growl must be running")];
+    [alert setAlertStyle:NSWarningAlertStyle];
+
+    [alert runModal];
+  }
+}
+
+- (id)init {
+  if (self = [super init]) {
+    growlNotRunningNotified = NO;
+  }
+  return self;
+}
+
 - (void)awakeFromNib {
   [self checkGrowlInstalled];
 
   [GrowlApplicationBridge setGrowlDelegate:self];
+
+  // TODO: remove - testing
+  Notification *notification = [Notification notificationFromString:@"1234/12345/RING/Rodrigo Damazio is calling"];
+  [self postGrowlNotification:notification];
 }
 
 - (NSDictionary *)dictionaryForNotification:(Notification *)notification {
@@ -91,6 +120,10 @@ NSString *const kGrowlUrl = @"http://growl.info/";
 }
 
 - (void)postGrowlNotification:(Notification *)notification {
+  // We only check at the time of the first notification - during start up, if we're starting up as
+  // a login item, Growl may not YET be running.
+  [self checkGrowlRunning];
+
   [GrowlApplicationBridge notifyWithDictionary:[self dictionaryForNotification:notification]];
 }
 
