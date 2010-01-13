@@ -27,7 +27,7 @@ NSString *const kGrowlUrl = @"http://growl.info/";
       [alert setInformativeText:NSLocalizedString(@"If you don't install Growl from http://growl.info/, you won't see any notifications.", @"Detailed message explaining that Growl is required")];
       [alert setAlertStyle:NSWarningAlertStyle];
 
-      int buttonClicked = [alert runModal];
+      NSInteger buttonClicked = [alert runModal];
       switch (buttonClicked) {
         case NSAlertFirstButtonReturn: {
           // Open the Growl website
@@ -75,10 +75,6 @@ NSString *const kGrowlUrl = @"http://growl.info/";
   [self checkGrowlInstalled];
 
   [GrowlApplicationBridge setGrowlDelegate:self];
-
-  // TODO: remove - testing
-  Notification *notification = [Notification notificationFromString:@"1234/12345/RING/Rodrigo Damazio is calling"];
-  [self postGrowlNotification:notification];
 }
 
 - (NSDictionary *)dictionaryForNotification:(Notification *)notification {
@@ -116,7 +112,8 @@ NSString *const kGrowlUrl = @"http://growl.info/";
           title, GROWL_NOTIFICATION_TITLE,
           description, GROWL_NOTIFICATION_DESCRIPTION,
           icon, GROWL_NOTIFICATION_ICON,
-          0, GROWL_NOTIFICATION_PRIORITY];
+          0, GROWL_NOTIFICATION_PRIORITY,
+          nil];
 }
 
 - (void)postGrowlNotification:(Notification *)notification {

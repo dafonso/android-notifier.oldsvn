@@ -29,7 +29,7 @@
   NSMutableArray *lastNotifications;
 
   // Total count of received notifications
-  int notificationCount;
+  NSUInteger notificationCount;
 }
 
 @end

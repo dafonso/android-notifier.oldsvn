@@ -43,7 +43,7 @@
   NSString *typeStr = [parts objectAtIndex:2];
   NSString *contents;
 
-  int numParts = [parts count];
+  NSUInteger numParts = [parts count];
   if (numParts < 4) {
     NSLog(@"Malformed notification: '%@'", serialized);
     return nil;

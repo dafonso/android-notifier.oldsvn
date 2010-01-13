@@ -23,8 +23,8 @@ extern NSString *const kPreferencesMuteKey;
 extern NSString *const kPreferencesExecuteKey;
 
 // Constants for preference values.
-extern const int kPairingNotRequired;
-extern const int kPairingRequired;
+extern const NSInteger kPairingNotRequired;
+extern const NSInteger kPairingRequired;
 
 @class Notification;
 
