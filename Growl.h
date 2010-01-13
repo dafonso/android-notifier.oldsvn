@@ -10,7 +10,10 @@
 #import "Notification.h"
 
 // Abstraction interface for displaying notifications on Growl.
-@interface Growl : NSObject<GrowlApplicationBridgeDelegate>
+@interface Growl : NSObject<GrowlApplicationBridgeDelegate> {
+  @private
+   BOOL growlNotRunningNotified;
+}
 
 - (void)postGrowlNotification:(Notification *)notification;
 
