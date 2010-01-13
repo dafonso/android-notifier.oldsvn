@@ -13,7 +13,7 @@
 #import "Preferences.h"
 #import "WifiNotificationListener.h"
 
-const int kLastNotificationCount = 10;
+const NSUInteger kLastNotificationCount = 10;
 
 @implementation NotificationManager
 
@@ -55,7 +55,7 @@ const int kLastNotificationCount = 10;
   if ([lastNotifications count] < kLastNotificationCount) {
     [lastNotifications addObject:notification];
   } else {
-    int position = (notificationCount % kLastNotificationCount);
+    NSUInteger position = (notificationCount % kLastNotificationCount);
     [lastNotifications replaceObjectAtIndex:position withObject:notification];
   }
 
@@ -65,7 +65,7 @@ const int kLastNotificationCount = 10;
 
 - (BOOL)isDevicePaired:(NSString *)deviceId {
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-  int pairingRequiredValue = [defaults integerForKey:kPreferencesPairingRequiredKey];
+  NSInteger pairingRequiredValue = [defaults integerForKey:kPreferencesPairingRequiredKey];
   BOOL pairingRequired = (pairingRequiredValue == kPairingRequired) ? YES : NO;
 
   if (!pairingRequired) {

@@ -24,8 +24,8 @@ NSString *const kPreferencesDisplayKey = @"display";
 NSString *const kPreferencesMuteKey = @"mute";
 NSString *const kPreferencesExecuteKey = @"execute";
 
-const int kPairingNotRequired = 0;
-const int kPairingRequired = 1;
+const NSInteger kPairingNotRequired = 0;
+const NSInteger kPairingRequired = 1;
 
 @implementation Preferences
 
@@ -43,7 +43,7 @@ const int kPairingRequired = 1;
   NSMutableDictionary *settings =
       [NSMutableDictionary dictionaryWithObjectsAndKeys:
           [NSArray array], kPreferencesPairedDevicesKey,
-          [NSNumber numberWithInt:kPairingNotRequired], kPreferencesPairingRequiredKey,
+          [NSNumber numberWithInteger:kPairingNotRequired], kPreferencesPairingRequiredKey,
           [NSNumber numberWithBool:YES], kPreferencesListenWifiKey,
           [NSNumber numberWithBool:YES], kPreferencesListenBluetoothKey,
           [NSNumber numberWithBool:NO],  kPreferencesListenUsbKey,
@@ -70,7 +70,7 @@ const int kPairingRequired = 1;
 }
 
 - (void)updatePairingUI {
-  int selectedTag = [pairingRadioGroup selectedTag];
+  NSInteger selectedTag = [pairingRadioGroup selectedTag];
   BOOL enablePairingUI = (selectedTag == kPairingRequired) ? YES : NO;
 
   [pairedDevicesView setEnabled:enablePairingUI];
@@ -91,6 +91,7 @@ const int kPairingRequired = 1;
     // Save the updated preferences
     NSLog(@"Saving preferences");
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    // TODO(rdamazio): If pairing required but no devices paired, switch to no pairing required
     [ud synchronize];
   }
 }
