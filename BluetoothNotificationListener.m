@@ -26,28 +26,39 @@
 
 @implementation BluetoothNotificationListener
 
+- (id)init {
+  if (self = [super init]) {
+    openChannels = [[NSMutableSet setWithCapacity:5] retain];
+  }
+  return self;
+}
+
+- (void)dealloc {
+  [openChannels release];
+  [super dealloc];
+}
+
 - (void)startWithCallback:(NSObject<NotificationListenerCallback> *)callbackParam {
-  [self publishService];
+  [openChannels removeAllObjects];
   callback = callbackParam;
+
+  [self publishService];
 }
 
 - (void)stop {
-  if (rfcommChannel != nil) {
-    IOBluetoothRFCOMMChannel *channel = rfcommChannel;
-    IOBluetoothDevice *device = [channel getDevice];
-
-    // And closes the channel:
-    [channel closeChannel];
-
-    // We do not need the channel anymore:
-    [channel release];
-    rfcommChannel = nil;
-
-    // And closes the connection with the device:
-    [device closeConnection];
-  }
-
   [self unpublishService];
+
+  @synchronized (openChannels) {
+    for (IOBluetoothRFCOMMChannel *channel in openChannels) {
+      // Close the channel
+      [channel closeChannel];
+
+      // And closes the connection with the device
+      [[channel getDevice] closeConnection];
+    }
+
+    [openChannels removeAllObjects];
+  }
 }
 
 - (void)rfcommChannelData:(IOBluetoothRFCOMMChannel*)channel
@@ -61,8 +72,9 @@
 }
 
 - (void)rfcommChannelClosed:(IOBluetoothRFCOMMChannel*)channel {
-  rfcommChannel = nil;
-  [self publishService];
+  @synchronized (openChannels) {
+    [openChannels removeObject:channel];
+  }
 }
 
 - (void) newRFCOMMChannelOpened:(IOBluetoothUserNotification *)inNotification
@@ -71,22 +83,12 @@
   // This isn't strictly necessary since we only registered a notification for this case,
   // but it can't hurt to double-check.
   if (newChannel != nil && [newChannel isIncoming] && [newChannel getChannelID] == serverChannelID) {
-    rfcommChannel = newChannel;
-
-    // Retains the channel
-    [rfcommChannel retain];
-
-		// Set self as the channel's delegate: THIS IS THE VERY FIRST THING TO DO FOR A SERVER !!!!
-		if ([rfcommChannel setDelegate:self] == kIOReturnSuccess) {
-			// stop providing the services (this example only handles one chat connection at a time - but
-			// there's no reason a well written app can't handle any number of connections)
-			[self unpublishService];
-		} else {
-			// The setDelegate: call failed. This is catastrophic for a server
-			// Releases the channel:
-			[rfcommChannel release];
-			rfcommChannel = nil;
-		}
+    @synchronized (openChannels) {
+      // Set self as the channel's delegate: THIS IS THE VERY FIRST THING TO DO FOR A SERVER !!!!
+      if ([newChannel setDelegate:self] == kIOReturnSuccess) {
+        [openChannels addObject:newChannel];
+      }
+    }
   }
 }
 
@@ -119,7 +121,11 @@
 
         // Register a notification so we get notified when an incoming RFCOMM channel is opened
 				// to the channel assigned to our chat service.
-        incomingChannelNotification = [IOBluetoothRFCOMMChannel registerForChannelOpenNotifications:self selector:@selector(newRFCOMMChannelOpened:channel:) withChannelID:serverChannelID direction:kIOBluetoothUserNotificationChannelDirectionIncoming];
+        incomingChannelNotification = [IOBluetoothRFCOMMChannel
+            registerForChannelOpenNotifications:self
+                                       selector:@selector(newRFCOMMChannelOpened:channel:)
+                                  withChannelID:serverChannelID
+                                      direction:kIOBluetoothUserNotificationChannelDirectionIncoming];
 
         NSLog(@"Started listening for Bluetooth notifications");
       } else {
@@ -149,7 +155,7 @@
 // Returns the name of the local bluetooth device
 - (NSString *)localDeviceName {
   BluetoothDeviceName localDeviceName;
-  if (IOBluetoothLocalDeviceReadName(localDeviceName, NULL, NULL, NULL ) == kIOReturnSuccess) {
+  if (IOBluetoothLocalDeviceReadName(localDeviceName, NULL, NULL, NULL) == kIOReturnSuccess) {
     return [NSString stringWithUTF8String:(const char*)localDeviceName];
   }
 

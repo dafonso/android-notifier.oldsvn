@@ -15,10 +15,12 @@
 @interface BluetoothNotificationListener : NSObject<NotificationListener> {
  @private
   NSObject<NotificationListenerCallback> *callback;
+
   BluetoothRFCOMMChannelID serverChannelID;
   BluetoothSDPServiceRecordHandle serverHandle;
   IOBluetoothUserNotification *incomingChannelNotification;
-  IOBluetoothRFCOMMChannel *rfcommChannel;
+
+  NSMutableSet *openChannels;
 }
 
 @end
