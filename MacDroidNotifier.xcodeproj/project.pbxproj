@@ -34,6 +34,8 @@
 		37CCD80310F578CA00CA6404 /* MuteAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CCD80210F578CA00CA6404 /* MuteAction.m */; };
 		37CCD80610F578DE00CA6404 /* ExecuteAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CCD80510F578DE00CA6404 /* ExecuteAction.m */; };
 		37CCD80910F5790800CA6404 /* ActionDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CCD80810F5790800CA6404 /* ActionDispatcher.m */; };
+		37E89D56110BF9FD006CBE71 /* SoundVolume.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E89D55110BF9FD006CBE71 /* SoundVolume.m */; };
+		37E89D82110BFBF5006CBE71 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37E89D81110BFBF5006CBE71 /* AudioToolbox.framework */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -103,6 +105,9 @@
 		37CCD80510F578DE00CA6404 /* ExecuteAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExecuteAction.m; sourceTree = "<group>"; };
 		37CCD80710F5790800CA6404 /* ActionDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionDispatcher.h; sourceTree = "<group>"; };
 		37CCD80810F5790800CA6404 /* ActionDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionDispatcher.m; sourceTree = "<group>"; };
+		37E89D54110BF9FD006CBE71 /* SoundVolume.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundVolume.h; sourceTree = "<group>"; };
+		37E89D55110BF9FD006CBE71 /* SoundVolume.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundVolume.m; sourceTree = "<group>"; };
+		37E89D81110BFBF5006CBE71 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = /System/Library/Frameworks/AudioToolbox.framework; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* MacDroidNotifier.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacDroidNotifier.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -117,6 +122,7 @@
 				3775423010E5D2E000A21D89 /* IOBluetooth.framework in Frameworks */,
 				3775423110E5D2E000A21D89 /* IOBluetoothUI.framework in Frameworks */,
 				376DF26C10EBE0DA0065B914 /* Sparkle.framework in Frameworks */,
+				37E89D82110BFBF5006CBE71 /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,6 +144,7 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				37E89D81110BFBF5006CBE71 /* AudioToolbox.framework */,
 				376DF26B10EBE0DA0065B914 /* Sparkle.framework */,
 				3775422E10E5D2E000A21D89 /* IOBluetooth.framework */,
 				3775422F10E5D2E000A21D89 /* IOBluetoothUI.framework */,
@@ -237,6 +244,8 @@
 				37753F7310E5893600A21D89 /* AsyncUdpSocket.m */,
 				379B9A6110E87759007B1FCA /* StartupItem.h */,
 				379B9A6210E87759007B1FCA /* StartupItem.m */,
+				37E89D54110BF9FD006CBE71 /* SoundVolume.h */,
+				37E89D55110BF9FD006CBE71 /* SoundVolume.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -343,6 +352,7 @@
 				37CCD80310F578CA00CA6404 /* MuteAction.m in Sources */,
 				37CCD80610F578DE00CA6404 /* ExecuteAction.m in Sources */,
 				37CCD80910F5790800CA6404 /* ActionDispatcher.m in Sources */,
+				37E89D56110BF9FD006CBE71 /* SoundVolume.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
