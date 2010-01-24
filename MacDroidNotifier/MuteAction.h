@@ -8,8 +8,11 @@
 #import <Cocoa/Cocoa.h>
 #import "Action.h"
 
-@interface MuteAction : NSObject<Action> {
+@class SoundVolume;
 
+@interface MuteAction : NSObject<Action> {
+ @private
+  SoundVolume *volume;
 }
 
 @end

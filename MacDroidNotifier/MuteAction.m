@@ -6,13 +6,25 @@
 //
 
 #import "MuteAction.h"
+#import "SoundVolume.h"
 
 
 @implementation MuteAction
 
+- (id)init {
+  if (self = [super init]) {
+    volume = [[SoundVolume alloc] init];
+  }
+  return self;
+}
+
+- (void)dealloc {
+  [volume release];
+  [super dealloc];
+}
+
 - (void)executeForNotification:(Notification *)notification {
-  // TODO: Implement
-  NSLog(@"Muting audio");
+  [volume setVolume:0.0f];
 }
 
 @end
