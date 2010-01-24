@@ -9,7 +9,7 @@
 	NSImage *img = [NSImage imageNamed:name];
 	[img setScalesWhenResized:YES];
 	[img setSize:NSMakeSize(18, 18)];
-  
+
 	return img;
 }
 

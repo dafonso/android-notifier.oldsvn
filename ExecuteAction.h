@@ -8,8 +8,6 @@
 #import <Cocoa/Cocoa.h>
 #import "Action.h"
 
-@interface ExecuteAction : NSObject<Action> {
-
-}
+@interface ExecuteAction : NSObject<Action>
 
 @end
