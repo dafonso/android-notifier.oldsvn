@@ -21,6 +21,7 @@ extern NSString *const kPreferencesPingKey;
 extern NSString *const kPreferencesDisplayKey;
 extern NSString *const kPreferencesMuteKey;
 extern NSString *const kPreferencesExecuteKey;
+extern NSString *const kPreferencesExecuteActionKey;
 
 // Constants for preference values.
 extern const NSInteger kPairingNotRequired;
@@ -38,6 +39,7 @@ extern const NSInteger kPairingRequired;
   IBOutlet NSArrayController *pairedDevicesModel;
   IBOutlet NSButton *addPairedDeviceButton;
   IBOutlet NSButton *removePairedDeviceButton;
+  IBOutlet NSTextField *executedName;
 
   BOOL isPairing;
 }

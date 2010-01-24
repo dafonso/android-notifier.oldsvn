@@ -23,6 +23,7 @@ NSString *const kPreferencesPingKey = @"ping";
 NSString *const kPreferencesDisplayKey = @"display";
 NSString *const kPreferencesMuteKey = @"mute";
 NSString *const kPreferencesExecuteKey = @"execute";
+NSString *const kPreferencesExecuteActionKey = @"executeAction";
 
 const NSInteger kPairingNotRequired = 0;
 const NSInteger kPairingRequired = 1;
@@ -78,10 +79,25 @@ const NSInteger kPairingRequired = 1;
   [removePairedDeviceButton setEnabled:enablePairingUI];
 }
 
+- (void)updateExecuteAction {
+  NSString *targetName = [[NSUserDefaults standardUserDefaults] objectForKey:kPreferencesExecuteActionKey];
+  NSString *displayedString = nil;
+  if (targetName != nil) {
+    displayedString = [NSString stringWithFormat:
+        NSLocalizedString(@"Executes: %@", @"Text for UI element which shows what will be executed for notifications"),
+        [targetName lastPathComponent]];
+  } else {
+    displayedString = NSLocalizedString(@"Executes: nothing (click \"...\" to pick target)",
+        @"Text for UI element when no execution target has been selected");
+  }
+  [executedName setStringValue:displayedString];
+}
+
 - (void)showDialog:(id)sender {
   [NSApp activateIgnoringOtherApps:YES];
   [prefsWindow makeKeyAndOrderFront:sender];
   [self updatePairingUI];
+  [self updateExecuteAction];
 }
 
 - (void)windowWillClose:(NSNotification *)note {
@@ -91,7 +107,14 @@ const NSInteger kPairingRequired = 1;
     // Save the updated preferences
     NSLog(@"Saving preferences");
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    // TODO(rdamazio): If pairing required but no devices paired, switch to no pairing required
+
+    // If pairing required but no devices paired, switch to no pairing required
+    if ([ud integerForKey:kPreferencesPairingRequiredKey] == kPairingRequired &&
+        [[ud arrayForKey:kPreferencesPairedDevicesKey] count] == 0) {
+      NSLog(@"Pairing set to required but no devices paired, switching to not required.");
+      [ud setInteger:kPairingNotRequired forKey:kPreferencesPairingRequiredKey];
+    }
+
     [ud synchronize];
   }
 }
@@ -154,8 +177,42 @@ const NSInteger kPairingRequired = 1;
   isPairing = NO;
 }
 
+- (NSString *)applicationsDirectory {
+  NSMutableArray *paths = [NSMutableArray array];
+  [paths addObjectsFromArray:NSSearchPathForDirectoriesInDomains(NSApplicationDirectory, NSUserDomainMask, NO)];
+  [paths addObjectsFromArray:NSSearchPathForDirectoriesInDomains(NSApplicationDirectory, NSLocalDomainMask, NO)];
+
+  for (NSString *path in paths) {
+    BOOL isDir;
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir] && isDir) {
+      return path;
+    }
+  }
+
+  return nil;
+}
+
 - (IBAction)selectExecuteAction:(id)sender {
-  // TODO(rdamazio): Implement
+  NSOpenPanel *openPanel = [NSOpenPanel openPanel];
+  [openPanel setCanChooseFiles:YES];
+  [openPanel setCanChooseDirectories:NO];
+  [openPanel setResolvesAliases:YES];
+  [openPanel setAllowsMultipleSelection:NO];
+  [openPanel setTitle:NSLocalizedString(@"Choose application to execute",
+                                        @"Title of execution target selection dialog")];
+  [openPanel setMessage:NSLocalizedString(
+      @"Choose an application, script or file to be opened when a notification arrives.",
+      @"Description shown in execution target selection dialog")];
+
+  NSInteger result = [openPanel runModalForDirectory:[self applicationsDirectory]
+                                                file:nil
+                                               types:nil];
+  if (result == NSOKButton) {
+    NSString *targetName = [[openPanel filenames] objectAtIndex:0];
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    [ud setObject:targetName forKey:kPreferencesExecuteActionKey];
+    [self updateExecuteAction];
+  }
 }
 
 @end

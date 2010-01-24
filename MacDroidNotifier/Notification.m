@@ -92,6 +92,14 @@
           notificationId, deviceId, typeStr, contents];
 }
 
+- (NSString *)rawNotificationString {
+  NSString *typeStr = [Notification stringFromNotificationType:type];
+  if (!typeStr) typeStr = @"UNKNOWN";
+  
+  return [NSString stringWithFormat:@"%@/%@/%@/%@",
+          deviceId, notificationId, typeStr, contents];  
+}
+
 + (NSString *)stringFromNotificationType:(NotificationType)type {
   switch (type) {
     case RING:
