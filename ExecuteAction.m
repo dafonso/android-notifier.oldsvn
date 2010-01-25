@@ -6,6 +6,7 @@
 //
 
 #import "ExecuteAction.h"
+#import "Notification.h"
 #import "Preferences.h"
 
 NSString *const kNotificationEnvironmentVar = @"ANDROID_NOTIFICATION";
