@@ -18,4 +18,8 @@
 // writes to the launch services' login items list.
 @property (readwrite, assign) BOOL startAtLogin;
 
+// Forces the startAtLogin property to be updated. An update notification will
+// be sent even if the value hasn't changed.
+- (void)forceValueUpdate;
+
 @end

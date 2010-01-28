@@ -7,6 +7,7 @@
 
 #import "Preferences.h"
 #import "Notification.h"
+#import "StartupItem.h"
 
 NSString *const kPreferencesPairedDevicesKey = @"pairedDevices";
 NSString *const kPreferencesPairingRequiredKey = @"pairingRequired";
@@ -98,6 +99,7 @@ const NSInteger kPairingRequired = 1;
   [prefsWindow makeKeyAndOrderFront:sender];
   [self updatePairingUI];
   [self updateExecuteAction];
+  [startupItem forceValueUpdate];
 }
 
 - (void)windowWillClose:(NSNotification *)note {
