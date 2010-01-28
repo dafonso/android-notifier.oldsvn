@@ -28,6 +28,7 @@ extern const NSInteger kPairingNotRequired;
 extern const NSInteger kPairingRequired;
 
 @class Notification;
+@class StartupItem;
 
 // Object which wrapps handling of the app's preferences, including its UI.
 @interface Preferences : NSObject {
@@ -40,6 +41,7 @@ extern const NSInteger kPairingRequired;
   IBOutlet NSButton *addPairedDeviceButton;
   IBOutlet NSButton *removePairedDeviceButton;
   IBOutlet NSTextField *executedName;
+  IBOutlet StartupItem *startupItem;
 
   BOOL isPairing;
 }

@@ -9,19 +9,6 @@
 
 #import "StartupItem.h"
 
-@interface StartupItem (Private)
-
-- (void)updateLoginItemState;
-
-@end
-
-static void loginItemsChanged(LSSharedFileListRef listRef, void *context) {
-  StartupItem *controller = context;
-
-  [controller willChangeValueForKey:@"startAtLogin"];
-  [controller didChangeValueForKey:@"startAtLogin"];
-}
-
 @implementation StartupItem
 
 @dynamic startAtLogin;
@@ -37,22 +24,11 @@ static void loginItemsChanged(LSSharedFileListRef listRef, void *context) {
     loginItemsRef = LSSharedFileListCreate(kCFAllocatorDefault,
                                            kLSSharedFileListSessionLoginItems,
                                            NULL);
-
-    LSSharedFileListAddObserver(loginItemsRef,
-                                [[NSRunLoop mainRunLoop] getCFRunLoop],
-                                kCFRunLoopCommonModes,
-                                loginItemsChanged,
-                                self);
   }
   return self;
 }
 
 - (void)dealloc {
-  LSSharedFileListRemoveObserver(loginItemsRef,
-                                 [[NSRunLoop mainRunLoop] getCFRunLoop],
-                                 kCFRunLoopCommonModes,
-                                 loginItemsChanged,
-                                 self);
   CFRelease(loginItemsRef);
 
   [super dealloc];
@@ -135,6 +111,13 @@ static void loginItemsChanged(LSSharedFileListRef listRef, void *context) {
   } else {
     [self addToLoginItems];
   }
+}
+
+#pragma mark Update
+
+- (void)forceValueUpdate {
+  [self willChangeValueForKey:@"startAtLogin"];
+  [self didChangeValueForKey:@"startAtLogin"];
 }
 
 @end
