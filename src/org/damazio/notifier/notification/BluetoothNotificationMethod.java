@@ -8,6 +8,7 @@ import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.NotifierPreferences;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
@@ -56,11 +57,13 @@ public class BluetoothNotificationMethod implements NotificationMethod {
 
     BluetoothSocket socket = null;
     for (BluetoothDevice device : pairedDevices) {
-      try {
-        socket = device.createRfcommSocketToServiceRecord(NOTIFICATION_UUID);
-      } catch (IOException e) {
-        // Couldn't create socket with this UUID on this device
-        // (but other devices may accept it)
+      if (device.getBluetoothClass().getMajorDeviceClass() == BluetoothClass.Device.Major.COMPUTER) {
+        try {
+          socket = device.createRfcommSocketToServiceRecord(NOTIFICATION_UUID);
+        } catch (IOException e) {
+          // Couldn't create socket with this UUID on this device
+          // (but other devices may accept it)
+        }
       }
 
       if (socket != null) {
@@ -76,6 +79,7 @@ public class BluetoothNotificationMethod implements NotificationMethod {
     // TODO(rdamazio): Add an end-of-message marker in case the packets get split
     byte[] messageBytes = notification.toString().getBytes();
     try {
+      Log.d(NotifierConstants.LOG_TAG, "Connecting to Bluetooth device " + socket.getRemoteDevice().getName());
       socket.connect();
       socket.getOutputStream().write(messageBytes);
       Log.d(NotifierConstants.LOG_TAG, "Sent notification over Bluetooth.");
