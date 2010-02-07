@@ -19,12 +19,32 @@
 
     <!-- Notification methods -->
     <string name="methods_title">Métodos de notificação:</string>
-    <string name="wifi_options">Opções de Wifi</string>
-    <string name="bluetooth_options">Opções de Bluetooth</string>
     <string name="method_on">Notificações serão enviadas por este método</string>
     <string name="method_off">Notificações NÃO serão enviadas por este método</string>
     <string name="eclair_required">Só suportado no Android 2.0 ou superior</string>
     <string name="not_yet_implemented">Ainda não implementado.</string>
+
+    <!-- Wifi method -->
+    <string name="wifi_options">Opções de Wifi</string>
+    <string name="target_ip_address">Endereço IP de destino</string>
+    <string name="custom_ip_title">Endereço IP customizado</string>
+    <string name="custom_ip">Por favor digite o endereço ao qual enviar notificações:</string>
+    <string name="wifi_sleep_policy">Política de desligamento do Wifi</string>
+    <string name="wifi_sleep_policy_summary">Controla quando o Android desliga o Wifi\n(por padrão, quando a tela desliga)</string>
+    <string name="enable_wifi">Auto-habilitar wifi</string>
+    <string name="enable_wifi_summary_on">O Wifi será ativado para enviar notificações</string>
+    <string name="enable_wifi_summary_off">Notificações não serão enviadas se o Wifi estiver desligado</string>
+
+    <!-- Bluetooth method -->
+    <string name="bluetooth_options">Opções de Bluetooth</string>
+    <string name="target_bluetooth_device">Dispositivo de destino</string>
+    <string name="target_bluetooth_device_summary">Selecione o dispositivo bluetooth a notificar</string>
+    <string name="bluetooth_pairing">Pareamento de dispositivos</string>
+    <string name="bluetooth_pairing_summary">Abre as configurações de bluetooth do sistema para parear um dispositivo.</string>
+    <string name="enable_bluetooth">Auto-habilitar bluetooth</string>
+    <string name="enable_bluetooth_summary_on">O bluetooth será habilitado para enviar notificações</string>
+    <string name="enable_bluetooth_summary_off">Notificações não serão enviadas se o Bluetooth estiver desligado.</string>
+    <string name="bluetooth_device_any">Qualquer dispositivo</string>
 
     <!-- Event types -->
     <string name="events_title">Eventos a notificar:</string>
