@@ -34,16 +34,17 @@ public class WifiNotificationMethod implements NotificationMethod {
   private class WifiDelayedNotifier extends MethodEnablingNotifier {
     private static final String WIFI_LOCK_TAG = "org.damazio.notifier.WifiEnable";
 
-    private final WifiLock wifiLock;
+    private WifiLock wifiLock;
 
     private WifiDelayedNotifier(Notification notification, boolean previousWifiEnabledState) {
       super(notification, previousWifiEnabledState, WifiNotificationMethod.this);
-
-      this.wifiLock = wifi.createWifiLock(WIFI_LOCK_TAG);
     }
 
     @Override
-    protected void acquireLock() {
+    protected synchronized void acquireLock() {
+      if (wifiLock == null) {
+        wifiLock = wifi.createWifiLock(WIFI_LOCK_TAG);
+      }
       wifiLock.acquire();
     }
 
@@ -195,5 +196,9 @@ public class WifiNotificationMethod implements NotificationMethod {
     if (wifi.getWifiState() == WifiManager.WIFI_STATE_ENABLING) return true;
     NetworkInfo wifiInfo = connectivity.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
     return (wifiInfo.getState() == NetworkInfo.State.CONNECTING);
+  }
+
+  public String getName() {
+    return "wifi";
   }
 }

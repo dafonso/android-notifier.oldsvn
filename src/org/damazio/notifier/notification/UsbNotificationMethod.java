@@ -11,4 +11,7 @@ public class UsbNotificationMethod implements NotificationMethod {
     // TODO(rdamazio): Implement
   }
 
+  public String getName() {
+    return "usb";
+  }
 }

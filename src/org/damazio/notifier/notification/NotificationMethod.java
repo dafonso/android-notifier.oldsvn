@@ -13,4 +13,8 @@ public interface NotificationMethod {
    */
   void sendNotification(Notification notification);
 
+  /**
+   * @return the name of this notification method
+   */
+  String getName();
 }

@@ -12,8 +12,8 @@ import android.util.Log;
  * @author rdamazio
  */
 abstract class MethodEnablingNotifier extends CountDownTimer {
-  private static final long MAX_WIFI_WAIT_TIME_MS = 60000;
-  private static final long WIFI_CHECK_INTERVAL_MS = 500;
+  private static final long MAX_MEDIUM_WAIT_TIME_MS = 60000;
+  private static final long MEDIUM_CHECK_INTERVAL_MS = 500;
 
   private final Notification notification;
   private final boolean previousEnabledState;
@@ -21,7 +21,7 @@ abstract class MethodEnablingNotifier extends CountDownTimer {
   private final NotificationMethod method;
 
   MethodEnablingNotifier(Notification notification, boolean previousEnabledState, NotificationMethod method) {
-    super(MAX_WIFI_WAIT_TIME_MS, WIFI_CHECK_INTERVAL_MS);
+    super(MAX_MEDIUM_WAIT_TIME_MS, MEDIUM_CHECK_INTERVAL_MS);
 
     this.notification = notification;
     this.previousEnabledState = previousEnabledState;
@@ -34,7 +34,7 @@ abstract class MethodEnablingNotifier extends CountDownTimer {
   @Override
   public void onTick(long millisUntilFinished) {
     if (!notificationSent && isMediumReady()) {
-      Log.d(NotifierConstants.LOG_TAG, "Wifi connected, sending delayed notification after " + (MAX_WIFI_WAIT_TIME_MS - millisUntilFinished) + "ms");
+      Log.d(NotifierConstants.LOG_TAG, "Method " + method.getName() + " connected, sending delayed notification after " + (MAX_MEDIUM_WAIT_TIME_MS - millisUntilFinished) + "ms");
 
       // Ignore next ticks
       notificationSent = true;
