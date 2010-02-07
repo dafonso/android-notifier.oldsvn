@@ -34,18 +34,20 @@ public class BluetoothNotificationMethod implements NotificationMethod {
    */
   private class BluetoothDelayedNotifier extends MethodEnablingNotifier {
     private static final String BLUETOOTH_LOCK_TAG = "org.damazio.notifier.BluetoothEnable";
-    private final WakeLock wakeLock;
+    private WakeLock wakeLock;
 
     public BluetoothDelayedNotifier(Notification notification, boolean previousEnabledState) {
       super(notification, previousEnabledState, BluetoothNotificationMethod.this);
-
-      // No bluetooth locking available - use a standard power lock
-      PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-      wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, BLUETOOTH_LOCK_TAG);
     }
 
     @Override
-    protected void acquireLock() {
+    protected synchronized void acquireLock() {
+      if (wakeLock == null) {
+        // No bluetooth locking available - use a standard power lock
+        PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, BLUETOOTH_LOCK_TAG);
+      }
+
       wakeLock.acquire();
     }
 
@@ -154,5 +156,7 @@ public class BluetoothNotificationMethod implements NotificationMethod {
     return BluetoothAdapter.getDefaultAdapter();
   }
 
-  
+  public String getName() {
+    return "bluetooth";
+  }
 }
