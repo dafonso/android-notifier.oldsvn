@@ -5,7 +5,7 @@ package org.damazio.notifier.notification;
  *
  * @author rdamazio
  */
-public interface NotificationMethod {
+interface NotificationMethod {
 
   /**
    * Sends a notification to the desktop application.

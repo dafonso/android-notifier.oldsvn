@@ -25,7 +25,7 @@ import android.util.Log;
  *
  * @author rdamazio
  */
-public class WifiNotificationMethod implements NotificationMethod {
+class WifiNotificationMethod implements NotificationMethod {
 
   /**
    * Class which waits for wifi to be enabled before sending a notification.

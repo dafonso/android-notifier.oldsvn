@@ -22,7 +22,7 @@ import android.util.Log;
  *
  * @author rdamazio
  */
-public class BluetoothNotificationMethod implements NotificationMethod {
+class BluetoothNotificationMethod implements NotificationMethod {
 
   private static final String NOTIFICATION_UUID_STR = "7674047E-6E47-4BF0-831F-209E3F9DD23F";
   private static final UUID NOTIFICATION_UUID = UUID.fromString(NOTIFICATION_UUID_STR);

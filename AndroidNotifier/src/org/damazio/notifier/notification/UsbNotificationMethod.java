@@ -5,7 +5,7 @@ package org.damazio.notifier.notification;
  *
  * @author rdamazio
  */
-public class UsbNotificationMethod implements NotificationMethod {
+class UsbNotificationMethod implements NotificationMethod {
 
   public void sendNotification(Notification notification) {
     // TODO(rdamazio): Implement
