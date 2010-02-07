@@ -91,10 +91,9 @@ public class WifiNotificationMethod implements NotificationMethod {
 
         // Check periodically if wifi connected, then try to send it
         new WifiDelayedNotifier(notification, wifi.isWifiEnabled()).start();
-        return;
+      } else {
+        Log.d(NotifierConstants.LOG_TAG, "Not notifying over wifi - not connected.");
       }
-
-      Log.d(NotifierConstants.LOG_TAG, "Not notifying over wifi - not connected.");
       return;
     }
 
@@ -168,7 +167,7 @@ public class WifiNotificationMethod implements NotificationMethod {
    *
    * @param packet the packet to send
    */
-  protected void sendDatagramPacket(DatagramPacket packet) throws IOException, SocketException {
+  private synchronized void sendDatagramPacket(DatagramPacket packet) throws IOException, SocketException {
     DatagramSocket socket = new DatagramSocket();
     socket.setBroadcast(true);
     socket.send(packet);

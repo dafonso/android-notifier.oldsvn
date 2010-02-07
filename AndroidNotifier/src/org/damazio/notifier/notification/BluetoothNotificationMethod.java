@@ -106,6 +106,18 @@ public class BluetoothNotificationMethod implements NotificationMethod {
       return;
     }
 
+    doSendNotification(notification);
+  }
+
+  /**
+   * Actually sends the notification to the device.
+   * 
+   * TODO(rdamazio): Sometimes, this will still give an error if too many
+   *                 notifications happen in parallel.
+   *
+   * @param notification the notification to send
+   */
+  private synchronized void doSendNotification(Notification notification) {
     String targetDeviceAddress = preferences.getTargetBluetoothDevice();
     BluetoothDevice targetDevice = deviceUtils.findDeviceMatching(targetDeviceAddress);
     if (targetDevice == null) {
