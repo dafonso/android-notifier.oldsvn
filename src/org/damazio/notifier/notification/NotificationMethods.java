@@ -34,7 +34,7 @@ public class NotificationMethods {
 
     // Methods supported only in 2.0 and above
     if (isBluetoothMethodSupported()) {
-      methods.add(new BluetoothNotificationMethod(preferences));
+      methods.add(new BluetoothNotificationMethod(context, preferences));
     }
 
     return methods;

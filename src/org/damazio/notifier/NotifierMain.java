@@ -1,5 +1,9 @@
 package org.damazio.notifier;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.damazio.notifier.notification.BluetoothDeviceUtils;
 import org.damazio.notifier.notification.Notification;
 import org.damazio.notifier.notification.NotificationMethods;
 import org.damazio.notifier.notification.NotificationType;
@@ -8,6 +12,7 @@ import org.damazio.notifier.service.NotificationService;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
@@ -15,6 +20,7 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.provider.Settings;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -34,84 +40,52 @@ public class NotifierMain extends PreferenceActivity {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    // Initialize the preferences UI
-    addPreferencesFromResource(R.xml.preferences);
-
     // Load preferences
     preferences = new NotifierPreferences(this);
 
+    // Initialize the preferences UI
+    addPreferencesFromResource(R.xml.preferences);
+
     // Show welcome screen if it's the first time
+    maybeShowWelcomeScreen();
+
+    // Start the service
+    maybeStartService();
+
+    // Configure all special preferences
+    configureBluetoothPreferences();
+    configureWifiPreferences();
+    configureServicePreferences();
+    configureMiscPreferences();
+  }
+
+  /**
+   * Shows a welcome screen if it's the first time the user runs the app.
+   */
+  private void maybeShowWelcomeScreen() {
     if (preferences.isFirstTime()) {
       preferences.setFirstTime(false);
 
       showAlertDialog(R.string.about_message, R.string.welcome_title);
     }
+  }
 
-    // Start the service
+  /**
+   * Starts the service if it was configured to start at boot.
+   * This is useful in case the service was either stopped, or the app
+   * is newly installed.
+   */
+  private void maybeStartService() {
     if (preferences.isStartAtBootEnabled()) {
       // Ensure the service is started if it should have been auto-started
       NotificationService.start(this);
     }
+  }
 
-    CheckBoxPreference bluetoothPreference = (CheckBoxPreference) findPreference(getString(R.string.method_bluetooth_key));
-    Preference bluetoothOptionsPreference = findPreference(getString(R.string.method_bluetooth_options_key));
-    if (!NotificationMethods.isBluetoothMethodSupported()) {
-      // Disallow enabling bluetooth, if it's not supported
-      bluetoothPreference.setChecked(false);
-      bluetoothPreference.setEnabled(false);
-      bluetoothPreference.setSummaryOff(R.string.eclair_required);
-      bluetoothOptionsPreference.setEnabled(false);
-    } else {
-      // Disable bluetooth options if bluetooth is disabled
-      attachCheckboxToEnable(bluetoothPreference, bluetoothOptionsPreference);
-    }
-
-    // Disable wifi options if wifi is disabled
-    attachCheckboxToEnable((CheckBoxPreference) findPreference(getString(R.string.method_wifi_key)),
-                        findPreference(getString(R.string.method_wifi_options_key)));
-
-    // Attach custom IP address selector
-    Preference ipAddressPreference = findPreference(getString(R.string.target_ip_address_key));
-    ipAddressPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-      public boolean onPreferenceChange(Preference preference, Object newValue) {
-        String value = (String) newValue;
-        if (value.equals("custom")) {
-          selectCustomIpAddress();
-        }
-
-        return true;
-      }
-
-    });
-
-    // Load wifi sleep policy from system settings, and save back only there
-    ListPreference sleepPolicyPreference = (ListPreference) findPreference(getString(R.string.wifi_sleep_policy_key));
-    sleepPolicyPreference.setValue(preferences.getWifiSleepPolicy());
-    sleepPolicyPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-      public boolean onPreferenceChange(Preference preference, Object newValue) {
-        preferences.setWifiSleepPolicy((String) newValue);
-        return false;
-      }
-    });
-
-    // Attach an action to send the test notification
-    Preference testNotificationPreference = findPreference(getString(R.string.test_notification_key));
-    testNotificationPreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-      public boolean onPreferenceClick(Preference preference) {
-        sendTestNotification();
-        return true;
-      }
-    });
-
-    // Attach an action to open the about screen
-    Preference aboutPreference = findPreference(getString(R.string.about_key));
-    aboutPreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-      public boolean onPreferenceClick(Preference preference) {
-        showAlertDialog(R.string.about_message, R.string.about_title);
-        return true;
-      }
-    });
-
+  /**
+   * Configures preference actions related to the service.
+   */
+  private void configureServicePreferences() {
     // Attach an action to start and stop the service
     serviceStatePreference = findPreference(getString(R.string.service_state_key));
     serviceStatePreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
@@ -126,53 +100,40 @@ public class NotifierMain extends PreferenceActivity {
   }
 
   /**
-   * Makes changing of the values on the given checkbox enable and disable
-   * the given destination preference.
-   * 
-   * @param checkbox the checkbox to listen for value changes
-   * @param dest the destination which will be enabled/disabled with it
+   * Configures preference actions related to Wifi.
    */
-  private void attachCheckboxToEnable(CheckBoxPreference checkbox, final Preference dest) {
-    checkbox.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+  private void configureWifiPreferences() {
+    // Attach custom IP address selector
+    Preference ipAddressPreference = findPreference(getString(R.string.target_ip_address_key));
+    ipAddressPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
       public boolean onPreferenceChange(Preference preference, Object newValue) {
-        boolean value = ((Boolean) newValue).booleanValue();
-        dest.setEnabled(value);
+        String value = (String) newValue;
+        if (value.equals("custom")) {
+          selectCustomIpAddress((ListPreference) preference);
+        }
+        return true;
+      }
+    });
+
+    // Load wifi sleep policy from system settings, and save back only there
+    ListPreference sleepPolicyPreference = (ListPreference) findPreference(getString(R.string.wifi_sleep_policy_key));
+    sleepPolicyPreference.setValue(preferences.getWifiSleepPolicy());
+    sleepPolicyPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+      public boolean onPreferenceChange(Preference preference, Object newValue) {
+        preferences.setWifiSleepPolicy((String) newValue);
         return true;
       }
     });
   }
 
   /**
-   * Toggles the service status between running and stopped.
+   * Opens a dialog asking the user for the custom IP address to use.
+   * If the user cancels the dialog, the preference will be returned to its
+   * previous value.
+   *
+   * @param preference the IP address type preference being set
    */
-  private void toggleServiceStatus() {
-    boolean isServiceRunning = NotificationService.isRunning(this);
-    if (isServiceRunning) {
-      NotificationService.stop(this);
-
-      Toast.makeText(this, R.string.service_stopped, Toast.LENGTH_SHORT).show();
-    } else {
-      NotificationService.start(this);
-
-      Toast.makeText(this, R.string.service_started, Toast.LENGTH_SHORT).show();
-    }
-    updateServiceStatus();
-  }
-
-  /**
-   * Updates the service status on the UI.
-   */
-  private void updateServiceStatus() {
-    boolean isServiceRunning = NotificationService.isRunning(this);
-      serviceStatePreference.setSummary(isServiceRunning
-          ? R.string.service_status_running
-          : R.string.service_status_stopped);
-      serviceStatePreference.setTitle(isServiceRunning
-          ? R.string.stop_service
-          : R.string.start_service);
-  }
-
-  private void selectCustomIpAddress() {
+  private void selectCustomIpAddress(final ListPreference preference) {
     AlertDialog.Builder alert = new AlertDialog.Builder(NotifierMain.this);
     alert.setTitle(R.string.custom_ip_title);
     alert.setMessage(R.string.custom_ip);
@@ -190,14 +151,116 @@ public class NotifierMain extends PreferenceActivity {
           }
         });
 
+    final String previousAddress = preference.getValue();
     alert.setNegativeButton(android.R.string.cancel,
         new DialogInterface.OnClickListener() {
           public void onClick(DialogInterface dialog, int whichButton) {
-            // TODO
+            preference.setValue(previousAddress);
           }
         });
 
     alert.show();
+  }
+
+  /**
+   * Configures preference actions related to bluetooth.
+   */
+  private void configureBluetoothPreferences() {
+    CheckBoxPreference bluetoothPreference = (CheckBoxPreference) findPreference(getString(R.string.method_bluetooth_key));
+    if (!NotificationMethods.isBluetoothMethodSupported()) {
+      // Disallow enabling bluetooth, if it's not supported
+      bluetoothPreference.setChecked(false);
+      bluetoothPreference.setEnabled(false);
+      bluetoothPreference.setSummaryOff(R.string.eclair_required);
+    } else {
+      // Populate the list of bluetooth devices
+      populateBluetoothDeviceList();
+
+      // Make the pair devices preference go to the system preferences
+      findPreference(getString(R.string.bluetooth_pairing_key))
+          .setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
+              Intent settingsIntent = new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
+              startActivity(settingsIntent);
+              return false;
+            }
+          });
+    }
+  }
+
+  /**
+   * Populates the list preference with all available bluetooth devices.
+   */
+  private void populateBluetoothDeviceList() {
+    // Build the list of entries and their values
+    List<String> entries = new ArrayList<String>();
+    List<String> entryValues = new ArrayList<String>();
+
+    // First value is "any"
+    entries.add(getString(R.string.bluetooth_device_any));
+    entryValues.add(BluetoothDeviceUtils.ANY_DEVICE);
+
+    // Other values are actual devices
+    BluetoothDeviceUtils.getInstance().populateDeviceLists(entries, entryValues);
+
+    CharSequence[] entriesArray = entries.toArray(new CharSequence[entries.size()]);
+    CharSequence[] entryValuesArray = entryValues.toArray(new CharSequence[entryValues.size()]);
+    ListPreference devicesPreference = (ListPreference) findPreference(getString(R.string.bluetooth_device_key));
+    devicesPreference.setEntryValues(entryValuesArray);
+    devicesPreference.setEntries(entriesArray);
+  }
+
+  /**
+   * Configures miscellaneous preference actions.
+   */
+  private void configureMiscPreferences() {
+    // Attach an action to send the test notification
+    Preference testNotificationPreference = findPreference(getString(R.string.test_notification_key));
+    testNotificationPreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+      public boolean onPreferenceClick(Preference preference) {
+        sendTestNotification();
+        return true;
+      }
+    });
+
+    // Attach an action to open the about screen
+    Preference aboutPreference = findPreference(getString(R.string.about_key));
+    aboutPreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+      public boolean onPreferenceClick(Preference preference) {
+        showAlertDialog(R.string.about_message, R.string.about_title);
+        return true;
+      }
+    });
+  }
+
+  /**
+   * Toggles the service status between running and stopped.
+   */
+  private void toggleServiceStatus() {
+    boolean isServiceRunning = NotificationService.isRunning(this);
+    int textId;
+    if (isServiceRunning) {
+      NotificationService.stop(this);
+      textId = R.string.service_stopped;
+    } else {
+      NotificationService.start(this);
+      textId = R.string.service_started;
+    }
+    Toast.makeText(this, textId, Toast.LENGTH_SHORT).show();
+    updateServiceStatus();
+  }
+
+  /**
+   * Updates the service status on the UI.
+   */
+  private void updateServiceStatus() {
+    boolean isServiceRunning = NotificationService.isRunning(this);
+      serviceStatePreference.setSummary(isServiceRunning
+          ? R.string.service_status_running
+          : R.string.service_status_stopped);
+      serviceStatePreference.setTitle(isServiceRunning
+          ? R.string.stop_service
+          : R.string.start_service);
   }
 
   /**

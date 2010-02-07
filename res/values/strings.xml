@@ -19,16 +19,15 @@
 
     <!-- Notification methods -->
     <string name="methods_title">Notification methods</string>
-    <string name="method_wifi">Wifi</string>
-    <string name="wifi_options">Wifi options</string>
-    <string name="method_bluetooth">Bluetooth</string>
-    <string name="bluetooth_options">Bluetooth options</string>
-    <string name="method_usb">USB</string>
     <string name="method_on">Notifications will be sent with this method</string>
     <string name="method_off">Notifications will NOT be sent with this method</string>
     <string name="eclair_required">Only supported in Android 2.0 or above</string>
     <string name="not_yet_implemented">Not yet implemented.</string>
 
+    <!-- Wifi method -->
+    <string name="method_wifi">Wifi</string>
+    <string name="wifi_options">Wifi options</string>
+    <string name="target_ip_address">Target IP address</string>
     <string name="custom_ip_title">Custom IP address</string>
     <string name="custom_ip">Please type in the address to send notifications to:</string>
     <string name="wifi_sleep_policy">Wifi sleep policy</string>
@@ -36,6 +35,21 @@
     <string name="enable_wifi">Auto-enable wifi</string>
     <string name="enable_wifi_summary_on">Wifi will be enabled to send notifications</string>
     <string name="enable_wifi_summary_off">Notifications won\'t be sent over Wifi if it\'s off</string>
+
+    <!-- Bluetooth method -->
+    <string name="method_bluetooth">Bluetooth</string>
+    <string name="bluetooth_options">Bluetooth options</string>
+    <string name="target_bluetooth_device">Target device</string>
+    <string name="target_bluetooth_device_summary">Select the bluetooth device to notify</string>
+    <string name="bluetooth_pairing">Device pairing</string>
+    <string name="bluetooth_pairing_summary">Open Android\'s bluetooth settings to pair a device</string>
+    <string name="enable_bluetooth">Auto-enable bluetooth</string>
+    <string name="enable_bluetooth_summary_on">Bluetooth will be enabled to send notifications</string>
+    <string name="enable_bluetooth_summary_off">Notifications won\'t be sent over Bluetooth if it\'s off</string>
+    <string name="bluetooth_device_any">Any device</string>
+
+    <!-- USB method -->
+    <string name="method_usb">USB</string>
 
     <!-- Event types -->
     <string name="events_title">Events to notify</string>

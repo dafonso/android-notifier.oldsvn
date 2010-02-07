@@ -16,7 +16,6 @@ import android.net.DhcpInfo;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiManager.WifiLock;
-import android.os.CountDownTimer;
 import android.util.Log;
 
 /**
@@ -30,58 +29,39 @@ public class WifiNotificationMethod implements NotificationMethod {
 
   /**
    * Class which waits for wifi to be enabled before sending a notification.
-   * It will only wait up to a certain time (60 seconds) before giving up.
+   * It will only wait up to a certain time before giving up.
    */
-  private class WifiDelayedNotifier extends CountDownTimer {
-    private static final long MAX_WIFI_WAIT_TIME_MS = 60000;
-    private static final long WIFI_CHECK_INTERVAL_MS = 500;
+  private class WifiDelayedNotifier extends MethodEnablingNotifier {
     private static final String WIFI_LOCK_TAG = "org.damazio.notifier.WifiEnable";
 
-    private final Notification notification;
-    private final boolean previousWifiEnabledState;
     private final WifiLock wifiLock;
-    private boolean notificationSent = false;
 
     private WifiDelayedNotifier(Notification notification, boolean previousWifiEnabledState) {
-      super(MAX_WIFI_WAIT_TIME_MS, WIFI_CHECK_INTERVAL_MS);
+      super(notification, previousWifiEnabledState, WifiNotificationMethod.this);
 
-      this.notification = notification;
-      this.previousWifiEnabledState = previousWifiEnabledState;
       this.wifiLock = wifi.createWifiLock(WIFI_LOCK_TAG);
+    }
 
-      // Ensure nobody will turn wifi off until we're done
+    @Override
+    protected void acquireLock() {
       wifiLock.acquire();
     }
 
     @Override
-    public void onTick(long millisUntilFinished) {
-      if (!notificationSent && isWifiConnected()) {
-        Log.d(NotifierConstants.LOG_TAG, "Wifi connected, sending delayed notification after " + (MAX_WIFI_WAIT_TIME_MS - millisUntilFinished) + "ms");
-
-        // Ignore next ticks
-        notificationSent = true;
-
-        // Send notification
-        sendNotification(notification);
-
-        restorePreviousWifiState();
-      }
+    protected void releaseLock() {
+      wifiLock.release();
     }
 
     @Override
-    public void onFinish() {
-      // Give it one last chance
-      onTick(0);
-
-      if (!notificationSent) {
-        Log.e(NotifierConstants.LOG_TAG, "Timed out while waiting for wifi to connect");
-        restorePreviousWifiState();
-      }
+    protected boolean isMediumReady() {
+      return isWifiConnected();
     }
 
-    private void restorePreviousWifiState() {
-      wifiLock.release();
-      wifi.setWifiEnabled(previousWifiEnabledState);
+    @Override
+    protected void setMediumEnabled(boolean enabled) {
+      if (!wifi.setWifiEnabled(enabled)) {
+        Log.e(NotifierConstants.LOG_TAG, "Unable to enable wifi");
+      }
     }
   }
 
@@ -106,7 +86,10 @@ public class WifiNotificationMethod implements NotificationMethod {
       // Check if we should enable it, or if it's already being enabled
       // (in which case we just send it after a little while)
       if (preferences.getEnableWifi() || isWifiConnecting()) {
-        enableWifiThenSendNotification(notification);
+        Log.d(NotifierConstants.LOG_TAG, "Enabling wifi and delaying notification");
+
+        // Check periodically if wifi connected, then try to send it
+        new WifiDelayedNotifier(notification, wifi.isWifiEnabled()).start();
         return;
       }
 
@@ -135,30 +118,6 @@ public class WifiNotificationMethod implements NotificationMethod {
     } catch (IOException e) {
       Log.e(NotifierConstants.LOG_TAG, "Unable to send UDP packet", e);
     }
-  }
-
-  /**
-   * Enables wifi, then sends the given notification only after it's connected.
-   *
-   * @param notification the notification to send
-   */
-  private void enableWifiThenSendNotification(Notification notification) {
-    Log.d(NotifierConstants.LOG_TAG, "Enabling wifi and delaying notification");
-
-    // Enable wifi
-    boolean isEnabled = wifi.isWifiEnabled();
-    if (!wifi.setWifiEnabled(true)) {
-      Log.d(NotifierConstants.LOG_TAG, "Unable to enable wifi");
-    }
-
-    if (!isEnabled) {
-      // If not previously enabled, for a scan to connect more quickly
-      // TODO(rdamazio): Make this more reliable - sometimes it will enable but not connect
-      wifi.startScan();
-    }
-
-    // Check periodically if wifi connected, then try to send it
-    new WifiDelayedNotifier(notification, isEnabled).start();
   }
 
   /**
