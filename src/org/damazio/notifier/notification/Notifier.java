@@ -32,14 +32,18 @@ public class Notifier {
    *
    * @param notification the notification to send
    */
-  public synchronized void sendNotification(Notification notification) {
+  public void sendNotification(final Notification notification) {
     if (!isNotificationEnabled(notification)) {
       return;
     }
 
     Log.d(NotifierConstants.LOG_TAG, "Sending notification: " + notification);
-    for (NotificationMethod method : allMethods) {
-      method.sendNotification(notification);
+    for (final NotificationMethod method : allMethods) {
+      new Thread("Notification " + method.getName()) {
+        public void run() {
+          method.sendNotification(notification);
+        }
+      }.start();
     }
   }
 

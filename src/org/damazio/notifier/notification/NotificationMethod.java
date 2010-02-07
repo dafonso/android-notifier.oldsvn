@@ -9,7 +9,7 @@ public interface NotificationMethod {
 
   /**
    * Sends a notification to the desktop application.
-   * @param notification TODO
+   * @param notification the notification to send
    */
   void sendNotification(Notification notification);
 
