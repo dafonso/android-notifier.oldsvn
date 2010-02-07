@@ -3,9 +3,11 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:title="@string/settings_title">
 
+  <!-- Service -->
   <PreferenceCategory android:title="@string/service_title">
     <Preference android:key="@string/service_state_key"
-                android:title="@string/start_service" />
+                android:title="@string/start_service"
+                android:persistent="false" />
     <CheckBoxPreference android:key="@string/start_at_boot_key"
                         android:title="@string/start_at_boot"
                         android:defaultValue="true"
@@ -13,16 +15,19 @@
                         android:summaryOff="@string/start_at_boot_off" />
   </PreferenceCategory>
 
+  <!-- Methods -->
   <PreferenceCategory android:title="@string/methods_title">
+    <!-- Wifi -->
     <CheckBoxPreference android:key="@string/method_wifi_key"
                         android:title="@string/method_wifi"
                         android:defaultValue="true"
                         android:summaryOn="@string/method_on"
                         android:summaryOff="@string/method_off" />
     <PreferenceScreen android:key="@string/method_wifi_options_key"
-                      android:title="@string/wifi_options">
+                      android:title="@string/wifi_options"
+                      android:dependency="@string/method_wifi_key">
       <ListPreference android:key="@string/target_ip_address_key"
-                      android:title="Target IP address"
+                      android:title="@string/target_ip_address"
                       android:entries="@array/targetIps"
                       android:entryValues="@array/targetIpValues"
                       android:defaultValue="global" />
@@ -31,7 +36,8 @@
                       android:title="@string/wifi_sleep_policy"
                       android:summary="@string/wifi_sleep_policy_summary"
                       android:entries="@array/wifiSleepPolicies"
-                      android:entryValues="@array/wifiSleepPolicyValues" />
+                      android:entryValues="@array/wifiSleepPolicyValues"
+                      android:persistent="false" />
 
       <CheckBoxPreference android:key="@string/enable_wifi_key"
                           android:title="@string/enable_wifi"
@@ -40,6 +46,7 @@
                           android:defaultValue="false" />
     </PreferenceScreen>
 
+    <!-- Bluetooth -->
     <CheckBoxPreference android:key="@string/method_bluetooth_key"
                         android:title="@string/method_bluetooth"
                         android:defaultValue="true"
@@ -47,10 +54,26 @@
                         android:summaryOff="@string/method_off" />
 
     <PreferenceScreen android:key="@string/method_bluetooth_options_key"
-                      android:title="@string/bluetooth_options">
-      <!-- TODO(bga): Add device selection/pairing -->
+                      android:title="@string/bluetooth_options"
+                      android:dependency="@string/method_bluetooth_key">
+      <ListPreference android:key="@string/bluetooth_device_key"
+                      android:title="@string/target_bluetooth_device"
+                      android:summary="@string/target_bluetooth_device_summary"
+                      android:defaultValue="any" />
+
+      <Preference android:key="@string/bluetooth_pairing_key"
+                  android:title="@string/bluetooth_pairing"
+                  android:summary="@string/bluetooth_pairing_summary"
+                  android:persistent="false" />
+
+      <CheckBoxPreference android:key="@string/enable_bluetooth_key"
+                          android:title="@string/enable_bluetooth"
+                          android:summaryOn="@string/enable_bluetooth_summary_on"
+                          android:summaryOff="@string/enable_bluetooth_summary_off"
+                          android:defaultValue="false" />
     </PreferenceScreen>
 
+    <!-- USB -->
     <CheckBoxPreference android:key="@string/method_usb_key"
                         android:title="@string/method_usb"
                         android:defaultValue="false"
@@ -58,6 +81,7 @@
                         android:enabled="false" />
   </PreferenceCategory>
 
+  <!-- Events -->
   <PreferenceCategory android:title="@string/events_title">
     <CheckBoxPreference android:key="@string/event_ring_key"
                         android:title="@string/event_ring"
@@ -81,12 +105,15 @@
                         android:summaryOff="@string/event_off" />
   </PreferenceCategory>
 
+  <!-- Misc -->
   <PreferenceCategory android:title="@string/misc_title">
     <Preference android:key="@string/test_notification_key"
                 android:title="@string/send_test_notification"
-                android:summary="@string/test_notification_summary" />
+                android:summary="@string/test_notification_summary"
+                android:persistent="false" />
     <Preference android:key="@string/about_key"
-                android:title="@string/about_menu" />
+                android:title="@string/about_menu"
+                android:persistent="false" />
   </PreferenceCategory>
 
 </PreferenceScreen>

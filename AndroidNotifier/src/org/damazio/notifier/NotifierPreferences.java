@@ -1,7 +1,12 @@
 package org.damazio.notifier;
 
+import java.util.Map;
+
+import org.damazio.notifier.notification.BluetoothDeviceUtils;
+
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
@@ -12,7 +17,6 @@ import android.util.Log;
  * @author rdamazio
  */
 public class NotifierPreferences {
-  // TODO(rdamazio): Migrate from old preferences file when detected
   private static final String OLD_PREFERENCES_NAME = "org.damazio.notifier.preferences";
 
   private final SharedPreferences preferences;
@@ -22,6 +26,56 @@ public class NotifierPreferences {
     this.context = context;
 
     this.preferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+    if (isFirstTime()) {
+      maybeMigrateOldPreferences();
+    }
+  }
+
+  /**
+   * Copies all previous preferences from the private custom-named file to the
+   * new, shared instance.
+   */
+  private void maybeMigrateOldPreferences() {
+    SharedPreferences oldPreferences =
+        context.getSharedPreferences(OLD_PREFERENCES_NAME, Context.MODE_PRIVATE);
+    // Don't migrate if there are no old preferences.
+    if (!oldPreferences.contains(context.getString(R.string.is_first_time_key)))
+      return;
+
+    Log.i(NotifierConstants.LOG_TAG, "Migrating old preferences");
+    Map<String, ?> allPrefs = oldPreferences.getAll();
+    Editor editor = preferences.edit();
+    for (Map.Entry<String, ?> entry : allPrefs.entrySet()) {
+      String key = entry.getKey();
+      if (preferences.contains(key)) {
+        Log.d(NotifierConstants.LOG_TAG, "Not migrating " + key + " - already exists");
+        continue;
+      }
+
+      Object value = entry.getValue();
+      if (value instanceof String) {
+        editor.putString(key, (String) value);
+      } else if (value instanceof Boolean) {
+        editor.putBoolean(key, (Boolean) value);
+      } else if (value instanceof Integer) {
+        editor.putInt(key, (Integer) value);
+      } else if (value instanceof Float) {
+        editor.putFloat(key, (Float) value);
+      } else if (value instanceof Long) {
+        editor.putLong(key, (Long) value);
+      } else {
+        Log.e(NotifierConstants.LOG_TAG, "Unknown value " + value +
+            " of type " + value.getClass().getName() + " for key " + key);
+        continue;
+      }
+
+      Log.i(NotifierConstants.LOG_TAG, "Migrated key=" + key + "; value=" + value);
+    }
+    editor.commit();
+
+    // Goodbye old preferences
+    oldPreferences.edit().clear().commit();
   }
 
   /**
@@ -52,18 +106,36 @@ public class NotifierPreferences {
     return preferences.getBoolean(context.getString(R.string.method_wifi_key), true);
   }
 
+  /**
+   * @return returns the current target IP address setting, which is one of
+   *         "global", "dhcp" or "custom"
+   */
   public String getWifiTargetIpAddress() {
     return preferences.getString(context.getString(R.string.target_ip_address_key), "global");
   }
-  
+
+  /**
+   * @return the custom IP address to be used if "custom" was returned by
+   *         {@link #getWifiTargetIpAddress}
+   */
   public String getCustomWifiTargetIpAddress() {
     return preferences.getString(context.getString(R.string.target_custom_ip_address_key), "255.255.255.255");
   }
 
+  /**
+   * Sets the custom wifi address to use if "custom" is returned by
+   * {@link #getWifiTargetIpAddress}.
+   *
+   * @param address the IP address's textual representation
+   */
   public void setCustomWifiTargetIpAddress(String address) {
     preferences.edit().putString(context.getString(R.string.target_custom_ip_address_key), address).commit();
   }
 
+  /**
+   * @return one of "screen", "plugged" or "never", describing the system's
+   *         current wifi sleep policy
+   */
   public String getWifiSleepPolicy() {
     int value = Settings.System.getInt(context.getContentResolver(),
         Settings.System.WIFI_SLEEP_POLICY, Settings.System.WIFI_SLEEP_POLICY_DEFAULT);
@@ -80,6 +152,11 @@ public class NotifierPreferences {
     }
   }
 
+  /**
+   * Sets the value of the system's wifi sleep policy
+   *
+   * @param value one of "screen", "plugged", or "never"
+   */
   public void setWifiSleepPolicy(String value) {
     int intValue = -1;
     if (value.equals("screen")) {
@@ -97,10 +174,21 @@ public class NotifierPreferences {
         Settings.System.WIFI_SLEEP_POLICY, intValue);
   }
 
+  /**
+   * @return whether to enable wifi to send a notification
+   */
   public boolean getEnableWifi() {
     return preferences.getBoolean(context.getString(R.string.enable_wifi_key), false);
   }
- 
+
+  /**
+   * @return the address of the target bluetooth device, or "any"
+   */
+  public String getTargetBluetoothDevice() {
+    return preferences.getString(context.getString(R.string.bluetooth_device_key),
+                                 BluetoothDeviceUtils.ANY_DEVICE);
+  }
+  
   /**
    * @return whether notifications should be sent over bluetooth
    */
@@ -108,6 +196,13 @@ public class NotifierPreferences {
     return preferences.getBoolean(context.getString(R.string.method_bluetooth_key), true);
   }
 
+  /**
+   * @return whether to enable bluetooth to send a notification
+   */
+  public boolean getEnableBluetooth() {
+    return preferences.getBoolean(context.getString(R.string.enable_bluetooth_key), false);
+  }
+  
   /**
    * @return whether notifications should be sent over USB
    */
