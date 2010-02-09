@@ -121,7 +121,7 @@ class BluetoothNotificationMethod implements NotificationMethod {
     String targetDeviceAddress = preferences.getTargetBluetoothDevice();
     BluetoothDevice targetDevice = deviceUtils.findDeviceMatching(targetDeviceAddress);
     if (targetDevice == null) {
-      Log.e(NotifierConstants.LOG_TAG, "Unable to bluetooth device '" + targetDeviceAddress + "' to send notifications to");
+      Log.e(NotifierConstants.LOG_TAG, "Unable to find bluetooth device '" + targetDeviceAddress + "' to send notifications to");
       return;
     }
 
@@ -141,7 +141,7 @@ class BluetoothNotificationMethod implements NotificationMethod {
     // TODO(rdamazio): Add an end-of-message marker in case the packets get split
     byte[] messageBytes = notification.toString().getBytes();
     try {
-      Log.d(NotifierConstants.LOG_TAG, "Connecting to Bluetooth device " + socket.getRemoteDevice().getName());
+      Log.d(NotifierConstants.LOG_TAG, "Connecting to Bluetooth device " + targetDevice.getName());
       socket.connect();
       socket.getOutputStream().write(messageBytes);
       Log.d(NotifierConstants.LOG_TAG, "Sent notification over Bluetooth.");
