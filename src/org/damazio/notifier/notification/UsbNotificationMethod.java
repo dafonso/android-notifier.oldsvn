@@ -7,11 +7,16 @@ package org.damazio.notifier.notification;
  */
 class UsbNotificationMethod implements NotificationMethod {
 
-  public void sendNotification(Notification notification) {
+  public void sendNotification(Notification notification, NotificationCallback callback) {
     // TODO(rdamazio): Implement
+    callback.notificationFailed(notification, null);
   }
 
   public String getName() {
     return "usb";
+  }
+
+  public boolean isEnabled() {
+    return false;
   }
 }
