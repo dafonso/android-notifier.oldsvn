@@ -4,8 +4,10 @@ import java.util.Set;
 
 import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.NotifierPreferences;
+import org.damazio.notifier.notification.NotificationMethod.NotificationCallback;
 
 import android.content.Context;
+import android.os.Looper;
 import android.util.Log;
 
 /**
@@ -39,9 +41,26 @@ public class Notifier {
 
     Log.d(NotifierConstants.LOG_TAG, "Sending notification: " + notification);
     for (final NotificationMethod method : allMethods) {
+      // Skip the method if disabled
+      if (!method.isEnabled()) {
+        continue;
+      }
+
+      // Start a new thread with a looper to send the notification in
       new Thread("Notification " + method.getName()) {
         public void run() {
-          method.sendNotification(notification);
+          Looper.prepare();
+          final Looper looper = Looper.myLooper();
+          method.sendNotification(notification, new NotificationCallback() {
+            public void notificationSent(Notification notification) {
+              looper.quit();
+            }
+
+            public void notificationFailed(Notification notification, Throwable reason) {
+              looper.quit();
+            }
+          });
+          Looper.loop();
         }
       }.start();
     }

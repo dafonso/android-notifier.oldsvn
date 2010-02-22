@@ -36,8 +36,8 @@ class WifiNotificationMethod implements NotificationMethod {
 
     private WifiLock wifiLock;
 
-    private WifiDelayedNotifier(Notification notification, boolean previousWifiEnabledState) {
-      super(notification, previousWifiEnabledState, WifiNotificationMethod.this);
+    private WifiDelayedNotifier(Notification notification, NotificationCallback callback, boolean previousWifiEnabledState) {
+      super(notification, callback, previousWifiEnabledState, WifiNotificationMethod.this);
     }
 
     @Override
@@ -77,11 +77,7 @@ class WifiNotificationMethod implements NotificationMethod {
     this.connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
   }
 
-  public void sendNotification(Notification notification) {
-    if (!preferences.isWifiMethodEnabled()) {
-      return;
-    }
-
+  public void sendNotification(Notification notification, NotificationCallback callback) {
     // Check if wifi is disabled
     if (!isWifiConnected()) {
       // Check if we should enable it, or if it's already being enabled
@@ -90,9 +86,10 @@ class WifiNotificationMethod implements NotificationMethod {
         Log.d(NotifierConstants.LOG_TAG, "Enabling wifi and delaying notification");
 
         // Check periodically if wifi connected, then try to send it
-        new WifiDelayedNotifier(notification, wifi.isWifiEnabled()).start();
+        new WifiDelayedNotifier(notification, callback, wifi.isWifiEnabled()).start();
       } else {
         Log.d(NotifierConstants.LOG_TAG, "Not notifying over wifi - not connected.");
+        callback.notificationFailed(notification, null);
       }
       return;
     }
@@ -112,10 +109,13 @@ class WifiNotificationMethod implements NotificationMethod {
       // Send it
       sendDatagramPacket(packet);
 
+      callback.notificationSent(notification);
       Log.i(NotifierConstants.LOG_TAG, "Sent notification over WiFi.");
     } catch (SocketException e) {
+      callback.notificationFailed(notification, e);
       Log.e(NotifierConstants.LOG_TAG, "Unable to open socket", e);
     } catch (IOException e) {
+      callback.notificationFailed(notification, e);
       Log.e(NotifierConstants.LOG_TAG, "Unable to send UDP packet", e);
     }
   }
@@ -199,5 +199,9 @@ class WifiNotificationMethod implements NotificationMethod {
 
   public String getName() {
     return "wifi";
+  }
+
+  public boolean isEnabled() {
+    return preferences.isWifiMethodEnabled();
   }
 }

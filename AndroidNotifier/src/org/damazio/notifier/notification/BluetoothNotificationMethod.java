@@ -36,8 +36,9 @@ class BluetoothNotificationMethod implements NotificationMethod {
     private static final String BLUETOOTH_LOCK_TAG = "org.damazio.notifier.BluetoothEnable";
     private WakeLock wakeLock;
 
-    public BluetoothDelayedNotifier(Notification notification, boolean previousEnabledState) {
-      super(notification, previousEnabledState, BluetoothNotificationMethod.this);
+    public BluetoothDelayedNotifier(Notification notification, NotificationCallback callback,
+        boolean previousEnabledState) {
+      super(notification, callback, previousEnabledState, BluetoothNotificationMethod.this);
     }
 
     @Override
@@ -79,34 +80,48 @@ class BluetoothNotificationMethod implements NotificationMethod {
   public BluetoothNotificationMethod(Context context, NotifierPreferences preferences) {
     this.context = context;
     this.preferences = preferences;
-    this.bluetoothAdapter = getBluetoothAdapter();
+    this.bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     this.deviceUtils = BluetoothDeviceUtils.getInstance();
   }
 
-  public void sendNotification(Notification notification) {
-    if (!preferences.isBluetoothMethodEnabled()) {
-      return;
-    }
-
+  public void sendNotification(Notification notification, NotificationCallback callback) {
     if (bluetoothAdapter == null) {
       // No bluetooth support
       Log.e(NotifierConstants.LOG_TAG, "No bluetooth support");
+      callback.notificationFailed(notification, null);
       return;
     }
 
-    if (!isBluetoothReady()) {
-      // Bluetooth disabled - check if we should enable it
-      if (preferences.getEnableBluetooth()) {
-        Log.d(NotifierConstants.LOG_TAG, "Enabling bluetooth and delaying notification");
-        new BluetoothDelayedNotifier(notification, bluetoothAdapter.isEnabled()).start();
-        return;
-      }
+    if (isBluetoothReady()) {
+      doSendNotification(notification, callback);
+      return;
+    }
 
+    // Delay the notification if either bluetooth is disabled, or if it's not ready
+    // because it's in discovery mode.
+    if (preferences.getEnableBluetooth()) {
+      Log.d(NotifierConstants.LOG_TAG, "Enabling bluetooth and delaying notification");
+      sendDelayedNotification(notification, callback);
+      return;
+    } else if (bluetoothAdapter.isDiscovering()) {
+      Log.d(NotifierConstants.LOG_TAG, "Delaying bluetooth notification until discovery is done");
+      bluetoothAdapter.cancelDiscovery();
+      sendDelayedNotification(notification, callback);
+      return;
+    } else {
       Log.e(NotifierConstants.LOG_TAG, "Not sending bluetooth notification - not enabled");
-      return;
+      callback.notificationFailed(notification, null);
     }
+  }
 
-    doSendNotification(notification);
+  /**
+   * Sends the given notification later, after bluetooth is enabled and ready.
+   *
+   * @param notification the notification to send
+   * @param callback 
+   */
+  private void sendDelayedNotification(Notification notification, NotificationCallback callback) {
+    new BluetoothDelayedNotifier(notification, callback, bluetoothAdapter.isEnabled()).start();
   }
 
   /**
@@ -116,12 +131,16 @@ class BluetoothNotificationMethod implements NotificationMethod {
    *                 notifications happen in parallel.
    *
    * @param notification the notification to send
+   * @param callback 
    */
-  private synchronized void doSendNotification(Notification notification) {
+  private synchronized void doSendNotification(Notification notification,
+      NotificationCallback callback) {
     String targetDeviceAddress = preferences.getTargetBluetoothDevice();
     BluetoothDevice targetDevice = deviceUtils.findDeviceMatching(targetDeviceAddress);
     if (targetDevice == null) {
-      Log.e(NotifierConstants.LOG_TAG, "Unable to find bluetooth device '" + targetDeviceAddress + "' to send notifications to");
+      Log.e(NotifierConstants.LOG_TAG, "Unable to find bluetooth device '" + targetDeviceAddress
+          + "' to send notifications to");
+      callback.notificationFailed(notification, null);
       return;
     }
 
@@ -130,11 +149,14 @@ class BluetoothNotificationMethod implements NotificationMethod {
       socket = targetDevice.createRfcommSocketToServiceRecord(NOTIFICATION_UUID);
     } catch (IOException e) {
       // Let it stay null
+      // TODO(rdamazio): Retry here
       e.printStackTrace();
     }
 
     if (socket == null) {
-      Log.e(NotifierConstants.LOG_TAG, "Couldn't open an RFCOMM bluetooth socket to device " + targetDevice.getName());
+      Log.e(NotifierConstants.LOG_TAG, "Couldn't open an RFCOMM bluetooth socket to device "
+          + targetDevice.getName());
+      callback.notificationFailed(notification, null);
       return;
     }
 
@@ -142,10 +164,15 @@ class BluetoothNotificationMethod implements NotificationMethod {
     byte[] messageBytes = notification.toString().getBytes();
     try {
       Log.d(NotifierConstants.LOG_TAG, "Connecting to Bluetooth device " + targetDevice.getName());
+
       socket.connect();
       socket.getOutputStream().write(messageBytes);
+
+      callback.notificationSent(notification);
       Log.d(NotifierConstants.LOG_TAG, "Sent notification over Bluetooth.");
     } catch (IOException e) {
+      // TODO(rdamazio): Retry here
+      callback.notificationFailed(notification, e);
       Log.e(NotifierConstants.LOG_TAG, "Error sending bluetooth notification", e);
     }
 
@@ -157,18 +184,14 @@ class BluetoothNotificationMethod implements NotificationMethod {
   }
 
   private boolean isBluetoothReady() {
-    // TODO: Check that the specific device is bonded
-    return bluetoothAdapter.isEnabled();
-  }
-
-  /**
-   * @return the default bluetooth adapter
-   */
-  protected BluetoothAdapter getBluetoothAdapter() {
-    return BluetoothAdapter.getDefaultAdapter();
+    return bluetoothAdapter.isEnabled() && !bluetoothAdapter.isDiscovering();
   }
 
   public String getName() {
     return "bluetooth";
+  }
+
+  public boolean isEnabled() {
+    return preferences.isBluetoothMethodEnabled();
   }
 }

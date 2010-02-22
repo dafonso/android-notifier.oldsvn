@@ -1,6 +1,7 @@
 package org.damazio.notifier.notification;
 
 import org.damazio.notifier.NotifierConstants;
+import org.damazio.notifier.notification.NotificationMethod.NotificationCallback;
 
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -19,11 +20,14 @@ abstract class MethodEnablingNotifier extends CountDownTimer {
   private final boolean previousEnabledState;
   private boolean notificationSent = false;
   private final NotificationMethod method;
+  private final NotificationCallback callback;
 
-  MethodEnablingNotifier(Notification notification, boolean previousEnabledState, NotificationMethod method) {
+  MethodEnablingNotifier(Notification notification, NotificationCallback callback,
+      boolean previousEnabledState, NotificationMethod method) {
     super(MAX_MEDIUM_WAIT_TIME_MS, MEDIUM_CHECK_INTERVAL_MS);
 
     this.notification = notification;
+    this.callback = callback;
     this.previousEnabledState = previousEnabledState;
     this.method = method;
 
@@ -34,13 +38,16 @@ abstract class MethodEnablingNotifier extends CountDownTimer {
   @Override
   public void onTick(long millisUntilFinished) {
     if (!notificationSent && isMediumReady()) {
-      Log.d(NotifierConstants.LOG_TAG, "Method " + method.getName() + " connected, sending delayed notification after " + (MAX_MEDIUM_WAIT_TIME_MS - millisUntilFinished) + "ms");
+      Log.d(NotifierConstants.LOG_TAG, "Method " + method.getName()
+          + " connected, sending delayed notification after "
+          + (MAX_MEDIUM_WAIT_TIME_MS - millisUntilFinished) + "ms");
 
       // Ignore next ticks
+      cancel();
       notificationSent = true;
 
       // Send notification
-      method.sendNotification(notification);
+      method.sendNotification(notification, callback);
 
       restorePreviousEnabledState();
     }
@@ -53,6 +60,7 @@ abstract class MethodEnablingNotifier extends CountDownTimer {
 
     if (!notificationSent) {
       Log.e(NotifierConstants.LOG_TAG, "Timed out while waiting for medium to connect");
+      callback.notificationFailed(notification, null);
       restorePreviousEnabledState();
     }
   }
