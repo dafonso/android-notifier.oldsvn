@@ -49,7 +49,9 @@ public abstract class BluetoothDeviceUtils {
 
       Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
       for (BluetoothDevice device : pairedDevices) {
-        if (device.getBluetoothClass().getMajorDeviceClass() == BluetoothClass.Device.Major.COMPUTER) {
+        BluetoothClass bluetoothClass = device.getBluetoothClass();
+        if (bluetoothClass != null &&
+            bluetoothClass.getMajorDeviceClass() == BluetoothClass.Device.Major.COMPUTER) {
           deviceAddresses.add(device.getAddress());
           deviceNames.add(device.getName());
         }
@@ -102,9 +104,7 @@ public abstract class BluetoothDeviceUtils {
      */
     private void ensureNotDiscovering() {
       // If it's in discovery mode, cancel that for now.
-      if (bluetoothAdapter.isDiscovering()) {
-        bluetoothAdapter.cancelDiscovery();
-      }
+      bluetoothAdapter.cancelDiscovery();
     }
 
     /**
