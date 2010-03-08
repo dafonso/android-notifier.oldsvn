@@ -105,6 +105,9 @@
 		37CCD80510F578DE00CA6404 /* ExecuteAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExecuteAction.m; sourceTree = "<group>"; };
 		37CCD80710F5790800CA6404 /* ActionDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionDispatcher.h; sourceTree = "<group>"; };
 		37CCD80810F5790800CA6404 /* ActionDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionDispatcher.m; sourceTree = "<group>"; };
+		37DC4EA3114526EC007448FC /* say.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = say.sh; path = "Example Scripts/say.sh"; sourceTree = "<group>"; };
+		37DC4EBC11452963007448FC /* event_log.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = event_log.py; path = "Example Scripts/event_log.py"; sourceTree = "<group>"; };
+		37DC4EBE11452EE0007448FC /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README.txt; path = "Example Scripts/README.txt"; sourceTree = "<group>"; };
 		37E89D54110BF9FD006CBE71 /* SoundVolume.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundVolume.h; sourceTree = "<group>"; };
 		37E89D55110BF9FD006CBE71 /* SoundVolume.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundVolume.m; sourceTree = "<group>"; };
 		37E89D81110BFBF5006CBE71 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = /System/Library/Frameworks/AudioToolbox.framework; sourceTree = "<absolute>"; };
@@ -181,6 +184,7 @@
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				37753F7110E5891500A21D89 /* Utilities */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
+				37DC4EA111452656007448FC /* Example scripts */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
@@ -266,6 +270,16 @@
 				37CCD80510F578DE00CA6404 /* ExecuteAction.m */,
 			);
 			name = Actions;
+			sourceTree = "<group>";
+		};
+		37DC4EA111452656007448FC /* Example scripts */ = {
+			isa = PBXGroup;
+			children = (
+				37DC4EBE11452EE0007448FC /* README.txt */,
+				37DC4EA3114526EC007448FC /* say.sh */,
+				37DC4EBC11452963007448FC /* event_log.py */,
+			);
+			name = "Example scripts";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
