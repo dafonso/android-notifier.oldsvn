@@ -9,6 +9,29 @@
       <description>Most recent changes with links to updates.</description>
       <language>en</language>
          <item>
+            <title>Version 0.2.3</title>
+            <description><![CDATA[
+              <h3>Changes in this version:</h3>
+              <ul>
+                <li>Rebuilt preferences UI
+                <li>Actions per notification type: mute audio and execute
+                <li>Added example scripts for the execute action
+                <li>Update checks will now happen once a week
+                <li>Allowing multiple simultaneous bluetooth connections for faster response
+                <li>Improved 64-bit compatibility
+                <li>Fixed "pairing required" when no devices are paired
+                <li>Added a check that Growl is running
+              </ul>
+            ]]></description>
+            <pubDate>Thu, 08 Mar 2010 10:48:26 -0200</pubDate>
+            <enclosure
+                url="http://android-notifier.googlecode.com/files/MacDroidNotifier-0.2.3.dmg"
+                sparkle:version="0.2.3"
+                length="1593441"
+                sparkle:dsaSignature="MCwCFF9m+Y0dwCKXGMltPUMZRdA/VcEhAhQ71z4IaIySpVUJxFVyzXnJga1NAQ=="
+                type="application/octet-stream" />
+         </item>
+         <item>
             <title>Version 0.2.2</title>
             <description><![CDATA[
               <h3>Changes in this version:</h3>
