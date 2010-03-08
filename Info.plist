@@ -32,5 +32,7 @@
 	<true/>
 	<key>SUPublicDSAKeyFile</key>
 	<string>sparkle_pub.pem</string>
+	<key>SUScheduledCheckInterval</key>
+	<string>604800</string>
 </dict>
 </plist>
