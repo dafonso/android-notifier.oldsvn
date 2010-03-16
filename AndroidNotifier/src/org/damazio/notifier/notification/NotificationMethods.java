@@ -3,10 +3,10 @@ package org.damazio.notifier.notification;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.NotifierPreferences;
 
 import android.content.Context;
-import android.os.Build;
 
 /**
  * Factory for notification methods.
@@ -44,6 +44,6 @@ public class NotificationMethods {
    * @return whether the bluetooth method is supported on this device
    */
   public static boolean isBluetoothMethodSupported() {
-    return Build.VERSION.SDK_INT >= 5;
+    return NotifierConstants.ANDROID_SDK_INT >= 5;
   }
 }
