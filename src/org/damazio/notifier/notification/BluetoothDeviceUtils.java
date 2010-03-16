@@ -3,9 +3,12 @@ package org.damazio.notifier.notification;
 import java.util.List;
 import java.util.Set;
 
+import org.damazio.notifier.NotifierConstants;
+
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
+import android.util.Log;
 
 /**
  * Utilities for dealing with bluetooth devices.
@@ -41,6 +44,10 @@ public abstract class BluetoothDeviceUtils {
 
     public RealImpl() {
       bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+      if (bluetoothAdapter == null) {
+        throw new IllegalStateException("Unable to get bluetooth adapter");
+      }
     }
 
     @Override
@@ -137,9 +144,16 @@ public abstract class BluetoothDeviceUtils {
   public static BluetoothDeviceUtils getInstance() {
     if (instance == null) {
       if (!NotificationMethods.isBluetoothMethodSupported()) {
+        Log.d(NotifierConstants.LOG_TAG, "Using dummy bluetooth utils");
         instance = new DummyImpl();
       } else {
-        instance = new RealImpl();
+        Log.d(NotifierConstants.LOG_TAG, "Using real bluetooth utils");
+        try {
+          instance = new RealImpl();
+        } catch (IllegalStateException ise) {
+          Log.w(NotifierConstants.LOG_TAG, "Oops, I mean, using dummy bluetooth utils", ise);
+          instance = new DummyImpl();
+        }
       }
     }
     return instance;

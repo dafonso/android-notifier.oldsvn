@@ -5,7 +5,6 @@ import org.damazio.notifier.NotifierConstants;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.Contacts;
 import android.provider.Contacts.Phones;
 import android.provider.ContactsContract.PhoneLookup;
@@ -74,14 +73,13 @@ public abstract class CallerId {
   /**
    * Creates a new instance of {@link CallerId}, appropriate for the current
    * version of Android.
-   *
-   * @param context
-   * @return
    */
   public static CallerId create(Context context) {
-    if (Build.VERSION.SDK_INT >= 5) {
+    if (NotifierConstants.ANDROID_SDK_INT >= 5) {
+      Log.d(NotifierConstants.LOG_TAG, "Using level 5 caller ID");
       return new CallerIdApi5(context);
     } else {
+      Log.d(NotifierConstants.LOG_TAG, "Using level 4 caller ID");
       return new CallerIdApi4(context);
     }
   }

@@ -1,7 +1,6 @@
 package org.damazio.notifier.service;
 
 import org.damazio.notifier.NotifierConstants;
-import org.damazio.notifier.R;
 import org.damazio.notifier.notification.Notification;
 import org.damazio.notifier.notification.NotificationType;
 
@@ -9,7 +8,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.telephony.SmsMessage;
 import android.util.Log;
 
 /**
@@ -39,11 +37,7 @@ class SmsReceiver extends BroadcastReceiver {
     if (bundle != null) {
       Object[] pdus = (Object[]) bundle.get("pdus");
       for (int i = 0; i < pdus.length; i++) {
-        SmsMessage message = SmsMessage.createFromPdu((byte[])pdus[i]);
-
-        String contents = context.getString(R.string.sms_contents,
-            message.getOriginatingAddress(),
-            message.getMessageBody());
+        String contents = SmsDecoder.getInstance().getSmsContents(context, pdus[i]);
 
         Log.d(NotifierConstants.LOG_TAG, "Received Sms: " + contents);
         Notification notification = new Notification(context, NotificationType.SMS, contents);
