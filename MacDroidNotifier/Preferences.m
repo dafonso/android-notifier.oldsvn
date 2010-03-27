@@ -25,6 +25,7 @@ NSString *const kPreferencesDisplayKey = @"display";
 NSString *const kPreferencesMuteKey = @"mute";
 NSString *const kPreferencesExecuteKey = @"execute";
 NSString *const kPreferencesExecuteActionKey = @"executeAction";
+NSString *const kPreferencesCopyKey = @"copy";
 
 const NSInteger kPairingNotRequired = 0;
 const NSInteger kPairingRequired = 1;
