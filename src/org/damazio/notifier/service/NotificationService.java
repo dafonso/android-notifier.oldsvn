@@ -14,6 +14,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.IntentFilter.MalformedMimeTypeException;
 import android.os.Handler;
 import android.os.IBinder;
 import android.telephony.PhoneStateListener;
@@ -35,6 +36,7 @@ public class NotificationService extends Service {
   private final PhoneStateListener phoneListener = new PhoneRingListener(this);
   private final BatteryReceiver batteryReceiver = new BatteryReceiver(this);
   private final SmsReceiver smsReceiver = new SmsReceiver(this);
+  private final MmsReceiver mmsReceiver = new MmsReceiver(this);
 
   public void sendNotification(final Notification notification) {
     instanceHandler.post(new Runnable() {
@@ -57,8 +59,19 @@ public class NotificationService extends Service {
     final TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
     tm.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
 
+    // Register the battery receiver
     registerReceiver(batteryReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+
+    // Register the SMS receiver
     registerReceiver(smsReceiver, new IntentFilter(SmsReceiver.ACTION));
+
+    // Register the MMS receiver
+    try {
+      registerReceiver(mmsReceiver,
+          new IntentFilter(MmsReceiver.ACTION, MmsReceiver.DATA_TYPE));
+    } catch (MalformedMimeTypeException e) {
+      Log.e(NotifierConstants.LOG_TAG, "Unable to register MMS receiver", e);
+    }
   }
 
   @Override
