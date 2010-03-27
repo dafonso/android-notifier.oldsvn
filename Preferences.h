@@ -22,6 +22,7 @@ extern NSString *const kPreferencesDisplayKey;
 extern NSString *const kPreferencesMuteKey;
 extern NSString *const kPreferencesExecuteKey;
 extern NSString *const kPreferencesExecuteActionKey;
+extern NSString *const kPreferencesCopyKey;
 
 // Constants for preference values.
 extern const NSInteger kPairingNotRequired;

@@ -8,6 +8,7 @@
 #import "ActionDispatcher.h"
 
 #import "Action.h"
+#import "CopyAction.h"
 #import "DisplayAction.h"
 #import "ExecuteAction.h"
 #import "MuteAction.h"
@@ -21,6 +22,7 @@
                  [[[DisplayAction alloc] initWithGrowl:growl] autorelease], kPreferencesDisplayKey,
                  [[[MuteAction alloc] init] autorelease], kPreferencesMuteKey,
                  [[[ExecuteAction alloc] init] autorelease], kPreferencesExecuteKey,
+                 [[[CopyAction alloc] init] autorelease], kPreferencesCopyKey,
                  nil] retain];
 }
 
