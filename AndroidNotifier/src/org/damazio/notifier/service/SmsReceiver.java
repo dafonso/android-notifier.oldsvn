@@ -11,7 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 /**
- * Receiver which catches receives SMS messages and notifies about them.
+ * Receiver which catches SMS messages and notifies about them.
  *
  * @author rdamazio
  */
