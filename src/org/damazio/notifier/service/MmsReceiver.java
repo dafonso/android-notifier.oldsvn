@@ -53,8 +53,8 @@ class MmsReceiver extends BroadcastReceiver {
       String contents = "";
       EncodedStringValue from = headers.getFrom();
       if (from != null) {
-        // TODO(rdamazio): Use CallerId for sender
-        contents = service.getString(R.string.mms_contents, from.getString());
+        String fromStr = CallerId.create(service).buildCallerIdString(from.getString());
+        contents = service.getString(R.string.mms_contents, fromStr);
       }
       Notification notification = new Notification(context, NotificationType.MMS, contents);
       service.sendNotification(notification);

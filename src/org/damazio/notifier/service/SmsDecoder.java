@@ -22,10 +22,8 @@ public abstract class SmsDecoder {
     public String getSmsContents(Context context, Object pdu) {
       SmsMessage message = SmsMessage.createFromPdu((byte[]) pdu);
 
-      // TODO(rdamazio): Use CallerId for originating address
-      return context.getString(R.string.sms_contents,
-          message.getOriginatingAddress(),
-          message.getMessageBody());
+      String from = getSenderString(context, message.getOriginatingAddress());
+      return context.getString(R.string.sms_contents, from, message.getMessageBody());
     }
   }
 
@@ -39,10 +37,8 @@ public abstract class SmsDecoder {
       android.telephony.gsm.SmsMessage message =
           android.telephony.gsm.SmsMessage.createFromPdu((byte[]) pdu);
 
-      // TODO(rdamazio): Use CallerId for originating address
-      return context.getString(R.string.sms_contents,
-          message.getOriginatingAddress(),
-          message.getMessageBody());
+      String from = getSenderString(context, message.getOriginatingAddress());
+      return context.getString(R.string.sms_contents, from, message.getMessageBody());
     }
   }
 
@@ -71,5 +67,17 @@ public abstract class SmsDecoder {
       }
     }
     return instance;
+  }
+
+  /**
+   * Creates and returns a complete string representing the sender, including
+   * his name and phone type if found by the caller ID.
+   *
+   * @param context the current context
+   * @param originatingAddress the phone number of the sender
+   * @return the formatted sender string
+   */
+  protected String getSenderString(Context context, String originatingAddress) {
+    return CallerId.create(context).buildCallerIdString(originatingAddress);
   }
 }
