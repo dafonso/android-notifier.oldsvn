@@ -1,6 +1,10 @@
 package org.damazio.notifier.service;
 
 import org.damazio.notifier.NotifierConstants;
+import org.damazio.notifier.R;
+import org.damazio.notifier.mms.EncodedStringValue;
+import org.damazio.notifier.mms.PduHeaders;
+import org.damazio.notifier.mms.PduParser;
 import org.damazio.notifier.notification.Notification;
 import org.damazio.notifier.notification.NotificationType;
 
@@ -33,11 +37,27 @@ class MmsReceiver extends BroadcastReceiver {
       Log.e(NotifierConstants.LOG_TAG, "Wrong intent received by MMS receiver - " + intent.getAction());
       return;
     }
-    
-    // TODO(rdamazio): Eliminate duplicate events
-    // TODO(rdamazio): Parse the pdu from the "data" extra to get source phone #
 
-    Notification notification = new Notification(context, NotificationType.MMS, "");
-    service.sendNotification(notification);
+    // Parse the WAP push contents
+    PduParser parser = new PduParser();
+    PduHeaders headers = parser.parseHeaders(intent.getByteArrayExtra("data"));
+    if (headers == null) {
+      Log.e(NotifierConstants.LOG_TAG, "Couldn't parse headers for WAP PUSH.");
+      return;
+    }
+    int messageType = headers.getMessageType();
+    Log.d(NotifierConstants.LOG_TAG, "WAP PUSH message type: 0x" + Integer.toHexString(messageType));
+
+    // Check if it's a MMS notification
+    if (messageType == PduHeaders.MESSAGE_TYPE_NOTIFICATION_IND) {
+      String contents = "";
+      EncodedStringValue from = headers.getFrom();
+      if (from != null) {
+        // TODO(rdamazio): Use CallerId for sender
+        contents = service.getString(R.string.mms_contents, from.getString());
+      }
+      Notification notification = new Notification(context, NotificationType.MMS, contents);
+      service.sendNotification(notification);
+    }
   }
 }

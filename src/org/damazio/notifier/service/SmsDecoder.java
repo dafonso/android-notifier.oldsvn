@@ -22,6 +22,7 @@ public abstract class SmsDecoder {
     public String getSmsContents(Context context, Object pdu) {
       SmsMessage message = SmsMessage.createFromPdu((byte[]) pdu);
 
+      // TODO(rdamazio): Use CallerId for originating address
       return context.getString(R.string.sms_contents,
           message.getOriginatingAddress(),
           message.getMessageBody());
@@ -38,6 +39,7 @@ public abstract class SmsDecoder {
       android.telephony.gsm.SmsMessage message =
           android.telephony.gsm.SmsMessage.createFromPdu((byte[]) pdu);
 
+      // TODO(rdamazio): Use CallerId for originating address
       return context.getString(R.string.sms_contents,
           message.getOriginatingAddress(),
           message.getMessageBody());
