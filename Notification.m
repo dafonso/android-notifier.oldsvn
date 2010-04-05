@@ -53,6 +53,7 @@
     contents = [NSString pathWithComponents:contentsParts];
   } else {
     contents = [parts objectAtIndex:3];
+    if ([contents isEqualToString:@"/"]) contents = @"";
   }
 
   NotificationType type;
