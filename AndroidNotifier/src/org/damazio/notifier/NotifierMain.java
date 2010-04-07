@@ -51,8 +51,15 @@ public class NotifierMain extends PreferenceActivity {
 
     // Start the service
     maybeStartService();
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
 
     // Configure all special preferences
+    // This has to be done on resume so special values (such as the bluetooth device list and the
+    // wifi sleep policy) are reloaded when we return from another activity.
     configureBluetoothPreferences();
     configureWifiPreferences();
     configureServicePreferences();
