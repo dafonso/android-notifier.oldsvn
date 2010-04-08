@@ -27,4 +27,4 @@ class BluetoothListener(GObject):
 
 gobject.type_register(BluetoothListener)
 gobject.signal_new('android-notify', BluetoothListener,
-    gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, (str))
+    gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, (str,))

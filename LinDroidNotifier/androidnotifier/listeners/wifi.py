@@ -25,4 +25,4 @@ class WifiListener(GObject):
 
 gobject.type_register(WifiListener)
 gobject.signal_new('android-notify', WifiListener,
-    gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, (str))
+    gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, (str,))
