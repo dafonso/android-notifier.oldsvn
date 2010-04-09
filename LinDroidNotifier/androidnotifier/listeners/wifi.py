@@ -1,4 +1,4 @@
-#!/usr/bin/python2.4
+#!/usr/bin/python
 
 """Wifi listener.
 
@@ -9,8 +9,19 @@ __author__ = 'rodrigo@damazio.org (Rodrigo Damazio Bovendorp)'
 
 from gobject import GObject
 import gobject
+import select
+import SocketServer
+from threading import Thread
+import threading
 
-# TODO: Implement
+PORT = 10600
+
+class _WifiHandler(SocketServer.BaseRequestHandler):
+    def handle(self):
+        data = self.request[0].strip()
+        if data != 'quit':
+            self.server._wifi_listener.emit('android-notify', data)
+
 
 class WifiListener(GObject):
 
@@ -18,10 +29,24 @@ class WifiListener(GObject):
         GObject.__init__(self)
 
     def start(self):
-        pass
+        if hasattr(self, 'server'):
+            raise 'Listener already started'
+
+        self.server = SocketServer.UDPServer(('', PORT), _WifiHandler)
+        self.server._wifi_listener = self
+        self.server_thread = Thread(target=self.server.serve_forever)
+        self.server_thread.setDaemon(True)
+        self.server_thread.start()
 
     def stop(self):
-        pass
+        if hasattr(self, 'server'):
+            if hasattr(self.server, 'shutdown'):
+                self.server.shutdown()
+                del self.server
+            else:
+                # TODO: Stop listening on python < 2.6
+                pass
+
 
 gobject.type_register(WifiListener)
 gobject.signal_new('android-notify', WifiListener,
