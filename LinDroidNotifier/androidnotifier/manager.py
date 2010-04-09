@@ -1,4 +1,4 @@
-#!/usr/bin/python2.4
+#!/usr/bin/python
 
 """Manager which receives and acts on notifications.
 
@@ -21,71 +21,73 @@ _NUM_LAST_NOTIFICATIONS = 20
 class NotificationManager:
 
     def __init__(self, preferences):
-        self.preferences = preferences
-        self.listeners = [
+        self._preferences = preferences
+        self._listeners = [
             WifiListener(),
             BluetoothListener()
             ]
-        self.actions= [
+        self._actions= [
             DisplayAction()
             ]
-        self.connections = {}
-        self.last_notification_ids = []
+        self._connections = {}
+        self._last_notification_ids = []
 
-        preferences.connect('preference-change', self.on_preferences_changed)
+        preferences.connect('preference-change', self._on_preferences_changed)
 
     def start(self):
-        for listener in self.listeners:
+        for listener in self._listeners:
             self._start_listener(listener)
 
     def stop(self):
-        for listener in self.listeners:
+        for listener in self._listeners:
             self._stop_listener(listener)
 
-    def on_notification(self, raw_data):
+    def _on_notification(self, raw_data):
         notification = Notification(raw_data)
 
         if self._is_duplicate_notification(notification):
             return
 
-        for action in self.actions:
+        for action in self._actions:
             if self._is_action_enabled_for_type(action, notification):
                 action.handle_notification(notification)
 
-    def on_preferences_changed(self):
-        for listener in self.listeners:
+    def _on_preferences_changed(self):
+        for listener in self._listeners:
             enabled = self._is_listener_enabled(listener)
             started = self._is_listener_started(listener)
-            if enabled and not started:
-                _start_listener(listener)
+            self._stop_listener(listener)
+            self._start_listener(listener)
             if not enabled and started:
-                _stop_listener(listener)
+                self._stop_listener(listener)
+            if enabled and not started:
+                self._start_listener(listener)
 
     def _start_listener(self, listener):
-        if listener in self.connections:
+        if listener in self._connections:
             return
 
-        self.connections[listener] = \
-            listener.connect('android-notify', self.on_notification)
+        self._connections[listener] = \
+            listener.connect('android-notify', self._on_notification)
         listener.start()
 
     def _stop_listener(self, listener):
-        if not listener in self.connections:
+        if not listener in self._connections:
             return
 
-        listener.disconnect(self.connections[listener])
+        listener.disconnect(self._connections[listener])
         listener.stop()
 
     def _is_listener_started(self, listener):
-        return listener in self.connections
+        return listener in self._connections
 
     def _is_duplicate_notification(self, notification):
         id = notification.notification_id
-        if id in self.last_notification_ids:
+        if id in self._last_notification_ids:
             return True
-        self.last_notification_ids.append(id)
-        if len(self.last_notification_ids) > _NUM_LAST_NOTIFICATIONS:
-            del self.last_notification_ids[0]
+        self._last_notification_ids.append(id)
+        if len(self._last_notification_ids) > _NUM_LAST_NOTIFICATIONS:
+            del self._last_notification_ids[0]
 
     def _is_listener_enabled(self, listener_name):
         # TODO
