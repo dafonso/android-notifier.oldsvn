@@ -50,8 +50,8 @@ class BluetoothListener(GObject):
             except bluetooth.BluetoothError:
                 continue # The socket timed out
             data = buffer = client_sock.recv(self.BUFFER_SIZE)
-            while len(buffer) == BUFFER_SIZE:
-                buffer = client_sock.recv(BUFFER_SIZE)
+            while len(buffer) == self.BUFFER_SIZE:
+                buffer = client_sock.recv(self.BUFFER_SIZE)
                 if len(buffer) == 0:
                     break
                 data += buffer

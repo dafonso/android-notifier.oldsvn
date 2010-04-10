@@ -23,7 +23,7 @@ manager = NotificationManager(prefs)
 manager.start()
 
 # TODO: Remove this test notification once there are listeners
-manager._on_notification('1234/5678/RING/Mom is calling')
+manager._on_notification(sender=None, raw_data='1234/5678/RING/Mom is calling')
 
 # Article about threading in GTK:
 # <http://unpythonic.blogspot.com/2007/08/using-threads-in-pygtk.html>

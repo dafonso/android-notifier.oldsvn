@@ -42,7 +42,7 @@ class NotificationManager:
         for listener in self._listeners:
             self._stop_listener(listener)
 
-    def _on_notification(self, raw_data):
+    def _on_notification(self, sender, raw_data):
         notification = Notification(raw_data)
 
         if self._is_duplicate_notification(notification):
