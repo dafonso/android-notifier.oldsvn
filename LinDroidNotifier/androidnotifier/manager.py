@@ -12,7 +12,7 @@ which notifications and which methods to use.
 __author__ = 'rodrigo@damazio.org (Rodrigo Damazio Bovendorp)'
 
 from actions.display import DisplayAction
-from listeners.bluetooth import BluetoothListener
+from listeners.rfcomm import BluetoothListener
 from listeners.wifi import WifiListener
 from notification import Notification
 
