@@ -9,42 +9,41 @@ __author__ = 'rodrigo@damazio.org (Rodrigo Damazio Bovendorp)'
 
 from gobject import GObject
 import gobject
-import select
 import SocketServer
 from threading import Thread
-import threading
 
-PORT = 10600
 
 class _WifiHandler(SocketServer.BaseRequestHandler):
     def handle(self):
         data = self.request[0].strip()
-        if data != 'quit':
-            self.server._wifi_listener.emit('android-notify', data)
+        self.server.wifi_listener.emit('android-notify', data)
 
 
 class WifiListener(GObject):
+    PORT = 10600
 
     def __init__(self):
         GObject.__init__(self)
 
     def start(self):
-        if hasattr(self, 'server'):
-            raise 'Listener already started'
+        if hasattr(self, '_server'):
+            print 'Listener already started'
+            return
 
-        self.server = SocketServer.UDPServer(('', PORT), _WifiHandler)
-        self.server._wifi_listener = self
-        self.server_thread = Thread(target=self.server.serve_forever)
-        self.server_thread.setDaemon(True)
-        self.server_thread.start()
+        self._server = SocketServer.UDPServer(('', self.PORT), _WifiHandler)
+        self._server.wifi_listener = self
+        self._server_thread = Thread(target=self._server.serve_forever)
+        self._server_thread.setDaemon(True)
+        self._server_thread.start()
 
     def stop(self):
-        if hasattr(self, 'server'):
-            if hasattr(self.server, 'shutdown'):
-                self.server.shutdown()
-                del self.server
+        if hasattr(self, '_server'):
+            if hasattr(self._server, 'shutdown'):
+                self._server.shutdown()
+                del self._server
             else:
-                # TODO: Stop listening on python < 2.6
+                # The thread is in daemon mode, let it die
+                # TODO: Fix the case when the app is not exiting
                 pass
 
 
