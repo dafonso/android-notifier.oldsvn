@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 """Action which displays the notification on the screen.
 
 This action will display the notification using pynotify.

@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 """Wifi listener.
 
 This module listens on UDP port 10600 and receives notifications through it.

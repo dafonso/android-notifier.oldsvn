@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 """Preferences manager and UI.
 
 This module manages preferences for the notifier application, and controls

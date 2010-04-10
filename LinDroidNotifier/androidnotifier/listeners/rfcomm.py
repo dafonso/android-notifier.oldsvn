@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 """Bluetooth listener.
 
 This listener listens on and receives notifications with bluetooth RFCOMM

@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 """Manager which receives and acts on notifications.
 
 This manager will attach all listeners, receive notifications from them,

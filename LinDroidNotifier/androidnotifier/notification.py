@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 """Data object which holds a notification.
 
 This object parses a notification from its serialized format, and provides
