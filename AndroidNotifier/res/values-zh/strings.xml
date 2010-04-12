@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Titles -->
+    <string name="app_name">远程通告</string>
+    <string name="service_name">远程通告服务</string>
+    <string name="settings_title">远程通告设置</string>
+
+    <!-- Service settings -->
+    <string name="service_title">通告服务</string>
+    <string name="service_status_running">服务正在运行</string>
+    <string name="service_status_stopped">服务已经停止</string>
+    <string name="start_service">启动服务</string>
+    <string name="service_started">服务已启动</string>
+    <string name="stop_service">停止服务</string>
+    <string name="service_stopped">服务已停止</string>
+    <string name="start_at_boot">开机时启动服务</string>
+    <string name="start_at_boot_on">开机的时候服务会启动</string>
+    <string name="start_at_boot_off">服务需手工启动</string>
+
+    <!-- Notification methods -->
+    <string name="methods_title">通告方式</string>
+    <string name="method_on">将通过此方式发送通告</string>
+    <string name="method_off">将不会通过此方式发送通告</string>
+    <string name="eclair_required">只支持android 2.0及以上</string>
+    <string name="not_yet_implemented">还未完成</string>
+
+    <!-- Wifi method -->
+    <string name="method_wifi">Wifi</string>
+    <string name="wifi_options">Wifi 选项</string>
+    <string name="target_ip_address">目标 IP 地址</string>
+    <string name="custom_ip_title">自定义 IP 地址</string>
+    <string name="custom_ip">请输入要发送通告的目标ip：</string>
+    <string name="wifi_sleep_policy">Wifi 休眠策略</string>
+    <string name="wifi_sleep_policy_summary">控制WiFi休眠的时间(默认当屏幕关闭时)</string>
+    <string name="enable_wifi">自动启用 wifi</string>
+    <string name="enable_wifi_summary_on">可以通过Wifi发送通告 </string>
+    <string name="enable_wifi_summary_off">如果 Wifi 关闭，将不能通过 Wifi 发送通告</string>
+
+    <!-- Bluetooth method -->
+    <string name="method_bluetooth">蓝牙</string>
+    <string name="bluetooth_options">蓝牙选项</string>
+    <string name="target_bluetooth_device">匹配设备</string>
+    <string name="target_bluetooth_device_summary">选择要发送通告的蓝牙设备</string>
+    <string name="bluetooth_pairing">设置手机蓝牙</string>
+    <string name="bluetooth_pairing_summary">打开手机蓝牙来匹配设备</string>
+    <string name="enable_bluetooth">自动启用蓝牙</string>
+    <string name="enable_bluetooth_summary_on">将要通过蓝牙发送通告</string>
+    <string name="enable_bluetooth_summary_off">如果蓝牙关闭，将不能通过蓝牙发送通告</string>
+    <string name="bluetooth_device_any">所有设备</string>
+
+    <!-- USB method -->
+    <string name="method_usb">USB</string>
+
+    <!-- Event types -->
+    <string name="events_title">要通告的事件</string>
+    <string name="event_ring">来电</string>
+    <string name="event_sms">短信</string>
+    <string name="event_mms">彩信</string>
+    <string name="event_battery">电量</string>
+    <string name="event_on">此事件将会通告.</string>
+    <string name="event_off">此事件将不会通告.</string>
+
+    <!-- Misc preferences -->
+    <string name="misc_title">其他</string>
+    <string name="send_test_notification">发送测试通告</string>
+    <string name="test_notification_summary">用来测试和匹配</string>
+    <string name="ping_sent">测试通告已发送</string>
+    <string name="about_menu">关于远程通告</string>
+
+    <!-- Welcome and about box contents -->
+    <string name="about_title">远程通告</string>
+    <string name="welcome_title">欢迎使用 远程通告</string>
+    <string name="about_message">此程序需配合pc机或苹果机使用，可以在电脑上显示手机的通告，如来电、短信、彩信等。请访问网站\nhttp://code.google.com/p/android-notifier/ 阅读更详细的介绍及下载桌面端程序，也可以提交建议或反馈bug。</string>
+
+    <!-- Notification contents -->
+    <string name="ping_contents">测试通告</string>
+    <string name="sms_contents">短信来自 %s: %s</string>
+    <string name="mms_contents">彩信来自 %s</string>
+    <string name="battery_level">手机电量: %d%% </string>
+    <string name="battery_level_unknown">获取手机电量失败</string>
+    <string name="battery_charging">正在充电</string>
+    <string name="battery_discharging">正在放电</string>
+    <string name="battery_not_charging">未在充电</string>
+    <string name="battery_full">已冲满</string>
+</resources>
