@@ -76,7 +76,7 @@
     <string name="ping_contents">测试通告</string>
     <string name="sms_contents">短信来自 %s: %s</string>
     <string name="mms_contents">彩信来自 %s</string>
-    <string name="battery_level">手机电量: %d%% </string>
+    <string name="battery_level">手机电量: %d%%</string>
     <string name="battery_level_unknown">获取手机电量失败</string>
     <string name="battery_charging">正在充电</string>
     <string name="battery_discharging">正在放电</string>
