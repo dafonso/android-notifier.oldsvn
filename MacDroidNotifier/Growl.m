@@ -77,6 +77,27 @@ NSString *const kGrowlUrl = @"http://growl.info/";
   [GrowlApplicationBridge setGrowlDelegate:self];
 }
 
+- (NSString *)batteryIconNameFromDescription:(NSString *)description {
+  // Expected: space + number + % at the end, where number is a multiple of 5
+  if (![description hasSuffix:@"%%"]) {
+    // Find last space
+    NSRange lastSpace = [description rangeOfCharacterFromSet:[NSCharacterSet whitespaceCharacterSet]
+                                                     options:NSBackwardsSearch];
+    if (lastSpace.location != NSNotFound) {
+      lastSpace.location++;
+      lastSpace.length = [description length] - lastSpace.location - 1;
+      NSString *valueStr = [description substringWithRange:lastSpace];
+      NSInteger value = [valueStr integerValue];
+      if (value % 5 == 0) {
+        return [@"battery" stringByAppendingString:valueStr];
+      }   
+    }
+  }
+
+  NSLog(@"Unknown battery icon from description: %@", description);
+  return @"battery_unknown";
+}
+
 - (NSDictionary *)dictionaryForNotification:(Notification *)notification {
   NSString *title = nil;
   NSString *description = [notification contents];
@@ -91,9 +112,7 @@ NSString *const kGrowlUrl = @"http://growl.info/";
     case BATTERY:
       title = NSLocalizedString(@"Phone battery state", @"Battery state title");
       name = @"PhoneBattery";
-
-      // TODO: Select the right image for the current level
-      iconName = @"battery50";
+      iconName = [self batteryIconNameFromDescription:description];
       break;
     case SMS:
       title = NSLocalizedString(@"Phone received an SMS", @"SMS received title");
@@ -103,7 +122,7 @@ NSString *const kGrowlUrl = @"http://growl.info/";
     case MMS:
       title = NSLocalizedString(@"Phone received an MMS", @"MMS received title");
       name = @"PhoneMMS";
-      iconName = @"sms";
+      iconName = @"mms";
       break;
     case PING:
       title = NSLocalizedString(@"Phone sent a ping", @"Ping title");
@@ -114,6 +133,10 @@ NSString *const kGrowlUrl = @"http://growl.info/";
   }
 
   NSData *icon = nil;
+  if (iconName) {
+    NSImage *iconImage = [NSImage imageNamed:iconName];
+    icon = [iconImage TIFFRepresentation];
+  }
 
   return [NSDictionary dictionaryWithObjectsAndKeys:
           name, GROWL_NOTIFICATION_NAME,

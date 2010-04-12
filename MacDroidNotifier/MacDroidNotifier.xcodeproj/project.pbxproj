@@ -25,6 +25,31 @@
 		3775423010E5D2E000A21D89 /* IOBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3775422E10E5D2E000A21D89 /* IOBluetooth.framework */; };
 		3775423110E5D2E000A21D89 /* IOBluetoothUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3775422F10E5D2E000A21D89 /* IOBluetoothUI.framework */; };
 		3775426910E5D70900A21D89 /* BluetoothService.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3775426810E5D70900A21D89 /* BluetoothService.plist */; };
+		3781D5F91172EB5400D4CB41 /* battery0.png in Resources */ = {isa = PBXBuildFile; fileRef = 3781D5E01172EB5400D4CB41 /* battery0.png */; };
+		3781D5FA1172EB5400D4CB41 /* battery5.png in Resources */ = {isa = PBXBuildFile; fileRef = 3781D5E11172EB5400D4CB41 /* battery5.png */; };
+		3781D5FB1172EB5400D4CB41 /* battery10.png in Resources */ = {isa = PBXBuildFile; fileRef = 3781D5E21172EB5400D4CB41 /* battery10.png */; };
+		3781D5FC1172EB5400D4CB41 /* battery15.png in Resources */ = {isa = PBXBuildFile; fileRef = 3781D5E31172EB5400D4CB41 /* battery15.png */; };
+		3781D5FD1172EB5400D4CB41 /* battery20.png in Resources */ = {isa = PBXBuildFile; fileRef = 3781D5E41172EB5400D4CB41 /* battery20.png */; };
+		3781D5FE1172EB5400D4CB41 /* battery25.png in Resources */ = {isa = PBXBuildFile; fileRef = 3781D5E51172EB5400D4CB41 /* battery25.png */; };
+		3781D5FF1172EB5400D4CB41 /* battery30.png in Resources */ = {isa = PBXBuildFile; fileRef = 3781D5E61172EB5400D4CB41 /* battery30.png */; };
+		3781D6001172EB5400D4CB41 /* battery35.png in Resources */ = {isa = PBXBuildFile; fileRef = 3781D5E71172EB5400D4CB41 /* battery35.png */; };
+		3781D6011172EB5400D4CB41 /* battery40.png in Resources */ = {isa = PBXBuildFile; fileRef = 3781D5E81172EB5400D4CB41 /* battery40.png */; };
+		3781D6021172EB5400D4CB41 /* battery45.png in Resources */ = {isa = PBXBuildFile; fileRef = 3781D5E91172EB5400D4CB41 /* battery45.png */; };
+		3781D6031172EB5400D4CB41 /* battery50.png in Resources */ = {isa = PBXBuildFile; fileRef = 3781D5EA1172EB5400D4CB41 /* battery50.png */; };
+		3781D6041172EB5400D4CB41 /* battery55.png in Resources */ = {isa = PBXBuildFile; fileRef = 3781D5EB1172EB5400D4CB41 /* battery55.png */; };
+		3781D6051172EB5400D4CB41 /* battery60.png in Resources */ = {isa = PBXBuildFile; fileRef = 3781D5EC1172EB5400D4CB41 /* battery60.png */; };
+		3781D6061172EB5400D4CB41 /* battery65.png in Resources */ = {isa = PBXBuildFile; fileRef = 3781D5ED1172EB5400D4CB41 /* battery65.png */; };
+		3781D6071172EB5400D4CB41 /* battery70.png in Resources */ = {isa = PBXBuildFile; fileRef = 3781D5EE1172EB5400D4CB41 /* battery70.png */; };
+		3781D6081172EB5400D4CB41 /* battery75.png in Resources */ = {isa = PBXBuildFile; fileRef = 3781D5EF1172EB5400D4CB41 /* battery75.png */; };
+		3781D6091172EB5400D4CB41 /* battery80.png in Resources */ = {isa = PBXBuildFile; fileRef = 3781D5F01172EB5400D4CB41 /* battery80.png */; };
+		3781D60A1172EB5400D4CB41 /* battery85.png in Resources */ = {isa = PBXBuildFile; fileRef = 3781D5F11172EB5400D4CB41 /* battery85.png */; };
+		3781D60B1172EB5400D4CB41 /* battery90.png in Resources */ = {isa = PBXBuildFile; fileRef = 3781D5F21172EB5400D4CB41 /* battery90.png */; };
+		3781D60C1172EB5400D4CB41 /* battery95.png in Resources */ = {isa = PBXBuildFile; fileRef = 3781D5F31172EB5400D4CB41 /* battery95.png */; };
+		3781D60D1172EB5400D4CB41 /* battery100.png in Resources */ = {isa = PBXBuildFile; fileRef = 3781D5F41172EB5400D4CB41 /* battery100.png */; };
+		3781D60E1172EB5400D4CB41 /* battery_unknown.png in Resources */ = {isa = PBXBuildFile; fileRef = 3781D5F51172EB5400D4CB41 /* battery_unknown.png */; };
+		3781D60F1172EB5400D4CB41 /* mms.png in Resources */ = {isa = PBXBuildFile; fileRef = 3781D5F61172EB5400D4CB41 /* mms.png */; };
+		3781D6101172EB5400D4CB41 /* ring.png in Resources */ = {isa = PBXBuildFile; fileRef = 3781D5F71172EB5400D4CB41 /* ring.png */; };
+		3781D6111172EB5400D4CB41 /* sms.png in Resources */ = {isa = PBXBuildFile; fileRef = 3781D5F81172EB5400D4CB41 /* sms.png */; };
 		378BBCEA10E97A66008D07A1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 378BBCE810E97A66008D07A1 /* Localizable.strings */; };
 		379B996E10E803DD007B1FCA /* menuicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 379B996D10E803DD007B1FCA /* menuicon.png */; };
 		379B99AC10E83A6D007B1FCA /* Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 379B99AB10E83A6D007B1FCA /* Preferences.m */; };
@@ -91,6 +116,31 @@
 		3775422E10E5D2E000A21D89 /* IOBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOBluetooth.framework; path = /System/Library/Frameworks/IOBluetooth.framework; sourceTree = "<absolute>"; };
 		3775422F10E5D2E000A21D89 /* IOBluetoothUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOBluetoothUI.framework; path = /System/Library/Frameworks/IOBluetoothUI.framework; sourceTree = "<absolute>"; };
 		3775426810E5D70900A21D89 /* BluetoothService.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BluetoothService.plist; sourceTree = "<group>"; };
+		3781D5E01172EB5400D4CB41 /* battery0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = battery0.png; path = images/battery0.png; sourceTree = "<group>"; };
+		3781D5E11172EB5400D4CB41 /* battery5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = battery5.png; path = images/battery5.png; sourceTree = "<group>"; };
+		3781D5E21172EB5400D4CB41 /* battery10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = battery10.png; path = images/battery10.png; sourceTree = "<group>"; };
+		3781D5E31172EB5400D4CB41 /* battery15.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = battery15.png; path = images/battery15.png; sourceTree = "<group>"; };
+		3781D5E41172EB5400D4CB41 /* battery20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = battery20.png; path = images/battery20.png; sourceTree = "<group>"; };
+		3781D5E51172EB5400D4CB41 /* battery25.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = battery25.png; path = images/battery25.png; sourceTree = "<group>"; };
+		3781D5E61172EB5400D4CB41 /* battery30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = battery30.png; path = images/battery30.png; sourceTree = "<group>"; };
+		3781D5E71172EB5400D4CB41 /* battery35.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = battery35.png; path = images/battery35.png; sourceTree = "<group>"; };
+		3781D5E81172EB5400D4CB41 /* battery40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = battery40.png; path = images/battery40.png; sourceTree = "<group>"; };
+		3781D5E91172EB5400D4CB41 /* battery45.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = battery45.png; path = images/battery45.png; sourceTree = "<group>"; };
+		3781D5EA1172EB5400D4CB41 /* battery50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = battery50.png; path = images/battery50.png; sourceTree = "<group>"; };
+		3781D5EB1172EB5400D4CB41 /* battery55.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = battery55.png; path = images/battery55.png; sourceTree = "<group>"; };
+		3781D5EC1172EB5400D4CB41 /* battery60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = battery60.png; path = images/battery60.png; sourceTree = "<group>"; };
+		3781D5ED1172EB5400D4CB41 /* battery65.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = battery65.png; path = images/battery65.png; sourceTree = "<group>"; };
+		3781D5EE1172EB5400D4CB41 /* battery70.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = battery70.png; path = images/battery70.png; sourceTree = "<group>"; };
+		3781D5EF1172EB5400D4CB41 /* battery75.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = battery75.png; path = images/battery75.png; sourceTree = "<group>"; };
+		3781D5F01172EB5400D4CB41 /* battery80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = battery80.png; path = images/battery80.png; sourceTree = "<group>"; };
+		3781D5F11172EB5400D4CB41 /* battery85.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = battery85.png; path = images/battery85.png; sourceTree = "<group>"; };
+		3781D5F21172EB5400D4CB41 /* battery90.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = battery90.png; path = images/battery90.png; sourceTree = "<group>"; };
+		3781D5F31172EB5400D4CB41 /* battery95.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = battery95.png; path = images/battery95.png; sourceTree = "<group>"; };
+		3781D5F41172EB5400D4CB41 /* battery100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = battery100.png; path = images/battery100.png; sourceTree = "<group>"; };
+		3781D5F51172EB5400D4CB41 /* battery_unknown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = battery_unknown.png; path = images/battery_unknown.png; sourceTree = "<group>"; };
+		3781D5F61172EB5400D4CB41 /* mms.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mms.png; path = images/mms.png; sourceTree = "<group>"; };
+		3781D5F71172EB5400D4CB41 /* ring.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ring.png; path = images/ring.png; sourceTree = "<group>"; };
+		3781D5F81172EB5400D4CB41 /* sms.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sms.png; path = images/sms.png; sourceTree = "<group>"; };
 		378BBCE910E97A66008D07A1 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
 		378BBCFB10E97ACC008D07A1 /* pt_BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt_BR; path = pt_BR.lproj/Localizable.strings; sourceTree = "<group>"; };
 		379B996D10E803DD007B1FCA /* menuicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menuicon.png; sourceTree = "<group>"; };
@@ -207,8 +257,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				37A4B13E10EA94BF0058904A /* appicon.icns */,
-				379B996D10E803DD007B1FCA /* menuicon.png */,
+				376511791172D476000B8A95 /* Images */,
 				376DF29110EBE5140065B914 /* sparkle_pub.pem */,
 				376DF2A410EBE54A0065B914 /* appcast.xml */,
 				3775407C10E5B10D00A21D89 /* MacDroidNotifier.growlRegDict */,
@@ -228,6 +277,40 @@
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		376511791172D476000B8A95 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				37A4B13E10EA94BF0058904A /* appicon.icns */,
+				379B996D10E803DD007B1FCA /* menuicon.png */,
+				3781D5E01172EB5400D4CB41 /* battery0.png */,
+				3781D5E11172EB5400D4CB41 /* battery5.png */,
+				3781D5E21172EB5400D4CB41 /* battery10.png */,
+				3781D5E31172EB5400D4CB41 /* battery15.png */,
+				3781D5E41172EB5400D4CB41 /* battery20.png */,
+				3781D5E51172EB5400D4CB41 /* battery25.png */,
+				3781D5E61172EB5400D4CB41 /* battery30.png */,
+				3781D5E71172EB5400D4CB41 /* battery35.png */,
+				3781D5E81172EB5400D4CB41 /* battery40.png */,
+				3781D5E91172EB5400D4CB41 /* battery45.png */,
+				3781D5EA1172EB5400D4CB41 /* battery50.png */,
+				3781D5EB1172EB5400D4CB41 /* battery55.png */,
+				3781D5EC1172EB5400D4CB41 /* battery60.png */,
+				3781D5ED1172EB5400D4CB41 /* battery65.png */,
+				3781D5EE1172EB5400D4CB41 /* battery70.png */,
+				3781D5EF1172EB5400D4CB41 /* battery75.png */,
+				3781D5F01172EB5400D4CB41 /* battery80.png */,
+				3781D5F11172EB5400D4CB41 /* battery85.png */,
+				3781D5F21172EB5400D4CB41 /* battery90.png */,
+				3781D5F31172EB5400D4CB41 /* battery95.png */,
+				3781D5F41172EB5400D4CB41 /* battery100.png */,
+				3781D5F51172EB5400D4CB41 /* battery_unknown.png */,
+				3781D5F61172EB5400D4CB41 /* mms.png */,
+				3781D5F71172EB5400D4CB41 /* ring.png */,
+				3781D5F81172EB5400D4CB41 /* sms.png */,
+			);
+			name = Images;
 			sourceTree = "<group>";
 		};
 		37753DBA10E562CA00A21D89 /* Notifications */ = {
@@ -351,6 +434,31 @@
 				37A4B13F10EA94BF0058904A /* appicon.icns in Resources */,
 				376DF29210EBE5140065B914 /* sparkle_pub.pem in Resources */,
 				376DF2A510EBE54A0065B914 /* appcast.xml in Resources */,
+				3781D5F91172EB5400D4CB41 /* battery0.png in Resources */,
+				3781D5FA1172EB5400D4CB41 /* battery5.png in Resources */,
+				3781D5FB1172EB5400D4CB41 /* battery10.png in Resources */,
+				3781D5FC1172EB5400D4CB41 /* battery15.png in Resources */,
+				3781D5FD1172EB5400D4CB41 /* battery20.png in Resources */,
+				3781D5FE1172EB5400D4CB41 /* battery25.png in Resources */,
+				3781D5FF1172EB5400D4CB41 /* battery30.png in Resources */,
+				3781D6001172EB5400D4CB41 /* battery35.png in Resources */,
+				3781D6011172EB5400D4CB41 /* battery40.png in Resources */,
+				3781D6021172EB5400D4CB41 /* battery45.png in Resources */,
+				3781D6031172EB5400D4CB41 /* battery50.png in Resources */,
+				3781D6041172EB5400D4CB41 /* battery55.png in Resources */,
+				3781D6051172EB5400D4CB41 /* battery60.png in Resources */,
+				3781D6061172EB5400D4CB41 /* battery65.png in Resources */,
+				3781D6071172EB5400D4CB41 /* battery70.png in Resources */,
+				3781D6081172EB5400D4CB41 /* battery75.png in Resources */,
+				3781D6091172EB5400D4CB41 /* battery80.png in Resources */,
+				3781D60A1172EB5400D4CB41 /* battery85.png in Resources */,
+				3781D60B1172EB5400D4CB41 /* battery90.png in Resources */,
+				3781D60C1172EB5400D4CB41 /* battery95.png in Resources */,
+				3781D60D1172EB5400D4CB41 /* battery100.png in Resources */,
+				3781D60E1172EB5400D4CB41 /* battery_unknown.png in Resources */,
+				3781D60F1172EB5400D4CB41 /* mms.png in Resources */,
+				3781D6101172EB5400D4CB41 /* ring.png in Resources */,
+				3781D6111172EB5400D4CB41 /* sms.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
