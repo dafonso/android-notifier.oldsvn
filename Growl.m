@@ -81,23 +81,29 @@ NSString *const kGrowlUrl = @"http://growl.info/";
   NSString *title = nil;
   NSString *description = [notification contents];
   NSString *name = nil;
-  NSData *icon = nil;  // TODO
+  NSString *iconName = nil;
   switch ([notification type]) {
     case RING:
       title = NSLocalizedString(@"Phone is ringing", @"Phone ring title");
       name = @"PhoneRing";
+      iconName = @"ring";
       break;
     case BATTERY:
       title = NSLocalizedString(@"Phone battery state", @"Battery state title");
       name = @"PhoneBattery";
+
+      // TODO: Select the right image for the current level
+      iconName = @"battery50";
       break;
     case SMS:
       title = NSLocalizedString(@"Phone received an SMS", @"SMS received title");
       name = @"PhoneSMS";
+      iconName = @"sms";
       break;
     case MMS:
       title = NSLocalizedString(@"Phone received an MMS", @"MMS received title");
       name = @"PhoneMMS";
+      iconName = @"sms";
       break;
     case PING:
       title = NSLocalizedString(@"Phone sent a ping", @"Ping title");
@@ -106,6 +112,8 @@ NSString *const kGrowlUrl = @"http://growl.info/";
     default:
       return nil;
   }
+
+  NSData *icon = nil;
 
   return [NSDictionary dictionaryWithObjectsAndKeys:
           name, GROWL_NOTIFICATION_NAME,
