@@ -76,6 +76,7 @@ public class NotificationService extends Service {
 
   @Override
   public void onDestroy() {
+    unregisterReceiver(mmsReceiver);
     unregisterReceiver(smsReceiver);
     unregisterReceiver(batteryReceiver);
 
