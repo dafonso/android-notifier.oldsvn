@@ -56,17 +56,7 @@ class BatteryReceiver extends BroadcastReceiver {
       status = extras.getInt(BatteryManager.EXTRA_STATUS, -1);
     }
 
-    // Add message about the battery level
     StringBuilder contentsBuilder = new StringBuilder();
-    if (level != -1 && maxLevel != -1) {
-      batteryLevelPercentage = 100 * level / maxLevel;
-      Log.d(NotifierConstants.LOG_TAG, "Got battery level: " + batteryLevelPercentage);
-      String levelString = context.getString(R.string.battery_level, batteryLevelPercentage);
-      contentsBuilder.append(levelString);
-    } else {
-      Log.w(NotifierConstants.LOG_TAG, "Unknown battery level");
-      contentsBuilder.append(context.getString(R.string.battery_level_unknown));
-    }
 
     // Add message about battery status
     if (status != -1) {
@@ -85,14 +75,24 @@ class BatteryReceiver extends BroadcastReceiver {
           statusStringId = R.string.battery_full;
           break;
       }
-
       if (statusStringId != -1) {
-        contentsBuilder.append(", ");
         String statusString = context.getString(statusStringId);
         Log.d(NotifierConstants.LOG_TAG, "Battery status: " + statusString);
         contentsBuilder.append(statusString);
+        contentsBuilder.append(", ");
       } else {
         Log.w(NotifierConstants.LOG_TAG, "Unknown battery status");
+      }
+
+      // Add message about the battery level (X% must come at the end)
+      if (level != -1 && maxLevel != -1) {
+        batteryLevelPercentage = 100 * level / maxLevel;
+        Log.d(NotifierConstants.LOG_TAG, "Got battery level: " + batteryLevelPercentage);
+        String levelString = context.getString(R.string.battery_level, batteryLevelPercentage);
+        contentsBuilder.append(levelString);
+      } else {
+        Log.w(NotifierConstants.LOG_TAG, "Unknown battery level");
+        contentsBuilder.append(context.getString(R.string.battery_level_unknown));
       }
     } else {
       Log.w(NotifierConstants.LOG_TAG, "Unknown battery status");

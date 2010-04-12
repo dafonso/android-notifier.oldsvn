@@ -76,7 +76,7 @@
     <string name="ping_contents">Test notification</string>
     <string name="sms_contents">SMS from %s: %s</string>
     <string name="mms_contents">MMS from %s</string>
-    <string name="battery_level">Phone battery level: %d%% remaining</string>
+    <string name="battery_level">Remaining battery charge: %d%%</string>
     <string name="battery_level_unknown">Phone battery level unknown</string>
     <string name="battery_charging">charging</string>
     <string name="battery_discharging">discharging</string>
