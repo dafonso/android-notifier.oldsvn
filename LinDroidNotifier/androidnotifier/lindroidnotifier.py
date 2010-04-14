@@ -19,15 +19,15 @@ prefs = preferences.Preferences()
 prefs_dialog = preferences.PreferencesDialog(gladefile)
 prefs_dialog.show()
 
+# Article about threading in GTK:
+# <http://unpythonic.blogspot.com/2007/08/using-threads-in-pygtk.html>
+gtk.gdk.threads_init() # This must be called before manager.start()!
+
 manager = NotificationManager(prefs)
 manager.start()
 
 # TODO: Remove this test notification once there are listeners
 manager._on_notification(sender=None, raw_data='1234/5678/RING/Mom is calling')
-
-# Article about threading in GTK:
-# <http://unpythonic.blogspot.com/2007/08/using-threads-in-pygtk.html>
-gtk.gdk.threads_init()
 
 gtk.main()
 
