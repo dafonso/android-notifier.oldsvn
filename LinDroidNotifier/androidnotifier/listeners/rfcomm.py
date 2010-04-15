@@ -24,10 +24,6 @@ class BluetoothListener(GObject):
 
     def __init__(self):
         GObject.__init__(self)
-
-        # Stop the thread using an event; from
-        # <http://stackoverflow.com/questions/323972/is-there-any-way-
-        # to-kill-a-thread-in-python>
         self._stop = False
 
     def _publish_service(self):
