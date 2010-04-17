@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Titles -->
+    <string name="service_name">Сервис удаленных уведомлений</string>
+    <string name="settings_title">Настройки Remote Notifier</string>
+
+    <!-- Service settings -->
+    <string name="service_title">Сервис уведомлений</string>
+    <string name="service_status_running">Сервис запущен</string>
+    <string name="service_status_stopped">Сервис остановлен</string>
+    <string name="start_service">Запустить сервис</string>
+    <string name="service_started">Сервис запущен</string>
+    <string name="stop_service">Остановить сервис</string>
+    <string name="service_stopped">Сервис остановлен</string>
+    <string name="start_at_boot">Запускать сервис при старте системы</string>
+    <string name="start_at_boot_on">Сервис будет запущен автоматически после включения телефона</string>
+    <string name="start_at_boot_off">Сервис необходимо запускать вручную</string>
+
+    <!-- Notification methods -->
+    <string name="methods_title">Методы уведомлений</string>
+    <string name="method_on">Уведомления будут отсылаться при помощи этого метода</string>
+    <string name="method_off">Уведомления НЕ будут отсылаться при помощи этого метода</string>
+    <string name="eclair_required">Поддерживается только Android 2.0 и выше</string>
+    <string name="not_yet_implemented">Еще не реализовано.</string>
+
+    <!-- Wifi method -->
+    <string name="method_wifi">Wifi</string>
+    <string name="wifi_options">Настройки Wifi</string>
+    <string name="target_ip_address">IP адрес получателя</string>
+    <string name="custom_ip_title">Пользовательский IP адрес</string>
+    <string name="custom_ip">Пожалуйста, введите адрес получателя уведомлений:</string>
+    <string name="wifi_sleep_policy">Правила перехода Wi-Fi в спящий режим</string>
+    <string name="wifi_sleep_policy_summary">Управление политикой выключения Wi-Fi\n(по умолчанию: во время выключения экрана)</string>
+    <string name="enable_wifi">Автоматически автивировать Wi-Fi</string>
+    <string name="enable_wifi_summary_on">Fi-Wi будет активироваться для передачи уведомлений</string>
+    <string name="enable_wifi_summary_off">Уведомления не будут рассылаться, если сеть Wi-Fi выключена</string>
+
+    <!-- Bluetooth method -->
+    <string name="bluetooth_options">Настройки Bluetooth</string>
+    <string name="target_bluetooth_device">Устройство получателя</string>
+    <string name="target_bluetooth_device_summary">Выберите устройство для отсылки уведомлений</string>
+    <string name="bluetooth_pairing">Сопряжение устройств</string>
+    <string name="bluetooth_pairing_summary">Открыть настройки Bluetooth для сопряжения устройств</string>
+    <string name="enable_bluetooth">Автоматически активировать Bluetooth</string>
+    <string name="enable_bluetooth_summary_on">Bluetooth будет активироваться для передачи уведомлений</string>
+    <string name="enable_bluetooth_summary_off">Уведомления не будут рассылаться, если сеть Bluetooth выключена</string>
+    <string name="bluetooth_device_any">Любые устройства</string>
+
+    <!-- Event types -->
+    <string name="events_title">События для уведомлений</string>
+    <string name="event_ring">Телефонный вызов</string>
+    <string name="event_battery">Состояние батареи</string>
+    <string name="event_on">Уведомления об этом событии ВСЕГДА будут отсылаться.</string>
+    <string name="event_off">Уведомления об этом событии НИКОГДА не будут отсылаться.</string>
+
+    <!-- Misc preferences -->
+    <string name="misc_title">Разное</string>
+    <string name="send_test_notification">Отправить тестовое сообщение</string>
+    <string name="test_notification_summary">Используется для тестирования и сопряжения</string>
+    <string name="ping_sent">Тестовое уведомление отправлено</string>
+    <string name="about_menu">О Remote Notifier</string>
+
+    <!-- Welcome and about box contents -->
+    <string name="welcome_title">Добро пожаловать в Remote Notifier</string>
+    <string name="about_message">Это приложение работает в связке с PC/Mac для отображения уведомлений на компьютере.\n\nНа сайте: http://code.google.com/p/android-notifier/ Вы найдете программы для PC/Mac и инструкции по их установке. Кроме того, там Вы можете оставить свой отзыв или сообщить об ошибке.</string>
+
+    <!-- Notification contents -->
+    <string name="ping_contents">Проверка уведомлений</string>
+    <string name="sms_contents">SMS от %s: %s</string>
+    <string name="mms_contents">MMS от %s</string>
+    <string name="battery_level">Осталось заряда аккумулятора: %d%%</string>
+    <string name="battery_level_unknown">Уровень заряда аккумулятора неизвестен</string>
+    <string name="battery_charging">Заряжается</string>
+    <string name="battery_discharging">Зарядка прекращена</string>
+    <string name="battery_not_charging">Не заряжается</string>
+    <string name="battery_full">Батарея заряжена полностью</string>
+</resources>
