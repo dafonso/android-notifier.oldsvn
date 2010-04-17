@@ -91,6 +91,7 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* MacDroidNotifier_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MacDroidNotifier_Prefix.pch; sourceTree = "<group>"; };
+		371B4A05117A0A6D00A3AF2B /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		376511771172C3F8000B8A95 /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = zh_CN; path = zh_CN.lproj/UI.xib; sourceTree = "<group>"; };
 		376511781172C405000B8A95 /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_CN; path = zh_CN.lproj/Localizable.strings; sourceTree = "<group>"; };
 		376DF26B10EBE0DA0065B914 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
@@ -410,6 +411,7 @@
 				pt_BR,
 				zh,
 				zh_CN,
+				ru,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* MacDroidNotifier */;
 			projectDirPath = "";
@@ -514,6 +516,7 @@
 				378BBCE910E97A66008D07A1 /* English */,
 				378BBCFB10E97ACC008D07A1 /* pt_BR */,
 				376511781172C405000B8A95 /* zh_CN */,
+				371B4A05117A0A6D00A3AF2B /* ru */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
