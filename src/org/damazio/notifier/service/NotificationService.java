@@ -38,6 +38,9 @@ public class NotificationService extends Service {
   private final SmsReceiver smsReceiver = new SmsReceiver(this);
   private final MmsReceiver mmsReceiver = new MmsReceiver(this);
 
+  /**
+   * Sends the given notification.
+   */
   public void sendNotification(final Notification notification) {
     instanceHandler.post(new Runnable() {
       public void run() {
@@ -90,6 +93,8 @@ public class NotificationService extends Service {
   public IBinder onBind(Intent arg0) {
 	return null;
   }
+
+  // Service control utilities.
 
   /**
    * Starts the service in the given context.

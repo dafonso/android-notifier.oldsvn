@@ -34,7 +34,8 @@ class MmsReceiver extends BroadcastReceiver {
   public void onReceive(Context context, Intent intent) {
     if (!ACTION.equals(intent.getAction()) ||
         !DATA_TYPE.equals(intent.getType())) {
-      Log.e(NotifierConstants.LOG_TAG, "Wrong intent received by MMS receiver - " + intent.getAction());
+      Log.e(NotifierConstants.LOG_TAG,
+          "Wrong intent received by MMS receiver - " + intent.getAction());
       return;
     }
 
@@ -46,7 +47,8 @@ class MmsReceiver extends BroadcastReceiver {
       return;
     }
     int messageType = headers.getMessageType();
-    Log.d(NotifierConstants.LOG_TAG, "WAP PUSH message type: 0x" + Integer.toHexString(messageType));
+    Log.d(NotifierConstants.LOG_TAG,
+        "WAP PUSH message type: 0x" + Integer.toHexString(messageType));
 
     // Check if it's a MMS notification
     if (messageType == PduHeaders.MESSAGE_TYPE_NOTIFICATION_IND) {

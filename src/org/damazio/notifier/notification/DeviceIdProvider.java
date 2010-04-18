@@ -27,7 +27,8 @@ public class DeviceIdProvider {
    * @return the unique ID
    */
   public static String getDeviceId(Context context) {
-    String deviceId = Settings.System.getString(context.getContentResolver(), Settings.System.ANDROID_ID);
+    String deviceId =
+        Settings.System.getString(context.getContentResolver(), Settings.System.ANDROID_ID);
     if (deviceId == null) {
       deviceId = Long.toHexString(Double.doubleToRawLongBits(Math.random() * Long.MAX_VALUE));
       Log.d(NotifierConstants.LOG_TAG, "No device ID found - created random ID " + deviceId);

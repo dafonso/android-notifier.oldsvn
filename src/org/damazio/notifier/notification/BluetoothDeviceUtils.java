@@ -143,7 +143,7 @@ public abstract class BluetoothDeviceUtils {
    */
   public static BluetoothDeviceUtils getInstance() {
     if (instance == null) {
-      if (!NotificationMethods.isBluetoothMethodSupported()) {
+      if (!isBluetoothMethodSupported()) {
         Log.d(NotifierConstants.LOG_TAG, "Using dummy bluetooth utils");
         instance = new DummyImpl();
       } else {
@@ -176,4 +176,11 @@ public abstract class BluetoothDeviceUtils {
    * @return the device's descriptor, or null if not found
    */
   public abstract BluetoothDevice findDeviceMatching(String targetDeviceAddress);
+
+  /**
+   * @return whether the bluetooth method is supported on this device
+   */
+  public static boolean isBluetoothMethodSupported() {
+    return NotifierConstants.ANDROID_SDK_INT >= 5;
+  }
 }

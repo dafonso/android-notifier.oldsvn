@@ -9,6 +9,9 @@ import android.os.Build;
  */
 public class NotifierConstants {
 
+  /**
+   * The tag to use for all logging done in the application.
+   */
   public static final String LOG_TAG = "RemoteNotifier";
 
   /**

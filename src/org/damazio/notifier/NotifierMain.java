@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.damazio.notifier.notification.BluetoothDeviceUtils;
 import org.damazio.notifier.notification.Notification;
-import org.damazio.notifier.notification.NotificationMethods;
 import org.damazio.notifier.notification.NotificationType;
 import org.damazio.notifier.notification.Notifier;
 import org.damazio.notifier.service.NotificationService;
@@ -123,7 +122,8 @@ public class NotifierMain extends PreferenceActivity {
     });
 
     // Load wifi sleep policy from system settings, and save back only there
-    ListPreference sleepPolicyPreference = (ListPreference) findPreference(getString(R.string.wifi_sleep_policy_key));
+    ListPreference sleepPolicyPreference =
+        (ListPreference) findPreference(getString(R.string.wifi_sleep_policy_key));
     sleepPolicyPreference.setValue(preferences.getWifiSleepPolicy());
     sleepPolicyPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
       public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -173,8 +173,9 @@ public class NotifierMain extends PreferenceActivity {
    * Configures preference actions related to bluetooth.
    */
   private void configureBluetoothPreferences() {
-    CheckBoxPreference bluetoothPreference = (CheckBoxPreference) findPreference(getString(R.string.method_bluetooth_key));
-    if (!NotificationMethods.isBluetoothMethodSupported()) {
+    CheckBoxPreference bluetoothPreference =
+        (CheckBoxPreference) findPreference(getString(R.string.method_bluetooth_key));
+    if (!BluetoothDeviceUtils.isBluetoothMethodSupported()) {
       // Disallow enabling bluetooth, if it's not supported
       bluetoothPreference.setChecked(false);
       bluetoothPreference.setEnabled(false);
@@ -212,7 +213,8 @@ public class NotifierMain extends PreferenceActivity {
 
     CharSequence[] entriesArray = entries.toArray(new CharSequence[entries.size()]);
     CharSequence[] entryValuesArray = entryValues.toArray(new CharSequence[entryValues.size()]);
-    ListPreference devicesPreference = (ListPreference) findPreference(getString(R.string.bluetooth_device_key));
+    ListPreference devicesPreference =
+        (ListPreference) findPreference(getString(R.string.bluetooth_device_key));
     devicesPreference.setEntryValues(entryValuesArray);
     devicesPreference.setEntries(entriesArray);
   }

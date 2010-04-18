@@ -36,7 +36,8 @@ class WifiNotificationMethod implements NotificationMethod {
 
     private WifiLock wifiLock;
 
-    private WifiDelayedNotifier(Notification notification, NotificationCallback callback, boolean previousWifiEnabledState) {
+    private WifiDelayedNotifier(Notification notification, NotificationCallback callback,
+        boolean previousWifiEnabledState) {
       super(notification, callback, previousWifiEnabledState, WifiNotificationMethod.this);
     }
 
@@ -74,7 +75,8 @@ class WifiNotificationMethod implements NotificationMethod {
   public WifiNotificationMethod(Context context, NotifierPreferences preferences) {
     this.preferences = preferences;
     this.wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-    this.connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    this.connectivity =
+        (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
   }
 
   public void sendNotification(Notification notification, NotificationCallback callback) {
@@ -101,10 +103,12 @@ class WifiNotificationMethod implements NotificationMethod {
 
       // Get the address to send it to
       InetAddress broadcastAddress = getTargetAddress();
-      Log.d(NotifierConstants.LOG_TAG, "Sending wifi notification to IP " + broadcastAddress.getHostAddress());
+      Log.d(NotifierConstants.LOG_TAG,
+          "Sending wifi notification to IP " + broadcastAddress.getHostAddress());
 
       // Create the packet to send
-      DatagramPacket packet = new DatagramPacket(messageBytes, messageBytes.length, broadcastAddress, UDP_PORT);
+      DatagramPacket packet =
+          new DatagramPacket(messageBytes, messageBytes.length, broadcastAddress, UDP_PORT);
 
       // Send it
       sendDatagramPacket(packet);
@@ -167,7 +171,8 @@ class WifiNotificationMethod implements NotificationMethod {
    *
    * @param packet the packet to send
    */
-  private synchronized void sendDatagramPacket(DatagramPacket packet) throws IOException, SocketException {
+  private synchronized void sendDatagramPacket(DatagramPacket packet)
+      throws IOException, SocketException {
     DatagramSocket socket = new DatagramSocket();
     socket.setBroadcast(true);
     socket.send(packet);

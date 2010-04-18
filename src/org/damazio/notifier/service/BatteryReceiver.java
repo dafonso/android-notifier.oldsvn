@@ -39,7 +39,8 @@ class BatteryReceiver extends BroadcastReceiver {
   @Override
   public void onReceive(Context context, Intent intent) {
     if (!intent.getAction().equals(Intent.ACTION_BATTERY_CHANGED)) {
-      Log.e(NotifierConstants.LOG_TAG, "Wrong intent received by battery receiver - " + intent.getAction());
+      Log.e(NotifierConstants.LOG_TAG,
+          "Wrong intent received by battery receiver - " + intent.getAction());
       return;
     }
 
