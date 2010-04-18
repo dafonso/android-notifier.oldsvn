@@ -33,7 +33,8 @@ public class NotificationService extends Service {
   private Notifier notifier;
   private Handler instanceHandler;
 
-  private final PhoneStateListener phoneListener = new PhoneRingListener(this);
+  private final PhoneStateListener ringListener = new PhoneRingListener(this);
+  private final VoicemailListener voicemailListener = new VoicemailListener(this);
   private final BatteryReceiver batteryReceiver = new BatteryReceiver(this);
   private final SmsReceiver smsReceiver = new SmsReceiver(this);
   private final MmsReceiver mmsReceiver = new MmsReceiver(this);
@@ -60,7 +61,12 @@ public class NotificationService extends Service {
     notifier = new Notifier(this, preferences);
 
     final TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
-    tm.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
+
+    // Register the ring listener
+    tm.listen(ringListener, PhoneStateListener.LISTEN_CALL_STATE);
+
+    // Register the viocemail receiver
+    tm.listen(voicemailListener, PhoneStateListener.LISTEN_MESSAGE_WAITING_INDICATOR);
 
     // Register the battery receiver
     registerReceiver(batteryReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
@@ -84,7 +90,8 @@ public class NotificationService extends Service {
     unregisterReceiver(batteryReceiver);
 
     final TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
-    tm.listen(phoneListener, PhoneStateListener.LISTEN_NONE);
+    tm.listen(ringListener, PhoneStateListener.LISTEN_NONE);
+    tm.listen(voicemailListener, PhoneStateListener.LISTEN_NONE);
 
     super.onDestroy();
   }

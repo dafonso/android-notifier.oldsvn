@@ -57,6 +57,7 @@
     <string name="event_sms">SMS</string>
     <string name="event_mms">MMS</string>
     <string name="event_battery">Battery</string>
+    <string name="event_voicemail">Voicemail</string>
     <string name="event_on">This event will always be notified.</string>
     <string name="event_off">This event will NEVER be notified.</string>
 

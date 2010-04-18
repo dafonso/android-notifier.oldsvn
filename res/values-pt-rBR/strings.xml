@@ -49,6 +49,7 @@
     <!-- Event types -->
     <string name="events_title">Eventos a notificar:</string>
     <string name="event_ring">Toque do telefone</string>
+    <string name="event_voicemail">Mensagem de voz</string>
     <string name="event_battery">Bateria</string>
     <string name="event_on">Este evento será sempre notificado.</string>
     <string name="event_off">Este evento não será notificado NUNCA.</string>
