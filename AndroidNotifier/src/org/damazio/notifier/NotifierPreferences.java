@@ -89,7 +89,9 @@ public class NotifierPreferences {
    * @param firstTime whether this is the first time starting the app
    */
   public void setFirstTime(boolean firstTime) {
-    preferences.edit().putBoolean(context.getString(R.string.is_first_time_key), firstTime).commit();
+    preferences.edit()
+        .putBoolean(context.getString(R.string.is_first_time_key), firstTime)
+        .commit();
   }
 
   /**
@@ -119,7 +121,8 @@ public class NotifierPreferences {
    *         {@link #getWifiTargetIpAddress}
    */
   public String getCustomWifiTargetIpAddress() {
-    return preferences.getString(context.getString(R.string.target_custom_ip_address_key), "255.255.255.255");
+    return preferences.getString(context.getString(R.string.target_custom_ip_address_key),
+        "255.255.255.255");
   }
 
   /**
@@ -129,7 +132,9 @@ public class NotifierPreferences {
    * @param address the IP address's textual representation
    */
   public void setCustomWifiTargetIpAddress(String address) {
-    preferences.edit().putString(context.getString(R.string.target_custom_ip_address_key), address).commit();
+    preferences.edit()
+        .putString(context.getString(R.string.target_custom_ip_address_key), address)
+        .commit();
   }
 
   /**

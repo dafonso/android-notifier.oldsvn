@@ -27,7 +27,8 @@ class SmsReceiver extends BroadcastReceiver {
   @Override
   public void onReceive(Context context, Intent intent) {
     if (!intent.getAction().equals(ACTION)) {
-      Log.e(NotifierConstants.LOG_TAG, "Wrong intent received by SMS receiver - " + intent.getAction());
+      Log.e(NotifierConstants.LOG_TAG,
+          "Wrong intent received by SMS receiver - " + intent.getAction());
       return;
     }
 

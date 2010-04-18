@@ -25,10 +25,10 @@ import android.util.Log;
  */
 class BluetoothNotificationMethod implements NotificationMethod {
 
-  private static final int RETRY_WAIT_MILLIS = 1000;
   private static final String NOTIFICATION_UUID_STR = "7674047E-6E47-4BF0-831F-209E3F9DD23F";
   private static final UUID NOTIFICATION_UUID = UUID.fromString(NOTIFICATION_UUID_STR);
   private static final int MAX_RETRIES = 10;
+  private static final int RETRY_WAIT_MILLIS = 1000;
 
   /**
    * Class which waits for bluetooth to be enabled before sending a
@@ -195,7 +195,10 @@ class BluetoothNotificationMethod implements NotificationMethod {
     callback.notificationSent(notification);
     Log.d(NotifierConstants.LOG_TAG, "Sent notification over Bluetooth (" + retries + " retries).");
   }
-  
+
+  /**
+   * @return whether the bluetooth system is enabled and not discovering
+   */
   private boolean isBluetoothReady() {
     return bluetoothAdapter.isEnabled() && !bluetoothAdapter.isDiscovering();
   }

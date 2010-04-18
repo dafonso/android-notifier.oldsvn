@@ -58,6 +58,7 @@ public abstract class CallerId {
       super(context);
     }
 
+    @Override
     public CallerInfo getCallerInfo(String number) {
       return getCallerInfo(PhoneLookup.CONTENT_FILTER_URI,
           PhoneLookup.DISPLAY_NAME, PhoneLookup.TYPE, PhoneLookup.LABEL,
@@ -184,7 +185,7 @@ public abstract class CallerId {
    * @param displayName the name of the caller
    * @return the fully formatted caller ID
    */
-  protected String buildCallerIdString(CallerInfo info) {
+  private String buildCallerIdString(CallerInfo info) {
     StringBuilder contentsBuilder = new StringBuilder();
     contentsBuilder.append(info.displayName);
     if (info.typeName != null) {

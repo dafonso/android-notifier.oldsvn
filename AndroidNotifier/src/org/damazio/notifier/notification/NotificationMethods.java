@@ -3,7 +3,6 @@ package org.damazio.notifier.notification;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.NotifierPreferences;
 
 import android.content.Context;
@@ -13,7 +12,7 @@ import android.content.Context;
  *
  * @author rdamazio
  */
-public class NotificationMethods {
+class NotificationMethods {
   private NotificationMethods() { }
 
   /**
@@ -33,17 +32,10 @@ public class NotificationMethods {
     methods.add(new UsbNotificationMethod());
 
     // Methods supported only in 2.0 and above
-    if (isBluetoothMethodSupported()) {
+    if (BluetoothDeviceUtils.isBluetoothMethodSupported()) {
       methods.add(new BluetoothNotificationMethod(context, preferences));
     }
 
     return methods;
-  }
-
-  /**
-   * @return whether the bluetooth method is supported on this device
-   */
-  public static boolean isBluetoothMethodSupported() {
-    return NotifierConstants.ANDROID_SDK_INT >= 5;
   }
 }
