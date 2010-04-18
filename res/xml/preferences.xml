@@ -119,6 +119,10 @@
     <Preference android:key="@string/about_key"
                 android:title="@string/about_menu"
                 android:persistent="false" />
+    <Preference android:key="@string/report_bug_key"
+                android:title="@string/report_bug"
+                android:summary="@string/report_bug_summary"
+                android:persistent="false" />
   </PreferenceCategory>
 
 </PreferenceScreen>

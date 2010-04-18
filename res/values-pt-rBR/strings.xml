@@ -60,6 +60,9 @@
     <string name="test_notification_summary">Útil para testes e parear</string>
     <string name="ping_sent">Notificação de teste enviada</string>
     <string name="about_menu">Sobre Notificações Remotas</string>
+    <string name="report_bug">Reportar um bug</string>
+    <string name="report_bug_summary">Use logo após o problema acontecer (o log será copiado para a área de transferência)</string>
+    <string name="report_bug_toast">O log do aplicativo foi copiado para a área de transferência.\nPor favor cole-o no relatório do bug.</string>
 
     <!-- Welcome and about box contents -->
     <string name="about_title">Notificações Remotas</string>

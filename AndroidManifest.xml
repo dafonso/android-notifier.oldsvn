@@ -54,4 +54,7 @@
 
   <!-- Permissions for starting up -->
   <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+  <!-- Permissions for bug reporting -->
+  <uses-permission android:name="android.permission.READ_LOGS" />
 </manifest>
