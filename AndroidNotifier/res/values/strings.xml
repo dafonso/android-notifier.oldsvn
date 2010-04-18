@@ -67,6 +67,9 @@
     <string name="test_notification_summary">Useful for testing and pairing</string>
     <string name="ping_sent">Test notification sent</string>
     <string name="about_menu">About Remote Notifier</string>
+    <string name="report_bug">Report a bug</string>
+    <string name="report_bug_summary">Use this right after the issue has happened (log will be copied to the clipboard)</string>
+    <string name="report_bug_toast">Application log copied to the clipboard.\nPlease paste it in the bug report.</string>
 
     <!-- Welcome and about box contents -->
     <string name="about_title">Remote Notifier</string>

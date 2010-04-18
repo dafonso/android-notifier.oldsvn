@@ -240,6 +240,15 @@ public class NotifierMain extends PreferenceActivity {
         return true;
       }
     });
+
+    // Attach an action to report a bug
+    Preference bugReportPreference = findPreference(getString(R.string.report_bug_key));
+    bugReportPreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+      public boolean onPreferenceClick(Preference preference) {
+        BugReporter.reportBug(NotifierMain.this);
+        return true;
+      }
+    });
   }
 
   /**

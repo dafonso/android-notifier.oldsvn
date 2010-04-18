@@ -25,4 +25,5 @@
   <string name="bluetooth_pairing_key">bluetoothPairing</string>
   <string name="test_notification_key">testNotification</string>
   <string name="about_key">about</string>
+  <string name="report_bug_key">reportBug</string>
 </resources>
