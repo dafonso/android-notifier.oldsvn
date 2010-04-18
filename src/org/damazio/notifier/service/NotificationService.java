@@ -60,7 +60,7 @@ public class NotificationService extends Service {
     preferences = new NotifierPreferences(this);
     notifier = new Notifier(this, preferences);
 
-    final TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
+    final TelephonyManager tm = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
 
     // Register the ring listener
     tm.listen(ringListener, PhoneStateListener.LISTEN_CALL_STATE);
