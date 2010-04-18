@@ -242,4 +242,11 @@ public class NotifierPreferences {
   public boolean isBatteryEventEnabled() {
     return preferences.getBoolean(context.getString(R.string.event_battery_key), true);
   }
+
+  /**
+   * @return whether to send notifications when there's new voicemail
+   */
+  public boolean isVoicemailEventEnabled() {
+    return preferences.getBoolean(context.getString(R.string.event_voicemail_key), true);
+  }
 }

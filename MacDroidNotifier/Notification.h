@@ -13,6 +13,7 @@ typedef enum {
   BATTERY,
   SMS,
   MMS,
+  VOICEMAIL,
   PING
 } NotificationType;
 

@@ -16,6 +16,7 @@
   <string name="event_sms_key">smsEvent</string>
   <string name="event_mms_key">mmsEvent</string>
   <string name="event_battery_key">batteryEvent</string>
+  <string name="event_voicemail_key">voicemailEvent</string>
 
   <!-- Fake preference keys - never saved, but show options in the preferences screen -->
   <string name="method_bluetooth_options_key">bluetoothOptions</string>

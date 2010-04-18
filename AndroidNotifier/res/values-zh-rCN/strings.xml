@@ -56,6 +56,7 @@
     <string name="event_ring">来电</string>
     <string name="event_sms">短信</string>
     <string name="event_mms">彩信</string>
+    <string name="event_voicemail">语音信箱</string>
     <string name="event_battery">电量</string>
     <string name="event_on">此事件将会通告.</string>
     <string name="event_off">此事件将不会通告.</string>

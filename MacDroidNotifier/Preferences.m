@@ -19,6 +19,7 @@ NSString *const kPreferencesRingKey = @"ring";
 NSString *const kPreferencesSmsKey = @"sms";
 NSString *const kPreferencesMmsKey = @"mms";
 NSString *const kPreferencesBatteryKey = @"battery";
+NSString *const kPreferencesVoicemailKey = @"voicemail";
 NSString *const kPreferencesPingKey = @"ping";
 
 NSString *const kPreferencesDisplayKey = @"display";
@@ -59,6 +60,10 @@ const NSInteger kPairingRequired = 1;
   [self setBool:YES forTypeKey:kPreferencesMmsKey     forActionKey:kPreferencesDisplayKey inDictionary:settings];
   [self setBool:YES forTypeKey:kPreferencesBatteryKey forActionKey:kPreferencesDisplayKey inDictionary:settings];
   [self setBool:YES forTypeKey:kPreferencesPingKey    forActionKey:kPreferencesDisplayKey inDictionary:settings];
+  [self setBool:YES
+     forTypeKey:kPreferencesVoicemailKey
+   forActionKey:kPreferencesDisplayKey
+   inDictionary:settings];
 
   [[NSUserDefaults standardUserDefaults] registerDefaults:settings];
   [[NSUserDefaults standardUserDefaults] synchronize];

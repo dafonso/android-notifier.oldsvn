@@ -14,6 +14,8 @@ public enum NotificationType {
   MMS,
   /** Battery status change. */
   BATTERY,
+  /** New voicemail */
+  VOICEMAIL,
   /** Test notification. */
   PING;
 }

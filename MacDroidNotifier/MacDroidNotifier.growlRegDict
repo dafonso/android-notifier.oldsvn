@@ -10,6 +10,7 @@
         <string>PhoneBattery</string>
         <string>PhoneSMS</string>
         <string>PhoneMMS</string>
+        <string>PhoneVoicemail</string>
         <string>PhonePing</string>
       </array>
     </dict>

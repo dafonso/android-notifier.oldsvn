@@ -79,6 +79,8 @@ public class Notifier {
         return preferences.isMmsEventEnabled();
       case BATTERY:
         return preferences.isBatteryEventEnabled();
+      case VOICEMAIL:
+        return preferences.isVoicemailEventEnabled();
       case PING:
         return true;
       default:

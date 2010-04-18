@@ -50,6 +50,7 @@
     <string name="events_title">События для уведомлений</string>
     <string name="event_ring">Телефонный вызов</string>
     <string name="event_battery">Состояние батареи</string>
+    <string name="event_voicemail">Голосовой почты</string>
     <string name="event_on">Уведомления об этом событии ВСЕГДА будут отсылаться.</string>
     <string name="event_off">Уведомления об этом событии НИКОГДА не будут отсылаться.</string>
 
