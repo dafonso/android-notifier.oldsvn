@@ -76,10 +76,14 @@
     <string name="ping_contents">Test notification</string>
     <string name="sms_contents">SMS from %s: %s</string>
     <string name="mms_contents">MMS from %s</string>
-    <string name="battery_level">Remaining battery charge: %d%%</string>
-    <string name="battery_level_unknown">Phone battery level unknown</string>
+
+    <!-- These are composed, like "Charging, remaining charge: 75%".
+         The %d%% is expected to be at the end. -->
+    <string name="battery_level">%s, remaining charge: %d%%</string>
+    <string name="battery_level_unknown">%s, remaining charge unknown</string>
     <string name="battery_charging">Charging</string>
     <string name="battery_discharging">Discharging</string>
     <string name="battery_not_charging">NOT charging</string>
     <string name="battery_full">Full</string>
+    <string name="battery_unknown">Unknown state</string>
 </resources>

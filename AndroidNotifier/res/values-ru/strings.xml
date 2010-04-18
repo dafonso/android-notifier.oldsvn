@@ -68,8 +68,8 @@
     <string name="ping_contents">Проверка уведомлений</string>
     <string name="sms_contents">SMS от %s: %s</string>
     <string name="mms_contents">MMS от %s</string>
-    <string name="battery_level">Осталось заряда аккумулятора: %d%%</string>
-    <string name="battery_level_unknown">Уровень заряда аккумулятора неизвестен</string>
+    <string name="battery_level">%s, осталось заряда аккумулятора: %d%%</string>
+    <string name="battery_level_unknown">%s, уровень заряда аккумулятора неизвестен</string>
     <string name="battery_charging">Заряжается</string>
     <string name="battery_discharging">Зарядка прекращена</string>
     <string name="battery_not_charging">Не заряжается</string>
