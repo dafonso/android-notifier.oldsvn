@@ -65,6 +65,8 @@
     type = SMS;
   } else if ([typeStr isEqualToString:@"MMS"]) {
     type = MMS;
+  } else if ([typeStr isEqualToString:@"VOICEMAIL"]) {
+    type = VOICEMAIL;
   } else if ([typeStr isEqualToString:@"PING"]) {
     type = PING;
   } else {
@@ -111,6 +113,8 @@
       return @"SMS";
     case MMS:
       return @"MMS";
+    case VOICEMAIL:
+      return @"VOICEMAIL";
     case PING:
       return @"PING";
     default:
