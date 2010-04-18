@@ -180,7 +180,8 @@ class BluetoothNotificationMethod implements NotificationMethod {
 
         retries++;
         if (retries > MAX_RETRIES) {
-          Log.e(NotifierConstants.LOG_TAG, "Giving up sending bluetooth notification after ", e);
+          Log.e(NotifierConstants.LOG_TAG,
+              "Giving up sending bluetooth notification after " + retries + " retries", e);
           callback.notificationFailed(notification, e);
           return;
         }
