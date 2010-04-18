@@ -6,6 +6,7 @@
     <item>Custom IP</item>
   </string-array>
 
+  <!-- Not user-visible, do not translate -->
   <string-array name="targetIpValues">
     <item>global</item>
     <item>dhcp</item>
@@ -18,6 +19,7 @@
     <item>Never</item>
   </string-array>
 
+  <!-- Not user-visible, do not translate -->
   <string-array name="wifiSleepPolicyValues">
     <item>screen</item>
     <item>plugged</item>

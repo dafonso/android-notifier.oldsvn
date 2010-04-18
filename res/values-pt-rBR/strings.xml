@@ -69,8 +69,8 @@
     <string name="ping_contents">Notificação de teste</string>
     <string name="sms_contents">SMS de %s: %s</string>
     <string name="mms_contents">MMS de %s</string>
-    <string name="battery_level">Carga restante da bateria: %d%%</string>
-    <string name="battery_level_unknown">Nível de bateria do telefone desconhecido</string>
+    <string name="battery_level">%s, carga restante: %d%%</string>
+    <string name="battery_level_unknown">%s, nível de bateria desconhecido</string>
     <string name="battery_charging">Carregando</string>
     <string name="battery_discharging">Descarregando</string>
     <string name="battery_not_charging">NÃO carregando</string>
