@@ -11,6 +11,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.os.PowerManager;
+import android.os.SystemClock;
 import android.os.PowerManager.WakeLock;
 import android.util.Log;
 
@@ -24,8 +25,10 @@ import android.util.Log;
  */
 class BluetoothNotificationMethod implements NotificationMethod {
 
+  private static final int RETRY_WAIT_MILLIS = 1000;
   private static final String NOTIFICATION_UUID_STR = "7674047E-6E47-4BF0-831F-209E3F9DD23F";
   private static final UUID NOTIFICATION_UUID = UUID.fromString(NOTIFICATION_UUID_STR);
+  private static final int MAX_RETRIES = 10;
 
   /**
    * Class which waits for bluetooth to be enabled before sending a
@@ -144,45 +147,54 @@ class BluetoothNotificationMethod implements NotificationMethod {
       return;
     }
 
-    BluetoothSocket socket = null;
-    try {
-      socket = targetDevice.createRfcommSocketToServiceRecord(NOTIFICATION_UUID);
-    } catch (IOException e) {
-      // Let it stay null
-      // TODO(rdamazio): Retry here
-      e.printStackTrace();
-    }
-
-    if (socket == null) {
-      Log.e(NotifierConstants.LOG_TAG, "Couldn't open an RFCOMM bluetooth socket to device "
-          + targetDevice.getName());
-      callback.notificationFailed(notification, null);
-      return;
-    }
-
     // TODO(rdamazio): Add an end-of-message marker in case the packets get split
     byte[] messageBytes = notification.toString().getBytes();
-    try {
-      Log.d(NotifierConstants.LOG_TAG, "Connecting to Bluetooth device " + targetDevice.getName());
 
-      socket.connect();
-      socket.getOutputStream().write(messageBytes);
+    bluetoothAdapter.cancelDiscovery();
 
-      callback.notificationSent(notification);
-      Log.d(NotifierConstants.LOG_TAG, "Sent notification over Bluetooth.");
-    } catch (IOException e) {
-      // TODO(rdamazio): Retry here
-      callback.notificationFailed(notification, e);
-      Log.e(NotifierConstants.LOG_TAG, "Error sending bluetooth notification", e);
+    int retries = 0;
+    while (true) {
+      BluetoothSocket socket = null;
+      try {
+        socket = targetDevice.createRfcommSocketToServiceRecord(NOTIFICATION_UUID);
+
+        Log.d(NotifierConstants.LOG_TAG,
+            "Connecting to Bluetooth device " + targetDevice.getName());
+        socket.connect();
+        socket.getOutputStream().write(messageBytes);
+        socket.close();
+
+        // Done, exit the while loop
+        break;
+      } catch (IOException e) {
+        // Try to close the socket
+        // (its finalize would do this too, but we expedite it)
+        if (socket != null) {
+          try {
+            socket.close();
+          } catch (IOException e1) {
+            // Do nothing, we'll retry
+            Log.e(NotifierConstants.LOG_TAG, "Error closing bluetooth socket", e1);
+          }
+        }
+
+        retries++;
+        if (retries > MAX_RETRIES) {
+          Log.e(NotifierConstants.LOG_TAG, "Giving up sending bluetooth notification after ", e);
+          callback.notificationFailed(notification, e);
+          return;
+        }
+
+        // Wait a bit, then let it retry
+        Log.d(NotifierConstants.LOG_TAG, "Waiting to retry", e);
+        SystemClock.sleep(RETRY_WAIT_MILLIS);
+      }
     }
 
-    try {
-      socket.close();
-    } catch (IOException e) {
-      Log.e(NotifierConstants.LOG_TAG, "Error closing bluetooth socket", e);
-    }
+    callback.notificationSent(notification);
+    Log.d(NotifierConstants.LOG_TAG, "Sent notification over Bluetooth (" + retries + " retries).");
   }
-
+  
   private boolean isBluetoothReady() {
     return bluetoothAdapter.isEnabled() && !bluetoothAdapter.isDiscovering();
   }
