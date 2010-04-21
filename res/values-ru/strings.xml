@@ -31,7 +31,7 @@
     <string name="custom_ip">Пожалуйста, введите адрес получателя уведомлений:</string>
     <string name="wifi_sleep_policy">Правила перехода Wi-Fi в спящий режим</string>
     <string name="wifi_sleep_policy_summary">Управление политикой выключения Wi-Fi\n(по умолчанию: во время выключения экрана)</string>
-    <string name="enable_wifi">Автоматически автивировать Wi-Fi</string>
+    <string name="enable_wifi">Автоматически активировать Wi-Fi</string>
     <string name="enable_wifi_summary_on">Fi-Wi будет активироваться для передачи уведомлений</string>
     <string name="enable_wifi_summary_off">Уведомления не будут рассылаться, если сеть Wi-Fi выключена</string>
 
@@ -51,28 +51,28 @@
     <string name="event_ring">Телефонный вызов</string>
     <string name="event_battery">Состояние батареи</string>
     <string name="event_voicemail">Голосовой почты</string>
-    <string name="event_on">Уведомления об этом событии ВСЕГДА будут отсылаться.</string>
-    <string name="event_off">Уведомления об этом событии НИКОГДА не будут отсылаться.</string>
+    <string name="event_on">Уведомления об этом событии будут отсылаться ВСЕГДА</string>
+    <string name="event_off">Уведомления об этом событии не будут отсылаться НИКОГДА</string>
 
     <!-- Misc preferences -->
     <string name="misc_title">Разное</string>
-    <string name="send_test_notification">Отправить тестовое сообщение</string>
+    <string name="send_test_notification">Отправить тестовое уведомление</string>
     <string name="test_notification_summary">Используется для тестирования и сопряжения</string>
     <string name="ping_sent">Тестовое уведомление отправлено</string>
     <string name="about_menu">О Remote Notifier</string>
 
     <!-- Welcome and about box contents -->
     <string name="welcome_title">Добро пожаловать в Remote Notifier</string>
-    <string name="about_message">Это приложение работает в связке с PC/Mac для отображения уведомлений на компьютере.\n\nНа сайте: http://code.google.com/p/android-notifier/ Вы найдете программы для PC/Mac и инструкции по их установке. Кроме того, там Вы можете оставить свой отзыв или сообщить об ошибке.</string>
+    <string name="about_message">Это приложение работает в связке с PC/Mac для отображения уведомлений на компьютере.\n\nНа сайте http://code.google.com/p/android-notifier/ Вы найдете программы для PC/Mac и инструкции по их установке. Кроме того, там Вы можете оставить свой отзыв или сообщить об ошибке.</string>
 
     <!-- Notification contents -->
     <string name="ping_contents">Проверка уведомлений</string>
     <string name="sms_contents">SMS от %s: %s</string>
     <string name="mms_contents">MMS от %s</string>
-    <string name="battery_level">%s, осталось заряда аккумулятора: %d%%</string>
+    <string name="battery_level">%s, уровень заряда аккумулятора: %d%%</string>
     <string name="battery_level_unknown">%s, уровень заряда аккумулятора неизвестен</string>
     <string name="battery_charging">Заряжается</string>
-    <string name="battery_discharging">Зарядка прекращена</string>
+    <string name="battery_discharging">Разряжается</string>
     <string name="battery_not_charging">Не заряжается</string>
     <string name="battery_full">Батарея заряжена полностью</string>
 </resources>
