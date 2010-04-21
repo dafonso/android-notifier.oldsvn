@@ -165,6 +165,7 @@
 		37DFC3DD115DC6E0002EA00A /* CopyAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CopyAction.h; sourceTree = "<group>"; };
 		37DFC3DE115DC6E0002EA00A /* CopyAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CopyAction.m; sourceTree = "<group>"; };
 		37E33B4F117F949000ACC1AE /* voicemail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = voicemail.png; path = images/voicemail.png; sourceTree = "<group>"; };
+		37E33B51117F9C3400ACC1AE /* ru */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ru; path = ru.lproj/UI.xib; sourceTree = "<group>"; };
 		37E89D54110BF9FD006CBE71 /* SoundVolume.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundVolume.h; sourceTree = "<group>"; };
 		37E89D55110BF9FD006CBE71 /* SoundVolume.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundVolume.m; sourceTree = "<group>"; };
 		37E89D81110BFBF5006CBE71 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = /System/Library/Frameworks/AudioToolbox.framework; sourceTree = "<absolute>"; };
@@ -510,6 +511,7 @@
 			children = (
 				1DDD58150DA1D0A300B32029 /* English */,
 				376511771172C3F8000B8A95 /* zh_CN */,
+				37E33B51117F9C3400ACC1AE /* ru */,
 			);
 			name = UI.xib;
 			sourceTree = "<group>";
