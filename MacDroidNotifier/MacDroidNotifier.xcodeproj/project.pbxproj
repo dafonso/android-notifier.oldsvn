@@ -60,6 +60,7 @@
 		37CCD80610F578DE00CA6404 /* ExecuteAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CCD80510F578DE00CA6404 /* ExecuteAction.m */; };
 		37CCD80910F5790800CA6404 /* ActionDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CCD80810F5790800CA6404 /* ActionDispatcher.m */; };
 		37DFC3DF115DC6E0002EA00A /* CopyAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DFC3DE115DC6E0002EA00A /* CopyAction.m */; };
+		37E33B50117F949000ACC1AE /* voicemail.png in Resources */ = {isa = PBXBuildFile; fileRef = 37E33B4F117F949000ACC1AE /* voicemail.png */; };
 		37E89D56110BF9FD006CBE71 /* SoundVolume.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E89D55110BF9FD006CBE71 /* SoundVolume.m */; };
 		37E89D82110BFBF5006CBE71 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37E89D81110BFBF5006CBE71 /* AudioToolbox.framework */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
@@ -163,6 +164,7 @@
 		37DC4EBE11452EE0007448FC /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README.txt; path = "Example Scripts/README.txt"; sourceTree = "<group>"; };
 		37DFC3DD115DC6E0002EA00A /* CopyAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CopyAction.h; sourceTree = "<group>"; };
 		37DFC3DE115DC6E0002EA00A /* CopyAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CopyAction.m; sourceTree = "<group>"; };
+		37E33B4F117F949000ACC1AE /* voicemail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = voicemail.png; path = images/voicemail.png; sourceTree = "<group>"; };
 		37E89D54110BF9FD006CBE71 /* SoundVolume.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundVolume.h; sourceTree = "<group>"; };
 		37E89D55110BF9FD006CBE71 /* SoundVolume.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundVolume.m; sourceTree = "<group>"; };
 		37E89D81110BFBF5006CBE71 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = /System/Library/Frameworks/AudioToolbox.framework; sourceTree = "<absolute>"; };
@@ -310,6 +312,7 @@
 				3781D5F61172EB5400D4CB41 /* mms.png */,
 				3781D5F71172EB5400D4CB41 /* ring.png */,
 				3781D5F81172EB5400D4CB41 /* sms.png */,
+				37E33B4F117F949000ACC1AE /* voicemail.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -461,6 +464,7 @@
 				3781D60F1172EB5400D4CB41 /* mms.png in Resources */,
 				3781D6101172EB5400D4CB41 /* ring.png in Resources */,
 				3781D6111172EB5400D4CB41 /* sms.png in Resources */,
+				37E33B50117F949000ACC1AE /* voicemail.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

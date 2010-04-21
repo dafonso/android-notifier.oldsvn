@@ -127,7 +127,7 @@ NSString *const kGrowlUrl = @"http://growl.info/";
     case VOICEMAIL:
       title = NSLocalizedString(@"New voicemail", @"New voicemail title");
       name = @"PhoneVoicemail";
-      // TODO(kahil): Icon
+      iconName = @"voicemail";
       break;
     case PING:
       title = NSLocalizedString(@"Phone sent a ping", @"Ping title");
