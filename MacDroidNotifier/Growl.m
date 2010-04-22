@@ -115,16 +115,19 @@ NSString *const kGrowlUrl = @"http://growl.info/";
   NSString *data = [notification data];
   NSString *name = nil;
   NSString *iconName = nil;
+  int priority = 0;
   switch ([notification type]) {
     case RING:
       title = NSLocalizedString(@"Phone is ringing", @"Phone ring title");
       name = @"PhoneRing";
       iconName = @"ring";
+      priority = 1;
       break;
     case BATTERY:
       title = NSLocalizedString(@"Phone battery state", @"Battery state title");
       name = @"PhoneBattery";
       iconName = [self batteryIconNameFromDescription:description andData:data];
+      priority = -1;
       break;
     case SMS:
       title = NSLocalizedString(@"Phone received an SMS", @"SMS received title");
@@ -149,19 +152,25 @@ NSString *const kGrowlUrl = @"http://growl.info/";
       return nil;
   }
 
+  NSMutableDictionary *result = [NSMutableDictionary dictionaryWithCapacity:5];
+  [result setObject:name forKey:GROWL_NOTIFICATION_NAME];
+  [result setObject:title forKey:GROWL_NOTIFICATION_TITLE];
+  [result setObject:description forKey:GROWL_NOTIFICATION_DESCRIPTION];
+  [result setObject:[NSNumber numberWithInt:priority]
+             forKey:GROWL_NOTIFICATION_PRIORITY];
+
   NSData *icon = nil;
   if (iconName) {
     NSImage *iconImage = [NSImage imageNamed:iconName];
     icon = [iconImage TIFFRepresentation];
   }
+  if (icon) {
+    [result setObject:icon forKey:GROWL_NOTIFICATION_ICON];
+  } else {
+    NSLog(@"Couldn't get an icon.");
+  }
 
-  return [NSDictionary dictionaryWithObjectsAndKeys:
-          name, GROWL_NOTIFICATION_NAME,
-          title, GROWL_NOTIFICATION_TITLE,
-          description, GROWL_NOTIFICATION_DESCRIPTION,
-          icon, GROWL_NOTIFICATION_ICON,
-          0, GROWL_NOTIFICATION_PRIORITY,
-          nil];
+  return result;
 }
 
 - (void)postGrowlNotification:(Notification *)notification {
