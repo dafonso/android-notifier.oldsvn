@@ -37,7 +37,7 @@
   }
 
   // Read the volume
-  propertySize = sizeof(Float32);
+  propertySize = (UInt32) sizeof(Float32);
   status = AudioHardwareServiceGetPropertyData(outputDeviceID, &propertyAOPA, 0, NULL, &propertySize, &outputVolume);
 
   // Check success
@@ -99,12 +99,12 @@
 
   if (propertyAOPA.mSelector == kAudioDevicePropertyMute) {
     // Request setting the muted state
-    propertySize = sizeof(UInt32);
+    propertySize = (UInt32) sizeof(UInt32);
     UInt32 mute = 1;
     status = AudioHardwareServiceSetPropertyData(outputDeviceID, &propertyAOPA, 0, NULL, propertySize, &mute);		
   } else {
     // Request setting the volume
-    propertySize = sizeof(Float32);
+    propertySize = (UInt32) sizeof(Float32);
     status = AudioHardwareServiceSetPropertyData(outputDeviceID, &propertyAOPA, 0, NULL, propertySize, &newVolume);	
 
     if (status) {
@@ -113,7 +113,7 @@
 
     // make sure we're not muted
     propertyAOPA.mSelector = kAudioDevicePropertyMute;
-    propertySize = sizeof(UInt32);
+    propertySize = (UInt32) sizeof(UInt32);
     UInt32 mute = 0;
     if (!AudioHardwareServiceHasProperty(outputDeviceID, &propertyAOPA)) {
       NSLog(@"Device 0x%0x does not support muting", outputDeviceID);
@@ -155,7 +155,7 @@
   }
 
   // Send the request to get the default device
-  propertySize = sizeof(AudioDeviceID);
+  propertySize = (UInt32) sizeof(AudioDeviceID);
   status = AudioHardwareServiceGetPropertyData(kAudioObjectSystemObject,
       &propertyAOPA, 0, NULL, &propertySize, &outputDeviceID);
   if (status) {
