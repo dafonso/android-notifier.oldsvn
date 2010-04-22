@@ -77,7 +77,18 @@ NSString *const kGrowlUrl = @"http://growl.info/";
   [GrowlApplicationBridge setGrowlDelegate:self];
 }
 
-- (NSString *)batteryIconNameFromDescription:(NSString *)description {
+- (NSString *)batteryIconNameFromDescription:(NSString *)description
+                                     andData:(NSString *)data {
+  // First, try using the data as a number
+  if ([data length] > 0) {
+    NSInteger value = [data integerValue];
+    if (value >= 0 && value <= 100 && value % 5 == 0) {
+      return [@"battery" stringByAppendingString:data];
+    }
+  }
+
+  // No or invalid data, try parsing the description instead
+  // TODO: When v2 is used by everyone, get rid of this
   // Expected: space + number + % at the end, where number is a multiple of 5
   if (![description hasSuffix:@"%%"]) {
     // Find last space
@@ -93,7 +104,7 @@ NSString *const kGrowlUrl = @"http://growl.info/";
       }   
     }
   }
-
+  
   NSLog(@"Unknown battery icon from description: %@", description);
   return @"battery_unknown";
 }
@@ -101,6 +112,7 @@ NSString *const kGrowlUrl = @"http://growl.info/";
 - (NSDictionary *)dictionaryForNotification:(Notification *)notification {
   NSString *title = nil;
   NSString *description = [notification contents];
+  NSString *data = [notification data];
   NSString *name = nil;
   NSString *iconName = nil;
   switch ([notification type]) {
@@ -112,7 +124,7 @@ NSString *const kGrowlUrl = @"http://growl.info/";
     case BATTERY:
       title = NSLocalizedString(@"Phone battery state", @"Battery state title");
       name = @"PhoneBattery";
-      iconName = [self batteryIconNameFromDescription:description];
+      iconName = [self batteryIconNameFromDescription:description andData:data];
       break;
     case SMS:
       title = NSLocalizedString(@"Phone received an SMS", @"SMS received title");
