@@ -10,8 +10,8 @@
 #import "AsyncUdpSocket.h"
 #import "Preferences.h"
 
-static const unsigned short kPortNumber = 10600;
-static const double kReceiveTimeout = 10.0;
+static const UInt16 kPortNumber = 10600;
+static const NSTimeInterval kReceiveTimeout = 10.0;
 
 @implementation WifiNotificationListener
 
@@ -35,7 +35,7 @@ static const double kReceiveTimeout = 10.0;
     NSLog(@"Error when binding socket: %@", err);
   }
 
-  [socket receiveWithTimeout:kReceiveTimeout tag:1];
+  [socket receiveWithTimeout:kReceiveTimeout tag:1L];
 }
 
 - (BOOL)onUdpSocket:(AsyncUdpSocket *)sock
@@ -54,7 +54,7 @@ static const double kReceiveTimeout = 10.0;
          didNotReceiveDataWithTag:(long)tag
          dueToError:(NSError *)error {
   // That's ok, keep listening
-  [socket receiveWithTimeout:kReceiveTimeout tag:1];
+  [socket receiveWithTimeout:kReceiveTimeout tag:1L];
 }
 
 - (void)stop {

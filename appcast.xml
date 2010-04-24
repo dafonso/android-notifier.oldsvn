@@ -9,6 +9,26 @@
       <description>Most recent changes with links to updates.</description>
       <language>en</language>
          <item>
+            <title>Version 0.2.4</title>
+            <description><![CDATA[
+              <h3>Changes in this version:</h3>
+              <ul>
+                <li>Added "copy to clipboard" action
+                <li>Added nice icons, thanks to Kahil Young
+                <li>Added Chinese translation, thanks to Michael Jiang
+                <li>Added Russian translation thanks to admin at krom dot org dot ru
+                <li>Support for the newer v2 protocol (ahead of the Android app using it)
+              </ul>
+            ]]></description>
+            <pubDate>Thu, 24 Apr 2010 23:52:26 -0300</pubDate>
+            <enclosure
+                url="http://android-notifier.googlecode.com/files/MacDroidNotifier-0.2.4.dmg"
+                sparkle:version="0.2.4"
+                length="2255406"
+                sparkle:dsaSignature="MCwCFGdRi/uWsyeEH2stk7hYq0xHqceDAhRxyIrML+/pWfEyRogRCQic5g0VqQ=="
+                type="application/octet-stream" />
+         </item>
+         <item>
             <title>Version 0.2.3</title>
             <description><![CDATA[
               <h3>Changes in this version:</h3>
