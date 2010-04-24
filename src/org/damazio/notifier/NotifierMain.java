@@ -285,6 +285,9 @@ public class NotifierMain extends PreferenceActivity {
    * Sends a test notification.
    */
   private void sendTestNotification() {
+    // TODO: Send to the service instead
+    // TODO: Warn if none of the selected methods are available
+    //       (e.g. bluetooth and/or wifi turned off)
     if (notifier == null) {
       notifier = new Notifier(this, preferences);
     }
