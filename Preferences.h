@@ -10,7 +10,8 @@
 // Constants for preference keys.
 extern NSString *const kPreferencesPairedDevicesKey;
 extern NSString *const kPreferencesPairingRequiredKey;
-extern NSString *const kPreferencesListenWifiKey;
+extern NSString *const kPreferencesListenUdpKey;
+extern NSString *const kPreferencesListenTcpKey;
 extern NSString *const kPreferencesListenBluetoothKey;
 extern NSString *const kPreferencesListenUsbKey;
 extern NSString *const kPreferencesRingKey;

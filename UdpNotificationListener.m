@@ -5,7 +5,7 @@
 //  Created by Rodrigo Damazio on 25/12/09.
 //
 
-#import "WifiNotificationListener.h"
+#import "UdpNotificationListener.h"
 
 #import "AsyncUdpSocket.h"
 #import "Preferences.h"
@@ -13,7 +13,7 @@
 static const UInt16 kPortNumber = 10600;
 static const NSTimeInterval kReceiveTimeout = 10.0;
 
-@implementation WifiNotificationListener
+@implementation UdpNotificationListener
 
 - (void)startWithCallback:(NSObject<NotificationListenerCallback> *)callbackParam {
   if (socket) {
@@ -23,7 +23,7 @@ static const NSTimeInterval kReceiveTimeout = 10.0;
 
   callback = [callbackParam retain];
 
-  NSLog(@"started listening for WiFi notifications");
+  NSLog(@"started listening for UDP notifications");
   socket = [[AsyncUdpSocket alloc] initWithDelegate:self];
 
   // Advanced options - enable the socket to contine operations even during modal dialogs, and menu browsing
@@ -44,7 +44,7 @@ static const NSTimeInterval kReceiveTimeout = 10.0;
            fromHost:(NSString *)host
                port:(UInt16)port {
   // TODO(rdamazio): Don't even listen on the UDP port if disabled
-  if ([[NSUserDefaults standardUserDefaults] boolForKey:kPreferencesListenWifiKey]) {
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:kPreferencesListenUdpKey]) {
     [callback handleRawNotification:data];
   }
   return NO;

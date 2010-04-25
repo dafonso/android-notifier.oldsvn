@@ -11,7 +11,8 @@
 
 NSString *const kPreferencesPairedDevicesKey = @"pairedDevices";
 NSString *const kPreferencesPairingRequiredKey = @"pairingRequired";
-NSString *const kPreferencesListenWifiKey = @"listenWifi";
+NSString *const kPreferencesListenUdpKey = @"listenWifi";
+NSString *const kPreferencesListenTcpKey = @"listenTcp";
 NSString *const kPreferencesListenBluetoothKey = @"listenBluetooth";
 NSString *const kPreferencesListenUsbKey = @"listenUsb";
 
@@ -48,7 +49,8 @@ const NSInteger kPairingRequired = 1;
       [NSMutableDictionary dictionaryWithObjectsAndKeys:
           [NSArray array], kPreferencesPairedDevicesKey,
           [NSNumber numberWithInteger:kPairingNotRequired], kPreferencesPairingRequiredKey,
-          [NSNumber numberWithBool:YES], kPreferencesListenWifiKey,
+          [NSNumber numberWithBool:YES], kPreferencesListenUdpKey,
+          [NSNumber numberWithBool:YES], kPreferencesListenTcpKey,
           [NSNumber numberWithBool:YES], kPreferencesListenBluetoothKey,
           [NSNumber numberWithBool:NO],  kPreferencesListenUsbKey,
           nil];

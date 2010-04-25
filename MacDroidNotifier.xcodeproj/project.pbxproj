@@ -8,11 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* UI.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* UI.xib */; };
+		373EC2DE11842CBA007477C8 /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 373EC2DD11842CBA007477C8 /* AsyncSocket.m */; };
+		373EC2E211842D54007477C8 /* TcpNotificationListener.m in Sources */ = {isa = PBXBuildFile; fileRef = 373EC2E111842D54007477C8 /* TcpNotificationListener.m */; };
 		376DF26C10EBE0DA0065B914 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 376DF26B10EBE0DA0065B914 /* Sparkle.framework */; };
 		376DF27A10EBE1190065B914 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 376DF26B10EBE0DA0065B914 /* Sparkle.framework */; };
 		376DF29210EBE5140065B914 /* sparkle_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 376DF29110EBE5140065B914 /* sparkle_pub.pem */; };
 		37753DCD10E5639C00A21D89 /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37753DCC10E5639C00A21D89 /* MainController.m */; };
-		37753DD110E563E600A21D89 /* WifiNotificationListener.m in Sources */ = {isa = PBXBuildFile; fileRef = 37753DD010E563E600A21D89 /* WifiNotificationListener.m */; };
+		37753DD110E563E600A21D89 /* UdpNotificationListener.m in Sources */ = {isa = PBXBuildFile; fileRef = 37753DD010E563E600A21D89 /* UdpNotificationListener.m */; };
 		37753DD410E563F300A21D89 /* BluetoothNotificationListener.m in Sources */ = {isa = PBXBuildFile; fileRef = 37753DD310E563F300A21D89 /* BluetoothNotificationListener.m */; };
 		37753E6410E56C9700A21D89 /* NotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 37753E6310E56C9700A21D89 /* NotificationManager.m */; };
 		37753E6F10E56E0300A21D89 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 37753E6E10E56E0300A21D89 /* Notification.m */; };
@@ -92,6 +94,10 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* MacDroidNotifier_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MacDroidNotifier_Prefix.pch; sourceTree = "<group>"; };
 		371B4A05117A0A6D00A3AF2B /* ru */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		373EC2DC11842CBA007477C8 /* AsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncSocket.h; sourceTree = "<group>"; };
+		373EC2DD11842CBA007477C8 /* AsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncSocket.m; sourceTree = "<group>"; };
+		373EC2E011842D54007477C8 /* TcpNotificationListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TcpNotificationListener.h; sourceTree = "<group>"; };
+		373EC2E111842D54007477C8 /* TcpNotificationListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TcpNotificationListener.m; sourceTree = "<group>"; };
 		376511771172C3F8000B8A95 /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = zh_CN; path = zh_CN.lproj/UI.xib; sourceTree = "<group>"; };
 		376511781172C405000B8A95 /* zh_CN */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = zh_CN; path = zh_CN.lproj/Localizable.strings; sourceTree = "<group>"; };
 		376DF26B10EBE0DA0065B914 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
@@ -99,8 +105,8 @@
 		376DF2A410EBE54A0065B914 /* appcast.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = appcast.xml; sourceTree = "<group>"; };
 		37753DCB10E5639C00A21D89 /* MainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainController.h; sourceTree = "<group>"; };
 		37753DCC10E5639C00A21D89 /* MainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainController.m; sourceTree = "<group>"; };
-		37753DCF10E563E600A21D89 /* WifiNotificationListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WifiNotificationListener.h; sourceTree = "<group>"; };
-		37753DD010E563E600A21D89 /* WifiNotificationListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WifiNotificationListener.m; sourceTree = "<group>"; };
+		37753DCF10E563E600A21D89 /* UdpNotificationListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UdpNotificationListener.h; sourceTree = "<group>"; };
+		37753DD010E563E600A21D89 /* UdpNotificationListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UdpNotificationListener.m; sourceTree = "<group>"; };
 		37753DD210E563F300A21D89 /* BluetoothNotificationListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BluetoothNotificationListener.h; sourceTree = "<group>"; };
 		37753DD310E563F300A21D89 /* BluetoothNotificationListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BluetoothNotificationListener.m; sourceTree = "<group>"; };
 		37753E6210E56C9700A21D89 /* NotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationManager.h; sourceTree = "<group>"; };
@@ -328,8 +334,10 @@
 				37753E9E10E56E7300A21D89 /* NotificationListener.h */,
 				37753DD210E563F300A21D89 /* BluetoothNotificationListener.h */,
 				37753DD310E563F300A21D89 /* BluetoothNotificationListener.m */,
-				37753DCF10E563E600A21D89 /* WifiNotificationListener.h */,
-				37753DD010E563E600A21D89 /* WifiNotificationListener.m */,
+				373EC2E011842D54007477C8 /* TcpNotificationListener.h */,
+				373EC2E111842D54007477C8 /* TcpNotificationListener.m */,
+				37753DCF10E563E600A21D89 /* UdpNotificationListener.h */,
+				37753DD010E563E600A21D89 /* UdpNotificationListener.m */,
 			);
 			name = Notifications;
 			sourceTree = "<group>";
@@ -337,6 +345,8 @@
 		37753F7110E5891500A21D89 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				373EC2DC11842CBA007477C8 /* AsyncSocket.h */,
+				373EC2DD11842CBA007477C8 /* AsyncSocket.m */,
 				37753F7210E5893600A21D89 /* AsyncUdpSocket.h */,
 				37753F7310E5893600A21D89 /* AsyncUdpSocket.m */,
 				379B9A6110E87759007B1FCA /* StartupItem.h */,
@@ -477,7 +487,7 @@
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				37753DCD10E5639C00A21D89 /* MainController.m in Sources */,
-				37753DD110E563E600A21D89 /* WifiNotificationListener.m in Sources */,
+				37753DD110E563E600A21D89 /* UdpNotificationListener.m in Sources */,
 				37753DD410E563F300A21D89 /* BluetoothNotificationListener.m in Sources */,
 				37753E6410E56C9700A21D89 /* NotificationManager.m in Sources */,
 				37753E6F10E56E0300A21D89 /* Notification.m in Sources */,
@@ -491,6 +501,8 @@
 				37CCD80910F5790800CA6404 /* ActionDispatcher.m in Sources */,
 				37E89D56110BF9FD006CBE71 /* SoundVolume.m in Sources */,
 				37DFC3DF115DC6E0002EA00A /* CopyAction.m in Sources */,
+				373EC2DE11842CBA007477C8 /* AsyncSocket.m in Sources */,
+				373EC2E211842D54007477C8 /* TcpNotificationListener.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -605,18 +617,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				CODE_SIGN_IDENTITY = "Don't Code Sign";
 				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_ENABLE_OBJC_GC = unsupported;
-				GCC_MODEL_PPC64 = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_VERSION = 4.2;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = YES;
 				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
-				GCC_WARN_PEDANTIC = NO;
-				GCC_WARN_PROTOTYPE_CONVERSION = NO;
 				GCC_WARN_SHADOW = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
 				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
@@ -627,7 +632,6 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
 				SDKROOT = macosx10.5;
-				VALID_ARCHS = "i386 ppc ppc64 x86_64";
 			};
 			name = Release;
 		};
