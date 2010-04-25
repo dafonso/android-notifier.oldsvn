@@ -20,7 +20,7 @@ public class VoicemailListener extends PhoneStateListener {
   @Override
   public void onMessageWaitingIndicatorChanged(boolean mwi) {
     if (mwi) {
-      service.sendNotification(new Notification(service, NotificationType.VOICEMAIL, ""));
+      service.sendNotification(new Notification(service, NotificationType.VOICEMAIL, null, null));
     }
   }
 }

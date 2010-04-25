@@ -9,16 +9,20 @@ import android.content.Context;
  */
 public class Notification {
 
+  private static final String PROTOCOL_VERSION = "v2";
   private final String deviceId;
   private final String notificationId;
   private final NotificationType type;
-  private final String contents;
+  private final String data;
+  private final String description;
 
-  public Notification(Context context, NotificationType type, String contents) {
+  public Notification(Context context, NotificationType type, String data, String description) {
     this.deviceId = DeviceIdProvider.getDeviceId(context);
-    this.notificationId = notificationIdFor(deviceId, System.currentTimeMillis(), type, contents);
+    this.notificationId =
+        notificationIdFor(deviceId, System.currentTimeMillis(), type, data, description);
     this.type = type;
-    this.contents = contents;
+    this.data = data;
+    this.description = description;
   }
 
   /**
@@ -31,14 +35,20 @@ public class Notification {
   @Override
   public String toString() {
     StringBuilder messageBuilder = new StringBuilder();
+    messageBuilder.append(PROTOCOL_VERSION);
+    messageBuilder.append('/');
     messageBuilder.append(deviceId);
     messageBuilder.append('/');
     messageBuilder.append(notificationId);
     messageBuilder.append('/');
     messageBuilder.append(type);
+    messageBuilder.append('/');
+    if (data != null) {
+      messageBuilder.append(data);
+    }
     messageBuilder.append("/");
-    if (contents != null) {
-      messageBuilder.append(contents);
+    if (description != null) {
+      messageBuilder.append(description);
     }
     return messageBuilder.toString();
   }
@@ -49,16 +59,20 @@ public class Notification {
    * @param deviceId the ID of this device
    * @param timestamp the timestamp when the notification was created
    * @param type the type of notification
-   * @param contents the contents of the notification
+   * @param data the machine-readable data for the notification
+   * @param description the human-readable description of the notification
    * @return a unique notification ID
    */
   private static String notificationIdFor(String deviceId, long timestamp, NotificationType type,
-      String contents) {
+      String data, String description) {
     long hashCode = deviceId.hashCode();
     hashCode = hashCode * 31 + timestamp;
     hashCode = hashCode * 31 + type.hashCode();
-    if (contents != null) {
-      hashCode = hashCode * 31 + contents.hashCode();
+    if (data != null) {
+      hashCode = hashCode * 31 + data.hashCode();
+    }
+    if (description != null) {
+      hashCode = hashCode * 31 + description.hashCode();
     }
     return Long.toHexString(hashCode);
   }

@@ -25,7 +25,7 @@ class PhoneRingListener extends PhoneStateListener {
     if (state == TelephonyManager.CALL_STATE_RINGING) {
       String notificationContents = callerId.buildCallerIdString(incomingNumber);
       Notification notification =
-          new Notification(service, NotificationType.RING, notificationContents);
+          new Notification(service, NotificationType.RING, incomingNumber, notificationContents);
       service.sendNotification(notification);
     }
   }

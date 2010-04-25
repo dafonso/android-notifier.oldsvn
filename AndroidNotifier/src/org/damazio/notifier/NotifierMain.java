@@ -294,7 +294,7 @@ public class NotifierMain extends PreferenceActivity {
 
     String contents = getString(R.string.ping_contents);
     Notification notification =
-        new Notification(NotifierMain.this, NotificationType.PING, contents);
+        new Notification(NotifierMain.this, NotificationType.PING, null, contents);
     notifier.sendNotification(notification);
 
     Toast.makeText(this, R.string.ping_sent, Toast.LENGTH_LONG).show();

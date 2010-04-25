@@ -52,13 +52,16 @@ class MmsReceiver extends BroadcastReceiver {
 
     // Check if it's a MMS notification
     if (messageType == PduHeaders.MESSAGE_TYPE_NOTIFICATION_IND) {
-      String contents = "";
+      String contents = null;
+      String data = null;
       EncodedStringValue from = headers.getFrom();
       if (from != null) {
-        String fromStr = CallerId.create(service).buildCallerIdString(from.getString());
-        contents = service.getString(R.string.mms_contents, fromStr);
+        String fromStr = from.getString();
+        String identifiedFrom = CallerId.create(service).buildCallerIdString(fromStr);
+        contents = service.getString(R.string.mms_contents, identifiedFrom);
+        data = fromStr;
       }
-      Notification notification = new Notification(context, NotificationType.MMS, contents);
+      Notification notification = new Notification(context, NotificationType.MMS, data, contents);
       service.sendNotification(notification);
     }
   }

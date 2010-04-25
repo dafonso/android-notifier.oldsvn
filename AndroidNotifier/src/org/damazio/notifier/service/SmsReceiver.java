@@ -38,10 +38,12 @@ class SmsReceiver extends BroadcastReceiver {
     if (bundle != null) {
       Object[] pdus = (Object[]) bundle.get("pdus");
       for (int i = 0; i < pdus.length; i++) {
-        String contents = SmsDecoder.getInstance().getSmsContents(context, pdus[i]);
+        SmsDecoder decoder = SmsDecoder.create(context, pdus[i]);
 
+        String contents = decoder.getSmsContents();
+        String data = decoder.getSenderAddress();
         Log.d(NotifierConstants.LOG_TAG, "Received Sms: " + contents);
-        Notification notification = new Notification(context, NotificationType.SMS, contents);
+        Notification notification = new Notification(context, NotificationType.SMS, data, contents);
         service.sendNotification(notification);
         notificationSent = true;
       }
@@ -49,7 +51,7 @@ class SmsReceiver extends BroadcastReceiver {
 
     if (!notificationSent) {
       // If no notification sent (extra info was not there), send one without info
-      Notification notification = new Notification(context, NotificationType.SMS, "");
+      Notification notification = new Notification(context, NotificationType.SMS, null, null);
       service.sendNotification(notification);
     }
   }
