@@ -48,10 +48,9 @@
     // Oops, we broke down the description, put it back together
     NSRange contentRange = NSMakeRange(firstPart, numParts - totalParts + 1);
     NSArray *contentsParts = [parts subarrayWithRange:contentRange];
-    contents = [NSString pathWithComponents:contentsParts];
+    contents = [contentsParts componentsJoinedByString:@"/"];
   } else {
     contents = [parts objectAtIndex:firstPart];
-    if ([contents isEqualToString:@"/"]) contents = @"";
   }
   return contents;
 }
@@ -109,7 +108,7 @@
 }
 
 + (Notification *)notificationFromString:(NSString *)serialized {
-  NSArray *parts = [serialized pathComponents];
+  NSArray *parts = [serialized componentsSeparatedByString:@"/"];
 
   Notification *result;
   if ([parts count] > 0 &&
