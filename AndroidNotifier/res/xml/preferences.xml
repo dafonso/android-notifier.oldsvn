@@ -31,6 +31,16 @@
                       android:entries="@array/targetIps"
                       android:entryValues="@array/targetIpValues"
                       android:defaultValue="global" />
+      <CheckBoxPreference android:key="@string/send_udp_key"
+                          android:title="@string/send_udp"
+                          android:defaultValue="true"
+                          android:summaryOn="@string/send_udp_summary_on"
+                          android:summaryOff="@string/send_udp_summary_off" />
+      <CheckBoxPreference android:key="@string/send_tcp_key"
+                          android:title="@string/send_tcp"
+                          android:defaultValue="true"
+                          android:summaryOn="@string/send_tcp_summary_on"
+                          android:summaryOff="@string/send_tcp_summary_off" />
 
       <ListPreference android:key="@string/wifi_sleep_policy_key"
                       android:title="@string/wifi_sleep_policy"

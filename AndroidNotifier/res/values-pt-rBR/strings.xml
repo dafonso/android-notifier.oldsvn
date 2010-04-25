@@ -28,12 +28,19 @@
     <string name="wifi_options">Opções de Wifi</string>
     <string name="target_ip_address">Endereço IP de destino</string>
     <string name="custom_ip_title">Endereço IP customizado</string>
-    <string name="custom_ip">Por favor digite o endereço ao qual enviar notificações:</string>
+    <string name="custom_ip">Por favor digite o endereço IP ou nome do host ao qual enviar notificações:</string>
     <string name="wifi_sleep_policy">Política de desligamento do Wifi</string>
     <string name="wifi_sleep_policy_summary">Controla quando o Android desliga o Wifi\n(por padrão, quando a tela desliga)</string>
     <string name="enable_wifi">Auto-habilitar wifi</string>
     <string name="enable_wifi_summary_on">O Wifi será ativado para enviar notificações</string>
     <string name="enable_wifi_summary_off">Notificações não serão enviadas se o Wifi estiver desligado</string>
+    <string name="send_udp">Enviar com UDP</string>
+    <string name="send_udp_summary_on">As notificações serão enviadas sobre UDP (necessário para difusão)</string>
+    <string name="send_udp_summary_off">Notificações NÃO serão enviadas sobre UDP (sem difusão)</string>
+    <string name="send_tcp">Enviar com TCP</string>
+    <string name="send_tcp_summary_on">As notificações serão enviadas sobre TCP</string>
+    <string name="send_tcp_summary_off">Notificações NÃO serão enviadas sobre TCP</string>
+    <string name="send_tcp_summary_noip">Para usar TCP, você deve escolher um IP customizado como destino</string>
 
     <!-- Bluetooth method -->
     <string name="bluetooth_options">Opções de Bluetooth</string>

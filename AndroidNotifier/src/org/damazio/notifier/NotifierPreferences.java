@@ -249,4 +249,18 @@ public class NotifierPreferences {
   public boolean isVoicemailEventEnabled() {
     return preferences.getBoolean(context.getString(R.string.event_voicemail_key), true);
   }
+
+  /**
+   * @return whether to send notifications over UDP
+   */
+  public boolean isSendUdpEnabled() {
+    return preferences.getBoolean(context.getString(R.string.send_udp_key), true);
+  }
+
+  /**
+   * @return whether to send notifications over TCP
+   */
+  public boolean isSendTcpEnabled() {
+    return preferences.getBoolean(context.getString(R.string.send_tcp_key), true);
+  }
 }

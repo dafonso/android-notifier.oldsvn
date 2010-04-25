@@ -1,9 +1,13 @@
 package org.damazio.notifier.notification;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
@@ -68,6 +72,9 @@ class WifiNotificationMethod implements NotificationMethod {
   }
 
   private static final int UDP_PORT = 10600;
+  private static final int TCP_PORT = 10600;
+  private static final int TCP_CONNECT_TIMEOUT_MS = 4000;
+  private static final byte DELIMITER_BYTE = 0;
   private final NotifierPreferences preferences;
   private final WifiManager wifi;
   private final ConnectivityManager connectivity;
@@ -98,20 +105,24 @@ class WifiNotificationMethod implements NotificationMethod {
 
     // Wifi is connected, so try to send notification now
     try {
-      // TODO(rdamazio): Add an end-of-message marker in case the packets get split
       byte[] messageBytes = notification.toString().getBytes();
+      messageBytes = addDelimiter(messageBytes);
 
       // Get the address to send it to
-      InetAddress broadcastAddress = getTargetAddress();
+      InetAddress address = getTargetAddress();
       Log.d(NotifierConstants.LOG_TAG,
-          "Sending wifi notification to IP " + broadcastAddress.getHostAddress());
+          "Sending wifi notification to IP " + address.getHostAddress());
 
-      // Create the packet to send
-      DatagramPacket packet =
-          new DatagramPacket(messageBytes, messageBytes.length, broadcastAddress, UDP_PORT);
-
-      // Send it
-      sendDatagramPacket(packet);
+      if (preferences.isSendUdpEnabled()) {
+        sendUdpNotification(messageBytes, address);
+      }
+      if (preferences.isSendTcpEnabled()) {
+        if (preferences.getWifiTargetIpAddress().equals("custom")) {
+          sendTcpNotification(messageBytes, address);
+        } else {
+          Log.e(NotifierConstants.LOG_TAG, "TCP enabled but trying to use a broadcast address");
+        }
+      }
 
       callback.notificationSent(notification);
       Log.i(NotifierConstants.LOG_TAG, "Sent notification over WiFi.");
@@ -120,8 +131,61 @@ class WifiNotificationMethod implements NotificationMethod {
       Log.e(NotifierConstants.LOG_TAG, "Unable to open socket", e);
     } catch (IOException e) {
       callback.notificationFailed(notification, e);
-      Log.e(NotifierConstants.LOG_TAG, "Unable to send UDP packet", e);
+      Log.e(NotifierConstants.LOG_TAG, "Unable to send TCP or UDP packet", e);
     }
+  }
+
+  /**
+   * Adds a final delimiter to the message so that its end can be easily
+   * detected.
+   *
+   * @param messageBytes the original message bytes
+   * @return message bytes with the delimiter
+   */
+  private byte[] addDelimiter(byte[] messageBytes) {
+    byte[] result = new byte[messageBytes.length  + 1];
+    System.arraycopy(messageBytes, 0, result, 0, messageBytes.length);
+    result[messageBytes.length] = DELIMITER_BYTE;
+    return result;
+  }
+
+  /**
+   * Sends a notification over TCP.
+   *
+   * @param messageBytes the bytes of the notification to send
+   * @param address the address to send it to
+   */
+  private void sendTcpNotification(byte[] messageBytes, InetAddress address) throws IOException {
+    Log.d(NotifierConstants.LOG_TAG, "Sending over TCP");
+    Socket socket = new Socket();
+    SocketAddress remoteAddr = new InetSocketAddress(address, TCP_PORT);
+    socket.connect(remoteAddr, TCP_CONNECT_TIMEOUT_MS);
+    socket.setSendBufferSize(messageBytes.length * 2);
+    OutputStream stream = socket.getOutputStream();
+    stream.write(messageBytes);
+    stream.flush();
+    socket.close();
+    Log.d(NotifierConstants.LOG_TAG, "Sent over TCP");
+  }
+
+  /**
+   * Sends a notification over UDP.
+   *
+   * @param messageBytes the bytes of the notification to send
+   * @param address the address to send it to
+   */
+  private void sendUdpNotification(byte[] messageBytes, InetAddress targetAddress)
+      throws IOException, SocketException {
+    Log.d(NotifierConstants.LOG_TAG, "Sending over UDP");
+
+    // Create the packet to send
+    DatagramPacket packet =
+        new DatagramPacket(messageBytes, messageBytes.length, targetAddress, UDP_PORT);
+
+    // Send it
+    sendDatagramPacket(packet);
+
+    Log.d(NotifierConstants.LOG_TAG, "Sent over UDP");
   }
 
   /**

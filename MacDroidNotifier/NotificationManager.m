@@ -11,7 +11,8 @@
 #import "BluetoothNotificationListener.h"
 #import "Notification.h"
 #import "Preferences.h"
-#import "WifiNotificationListener.h"
+#import "TcpNotificationListener.h"
+#import "UdpNotificationListener.h"
 
 const NSUInteger kLastNotificationCount = 10;
 
@@ -24,7 +25,8 @@ const NSUInteger kLastNotificationCount = 10;
     notificationCount = 0;
 
     listeners = [[NSArray arrayWithObjects:
-                  [[[WifiNotificationListener alloc] init] autorelease],
+                  [[[TcpNotificationListener alloc] init] autorelease],
+                  [[[UdpNotificationListener alloc] init] autorelease],
                   [[[BluetoothNotificationListener alloc] init] autorelease],
                   nil] retain];
     for (id<NotificationListener> listener in listeners) {
@@ -84,8 +86,14 @@ const NSUInteger kLastNotificationCount = 10;
 }
 
 - (void)handleRawNotification:(NSData *)data {
+  // Discard the ending marker if present
+  NSUInteger len = [data length];
+  char* contents = (char *) [data bytes];
+  if (contents[len - 1] == 0) len--;
+
+  // Conver to a string
   NSString *notificationStr = [[NSString alloc] initWithBytes:[data bytes]
-                                                       length:[data length]
+                                                       length:len
                                                      encoding:NSUTF8StringEncoding];
   Notification *notification = [Notification notificationFromString:notificationStr];
   [notificationStr release];
@@ -96,11 +104,13 @@ const NSUInteger kLastNotificationCount = 10;
   NSLog(@"Received notification %@", notification);
 
   @synchronized(self) {
+    // Dispatch for regular handling
     if (![self isNotificationDuplicate:notification] &&
         [self isDevicePaired:[notification deviceId]]) {
       [dispatcher actOnNotification:notification];
     }
 
+    // Dispatch for pairing handling
     if ([notification type] == PING) {
       [preferences handlePairingNotification:notification];
     }
