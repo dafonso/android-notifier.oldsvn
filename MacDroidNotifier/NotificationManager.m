@@ -89,6 +89,10 @@ const NSUInteger kLastNotificationCount = 10;
                                                      encoding:NSUTF8StringEncoding];
   Notification *notification = [Notification notificationFromString:notificationStr];
   [notificationStr release];
+  if (notification == nil) {
+    return;
+  }
+
   NSLog(@"Received notification %@", notification);
 
   @synchronized(self) {
