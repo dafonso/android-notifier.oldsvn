@@ -14,70 +14,100 @@ import android.util.Log;
  * @author rdamazio
  */
 public abstract class SmsDecoder {
+  protected final Context context;
+  protected final Object pdu;
+
   /**
    * Implementation for API levels 4 and above.
    */
   private static class DonutImpl extends SmsDecoder {
-    @Override
-    public String getSmsContents(Context context, Object pdu) {
-      SmsMessage message = SmsMessage.createFromPdu((byte[]) pdu);
+    private final String sender;
+    private final String body;
 
-      String from = getSenderString(context, message.getOriginatingAddress());
-      return context.getString(R.string.sms_contents, from, message.getMessageBody());
+    public DonutImpl(Context context, Object pdu) {
+      super(context, pdu);
+
+      SmsMessage message = SmsMessage.createFromPdu((byte[]) pdu);
+      body = message.getMessageBody();
+      sender = message.getOriginatingAddress();
+    }
+
+    @Override
+    public String getMessageBody() {
+      return body;
+    }
+
+    @Override
+    public String getSenderAddress() {
+      return sender;
     }
   }
 
   /**
    * Implementation for API levels 3 and below.
    */
+  @SuppressWarnings("deprecation")
   private static class CupcakeImpl extends SmsDecoder {
-    @SuppressWarnings("deprecation")
-    @Override
-    public String getSmsContents(Context context, Object pdu) {
+    private final String body;
+    private final String sender;
+
+    public CupcakeImpl(Context context, Object pdu) {
+      super(context, pdu);
+
       android.telephony.gsm.SmsMessage message =
           android.telephony.gsm.SmsMessage.createFromPdu((byte[]) pdu);
+      body = message.getMessageBody();
+      sender = message.getOriginatingAddress();
+    }
 
-      String from = getSenderString(context, message.getOriginatingAddress());
-      return context.getString(R.string.sms_contents, from, message.getMessageBody());
+    @Override
+    public String getMessageBody() {
+      return body;
+    }
+
+    @Override
+    public String getSenderAddress() {
+      return sender;
     }
   }
 
-  private static SmsDecoder instance;
-
   /**
-   * Decodes an SMS message.
+   * Formats the SMS in a human-readable way.
    *
    * @param context the context in which decoding happens
    * @param pdu the PDU, extracted from the intent's "pdus" extras bundle
-   * @return the string representation of the text message
+   * @return the human-readable representation of the text message
    */
-  public abstract String getSmsContents(Context context, Object pdu);
-
-  /**
-   * Returns the proper (singleton) instance of this class.
-   */
-  public static SmsDecoder getInstance() {
-    if (instance == null) {
-      if (NotifierConstants.ANDROID_SDK_INT >= 4) {
-        Log.d(NotifierConstants.LOG_TAG, "Using donut SMS decoder");
-        instance = new DonutImpl();
-      } else {
-        Log.d(NotifierConstants.LOG_TAG, "Using cupcake SMS decoder");
-        instance = new CupcakeImpl();
-      }
-    }
-    return instance;
+  public final String getSmsContents() {
+    String sender = CallerId.create(context).buildCallerIdString(getSenderAddress());
+    return context.getString(R.string.sms_contents, sender, getMessageBody());
   }
 
   /**
-   * Creates and returns a complete string representing the sender, including
-   * his name and phone type if found by the caller ID.
-   *
-   * @param context the current context
-   * @param originatingAddress the phone number of the sender
-   * @return the formatted sender string
+   * Returns the plain sender address (phone number) for the SMS.
    */
-  protected String getSenderString(Context context, String originatingAddress) {
-    return CallerId.create(context).buildCallerIdString(originatingAddress);
+  public abstract String getSenderAddress();
+
+  /**
+   * Returns the plain SMS message body.
+   */
+  public abstract String getMessageBody();
+
+  protected SmsDecoder(Context context, Object pdu) {
+    this.context = context;
+    this.pdu = pdu;
+  }
+
+  /**
+   * Returns a proper instance of this class.
+   */
+  public static SmsDecoder create(Context context, Object pdu) {
+    if (NotifierConstants.ANDROID_SDK_INT >= 4) {
+      Log.d(NotifierConstants.LOG_TAG, "Using donut SMS decoder");
+      return new DonutImpl(context, pdu);
+    } else {
+      Log.d(NotifierConstants.LOG_TAG, "Using cupcake SMS decoder");
+      return new CupcakeImpl(context, pdu);
+    }
   }
 }

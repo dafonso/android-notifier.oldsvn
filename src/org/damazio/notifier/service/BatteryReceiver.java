@@ -81,7 +81,7 @@ class BatteryReceiver extends BroadcastReceiver {
       String statusString = context.getString(statusStringId);
       Log.d(NotifierConstants.LOG_TAG, "Battery status: " + statusString);
 
-      // Add message about the battery level (X% must come at the end)
+      // Add message about the battery level
       if (level != -1 && maxLevel != -1) {
         batteryLevelPercentage = 100 * level / maxLevel;
         Log.d(NotifierConstants.LOG_TAG, "Got battery level: " + batteryLevelPercentage);
@@ -99,7 +99,9 @@ class BatteryReceiver extends BroadcastReceiver {
     if (status != lastBatteryStatus ||
         lastBatteryLevelPercentage - batteryLevelPercentage >= MIN_LEVEL_CHANGE) {
       Log.d(NotifierConstants.LOG_TAG, "Notifying of battery state change");
-      Notification notification = new Notification(context, NotificationType.BATTERY, contents);
+      String data = Integer.toString(batteryLevelPercentage);
+      Notification notification =
+          new Notification(context, NotificationType.BATTERY, data, contents);
       service.sendNotification(notification);
 
       lastBatteryStatus = status;
