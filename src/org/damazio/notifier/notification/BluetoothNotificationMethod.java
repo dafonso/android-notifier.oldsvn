@@ -147,7 +147,6 @@ class BluetoothNotificationMethod implements NotificationMethod {
       return;
     }
 
-    // TODO(rdamazio): Add an end-of-message marker in case the packets get split
     byte[] messageBytes = notification.toString().getBytes();
 
     bluetoothAdapter.cancelDiscovery();

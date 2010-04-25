@@ -7,6 +7,8 @@
   <string name="method_wifi_key">wifiMethod</string>
   <string name="target_ip_address_key">targetIpAddress</string>
   <string name="target_custom_ip_address_key">targetCustomIpAddress</string>
+  <string name="send_udp_key">sendUdp</string>
+  <string name="send_tcp_key">sendTcp</string>
   <string name="enable_wifi_key">enableWifi</string>
   <string name="method_bluetooth_key">bluetoothMethod</string>
   <string name="bluetooth_device_key">bluetoothDevice</string>

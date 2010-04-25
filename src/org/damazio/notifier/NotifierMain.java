@@ -109,14 +109,23 @@ public class NotifierMain extends PreferenceActivity {
    * Configures preference actions related to Wifi.
    */
   private void configureWifiPreferences() {
+    updateTcpPreference(preferences.getWifiTargetIpAddress().equals("custom"), false);
+
     // Attach custom IP address selector
     Preference ipAddressPreference = findPreference(getString(R.string.target_ip_address_key));
     ipAddressPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
       public boolean onPreferenceChange(Preference preference, Object newValue) {
+        ListPreference listPreference = (ListPreference) preference;
         String value = (String) newValue;
-        if (value.equals("custom")) {
-          selectCustomIpAddress((ListPreference) preference);
+        String oldValue = listPreference.getValue();
+
+        boolean isCustomIp = value.equals("custom");
+        boolean isChanging = !newValue.equals(oldValue);
+        updateTcpPreference(isCustomIp, isChanging);
+        if (isCustomIp) {
+          selectCustomIpAddress(listPreference);
         }
+
         return true;
       }
     });
@@ -131,6 +140,27 @@ public class NotifierMain extends PreferenceActivity {
         return true;
       }
     });
+  }
+
+  /**
+   * Updates the state of the "send over TCP" preference.
+   *
+   * @param isCustomIp whether a custom IP is selected as the target
+   * @param isChanging whether the IP type has changed
+   */
+  private void updateTcpPreference(boolean isCustomIp, boolean isChanging) {
+    // TODO: Give some type of warning if both UDP and TCP are disabled
+    CheckBoxPreference sendTcpPreference =
+        (CheckBoxPreference) findPreference(getString(R.string.send_tcp_key));
+    if (isCustomIp) {
+      sendTcpPreference.setEnabled(true);
+      if (isChanging) sendTcpPreference.setChecked(true);
+      sendTcpPreference.setSummaryOff(R.string.send_tcp_summary_off);
+    } else {
+      sendTcpPreference.setEnabled(false);
+      sendTcpPreference.setChecked(false);
+      sendTcpPreference.setSummaryOff(R.string.send_tcp_summary_noip);
+    }
   }
 
   /**
