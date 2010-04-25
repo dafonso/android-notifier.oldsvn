@@ -77,13 +77,27 @@ NSString *const kGrowlUrl = @"http://growl.info/";
   [GrowlApplicationBridge setGrowlDelegate:self];
 }
 
+- (NSInteger)roundToFive:(NSInteger)value {
+  NSInteger modFive = value % 5;
+  if (modFive != 0) {
+    if (modFive <= 2) {
+      // Round down
+      value -= modFive;
+    } else {
+      // Round up
+      value += 5 - modFive;
+    }
+  }
+  return value;
+}
+
 - (NSString *)batteryIconNameFromDescription:(NSString *)description
                                      andData:(NSString *)data {
   // First, try using the data as a number
   if ([data length] > 0) {
     NSInteger value = [data integerValue];
-    if (value >= 0 && value <= 100 && value % 5 == 0) {
-      return [@"battery" stringByAppendingString:data];
+    if (value >= 0 && value <= 100) {
+      return [NSString stringWithFormat:@"battery%d", [self roundToFive:value]];
     }
   }
 
@@ -99,12 +113,11 @@ NSString *const kGrowlUrl = @"http://growl.info/";
       lastSpace.length = [description length] - lastSpace.location - 1;
       NSString *valueStr = [description substringWithRange:lastSpace];
       NSInteger value = [valueStr integerValue];
-      if (value % 5 == 0) {
-        return [@"battery" stringByAppendingString:valueStr];
-      }   
+
+      return [NSString stringWithFormat:@"battery%d", [self roundToFive:value]];
     }
   }
-  
+
   NSLog(@"Unknown battery icon from description: %@", description);
   return @"battery_unknown";
 }
@@ -166,7 +179,8 @@ NSString *const kGrowlUrl = @"http://growl.info/";
   }
   if (icon) {
     [result setObject:icon forKey:GROWL_NOTIFICATION_ICON];
-  } else {
+  } else if (iconName) {
+    // It's only an error if we originally meant it to have an icon
     NSLog(@"Couldn't get an icon.");
   }
 
