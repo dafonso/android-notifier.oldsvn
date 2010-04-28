@@ -9,6 +9,22 @@
       <description>Most recent changes with links to updates.</description>
       <language>en</language>
          <item>
+            <title>Version 0.2.5</title>
+            <description><![CDATA[
+              <h3>Changes in this version:</h3>
+              <ul>
+                <li>Fixed release mistake which left incomplete v2 protocol support
+              </ul>
+            ]]></description>
+            <pubDate>Thu, 28 Apr 2010 01:10:38 -0300</pubDate>
+            <enclosure
+                url="http://android-notifier.googlecode.com/files/MacDroidNotifier-0.2.5.dmg"
+                sparkle:version="0.2.5"
+                length="2255651"
+                sparkle:dsaSignature="MC0CFCs+0dpHdfoEXl+qbPDvP7oyRIIMAhUAicNqp1ncW0ofzahYazP3L8nYpYo="
+                type="application/octet-stream" />
+          </item>
+          <item>
             <title>Version 0.2.4</title>
             <description><![CDATA[
               <h3>Changes in this version:</h3>
