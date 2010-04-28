@@ -27,7 +27,7 @@
 	<key>LSUIElement</key>
 	<true/>
 	<key>SUFeedURL</key>
-	<string>http://android-notifier.googlecode.com/svn/trunk/MacDroidNotifier/appcast.xml</string>
+	<string>http://android-notifier.googlecode.com/svn/tags/live-appcast/appcast.xml</string>
 	<key>SUShowReleaseNotes</key>
 	<true/>
 	<key>SUPublicDSAKeyFile</key>
