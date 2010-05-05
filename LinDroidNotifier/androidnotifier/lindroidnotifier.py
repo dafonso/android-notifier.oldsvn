@@ -8,6 +8,7 @@ This module starts up the application.
 __author__ = 'rodrigo@damazio.org (Rodrigo Damazio Bovendorp)'
 
 import gtk, gtk.glade
+import os
 import preferences
 from manager import NotificationManager
 
@@ -15,8 +16,8 @@ from manager import NotificationManager
 gladefile = gtk.glade.XML('../data/lindroidnotifier.glade')
 
 # TODO: Show the gnome menu icon (applet), open prefs from there
-prefs = preferences.Preferences()
-prefs_dialog = preferences.PreferencesDialog(gladefile)
+prefs = preferences.Preferences(os.path.expanduser('~/.config/android-notifier'))
+prefs_dialog = preferences.PreferencesDialog(gladefile, prefs)
 prefs_dialog.show()
 
 # Article about threading in GTK:
