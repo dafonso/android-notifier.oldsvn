@@ -27,12 +27,15 @@
     <string name="wifi_options">Настройки Wifi</string>
     <string name="target_ip_address">IP адрес получателя</string>
     <string name="custom_ip_title">Пользовательский IP адрес</string>
-    <string name="custom_ip">Пожалуйста, введите адрес получателя уведомлений:</string>
+    <string name="custom_ip">Пожалуйста, введите адрес или имя хоста получателя уведомлений:</string>
     <string name="wifi_sleep_policy">Правила перехода Wi-Fi в спящий режим</string>
     <string name="wifi_sleep_policy_summary">Управление политикой выключения Wi-Fi\n(по умолчанию: во время выключения экрана)</string>
     <string name="enable_wifi">Авт. активировать Wi-Fi</string>
     <string name="enable_wifi_summary_on">Fi-Wi будет активироваться для передачи уведомлений</string>
-    <string name="enable_wifi_summary_off">Уведомления не будут рассылаться, если сеть Wi-Fi выключена</string>
+    <string name="enable_wifi_summary_off">Уведомления не будут рассылаться с Wi-Fi, если сеть Wi-Fi выключена</string>
+    <string name="allow_cell_send">Отправить с помощью сотовой связи</string>
+    <string name="allow_cell_send_summary_on">Уведомления будут рассылаться с сотового телефона сети, если сеть Wi-Fi выключена</string>
+    <string name="allow_cell_send_summary_off">Уведомления не будут рассылаться с сотового телефона сети, если сеть Wi-Fi выключена</string>
 
     <!-- Bluetooth method -->
     <string name="bluetooth_options">Настройки Bluetooth</string>

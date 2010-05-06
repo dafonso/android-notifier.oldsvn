@@ -73,7 +73,7 @@ class WifiNotificationMethod implements NotificationMethod {
 
   private static final int UDP_PORT = 10600;
   private static final int TCP_PORT = 10600;
-  private static final int TCP_CONNECT_TIMEOUT_MS = 4000;
+  private static final int TCP_CONNECT_TIMEOUT_MS = 5000;
   private static final byte DELIMITER_BYTE = 0;
   private final NotifierPreferences preferences;
   private final WifiManager wifi;
@@ -89,21 +89,26 @@ class WifiNotificationMethod implements NotificationMethod {
   public void sendNotification(Notification notification, NotificationCallback callback) {
     // Check if wifi is disabled
     if (!isWifiConnected()) {
-      // Check if we should enable it, or if it's already being enabled
-      // (in which case we just send it after a little while)
       if (preferences.getEnableWifi() || isWifiConnecting()) {
+        // We should enable it, or if it's already being enabled
+        // (in which case we just send it after a little while)
         Log.d(NotifierConstants.LOG_TAG, "Enabling wifi and delaying notification");
 
         // Check periodically if wifi connected, then try to send it
         new WifiDelayedNotifier(notification, callback, wifi.isWifiEnabled()).start();
+        return;
+      } else if (canSendOverCellNetwork()) {
+        // else, we can send it over the cell phone network
+        // TODO: Delay if phone network is connecting
       } else {
+        // It won't be enabled, and we cannot send it over the cell phone network
         Log.d(NotifierConstants.LOG_TAG, "Not notifying over wifi - not connected.");
         callback.notificationFailed(notification, null);
+        return;
       }
-      return;
     }
 
-    // Wifi is connected, so try to send notification now
+    // Connected, so try to send notification now
     try {
       byte[] messageBytes = notification.toString().getBytes();
       messageBytes = addDelimiter(messageBytes);
@@ -264,6 +269,17 @@ class WifiNotificationMethod implements NotificationMethod {
     if (wifi.getWifiState() == WifiManager.WIFI_STATE_ENABLING) return true;
     NetworkInfo wifiInfo = connectivity.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
     return (wifiInfo.getState() == NetworkInfo.State.CONNECTING);
+  }
+
+  /**
+   * @return whether to try to send data over the cell phone data network
+   */
+  private boolean canSendOverCellNetwork() {
+    if (!preferences.getSendOverCellNetwork()) return false;
+    if (connectivity == null) return false;
+    NetworkInfo networkInfo = connectivity.getActiveNetworkInfo();
+    if (networkInfo == null) return false;
+    return networkInfo.isConnected(); 
   }
 
   public String getName() {

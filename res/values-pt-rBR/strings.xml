@@ -25,7 +25,7 @@
     <string name="not_yet_implemented">Ainda não implementado.</string>
 
     <!-- Wifi method -->
-    <string name="wifi_options">Opções de Wifi</string>
+    <string name="wifi_options">Opções de IP/Wifi</string>
     <string name="target_ip_address">Endereço IP de destino</string>
     <string name="custom_ip_title">Endereço IP customizado</string>
     <string name="custom_ip">Por favor digite o endereço IP ou nome do host ao qual enviar notificações:</string>
@@ -40,7 +40,7 @@
     <string name="send_tcp">Enviar com TCP</string>
     <string name="send_tcp_summary_on">As notificações serão enviadas sobre TCP</string>
     <string name="send_tcp_summary_off">Notificações NÃO serão enviadas sobre TCP</string>
-    <string name="send_tcp_summary_noip">Para usar TCP, você deve escolher um IP customizado como destino</string>
+    <string name="custom_ip_needed">Para usar esta opção, você deve escolher um IP customizado como destino</string>
 
     <!-- Bluetooth method -->
     <string name="bluetooth_options">Opções de Bluetooth</string>

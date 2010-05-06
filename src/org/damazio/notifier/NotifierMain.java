@@ -109,7 +109,29 @@ public class NotifierMain extends PreferenceActivity {
    * Configures preference actions related to Wifi.
    */
   private void configureWifiPreferences() {
-    updateTcpPreference(preferences.getWifiTargetIpAddress().equals("custom"), false);
+    final CheckBoxPreference cellSendPreference =
+        (CheckBoxPreference) findPreference(getString(R.string.allow_cell_send_key));
+    final CheckBoxPreference enableWifiPreference =
+        (CheckBoxPreference) findPreference(getString(R.string.enable_wifi_key));
+
+    // Make these two be mutually exclusive (can only take one action if wifi is off)
+    enableWifiPreference.setEnabled(!cellSendPreference.isChecked());
+    enableWifiPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+      public boolean onPreferenceChange(Preference preference, Object newValue) {
+        cellSendPreference.setEnabled(!((Boolean) newValue));
+        return true;
+      }
+    });
+    cellSendPreference.setEnabled(!enableWifiPreference.isChecked());
+    cellSendPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+      public boolean onPreferenceChange(Preference preference, Object newValue) {
+        enableWifiPreference.setEnabled(!((Boolean) newValue));
+        return true;
+      }
+    });
+
+    // Set initial state and values
+    updateIpPreferences(preferences.getWifiTargetIpAddress().equals("custom"), false);
 
     // Attach custom IP address selector
     Preference ipAddressPreference = findPreference(getString(R.string.target_ip_address_key));
@@ -121,7 +143,7 @@ public class NotifierMain extends PreferenceActivity {
 
         boolean isCustomIp = value.equals("custom");
         boolean isChanging = !newValue.equals(oldValue);
-        updateTcpPreference(isCustomIp, isChanging);
+        updateIpPreferences(isCustomIp, isChanging);
         if (isCustomIp) {
           selectCustomIpAddress(listPreference);
         }
@@ -148,18 +170,26 @@ public class NotifierMain extends PreferenceActivity {
    * @param isCustomIp whether a custom IP is selected as the target
    * @param isChanging whether the IP type has changed
    */
-  private void updateTcpPreference(boolean isCustomIp, boolean isChanging) {
+  private void updateIpPreferences(boolean isCustomIp, boolean isChanging) {
     // TODO: Give some type of warning if both UDP and TCP are disabled
-    CheckBoxPreference sendTcpPreference =
-        (CheckBoxPreference) findPreference(getString(R.string.send_tcp_key));
+    final CheckBoxPreference sendTcpPreference =
+      (CheckBoxPreference) findPreference(getString(R.string.send_tcp_key));
+    final CheckBoxPreference cellSendPreference =
+      (CheckBoxPreference) findPreference(getString(R.string.allow_cell_send_key));
+
     if (isCustomIp) {
       sendTcpPreference.setEnabled(true);
+      cellSendPreference.setEnabled(true);
       if (isChanging) sendTcpPreference.setChecked(true);
       sendTcpPreference.setSummaryOff(R.string.send_tcp_summary_off);
+      cellSendPreference.setSummaryOff(R.string.allow_cell_send_summary_off);
     } else {
       sendTcpPreference.setEnabled(false);
       sendTcpPreference.setChecked(false);
-      sendTcpPreference.setSummaryOff(R.string.send_tcp_summary_noip);
+      cellSendPreference.setEnabled(false);
+      cellSendPreference.setChecked(false);
+      sendTcpPreference.setSummaryOff(R.string.custom_ip_needed);
+      sendTcpPreference.setSummaryOff(R.string.custom_ip_needed);
     }
   }
 

@@ -10,6 +10,7 @@
   <string name="send_udp_key">sendUdp</string>
   <string name="send_tcp_key">sendTcp</string>
   <string name="enable_wifi_key">enableWifi</string>
+  <string name="allow_cell_send_key">allowCellSend</string>
   <string name="method_bluetooth_key">bluetoothMethod</string>
   <string name="bluetooth_device_key">bluetoothDevice</string>
   <string name="enable_bluetooth_key">enableBluetooth</string>
