@@ -25,8 +25,8 @@
     <string name="not_yet_implemented">Not yet implemented.</string>
 
     <!-- Wifi method -->
-    <string name="method_wifi">Wifi</string>
-    <string name="wifi_options">Wifi options</string>
+    <string name="method_wifi">IP/Wifi</string>
+    <string name="wifi_options">IP/Wifi options</string>
     <string name="target_ip_address">Target IP address</string>
     <string name="custom_ip_title">Custom IP address</string>
     <string name="custom_ip">Please type in the address or hostname to send notifications to:</string>
@@ -35,13 +35,16 @@
     <string name="enable_wifi">Auto-enable wifi</string>
     <string name="enable_wifi_summary_on">Wifi will be enabled to send notifications</string>
     <string name="enable_wifi_summary_off">Notifications won\'t be sent over Wifi if it\'s off</string>
+    <string name="allow_cell_send">Send over cell network</string>
+    <string name="allow_cell_send_summary_on">Send the notification over the cell phone network, if Wifi is off</string>
+    <string name="allow_cell_send_summary_off">Notifications won\'t be sent over the cell network if wifi is off</string>
     <string name="send_udp">Send with UDP</string>
     <string name="send_udp_summary_on">Notifications will be sent over UDP (required for broadcasting)</string>
     <string name="send_udp_summary_off">Notifications will NOT be sent over UDP (no broadcasting)</string>
     <string name="send_tcp">Send with TCP</string>
     <string name="send_tcp_summary_on">Notifications will be sent over TCP</string>
     <string name="send_tcp_summary_off">Notifications will be sent over TCP</string>
-    <string name="send_tcp_summary_noip">To use TCP, you must choose a custom IP as the target address</string>
+    <string name="custom_ip_needed">To use this, you must choose a custom IP as the target address</string>
 
     <!-- Bluetooth method -->
     <string name="method_bluetooth">Bluetooth</string>

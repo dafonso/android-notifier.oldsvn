@@ -263,4 +263,11 @@ public class NotifierPreferences {
   public boolean isSendTcpEnabled() {
     return preferences.getBoolean(context.getString(R.string.send_tcp_key), true);
   }
+
+  /**
+   * @return whether to send notifications over the cell phone network
+   */
+  public boolean getSendOverCellNetwork() {
+    return preferences.getBoolean(context.getString(R.string.allow_cell_send_key), false);
+  }
 }

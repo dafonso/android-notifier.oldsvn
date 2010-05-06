@@ -42,6 +42,18 @@
                           android:summaryOn="@string/send_tcp_summary_on"
                           android:summaryOff="@string/send_tcp_summary_off" />
 
+      <CheckBoxPreference android:key="@string/allow_cell_send_key"
+                          android:title="@string/allow_cell_send"
+                          android:summaryOn="@string/allow_cell_send_summary_on"
+                          android:summaryOff="@string/allow_cell_send_summary_off"
+                          android:defaultValue="false" />
+
+      <CheckBoxPreference android:key="@string/enable_wifi_key"
+                          android:title="@string/enable_wifi"
+                          android:summaryOn="@string/enable_wifi_summary_on"
+                          android:summaryOff="@string/enable_wifi_summary_off"
+                          android:defaultValue="false" />
+
       <ListPreference android:key="@string/wifi_sleep_policy_key"
                       android:title="@string/wifi_sleep_policy"
                       android:summary="@string/wifi_sleep_policy_summary"
@@ -49,11 +61,6 @@
                       android:entryValues="@array/wifiSleepPolicyValues"
                       android:persistent="false" />
 
-      <CheckBoxPreference android:key="@string/enable_wifi_key"
-                          android:title="@string/enable_wifi"
-                          android:summaryOn="@string/enable_wifi_summary_on"
-                          android:summaryOff="@string/enable_wifi_summary_off"
-                          android:defaultValue="false" />
     </PreferenceScreen>
 
     <!-- Bluetooth -->
