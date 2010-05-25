@@ -659,6 +659,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                                 <property name="active">True</property>
                                 <property name="draw_indicator">True</property>
                                 <property name="group">onlyPaired</property>
+                                <signal name="clicked" handler="on_allDevices_clicked"/>
                               </widget>
                               <packing>
                                 <property name="expand">False</property>
@@ -674,6 +675,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                                 <property name="active">True</property>
                                 <property name="draw_indicator">True</property>
                                 <property name="group">allDevices</property>
+                                <signal name="clicked" handler="on_onlyPaired_clicked"/>
                               </widget>
                               <packing>
                                 <property name="expand">False</property>
@@ -708,6 +710,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
                                     <property name="use_stock">True</property>
+                                    <signal name="clicked" handler="on_addDevice_clicked"/>
                                   </widget>
                                   <packing>
                                     <property name="expand">False</property>
@@ -722,6 +725,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
                                     <property name="use_stock">True</property>
+                                    <signal name="clicked" handler="on_removeDevice_clicked"/>
                                   </widget>
                                   <packing>
                                     <property name="expand">False</property>
