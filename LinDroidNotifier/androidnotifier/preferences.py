@@ -168,8 +168,10 @@ class PreferencesDialog:
         gtk.main_quit() # XXX
 
     def _update_pairedDevices(self):
-        self.devices_tree.set_sensitive(
-          self.gladefile.get_widget('onlyPaired').get_active())
+        enable = self.gladefile.get_widget('onlyPaired').get_active()
+        self.devices_tree.set_sensitive(enable)
+        self.gladefile.get_widget('addDevice').set_sensitive(enable)
+        self.gladefile.get_widget('removeDevice').set_sensitive(enable)
 
     def _load_preferences(self):
         self.prefs.load()
