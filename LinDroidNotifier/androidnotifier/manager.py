@@ -34,7 +34,8 @@ class NotificationManager:
 
     def start(self):
         for listener in self._listeners:
-            self._start_listener(listener)
+            if self._is_listener_enabled(listener):
+                self._start_listener(listener)
 
     def stop(self):
         for listener in self._listeners:
@@ -50,7 +51,7 @@ class NotificationManager:
             if self._is_action_enabled_for_type(action, notification):
                 action.handle_notification(notification)
 
-    def _on_preferences_changed(self):
+    def _on_preferences_changed(self, sender):
         for listener in self._listeners:
             enabled = self._is_listener_enabled(listener)
             started = self._is_listener_started(listener)
@@ -87,9 +88,11 @@ class NotificationManager:
         if len(self._last_notification_ids) > _NUM_LAST_NOTIFICATIONS:
             del self._last_notification_ids[0]
 
-    def _is_listener_enabled(self, listener_name):
-        # TODO
-        return True
+    def _is_listener_enabled(self, listener):
+        if isinstance(listener, BluetoothListener):
+            return self._preferences['bluetoothMethod']
+        elif isinstance(listener, WifiListener):
+            return self._preferences['wifiMethod']
 
     def _is_action_enabled_for_type(self, action, notification):
         # TODO

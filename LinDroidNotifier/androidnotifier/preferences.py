@@ -78,7 +78,9 @@ class Preferences(GObject):
         return self._keyvalues[key]
 
     def __setitem__(self, key, value):
-        self._keyvalues[key] = value
+        if self._keyvalues[key] != value:
+            self._keyvalues[key] = value
+            self.emit('preference-change')
 
     def __iter__(self):
         return self._keyvalues.iterkeys()
@@ -92,6 +94,7 @@ class Preferences(GObject):
         self._keyvalues.update(self.DEFAULTS)
         with open(self.filename, 'r') as f:
             self._keyvalues.update(eval(f.read()))
+        self.emit('preference-change')
 
 gobject.signal_new('preference-change', Preferences,
     gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, ())
