@@ -97,9 +97,9 @@ class NotificationManager:
             return self._preferences['wifiMethod']
 
     def _is_action_enabled_for_type(self, action, notification):
-        if notification.type == 'PING' and action.name == 'display':
+        if notification.type == 'PING':
             # Just display ping notifications; there aren't any associated
             # preferences.
-            return True
+            return action.name == 'display'
         pref_key = '%s.%s' % (notification.type.lower(), action.name)
         return self._preferences[pref_key] is True
