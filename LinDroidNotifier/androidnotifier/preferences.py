@@ -141,7 +141,7 @@ class PreferencesDialog:
                 if model.get(model.get_iter(path), 0)[0] == new_text:
                     already_present[0] = True
             model.foreach(visitor, None)
-            if not already_present[0]:
+            if not already_present[0] and len(new_text.strip()) > 0:
                 model.set(model.get_iter(path), 0, new_text)
             else:
                 model.remove(model.get_iter(path))
