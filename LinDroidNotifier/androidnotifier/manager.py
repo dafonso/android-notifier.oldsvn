@@ -10,6 +10,7 @@ which notifications and which methods to use.
 __author__ = 'rodrigo@damazio.org (Rodrigo Damazio Bovendorp)'
 
 from actions.display import DisplayAction
+from actions.copy import CopyAction
 from listeners.rfcomm import BluetoothListener
 from listeners.wifi import WifiListener
 from notification import Notification
@@ -25,7 +26,8 @@ class NotificationManager:
             BluetoothListener()
             ]
         self._actions= [
-            DisplayAction()
+            DisplayAction(),
+            CopyAction()
             ]
         self._connections = {}
         self._last_notification_ids = []
@@ -95,5 +97,9 @@ class NotificationManager:
             return self._preferences['wifiMethod']
 
     def _is_action_enabled_for_type(self, action, notification):
-        # TODO
-        return True
+        if notification.type == 'PING' and action.name == 'display':
+            # Just display ping notifications; there aren't any associated
+            # preferences.
+            return True
+        pref_key = '%s.%s' % (notification.type.lower(), action.name)
+        return self._preferences[pref_key] is True

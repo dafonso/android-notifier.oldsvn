@@ -28,7 +28,7 @@ manager = NotificationManager(prefs)
 manager.start()
 
 # TODO: Remove this test notification once there are listeners
-manager._on_notification(sender=None, raw_data='1234/5678/RING/Mom is calling')
+#manager._on_notification(sender=None, raw_data='1234/5678/RING/Mom is calling')
 
 gtk.main()
 

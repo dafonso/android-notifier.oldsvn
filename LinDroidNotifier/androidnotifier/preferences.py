@@ -75,7 +75,7 @@ class Preferences(GObject):
             self.save()
 
     def __getitem__(self, key):
-        return self._keyvalues[key]
+        return self._keyvalues.get(key)
 
     def __setitem__(self, key, value):
         if self._keyvalues[key] != value:
