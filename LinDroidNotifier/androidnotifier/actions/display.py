@@ -12,7 +12,7 @@ class DisplayAction:
 
     def __init__(self):
         if not pynotify.init('LinDroidNotifier'):
-            raise 'Unable to initialize notifications'
+            raise RuntimeError, 'Unable to initialize notifications'
 
     @property
     def name(self):
