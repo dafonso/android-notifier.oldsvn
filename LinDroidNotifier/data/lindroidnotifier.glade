@@ -161,8 +161,10 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                               <widget class="GtkCheckButton" id="usbMethod">
                                 <property name="label" translatable="yes">USB</property>
                                 <property name="visible">True</property>
+                                <property name="sensitive">False</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
+                                <property name="tooltip" translatable="yes">USB notifications are not implemented yet</property>
                                 <property name="draw_indicator">True</property>
                               </widget>
                               <packing>
