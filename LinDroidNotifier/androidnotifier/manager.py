@@ -12,6 +12,7 @@ __author__ = 'rodrigo@damazio.org (Rodrigo Damazio Bovendorp)'
 from actions.display import DisplayAction
 from actions.copy import CopyAction
 from actions.mute import MuteAction
+from actions.execute import ExecuteAction
 from listeners.rfcomm import BluetoothListener
 from listeners.wifi import WifiListener
 from notification import Notification
@@ -29,7 +30,8 @@ class NotificationManager:
         self._actions= [
             DisplayAction(),
             CopyAction(),
-            MuteAction()
+            MuteAction(),
+            ExecuteAction(lambda: preferences['executeTarget'])
             ]
         self._connections = {}
         self._last_notification_ids = []

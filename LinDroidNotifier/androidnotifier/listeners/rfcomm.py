@@ -4,7 +4,7 @@ This listener listens on and receives notifications with bluetooth RFCOMM
 sockets.
 """
 
-__author__ = 'wcauchois@gmail.com (William Cauchois)'
+__author__ = 'wcauchois@gmail.com (Bill Cauchois)'
 
 import bluetooth
 import gtk
