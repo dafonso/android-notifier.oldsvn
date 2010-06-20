@@ -57,8 +57,6 @@ class NotificationManager:
         for listener in self._listeners:
             enabled = self._is_listener_enabled(listener)
             started = self._is_listener_started(listener)
-            self._stop_listener(listener)
-            self._start_listener(listener)
             if not enabled and started:
                 self._stop_listener(listener)
             if enabled and not started:
@@ -78,6 +76,7 @@ class NotificationManager:
 
         listener.disconnect(self._connections[listener])
         listener.stop()
+        del self._connections[listener]
 
     def _is_listener_started(self, listener):
         return listener in self._connections

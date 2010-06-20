@@ -21,7 +21,7 @@ class DisplayAction:
     def handle_notification(self, notification):
         title = self._notification_title(notification)
         description = notification.contents
-        # TODO: icon
+        # TODO: icon (see /usr/share/doc/python-notify/examples/test-image.py)
         n = pynotify.Notification(title, description)
         n.show()
 

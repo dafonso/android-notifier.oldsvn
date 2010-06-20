@@ -85,6 +85,10 @@ class Preferences(GObject):
     def __iter__(self):
         return self._keyvalues.iterkeys()
 
+    def update(self, prefs):
+        self._keyvalues.update(prefs)
+        self.emit('preference-change')
+
     def save(self):
         with open(self.filename, 'w') as f:
             pprint(self._keyvalues, f)
@@ -102,32 +106,33 @@ gobject.type_register(Preferences)
 
 class PreferencesDialog:
     def __init__(self, gladefile, prefs):
-        G = self.gladefile = gladefile
-        self.dialog = G.get_widget('preferencesDialog')
+        self.gladefile = gladefile
+        self.dialog = gladefile.get_widget('preferencesDialog')
         self.prefs = prefs
-        self.widgets = {}
-        for key in self.prefs:
-            self.widgets[key] = G.get_widget(key)
-        handlers = {
-            'on_prefs_okButton_clicked': self.on_ok_clicked,
-            'on_prefs_cancelButton_clicked': self.on_cancel_clicked,
-            'on_addDevice_clicked': self.on_addDevice_clicked,
-            'on_removeDevice_clicked': self.on_removeDevice_clicked,
-            'on_allDevices_clicked': lambda button: self._update_pairedDevices(),
-            'on_onlyPaired_clicked': lambda button: self._update_pairedDevices() }
-        G.signal_autoconnect(handlers)
 
-        self.devices_tree = G.get_widget('pairedDevices')
+        handlers = {
+            'on_prefs_okButton_clicked': self._on_ok_clicked,
+            'on_prefs_cancelButton_clicked': self._on_cancel_clicked,
+            'on_addDevice_clicked': self._on_addDevice_clicked,
+            'on_removeDevice_clicked': self._on_removeDevice_clicked,
+            'on_allDevices_clicked': lambda button: self._update_devices_sensitive(),
+            'on_onlyPaired_clicked': lambda button: self._update_devices_sensitive() }
+        gladefile.signal_autoconnect(handlers)
+
+        self.devices_tree = gladefile.get_widget('pairedDevices')
         self.devices_store = gtk.ListStore(str)
         self.devices_cellr = gtk.CellRendererText()
 
         self.devices_tree.set_model(self.devices_store)
-        self.devices_tree.append_column(
-          gtk.TreeViewColumn(None, self.devices_cellr, text=0))
+        self.devices_tree.append_column(gtk.TreeViewColumn(None, self.devices_cellr, text=0))
         self.devices_tree.set_headers_visible(False)
+
+    def _get_widget(self, name):
+        return self.gladefile.get_widget(name)
     
-    def on_addDevice_clicked(self, button):
-        self.devices_cellr.set_property('editable', True)
+    def _on_addDevice_clicked(self, button):
+        # Add a new, blank entry to the list of devices and then set the tree
+        # view to be editable.
 
         handler_id = None
         def on_edited(cell, path, new_text, model):
@@ -137,7 +142,6 @@ class PreferencesDialog:
             # because Python gets closures wrong.
             already_present = [False]
             def visitor(model, path, iter, user_data):
-                #print model.get(model.get_iter(path), 0)[0]
                 if model.get(model.get_iter(path), 0)[0] == new_text:
                     already_present[0] = True
             model.foreach(visitor, None)
@@ -146,76 +150,75 @@ class PreferencesDialog:
             else:
                 model.remove(model.get_iter(path))
             cell.disconnect(handler_id)
-        handler_id = self.devices_cellr.connect(
-          'edited', on_edited, self.devices_store)
+
+        self.devices_cellr.set_property('editable', True)
+        handler_id = self.devices_cellr.connect('edited', on_edited, self.devices_store)
 
         entry_path = self.devices_store.get_path(self.devices_store.append(['']))
         self.devices_tree.set_cursor(entry_path, self.devices_tree.get_column(0), True)
 
-    def on_removeDevice_clicked(self, button):
+    def _on_removeDevice_clicked(self, button):
         selected_path = self.devices_tree.get_cursor()[0]
         if selected_path is not None:
             self.devices_store.remove(self.devices_store.get_iter(selected_path))
 
     def show(self):
-        self._load_preferences()
-        self.dialog.show()
+        if not self.dialog.get_property('visible'):
+            self._load_preferences()
+            self.dialog.show()
 
-    def on_ok_clicked(self, *args):
+    def _on_ok_clicked(self, *args):
         self._save_preferences()
         self.dialog.hide()
-        gtk.main_quit() # XXX
 
-    def on_cancel_clicked(self, *args):
+    def _on_cancel_clicked(self, *args):
         self.dialog.hide()
-        gtk.main_quit() # XXX
 
-    def _update_pairedDevices(self):
-        enable = self.gladefile.get_widget('onlyPaired').get_active()
+    def _update_devices_sensitive(self):
+        # Update whether the list of devices to receive notifications from should
+        # be 'sensitive' or enabled.
+        enable = self._get_widget('onlyPaired').get_active()
         self.devices_tree.set_sensitive(enable)
-        self.gladefile.get_widget('addDevice').set_sensitive(enable)
-        self.gladefile.get_widget('removeDevice').set_sensitive(enable)
+        self._get_widget('addDevice').set_sensitive(enable)
+        self._get_widget('removeDevice').set_sensitive(enable)
 
     def _load_preferences(self):
         self.prefs.load()
 
-        G = self.gladefile
-
         for key in self.prefs.get_boolean_prefs():
-            G.get_widget(key).set_active(self.prefs[key])
+            self._get_widget(key).set_active(self.prefs[key])
         
-        G.get_widget('allDevices').set_active(
+        self._get_widget('allDevices').set_active(
           self.prefs['receiveNotificationsFrom'] == 'any')
-        G.get_widget('onlyPaired').set_active(
+        self._get_widget('onlyPaired').set_active(
           self.prefs['receiveNotificationsFrom'] == 'these')
-        self._update_pairedDevices()
+        self._update_devices_sensitive()
 
         if self.prefs['executeTarget'] is not None:
-            G.get_widget('executeTargetChooser').set_filename(
-              self.prefs['executeTarget'])
+            self._get_widget('executeTargetChooser').set_filename(self.prefs['executeTarget'])
 
         for device in self.prefs['pairedDevices']:
             self.devices_store.append([device])
 
     def _save_preferences(self):
-        G = self.gladefile
-
+        new_prefs = dict()
         for key in self.prefs.get_boolean_prefs():
-            self.prefs[key] = G.get_widget(key).get_active()
+            new_prefs[key] = self._get_widget(key).get_active()
 
-        if G.get_widget('allDevices').get_active():
-            self.prefs['receiveNotificationsFrom'] = 'any'
-        elif G.get_widget('onlyPaired').get_active():
-            self.prefs['receiveNotificationsFrom'] = 'these'
+        if self._get_widget('allDevices').get_active():
+            new_prefs['receiveNotificationsFrom'] = 'any'
+        elif self._get_widget('onlyPaired').get_active():
+            new_prefs['receiveNotificationsFrom'] = 'these'
 
-        self.prefs['executeTarget'] = \
-          G.get_widget('executeTargetChooser').get_filename()
+        new_prefs['executeTarget'] = \
+          self._get_widget('executeTargetChooser').get_filename()
 
-        self.prefs['pairedDevices'] = list()
+        new_prefs['pairedDevices'] = list()
         iter = self.devices_store.get_iter_first()
         while iter != None:
             device = self.devices_store.get(iter, 0)[0]
             self.prefs['pairedDevices'].append(device)
             iter = self.devices_store.iter_next(iter)
 
+        self.prefs.update(new_prefs)
         self.prefs.save()
