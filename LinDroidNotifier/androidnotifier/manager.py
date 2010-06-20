@@ -9,6 +9,8 @@ which notifications and which methods to use.
 
 __author__ = 'rodrigo@damazio.org (Rodrigo Damazio Bovendorp)'
 
+from gobject import GObject
+import gobject
 from actions.display import DisplayAction
 from actions.copy import CopyAction
 from actions.mute import MuteAction
@@ -19,9 +21,11 @@ from notification import Notification
 
 _NUM_LAST_NOTIFICATIONS = 20
 
-class NotificationManager:
+class NotificationManager(GObject):
 
     def __init__(self, preferences):
+        GObject.__init__(self)
+
         self._preferences = preferences
         self._listeners = [
             WifiListener(),
@@ -51,6 +55,8 @@ class NotificationManager:
         notification = Notification(raw_data)
 
         if self._is_duplicate_notification(notification):
+            return
+        if self.emit('android-notify', notification):
             return
 
         for action in self._actions:
@@ -106,3 +112,7 @@ class NotificationManager:
             return action.name == 'display'
         pref_key = '%s.%s' % (notification.type.lower(), action.name)
         return self._preferences[pref_key] is True
+
+gobject.type_register(NotificationManager)
+gobject.signal_new('android-notify', NotificationManager,
+    gobject.SIGNAL_RUN_LAST, gobject.TYPE_BOOLEAN, (gobject.TYPE_PYOBJECT,))

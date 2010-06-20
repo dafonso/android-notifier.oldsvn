@@ -105,10 +105,11 @@ gobject.signal_new('preference-change', Preferences,
 gobject.type_register(Preferences)
 
 class PreferencesDialog:
-    def __init__(self, gladefile, prefs):
+    def __init__(self, gladefile, prefs, notification_manager):
         self.gladefile = gladefile
         self.dialog = gladefile.get_widget('preferencesDialog')
         self.prefs = prefs
+        self.notification_manager = notification_manager
 
         handlers = {
             'on_prefs_okButton_clicked': self._on_ok_clicked,
@@ -121,41 +122,34 @@ class PreferencesDialog:
 
         self.devices_tree = gladefile.get_widget('pairedDevices')
         self.devices_store = gtk.ListStore(str)
-        self.devices_cellr = gtk.CellRendererText()
-
         self.devices_tree.set_model(self.devices_store)
-        self.devices_tree.append_column(gtk.TreeViewColumn(None, self.devices_cellr, text=0))
+        self.devices_tree.append_column(
+            gtk.TreeViewColumn(None, gtk.CellRendererText(), text=0))
         self.devices_tree.set_headers_visible(False)
 
     def _get_widget(self, name):
         return self.gladefile.get_widget(name)
     
     def _on_addDevice_clicked(self, button):
-        # Add a new, blank entry to the list of devices and then set the tree
-        # view to be editable.
+        dialog = gtk.MessageDialog(buttons=gtk.BUTTONS_CANCEL,
+            message_format="Send a test notification from your device to add it to the list of approved devices.")
+        dialog.connect('response', lambda sender, response_id: dialog.destroy())
 
-        handler_id = None
-        def on_edited(cell, path, new_text, model):
-            cell.set_property('editable', False)
-            # Is the device that the user wants to enter already in the devices
-            # list? If so, don't add it. This variable has to be boxed in a list
-            # because Python gets closures wrong.
-            already_present = [False]
-            def visitor(model, path, iter, user_data):
-                if model.get(model.get_iter(path), 0)[0] == new_text:
-                    already_present[0] = True
-            model.foreach(visitor, None)
-            if not already_present[0] and len(new_text.strip()) > 0:
-                model.set(model.get_iter(path), 0, new_text)
-            else:
-                model.remove(model.get_iter(path))
-            cell.disconnect(handler_id)
+        def on_notification(sender, notification):
+            if notification.type == 'PING':
+                already_present = [False]
+                def visitor(model, path, iter, user_data):
+                    if model.get(model.get_iter(path), 0)[0] == notification.device_id:
+                        already_present[0] = True
+                self.devices_store.foreach(visitor, None)
+                if not already_present[0]:
+                    self.devices_store.append([notification.device_id])
+                dialog.destroy()
+                return True
 
-        self.devices_cellr.set_property('editable', True)
-        handler_id = self.devices_cellr.connect('edited', on_edited, self.devices_store)
-
-        entry_path = self.devices_store.get_path(self.devices_store.append(['']))
-        self.devices_tree.set_cursor(entry_path, self.devices_tree.get_column(0), True)
+        handler_id = self.notification_manager.connect('android-notify', on_notification)
+        dialog.run()
+        self.notification_manager.disconnect(handler_id)
 
     def _on_removeDevice_clicked(self, button):
         selected_path = self.devices_tree.get_cursor()[0]
@@ -217,7 +211,7 @@ class PreferencesDialog:
         iter = self.devices_store.get_iter_first()
         while iter != None:
             device = self.devices_store.get(iter, 0)[0]
-            self.prefs['pairedDevices'].append(device)
+            new_prefs['pairedDevices'].append(device)
             iter = self.devices_store.iter_next(iter)
 
         self.prefs.update(new_prefs)

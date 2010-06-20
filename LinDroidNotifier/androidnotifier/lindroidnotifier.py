@@ -25,13 +25,13 @@ class App:
         self.gladefile = gtk.glade.XML(os.path.join(datapath, 'lindroidnotifier.glade'))
 
         self.prefs = preferences.Preferences(os.path.join(self.get_config_dir(), 'config'))
-        self.prefs_dialog = preferences.PreferencesDialog(self.gladefile, self.prefs)
+        self.prefs.load()
+        self.manager = NotificationManager(self.prefs)
 
+        self.prefs_dialog = preferences.PreferencesDialog(self.gladefile, self.prefs, self.manager)
         self.about_dialog = self.gladefile.get_widget('aboutDialog')
         self.gladefile.signal_autoconnect(
           {'on_aboutDialog_response': self._on_aboutDialog_response})
-
-        self.manager = NotificationManager(self.prefs)
 
         self.status_icon = gtk.status_icon_new_from_file(os.path.join(datapath, 'menuicon.png'))
         self.status_icon.connect('activate', self._on_status_icon_activate)
