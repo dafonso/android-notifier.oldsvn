@@ -3,6 +3,7 @@ package org.damazio.notifier;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.damazio.notifier.backup.BackupPreferencesListener;
 import org.damazio.notifier.notification.BluetoothDeviceUtils;
 import org.damazio.notifier.notification.Notification;
 import org.damazio.notifier.notification.NotificationType;
@@ -37,10 +38,16 @@ public class NotifierMain extends PreferenceActivity {
   private Notifier notifier;
   private NotifierPreferences preferences;
   private Preference serviceStatePreference;
+  private BackupPreferencesListener backupPreferencesListener;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    // Register to listen for preference changes
+    backupPreferencesListener = BackupPreferencesListener.create(this);
+    getPreferenceManager().getSharedPreferences()
+        .registerOnSharedPreferenceChangeListener(backupPreferencesListener);
 
     // Load preferences
     preferences = new NotifierPreferences(this);
@@ -66,6 +73,15 @@ public class NotifierMain extends PreferenceActivity {
     configureWifiPreferences();
     configureServicePreferences();
     configureMiscPreferences();
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+
+    // Stop listening to preference changes
+    getPreferenceManager().getSharedPreferences()
+        .unregisterOnSharedPreferenceChangeListener(backupPreferencesListener);
   }
 
   /**
