@@ -12,6 +12,8 @@ import org.damazio.notifier.service.NotificationService;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
@@ -20,6 +22,7 @@ import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.provider.Settings;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -300,6 +303,15 @@ public class NotifierMain extends PreferenceActivity {
         return true;
       }
     });
+
+    // Show the version number in the about preference
+    try {
+      PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), 0);
+      String versionString = getString(R.string.version, info.versionName);
+      aboutPreference.setSummary(versionString);
+    } catch (NameNotFoundException e) {
+      Log.e(NotifierConstants.LOG_TAG, "Can't find my own version", e);
+    }
 
     // Attach an action to report a bug
     Preference bugReportPreference = findPreference(getString(R.string.report_bug_key));
