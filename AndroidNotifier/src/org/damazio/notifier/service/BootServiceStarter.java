@@ -16,7 +16,7 @@ import android.util.Log;
  * @author rdamazio
  */
 public class BootServiceStarter extends BroadcastReceiver {
-  private static final double MAX_STARTUP_DELAY_MS = 30000.0;
+  private static final double MAX_STARTUP_DELAY_MS = 10000.0;
 
   @Override
   public void onReceive(final Context context, Intent intent) {
