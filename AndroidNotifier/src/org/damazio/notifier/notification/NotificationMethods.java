@@ -28,7 +28,7 @@ class NotificationMethods {
     HashSet<NotificationMethod> methods = new HashSet<NotificationMethod>();
 
     // Methods supported in all versions
-    methods.add(new WifiNotificationMethod(context, preferences));
+    methods.add(new IpNotificationMethod(context, preferences));
     methods.add(new UsbNotificationMethod());
 
     // Methods supported only in 2.0 and above
