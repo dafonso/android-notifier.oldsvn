@@ -1,6 +1,7 @@
 package org.damazio.notifier.service;
 
 import org.damazio.notifier.NotifierConstants;
+import org.damazio.notifier.R;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -115,6 +116,10 @@ public abstract class CallerId {
    * @return a user-visible caller ID string for the number
    */
   public String buildCallerIdString(String number) {
+    if (number == null) {
+      return context.getString(R.string.unknown_number);
+    }
+
     CallerInfo callerInfo = getCallerInfo(number);
     if (callerInfo != null) {
       return buildCallerIdString(callerInfo);
