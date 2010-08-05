@@ -25,7 +25,7 @@
     <string name="not_yet_implemented">Ainda não implementado.</string>
 
     <!-- Wifi method -->
-    <string name="wifi_options">Opções de IP/Wifi</string>
+    <string name="ip_options">Opções de IP/Wifi</string>
     <string name="target_ip_address">Endereço IP de destino</string>
     <string name="custom_ip_title">Endereço IP customizado</string>
     <string name="custom_ip">Por favor digite o endereço IP ou nome do host ao qual enviar notificações:</string>

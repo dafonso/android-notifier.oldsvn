@@ -70,7 +70,7 @@ public class NotifierMain extends PreferenceActivity {
     // This has to be done on resume so special values (such as the bluetooth device list and the
     // wifi sleep policy) are reloaded when we return from another activity.
     configureBluetoothPreferences();
-    configureWifiPreferences();
+    configureIpPreferences();
     configureServicePreferences();
     configureMiscPreferences();
   }
@@ -125,9 +125,9 @@ public class NotifierMain extends PreferenceActivity {
   }
 
   /**
-   * Configures preference actions related to Wifi.
+   * Configures preference actions related to TCP/IP.
    */
-  private void configureWifiPreferences() {
+  private void configureIpPreferences() {
     final CheckBoxPreference cellSendPreference =
         (CheckBoxPreference) findPreference(getString(R.string.allow_cell_send_key));
     final CheckBoxPreference enableWifiPreference =
@@ -150,7 +150,7 @@ public class NotifierMain extends PreferenceActivity {
     });
 
     // Set initial state and values
-    updateIpPreferences(preferences.getWifiTargetIpAddress().equals("custom"), false);
+    updateIpPreferences(preferences.getTargetIpAddress().equals("custom"), false);
 
     // Attach custom IP address selector
     Preference ipAddressPreference = findPreference(getString(R.string.target_ip_address_key));
@@ -205,10 +205,10 @@ public class NotifierMain extends PreferenceActivity {
     } else {
       sendTcpPreference.setEnabled(false);
       sendTcpPreference.setChecked(false);
+      sendTcpPreference.setSummaryOff(R.string.custom_ip_needed);
       cellSendPreference.setEnabled(false);
       cellSendPreference.setChecked(false);
-      sendTcpPreference.setSummaryOff(R.string.custom_ip_needed);
-      sendTcpPreference.setSummaryOff(R.string.custom_ip_needed);
+      cellSendPreference.setSummaryOff(R.string.custom_ip_needed);
     }
   }
 
@@ -226,14 +226,14 @@ public class NotifierMain extends PreferenceActivity {
 
     // Set an EditText view to get user input 
     final EditText input = new EditText(NotifierMain.this);
-    input.setText(preferences.getCustomWifiTargetIpAddress());
+    input.setText(preferences.getCustomTargetIpAddress());
     alert.setView(input);
 
     alert.setPositiveButton(android.R.string.ok,
         new DialogInterface.OnClickListener() {
           public void onClick(DialogInterface dialog, int whichButton) {
             String value = input.getText().toString();
-            preferences.setCustomWifiTargetIpAddress(value);
+            preferences.setCustomTargetIpAddress(value);
           }
         });
 
@@ -375,7 +375,7 @@ public class NotifierMain extends PreferenceActivity {
   private void sendTestNotification() {
     // TODO: Send to the service instead
     // TODO: Warn if none of the selected methods are available
-    //       (e.g. bluetooth and/or wifi turned off)
+    //       (e.g. bluetooth and/or IP turned off)
     if (notifier == null) {
       notifier = new Notifier(this, preferences);
     }

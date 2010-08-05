@@ -25,8 +25,8 @@
     <string name="not_yet_implemented">Not yet implemented.</string>
 
     <!-- Wifi method -->
-    <string name="method_wifi">IP/Wifi</string>
-    <string name="wifi_options">IP/Wifi options</string>
+    <string name="method_ip">IP/Wifi</string>
+    <string name="ip_options">IP/Wifi options</string>
     <string name="target_ip_address">Target IP address</string>
     <string name="custom_ip_title">Custom IP address</string>
     <string name="custom_ip">Please type in the address or hostname to send notifications to:</string>

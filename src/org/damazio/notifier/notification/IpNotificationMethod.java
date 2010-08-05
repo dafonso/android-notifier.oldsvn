@@ -130,7 +130,7 @@ class IpNotificationMethod implements NotificationMethod {
         sendUdpNotification(messageBytes, address);
       }
       if (preferences.isSendTcpEnabled()) {
-        if (preferences.getWifiTargetIpAddress().equals("custom")) {
+        if (preferences.getTargetIpAddress().equals("custom")) {
           sendTcpNotification(messageBytes, address);
         } else {
           Log.e(NotifierConstants.LOG_TAG, "TCP enabled but trying to use a broadcast address");
@@ -206,7 +206,7 @@ class IpNotificationMethod implements NotificationMethod {
    * user's preferences, or null if it cannot be determined.
    */
   private InetAddress getTargetAddress() {
-    String addressStr = preferences.getWifiTargetIpAddress();
+    String addressStr = preferences.getTargetIpAddress();
     try {
       if (addressStr.equals("global")) {
         // Send to 255.255.255.255
@@ -231,7 +231,7 @@ class IpNotificationMethod implements NotificationMethod {
         return InetAddress.getByAddress(quads);
       } else if (addressStr.equals("custom")) {
         // Get the custom IP address from the other preference key
-        addressStr = preferences.getCustomWifiTargetIpAddress();
+        addressStr = preferences.getCustomTargetIpAddress();
         return InetAddress.getByName(addressStr);
       } else {
         Log.e(NotifierConstants.LOG_TAG, "Invalid value for IP target: " + addressStr);
@@ -287,7 +287,7 @@ class IpNotificationMethod implements NotificationMethod {
     if (!preferences.getSendOverCellNetwork()) return false;
 
     // User must have configured a custom IP or host
-    if (!preferences.getWifiTargetIpAddress().equals("custom")) return false;
+    if (!preferences.getTargetIpAddress().equals("custom")) return false;
 
     // We must know about the network connection
     if (connectivity == null) return false;
@@ -303,6 +303,6 @@ class IpNotificationMethod implements NotificationMethod {
   }
 
   public boolean isEnabled() {
-    return preferences.isWifiMethodEnabled();
+    return preferences.isIpMethodEnabled();
   }
 }
