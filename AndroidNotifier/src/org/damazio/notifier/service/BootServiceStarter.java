@@ -6,7 +6,6 @@ import org.damazio.notifier.NotifierPreferences;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
 import android.util.Log;
 
 /**
@@ -16,8 +15,6 @@ import android.util.Log;
  * @author rdamazio
  */
 public class BootServiceStarter extends BroadcastReceiver {
-  private static final double MAX_STARTUP_DELAY_MS = 10000.0;
-
   @Override
   public void onReceive(final Context context, Intent intent) {
     NotifierPreferences preferences = new NotifierPreferences(context);
@@ -28,14 +25,6 @@ public class BootServiceStarter extends BroadcastReceiver {
 
     assert(intent.getAction().equals("android.intent.action.BOOT_COMPLETED"));
 
-    // Wait some random time before starting the service - we don't really need
-    // to make the system boot slower by having it start right away.
-    long waitMs = (long) (Math.random() * MAX_STARTUP_DELAY_MS);
-    Log.d(NotifierConstants.LOG_TAG, "Starting at boot after " + waitMs + "ms");
-    new Handler().postDelayed(new Runnable() {
-      public void run() {
-        NotificationService.start(context);
-      }
-    }, waitMs);
+    NotificationService.start(context);
   }
 }
