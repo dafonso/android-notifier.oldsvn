@@ -91,6 +91,7 @@
     <string name="ping_contents">Test notification</string>
     <string name="sms_contents">SMS from %s: %s</string>
     <string name="mms_contents">MMS from %s</string>
+    <string name="unknown_number">Unknown number</string>
 
     <!-- These are composed, like "Charging, remaining charge: 75%".
          The %d%% is expected to be at the end. -->
