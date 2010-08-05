@@ -87,6 +87,13 @@ class WifiNotificationMethod implements NotificationMethod {
   }
 
   public void sendNotification(Notification notification, NotificationCallback callback) {
+    // If background data is disabled, don't send any of the background notifications
+    // PING is the only notification that's sent from the app, so it's not considered background
+    if (!connectivity.getBackgroundDataSetting() && notification.getType() != NotificationType.PING) {
+      Log.w(NotifierConstants.LOG_TAG, "Background data is turned off, not notifying.");
+      return;
+    }
+
     // Check if wifi is disabled
     if (!isWifiConnected()) {
       if (preferences.getEnableWifi() || isWifiConnecting()) {
@@ -98,11 +105,10 @@ class WifiNotificationMethod implements NotificationMethod {
         new WifiDelayedNotifier(notification, callback, wifi.isWifiEnabled()).start();
         return;
       } else if (canSendOverCellNetwork()) {
-        // else, we can send it over the cell phone network
-        // TODO: Delay if phone network is connecting
+        // Wifi is not enabled, but we can try the cell network
       } else {
         // It won't be enabled, and we cannot send it over the cell phone network
-        Log.d(NotifierConstants.LOG_TAG, "Not notifying over wifi - not connected.");
+        Log.d(NotifierConstants.LOG_TAG, "Not notifying over IP/wifi - not connected.");
         callback.notificationFailed(notification, null);
         return;
       }
@@ -275,10 +281,18 @@ class WifiNotificationMethod implements NotificationMethod {
    * @return whether to try to send data over the cell phone data network
    */
   private boolean canSendOverCellNetwork() {
+    // User must have enabled the option
     if (!preferences.getSendOverCellNetwork()) return false;
+
+    // User must have configured a custom IP or host
+    if (!preferences.getWifiTargetIpAddress().equals("custom")) return false;
+
+    // We must know about the network connection
     if (connectivity == null) return false;
     NetworkInfo networkInfo = connectivity.getActiveNetworkInfo();
     if (networkInfo == null) return false;
+
+    // It must be connected
     return networkInfo.isConnected(); 
   }
 
