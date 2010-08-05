@@ -3,7 +3,7 @@
   <string-array name="targetIps">
     <item>Endereço global de broadcast</item>
     <item>Endereço DHCP de broadcast</item>
-    <item>IP customizado</item>
+    <item>IP ou host customizado</item>
   </string-array>
 
   <string-array name="wifiSleepPolicies">

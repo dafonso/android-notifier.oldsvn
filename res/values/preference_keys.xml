@@ -4,12 +4,13 @@
   <string name="is_first_time_key">isFirstTime</string>
   <string name="service_state_key">serviceState</string>
   <string name="start_at_boot_key">startAtBoot</string>
-  <string name="method_wifi_key">wifiMethod</string>
+  <string name="method_ip_key">wifiMethod</string>
   <string name="target_ip_address_key">targetIpAddress</string>
   <string name="target_custom_ip_address_key">targetCustomIpAddress</string>
   <string name="send_udp_key">sendUdp</string>
   <string name="send_tcp_key">sendTcp</string>
   <string name="enable_wifi_key">enableWifi</string>
+  <string name="allow_cell_send_key">allowCellSend</string>
   <string name="method_bluetooth_key">bluetoothMethod</string>
   <string name="bluetooth_device_key">bluetoothDevice</string>
   <string name="enable_bluetooth_key">enableBluetooth</string>
@@ -22,7 +23,7 @@
 
   <!-- Fake preference keys - never saved, but show options in the preferences screen -->
   <string name="method_bluetooth_options_key">bluetoothOptions</string>
-  <string name="method_wifi_options_key">wifiOptions</string>
+  <string name="method_ip_options_key">ipOptions</string>
   <string name="wifi_sleep_policy_key">wifiSleepPolicy</string>
   <string name="bluetooth_pairing_key">bluetoothPairing</string>
   <string name="test_notification_key">testNotification</string>

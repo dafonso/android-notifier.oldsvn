@@ -3,7 +3,7 @@
   <string-array name="targetIps">
     <item>Глобальный широковещательный адрес</item>
     <item>Широковещательный адрес от DHCP сервера</item>
-    <item>Пользовательский IP адрес</item>
+    <item>Пользовательский IP адрес или имя хоста</item>
   </string-array>
 
   <string-array name="wifiSleepPolicies">

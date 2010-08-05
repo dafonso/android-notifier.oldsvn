@@ -23,13 +23,15 @@ import android.net.wifi.WifiManager.WifiLock;
 import android.util.Log;
 
 /**
- * Notification method which sends notifications as UDP broadcast
- * packets.
- * These packets are only sent if Wi-Fi is enabled and connected.
+ * Notification method which sends notifications over the TCP/IP network,
+ * as either TCP or UDP packets.
+ *
+ * Depending on user-configured options, these may be sent only over Wifi,
+ * or over the cell phone network.
  *
  * @author rdamazio
  */
-class WifiNotificationMethod implements NotificationMethod {
+class IpNotificationMethod implements NotificationMethod {
 
   /**
    * Class which waits for wifi to be enabled before sending a notification.
@@ -42,7 +44,7 @@ class WifiNotificationMethod implements NotificationMethod {
 
     private WifiDelayedNotifier(Notification notification, NotificationCallback callback,
         boolean previousWifiEnabledState) {
-      super(notification, callback, previousWifiEnabledState, WifiNotificationMethod.this);
+      super(notification, callback, previousWifiEnabledState, IpNotificationMethod.this);
     }
 
     @Override
@@ -73,13 +75,13 @@ class WifiNotificationMethod implements NotificationMethod {
 
   private static final int UDP_PORT = 10600;
   private static final int TCP_PORT = 10600;
-  private static final int TCP_CONNECT_TIMEOUT_MS = 4000;
+  private static final int TCP_CONNECT_TIMEOUT_MS = 5000;
   private static final byte DELIMITER_BYTE = 0;
   private final NotifierPreferences preferences;
   private final WifiManager wifi;
   private final ConnectivityManager connectivity;
 
-  public WifiNotificationMethod(Context context, NotifierPreferences preferences) {
+  public IpNotificationMethod(Context context, NotifierPreferences preferences) {
     this.preferences = preferences;
     this.wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
     this.connectivity =
@@ -87,23 +89,34 @@ class WifiNotificationMethod implements NotificationMethod {
   }
 
   public void sendNotification(Notification notification, NotificationCallback callback) {
+    // If background data is disabled, don't send any of the background notifications
+    // PING is the only notification that's sent from the app, so it's not considered background
+    if (!connectivity.getBackgroundDataSetting() && notification.getType() != NotificationType.PING) {
+      Log.w(NotifierConstants.LOG_TAG, "Background data is turned off, not notifying.");
+      return;
+    }
+
     // Check if wifi is disabled
     if (!isWifiConnected()) {
-      // Check if we should enable it, or if it's already being enabled
-      // (in which case we just send it after a little while)
       if (preferences.getEnableWifi() || isWifiConnecting()) {
+        // We should enable it, or if it's already being enabled
+        // (in which case we just send it after a little while)
         Log.d(NotifierConstants.LOG_TAG, "Enabling wifi and delaying notification");
 
         // Check periodically if wifi connected, then try to send it
         new WifiDelayedNotifier(notification, callback, wifi.isWifiEnabled()).start();
+        return;
+      } else if (canSendOverCellNetwork()) {
+        // Wifi is not enabled, but we can try the cell network
       } else {
-        Log.d(NotifierConstants.LOG_TAG, "Not notifying over wifi - not connected.");
+        // It won't be enabled, and we cannot send it over the cell phone network
+        Log.d(NotifierConstants.LOG_TAG, "Not notifying over IP/wifi - not connected.");
         callback.notificationFailed(notification, null);
+        return;
       }
-      return;
     }
 
-    // Wifi is connected, so try to send notification now
+    // Connected, so try to send notification now
     try {
       byte[] messageBytes = notification.toString().getBytes();
       messageBytes = addDelimiter(messageBytes);
@@ -117,7 +130,7 @@ class WifiNotificationMethod implements NotificationMethod {
         sendUdpNotification(messageBytes, address);
       }
       if (preferences.isSendTcpEnabled()) {
-        if (preferences.getWifiTargetIpAddress().equals("custom")) {
+        if (preferences.getTargetIpAddress().equals("custom")) {
           sendTcpNotification(messageBytes, address);
         } else {
           Log.e(NotifierConstants.LOG_TAG, "TCP enabled but trying to use a broadcast address");
@@ -193,7 +206,7 @@ class WifiNotificationMethod implements NotificationMethod {
    * user's preferences, or null if it cannot be determined.
    */
   private InetAddress getTargetAddress() {
-    String addressStr = preferences.getWifiTargetIpAddress();
+    String addressStr = preferences.getTargetIpAddress();
     try {
       if (addressStr.equals("global")) {
         // Send to 255.255.255.255
@@ -218,7 +231,7 @@ class WifiNotificationMethod implements NotificationMethod {
         return InetAddress.getByAddress(quads);
       } else if (addressStr.equals("custom")) {
         // Get the custom IP address from the other preference key
-        addressStr = preferences.getCustomWifiTargetIpAddress();
+        addressStr = preferences.getCustomTargetIpAddress();
         return InetAddress.getByName(addressStr);
       } else {
         Log.e(NotifierConstants.LOG_TAG, "Invalid value for IP target: " + addressStr);
@@ -266,11 +279,30 @@ class WifiNotificationMethod implements NotificationMethod {
     return (wifiInfo.getState() == NetworkInfo.State.CONNECTING);
   }
 
+  /**
+   * @return whether to try to send data over the cell phone data network
+   */
+  private boolean canSendOverCellNetwork() {
+    // User must have enabled the option
+    if (!preferences.getSendOverCellNetwork()) return false;
+
+    // User must have configured a custom IP or host
+    if (!preferences.getTargetIpAddress().equals("custom")) return false;
+
+    // We must know about the network connection
+    if (connectivity == null) return false;
+    NetworkInfo networkInfo = connectivity.getActiveNetworkInfo();
+    if (networkInfo == null) return false;
+
+    // It must be connected
+    return networkInfo.isConnected(); 
+  }
+
   public String getName() {
     return "wifi";
   }
 
   public boolean isEnabled() {
-    return preferences.isWifiMethodEnabled();
+    return preferences.isIpMethodEnabled();
   }
 }

@@ -3,7 +3,7 @@
   <string-array name="targetIps">
     <item>Global broadcast address</item>
     <item>DHCP broadcast address</item>
-    <item>Custom IP</item>
+    <item>Custom IP or host</item>
   </string-array>
 
   <!-- Not user-visible, do not translate -->

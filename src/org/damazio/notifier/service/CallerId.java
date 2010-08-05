@@ -1,6 +1,7 @@
 package org.damazio.notifier.service;
 
 import org.damazio.notifier.NotifierConstants;
+import org.damazio.notifier.R;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -115,6 +116,10 @@ public abstract class CallerId {
    * @return a user-visible caller ID string for the number
    */
   public String buildCallerIdString(String number) {
+    if (number == null) {
+      return context.getString(R.string.unknown_number);
+    }
+
     CallerInfo callerInfo = getCallerInfo(number);
     if (callerInfo != null) {
       return buildCallerIdString(callerInfo);
@@ -141,9 +146,15 @@ public abstract class CallerId {
       String typeColumn, String labelColumn, String number) {
     // Do the contact lookup by number
     Uri uri = Uri.withAppendedPath(filterUri, Uri.encode(number));
-    Cursor cursor = context.getContentResolver().query(uri,
-        new String[] { displayNameColumn, typeColumn, labelColumn },
-        null, null, null);
+    Cursor cursor;
+    try {
+      cursor = context.getContentResolver().query(uri,
+          new String[] { displayNameColumn, typeColumn, labelColumn },
+          null, null, null);
+    } catch (IllegalArgumentException e) {
+      Log.e(NotifierConstants.LOG_TAG, "Unable to look up caller ID", e);
+      return null;
+    }
 
     // Take the first match only
     if (cursor != null && cursor.moveToFirst()) {

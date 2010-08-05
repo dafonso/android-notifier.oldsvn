@@ -3,6 +3,7 @@ package org.damazio.notifier;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.damazio.notifier.backup.BackupPreferencesListener;
 import org.damazio.notifier.notification.BluetoothDeviceUtils;
 import org.damazio.notifier.notification.Notification;
 import org.damazio.notifier.notification.NotificationType;
@@ -12,6 +13,8 @@ import org.damazio.notifier.service.NotificationService;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
@@ -20,6 +23,7 @@ import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.provider.Settings;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -34,10 +38,16 @@ public class NotifierMain extends PreferenceActivity {
   private Notifier notifier;
   private NotifierPreferences preferences;
   private Preference serviceStatePreference;
+  private BackupPreferencesListener backupPreferencesListener;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    // Register to listen for preference changes
+    backupPreferencesListener = BackupPreferencesListener.create(this);
+    getPreferenceManager().getSharedPreferences()
+        .registerOnSharedPreferenceChangeListener(backupPreferencesListener);
 
     // Load preferences
     preferences = new NotifierPreferences(this);
@@ -60,9 +70,18 @@ public class NotifierMain extends PreferenceActivity {
     // This has to be done on resume so special values (such as the bluetooth device list and the
     // wifi sleep policy) are reloaded when we return from another activity.
     configureBluetoothPreferences();
-    configureWifiPreferences();
+    configureIpPreferences();
     configureServicePreferences();
     configureMiscPreferences();
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+
+    // Stop listening to preference changes
+    getPreferenceManager().getSharedPreferences()
+        .unregisterOnSharedPreferenceChangeListener(backupPreferencesListener);
   }
 
   /**
@@ -106,10 +125,32 @@ public class NotifierMain extends PreferenceActivity {
   }
 
   /**
-   * Configures preference actions related to Wifi.
+   * Configures preference actions related to TCP/IP.
    */
-  private void configureWifiPreferences() {
-    updateTcpPreference(preferences.getWifiTargetIpAddress().equals("custom"), false);
+  private void configureIpPreferences() {
+    final CheckBoxPreference cellSendPreference =
+        (CheckBoxPreference) findPreference(getString(R.string.allow_cell_send_key));
+    final CheckBoxPreference enableWifiPreference =
+        (CheckBoxPreference) findPreference(getString(R.string.enable_wifi_key));
+
+    // Make these two be mutually exclusive (can only take one action if wifi is off)
+    enableWifiPreference.setEnabled(!cellSendPreference.isChecked());
+    enableWifiPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+      public boolean onPreferenceChange(Preference preference, Object newValue) {
+        cellSendPreference.setEnabled(!((Boolean) newValue));
+        return true;
+      }
+    });
+    cellSendPreference.setEnabled(!enableWifiPreference.isChecked());
+    cellSendPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+      public boolean onPreferenceChange(Preference preference, Object newValue) {
+        enableWifiPreference.setEnabled(!((Boolean) newValue));
+        return true;
+      }
+    });
+
+    // Set initial state and values
+    updateIpPreferences(preferences.getTargetIpAddress().equals("custom"), false);
 
     // Attach custom IP address selector
     Preference ipAddressPreference = findPreference(getString(R.string.target_ip_address_key));
@@ -121,7 +162,7 @@ public class NotifierMain extends PreferenceActivity {
 
         boolean isCustomIp = value.equals("custom");
         boolean isChanging = !newValue.equals(oldValue);
-        updateTcpPreference(isCustomIp, isChanging);
+        updateIpPreferences(isCustomIp, isChanging);
         if (isCustomIp) {
           selectCustomIpAddress(listPreference);
         }
@@ -148,18 +189,26 @@ public class NotifierMain extends PreferenceActivity {
    * @param isCustomIp whether a custom IP is selected as the target
    * @param isChanging whether the IP type has changed
    */
-  private void updateTcpPreference(boolean isCustomIp, boolean isChanging) {
+  private void updateIpPreferences(boolean isCustomIp, boolean isChanging) {
     // TODO: Give some type of warning if both UDP and TCP are disabled
-    CheckBoxPreference sendTcpPreference =
-        (CheckBoxPreference) findPreference(getString(R.string.send_tcp_key));
+    final CheckBoxPreference sendTcpPreference =
+      (CheckBoxPreference) findPreference(getString(R.string.send_tcp_key));
+    final CheckBoxPreference cellSendPreference =
+      (CheckBoxPreference) findPreference(getString(R.string.allow_cell_send_key));
+
     if (isCustomIp) {
       sendTcpPreference.setEnabled(true);
+      cellSendPreference.setEnabled(true);
       if (isChanging) sendTcpPreference.setChecked(true);
       sendTcpPreference.setSummaryOff(R.string.send_tcp_summary_off);
+      cellSendPreference.setSummaryOff(R.string.allow_cell_send_summary_off);
     } else {
       sendTcpPreference.setEnabled(false);
       sendTcpPreference.setChecked(false);
-      sendTcpPreference.setSummaryOff(R.string.send_tcp_summary_noip);
+      sendTcpPreference.setSummaryOff(R.string.custom_ip_needed);
+      cellSendPreference.setEnabled(false);
+      cellSendPreference.setChecked(false);
+      cellSendPreference.setSummaryOff(R.string.custom_ip_needed);
     }
   }
 
@@ -177,14 +226,14 @@ public class NotifierMain extends PreferenceActivity {
 
     // Set an EditText view to get user input 
     final EditText input = new EditText(NotifierMain.this);
-    input.setText(preferences.getCustomWifiTargetIpAddress());
+    input.setText(preferences.getCustomTargetIpAddress());
     alert.setView(input);
 
     alert.setPositiveButton(android.R.string.ok,
         new DialogInterface.OnClickListener() {
           public void onClick(DialogInterface dialog, int whichButton) {
             String value = input.getText().toString();
-            preferences.setCustomWifiTargetIpAddress(value);
+            preferences.setCustomTargetIpAddress(value);
           }
         });
 
@@ -271,6 +320,15 @@ public class NotifierMain extends PreferenceActivity {
       }
     });
 
+    // Show the version number in the about preference
+    try {
+      PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), 0);
+      String versionString = getString(R.string.version, info.versionName);
+      aboutPreference.setSummary(versionString);
+    } catch (NameNotFoundException e) {
+      Log.e(NotifierConstants.LOG_TAG, "Can't find my own version", e);
+    }
+
     // Attach an action to report a bug
     Preference bugReportPreference = findPreference(getString(R.string.report_bug_key));
     bugReportPreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
@@ -317,7 +375,7 @@ public class NotifierMain extends PreferenceActivity {
   private void sendTestNotification() {
     // TODO: Send to the service instead
     // TODO: Warn if none of the selected methods are available
-    //       (e.g. bluetooth and/or wifi turned off)
+    //       (e.g. bluetooth and/or IP turned off)
     if (notifier == null) {
       notifier = new Notifier(this, preferences);
     }

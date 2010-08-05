@@ -102,36 +102,36 @@ public class NotifierPreferences {
   }
 
   /**
-   * @return whether notifications should be sent over wifi
+   * @return whether notifications should be sent over TCP/IP
    */
-  public boolean isWifiMethodEnabled() {
-    return preferences.getBoolean(context.getString(R.string.method_wifi_key), true);
+  public boolean isIpMethodEnabled() {
+    return preferences.getBoolean(context.getString(R.string.method_ip_key), true);
   }
 
   /**
    * @return returns the current target IP address setting, which is one of
    *         "global", "dhcp" or "custom"
    */
-  public String getWifiTargetIpAddress() {
+  public String getTargetIpAddress() {
     return preferences.getString(context.getString(R.string.target_ip_address_key), "global");
   }
 
   /**
    * @return the custom IP address to be used if "custom" was returned by
-   *         {@link #getWifiTargetIpAddress}
+   *         {@link #getTargetIpAddress}
    */
-  public String getCustomWifiTargetIpAddress() {
+  public String getCustomTargetIpAddress() {
     return preferences.getString(context.getString(R.string.target_custom_ip_address_key),
         "255.255.255.255");
   }
 
   /**
-   * Sets the custom wifi address to use if "custom" is returned by
-   * {@link #getWifiTargetIpAddress}.
+   * Sets the custom TCP/IP address to use if "custom" is returned by
+   * {@link #getTargetIpAddress}.
    *
    * @param address the IP address's textual representation
    */
-  public void setCustomWifiTargetIpAddress(String address) {
+  public void setCustomTargetIpAddress(String address) {
     preferences.edit()
         .putString(context.getString(R.string.target_custom_ip_address_key), address)
         .commit();
@@ -262,5 +262,12 @@ public class NotifierPreferences {
    */
   public boolean isSendTcpEnabled() {
     return preferences.getBoolean(context.getString(R.string.send_tcp_key), true);
+  }
+
+  /**
+   * @return whether to send notifications over the cell phone network
+   */
+  public boolean getSendOverCellNetwork() {
+    return preferences.getBoolean(context.getString(R.string.allow_cell_send_key), false);
   }
 }

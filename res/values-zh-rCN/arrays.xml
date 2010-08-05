@@ -3,7 +3,7 @@
   <string-array name="targetIps">
     <item>全局广播地址</item>
     <item>DHCP 广播地址</item>
-    <item>自定义IP</item>
+    <item>自定义IP或主机名</item>
   </string-array>
 
   <string-array name="wifiSleepPolicies">

@@ -2,10 +2,12 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.damazio.notifier"
-    android:versionCode="6"
-    android:versionName="0.2.3">
+    android:versionCode="7"
+    android:versionName="0.2.4">
 
-  <application android:icon="@drawable/icon" android:label="@string/app_name">
+  <application android:icon="@drawable/icon"
+               android:label="@string/app_name"
+               android:backupAgent=".backup.NotifierBackupAgentHelper">
     <!-- The activity which displays preferences and starts the service -->
     <activity android:name=".NotifierMain" android:label="@string/app_name">
       <intent-filter>
@@ -23,15 +25,18 @@
     <receiver android:name=".service.BootServiceStarter">
       <intent-filter>
         <action android:name="android.intent.action.BOOT_COMPLETED" />
-        <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </receiver>
 
     <!-- Other broadcast event receivers are attached in NotificationService -->
+
+    <!-- Key for backing up preferences to Google's backup service -->
+	<meta-data android:name="com.google.android.backup.api_key"
+	           android:value="AEdPqrEAAAAIqP6mL1Nk0PnTfEgJS7Nd2OKLcce1MD-LN62uTA" />
   </application>
 
   <!-- Works best on 2.0+ (bluetooth support), but should be ok in 1.5 -->
-  <uses-sdk android:targetSdkVersion="5" android:minSdkVersion="3"/>
+  <uses-sdk android:targetSdkVersion="8" android:minSdkVersion="3"/>
 
   <!-- Permissions for catching events -->
   <uses-permission android:name="android.permission.READ_PHONE_STATE" />
