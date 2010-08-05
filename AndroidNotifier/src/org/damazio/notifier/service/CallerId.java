@@ -146,9 +146,15 @@ public abstract class CallerId {
       String typeColumn, String labelColumn, String number) {
     // Do the contact lookup by number
     Uri uri = Uri.withAppendedPath(filterUri, Uri.encode(number));
-    Cursor cursor = context.getContentResolver().query(uri,
-        new String[] { displayNameColumn, typeColumn, labelColumn },
-        null, null, null);
+    Cursor cursor;
+    try {
+      cursor = context.getContentResolver().query(uri,
+          new String[] { displayNameColumn, typeColumn, labelColumn },
+          null, null, null);
+    } catch (IllegalArgumentException e) {
+      Log.e(NotifierConstants.LOG_TAG, "Unable to look up caller ID", e);
+      return null;
+    }
 
     // Take the first match only
     if (cursor != null && cursor.moveToFirst()) {
