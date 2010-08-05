@@ -24,7 +24,7 @@
     <string name="not_yet_implemented">Еще не реализовано.</string>
 
     <!-- Wifi method -->
-    <string name="ip_options">Настройки Wifi/IP</string>
+    <string name="ip_options">Настройки IP/Wifi</string>
     <string name="target_ip_address">IP адрес получателя</string>
     <string name="custom_ip_title">Пользовательский IP адрес</string>
     <string name="custom_ip">Пожалуйста, введите адрес или имя хоста получателя уведомлений:</string>
@@ -36,6 +36,13 @@
     <string name="allow_cell_send">Отправить с помощью сотовой связи</string>
     <string name="allow_cell_send_summary_on">Уведомления будут рассылаться с сотового телефона сети, если сеть Wi-Fi выключена</string>
     <string name="allow_cell_send_summary_off">Уведомления не будут рассылаться с сотового телефона сети, если сеть Wi-Fi выключена</string>
+    <string name="send_udp">Отправить с UDP</string>
+    <string name="send_udp_summary_on">Уведомления будут рассылаться с UDP (необходимых для вещания)</string>
+    <string name="send_udp_summary_off">Уведомления не будут рассылаться с UDP (не вещания)</string>
+    <string name="send_tcp">Отправить с TCP</string>
+    <string name="send_tcp_summary_on">Уведомления будут рассылаться с TCP</string>
+    <string name="send_tcp_summary_off">Уведомления не будут рассылаться с TCP</string>
+    <string name="custom_ip_needed">Вы должны выбрать пользовательский IP в качестве целевой адрес</string>
 
     <!-- Bluetooth method -->
     <string name="bluetooth_options">Настройки Bluetooth</string>
@@ -62,6 +69,10 @@
     <string name="test_notification_summary">Используется для тестирования и сопряжения</string>
     <string name="ping_sent">Тестовое уведомление отправлено</string>
     <string name="about_menu">О Remote Notifier</string>
+    <string name="version">Версион %s</string>
+    <string name="report_bug">Сообщить об ошибке</string>
+    <string name="report_bug_summary">Используйте после проблема происходит (Журнал будет скопировать в буфер обмена)</string>
+    <string name="report_bug_toast">Применение журнала копируется в буфер обмена.\nПожалуйста, вставьте его в сообщение об ошибке.</string>
 
     <!-- Welcome and about box contents -->
     <string name="welcome_title">Добро пожаловать в Remote Notifier</string>
@@ -71,10 +82,12 @@
     <string name="ping_contents">Проверка уведомлений</string>
     <string name="sms_contents">SMS от %s: %s</string>
     <string name="mms_contents">MMS от %s</string>
+    <string name="unknown_number">Неизвестный номер</string>
     <string name="battery_level">%s, уровень заряда аккумулятора: %d%%</string>
     <string name="battery_level_unknown">%s, уровень заряда аккумулятора неизвестен</string>
     <string name="battery_charging">Заряжается</string>
     <string name="battery_discharging">Разряжается</string>
     <string name="battery_not_charging">Не заряжается</string>
     <string name="battery_full">Батарея заряжена полностью</string>
+    <string name="battery_unknown">Неизвестный состояние</string>
 </resources>
