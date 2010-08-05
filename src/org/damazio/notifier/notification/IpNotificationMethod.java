@@ -23,13 +23,15 @@ import android.net.wifi.WifiManager.WifiLock;
 import android.util.Log;
 
 /**
- * Notification method which sends notifications as UDP broadcast
- * packets.
- * These packets are only sent if Wi-Fi is enabled and connected.
+ * Notification method which sends notifications over the TCP/IP network,
+ * as either TCP or UDP packets.
+ *
+ * Depending on user-configured options, these may be sent only over Wifi,
+ * or over the cell phone network.
  *
  * @author rdamazio
  */
-class WifiNotificationMethod implements NotificationMethod {
+class IpNotificationMethod implements NotificationMethod {
 
   /**
    * Class which waits for wifi to be enabled before sending a notification.
@@ -42,7 +44,7 @@ class WifiNotificationMethod implements NotificationMethod {
 
     private WifiDelayedNotifier(Notification notification, NotificationCallback callback,
         boolean previousWifiEnabledState) {
-      super(notification, callback, previousWifiEnabledState, WifiNotificationMethod.this);
+      super(notification, callback, previousWifiEnabledState, IpNotificationMethod.this);
     }
 
     @Override
@@ -79,7 +81,7 @@ class WifiNotificationMethod implements NotificationMethod {
   private final WifiManager wifi;
   private final ConnectivityManager connectivity;
 
-  public WifiNotificationMethod(Context context, NotifierPreferences preferences) {
+  public IpNotificationMethod(Context context, NotifierPreferences preferences) {
     this.preferences = preferences;
     this.wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
     this.connectivity =
