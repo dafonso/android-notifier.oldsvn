@@ -43,7 +43,7 @@
     <string name="send_udp_summary_off">Notifications will NOT be sent over UDP (no broadcasting)</string>
     <string name="send_tcp">Send with TCP</string>
     <string name="send_tcp_summary_on">Notifications will be sent over TCP</string>
-    <string name="send_tcp_summary_off">Notifications will be sent over TCP</string>
+    <string name="send_tcp_summary_off">Notifications will NOT be sent over TCP</string>
     <string name="custom_ip_needed">To use this, you must choose a custom IP as the target address</string>
 
     <!-- Bluetooth method -->
