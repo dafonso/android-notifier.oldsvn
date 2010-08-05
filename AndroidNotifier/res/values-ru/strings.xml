@@ -24,7 +24,7 @@
     <string name="not_yet_implemented">Еще не реализовано.</string>
 
     <!-- Wifi method -->
-    <string name="wifi_options">Настройки Wifi</string>
+    <string name="ip_options">Настройки Wifi/IP</string>
     <string name="target_ip_address">IP адрес получателя</string>
     <string name="custom_ip_title">Пользовательский IP адрес</string>
     <string name="custom_ip">Пожалуйста, введите адрес или имя хоста получателя уведомлений:</string>

@@ -17,15 +17,15 @@
 
   <!-- Methods -->
   <PreferenceCategory android:title="@string/methods_title">
-    <!-- Wifi -->
-    <CheckBoxPreference android:key="@string/method_wifi_key"
-                        android:title="@string/method_wifi"
+    <!-- IP/Wifi -->
+    <CheckBoxPreference android:key="@string/method_ip_key"
+                        android:title="@string/method_ip"
                         android:defaultValue="true"
                         android:summaryOn="@string/method_on"
                         android:summaryOff="@string/method_off" />
-    <PreferenceScreen android:key="@string/method_wifi_options_key"
-                      android:title="@string/wifi_options"
-                      android:dependency="@string/method_wifi_key">
+    <PreferenceScreen android:key="@string/method_ip_options_key"
+                      android:title="@string/ip_options"
+                      android:dependency="@string/method_ip_key">
       <ListPreference android:key="@string/target_ip_address_key"
                       android:title="@string/target_ip_address"
                       android:entries="@array/targetIps"
