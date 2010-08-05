@@ -586,13 +586,13 @@
 										<object class="NSButton" id="269291624">
 											<reference key="NSNextResponder" ref="925306912"/>
 											<int key="NSvFlags">268</int>
-											<string key="NSFrame">{{28, 325}, {84, 18}}</string>
+											<string key="NSFrame">{{28, 325}, {102, 18}}</string>
 											<reference key="NSSuperview" ref="925306912"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSButtonCell" key="NSCell" id="1032048720">
 												<int key="NSCellFlags">-2080244224</int>
 												<int key="NSCellFlags2">0</int>
-												<string key="NSContents">Wifi (UDP)</string>
+												<string key="NSContents">IP/Wifi (UDP)</string>
 												<reference key="NSSupport" ref="503288196"/>
 												<reference key="NSControlView" ref="269291624"/>
 												<int key="NSButtonFlags">1211912703</int>
@@ -608,13 +608,13 @@
 										<object class="NSButton" id="968590114">
 											<reference key="NSNextResponder" ref="925306912"/>
 											<int key="NSvFlags">268</int>
-											<string key="NSFrame">{{28, 300}, {83, 18}}</string>
+											<string key="NSFrame">{{28, 300}, {100, 18}}</string>
 											<reference key="NSSuperview" ref="925306912"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSButtonCell" key="NSCell" id="412469598">
 												<int key="NSCellFlags">-2080244224</int>
 												<int key="NSCellFlags2">0</int>
-												<string key="NSContents">Wifi (TCP)</string>
+												<string key="NSContents">IP/Wifi (TCP)</string>
 												<reference key="NSSupport" ref="503288196"/>
 												<reference key="NSControlView" ref="968590114"/>
 												<int key="NSButtonFlags">1211912703</int>
@@ -1656,10 +1656,6 @@ IEppYW5nA</string>
 				<string key="NSMaxSize">{3.40282e+38, 3.40282e+38}</string>
 			</object>
 			<object class="NSUserDefaultsController" id="507395247">
-				<object class="NSMutableArray" key="NSDeclaredKeys">
-					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>listenTcp</string>
-				</object>
 				<bool key="NSSharedInstance">YES</bool>
 			</object>
 			<object class="NSArrayController" id="939260418">

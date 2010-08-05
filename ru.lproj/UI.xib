@@ -581,13 +581,13 @@ g9C00YPRgiDQvtGC0L7QsdGA0LDQttCw0YLRjNGB0Y8g0YPQstC10LTQvtC80LvQtdC90LjRjy4</str
 										<object class="NSButton" id="269291624">
 											<reference key="NSNextResponder" ref="925306912"/>
 											<int key="NSvFlags">268</int>
-											<string key="NSFrame">{{28, 381}, {84, 18}}</string>
+											<string key="NSFrame">{{28, 381}, {102, 18}}</string>
 											<reference key="NSSuperview" ref="925306912"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSButtonCell" key="NSCell" id="1032048720">
 												<int key="NSCellFlags">-2080244224</int>
 												<int key="NSCellFlags2">0</int>
-												<string key="NSContents">Wifi (UDP)</string>
+												<string key="NSContents">IP/Wifi (UDP)</string>
 												<reference key="NSSupport" ref="503288196"/>
 												<reference key="NSControlView" ref="269291624"/>
 												<int key="NSButtonFlags">1211912703</int>
@@ -603,13 +603,13 @@ g9C00YPRgiDQvtGC0L7QsdGA0LDQttCw0YLRjNGB0Y8g0YPQstC10LTQvtC80LvQtdC90LjRjy4</str
 										<object class="NSButton" id="678427673">
 											<reference key="NSNextResponder" ref="925306912"/>
 											<int key="NSvFlags">268</int>
-											<string key="NSFrame">{{28, 356}, {83, 18}}</string>
+											<string key="NSFrame">{{28, 356}, {100, 18}}</string>
 											<reference key="NSSuperview" ref="925306912"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSButtonCell" key="NSCell" id="83869367">
 												<int key="NSCellFlags">-2080244224</int>
 												<int key="NSCellFlags2">0</int>
-												<string key="NSContents">Wifi (TCP)</string>
+												<string key="NSContents">IP/Wifi (TCP)</string>
 												<reference key="NSSupport" ref="503288196"/>
 												<reference key="NSControlView" ref="678427673"/>
 												<int key="NSButtonFlags">1211912703</int>
@@ -1034,7 +1034,7 @@ INC/0L4g0LjQvNC10L3QuCk</string>
 										<object class="NSMatrix" id="627688636">
 											<reference key="NSNextResponder" ref="925306912"/>
 											<int key="NSvFlags">268</int>
-											<string key="NSFrame">{{30, 173}, {309, 38}}</string>
+											<string key="NSFrame">{{30, 173}, {349, 38}}</string>
 											<reference key="NSSuperview" ref="925306912"/>
 											<bool key="NSEnabled">YES</bool>
 											<int key="NSNumRows">2</int>
@@ -1169,7 +1169,7 @@ QXBwbGUgQ29tcHV0ZXIsIEluYy4sIDIwMDUAAAAAA</bytes>
 													<int key="NSPeriodicInterval">75</int>
 												</object>
 											</object>
-											<string key="NSCellSize">{309, 18}</string>
+											<string key="NSCellSize">{349, 18}</string>
 											<string key="NSIntercellSpacing">{4, 2}</string>
 											<int key="NSMatrixFlags">1151868928</int>
 											<string key="NSCellClass">NSActionCell</string>
@@ -1657,10 +1657,6 @@ sNGH0LXQuiwg0L/QvtC20LDQu9GD0LnRgdGC0LAsINC/0L7RgdC10YLQuNGC0LU</string>
 				<string key="NSMaxSize">{3.40282e+38, 3.40282e+38}</string>
 			</object>
 			<object class="NSUserDefaultsController" id="507395247">
-				<object class="NSMutableArray" key="NSDeclaredKeys">
-					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>listenTcp</string>
-				</object>
 				<bool key="NSSharedInstance">YES</bool>
 			</object>
 			<object class="NSArrayController" id="939260418">
@@ -3570,9 +3566,9 @@ sNGH0LXQuiwg0L/QvtC20LDQu9GD0LnRgdGC0LAsINC/0L7RgdC10YLQuNGC0LU</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{142, 201}, {704, 619}}</string>
+					<string>{{159, 522}, {704, 619}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{142, 201}, {704, 619}}</string>
+					<string>{{159, 522}, {704, 619}}</string>
 					<reference ref="6"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
