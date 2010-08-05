@@ -79,7 +79,7 @@
     <string name="about_menu">About Remote Notifier</string>
     <string name="report_bug">Meld een bug</string>
     <string name="report_bug_summary">Gebruik deze optie direct nadat een fout is opgetreden.(log word gekopieerd naar klembord)</string>
-    <string name="report_bug_toast">Apllicatie log gekopieerd naar klembord.\nGelieve het te kopieren naar 'meld een bug'.</string>
+    <string name="report_bug_toast">Apllicatie log gekopieerd naar klembord.\nGelieve het te kopieren naar \'meld een bug\'.</string>
 
     <!-- Welcome and about box contents -->
     <string name="about_title">Remote Notifier</string>
