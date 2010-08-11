@@ -29,7 +29,7 @@ class Notification:
         self.notification_id = parts[1]
         self.event_type = parts[2]
         self.contents = '/'.join(parts[3:])
-        self.data = None
+        self.data = ''
 
     @property
     def data(self):
