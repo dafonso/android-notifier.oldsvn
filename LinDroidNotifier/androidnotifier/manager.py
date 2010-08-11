@@ -58,10 +58,21 @@ class NotificationManager(GObject):
             return
         if self.emit('android-notify', notification):
             return
+        # Check whether the device is enabled after we emit android-notify,
+        # since android-notify is used by the dialog that gets a device
+        # id to enable it in the first place!
+        if not self._is_device_enabled(notification):
+            return
 
         for action in self._actions:
             if self._is_action_enabled_for_type(action, notification):
                 action.handle_notification(notification)
+
+    def _is_device_enabled(self, notification):
+        if self._preferences['receiveNotificationsFrom'] == 'these':
+            return notification.device_id in self._preferences['pairedDevices']
+        else:
+            return True
 
     def _on_preferences_changed(self, sender):
         for listener in self._listeners:
