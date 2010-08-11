@@ -191,6 +191,7 @@ class PreferencesDialog:
         if self.prefs['executeTarget'] is not None:
             self._get_widget('executeTargetChooser').set_filename(self.prefs['executeTarget'])
 
+        self.devices_store.clear()
         for device in self.prefs['pairedDevices']:
             self.devices_store.append([device])
 
