@@ -21,7 +21,7 @@
     <CheckBoxPreference android:key="@string/method_ip_key"
                         android:title="@string/method_ip"
                         android:defaultValue="true"
-                        android:summaryOn="@string/method_on"
+                        android:summaryOn="@string/method_ip_summary_on"
                         android:summaryOff="@string/method_off" />
     <PreferenceScreen android:key="@string/method_ip_options_key"
                       android:title="@string/ip_options"
@@ -67,7 +67,7 @@
     <CheckBoxPreference android:key="@string/method_bluetooth_key"
                         android:title="@string/method_bluetooth"
                         android:defaultValue="true"
-                        android:summaryOn="@string/method_on"
+                        android:summaryOn="@string/method_bluetooth_summary_on"
                         android:summaryOff="@string/method_off" />
 
     <PreferenceScreen android:key="@string/method_bluetooth_options_key"
