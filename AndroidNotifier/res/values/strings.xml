@@ -100,11 +100,15 @@
     <string name="report_bug">Report a bug</string>
     <string name="report_bug_summary">Use this right after the issue has happened (log will be copied to the clipboard)</string>
     <string name="report_bug_toast">Application log copied to the clipboard.\nPlease paste it in the bug report.</string>
+    <string name="show_notification_icon">Show notification icon</string>
+    <string name="show_notification_icon_summary_on">A notification icon will be shown on the phone while the service is running.</string>
+    <string name="show_notification_icon_summary_off">Nothing will be shown on the phone while the service is running.</string>
 
     <!-- Welcome and about box contents -->
     <string name="about_title">Remote Notifier</string>
     <string name="welcome_title">Welcome to Remote Notifier</string>
     <string name="about_message">This application works in conjunction with a PC/Mac counterpart to display notifications.\n\nPlease visit the website http://code.google.com/p/android-notifier/ to read setup instructions and get the desktop application, as well as give feedback or report bugs.</string>
+    <string name="notification_icon_text">Listening and sending remote notifications</string>
 
     <!-- Notification contents -->
     <string name="ping_contents">Test notification</string>

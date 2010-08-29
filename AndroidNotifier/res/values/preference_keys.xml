@@ -26,6 +26,7 @@
   <string name="command_bluetooth_key">commandBluetooth</string>
   <string name="command_wifi_key">commandWifi</string>
   <string name="bluetooth_source_key">bluetoothSource</string>
+  <string name="show_notification_icon_key">showNotificationIcon</string>
 
   <!-- Fake preference keys - never saved, but show options in the preferences screen -->
   <string name="method_bluetooth_options_key">bluetoothOptions</string>
