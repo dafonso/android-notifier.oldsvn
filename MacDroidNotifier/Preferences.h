@@ -43,6 +43,8 @@ extern const NSInteger kPairingRequired;
   IBOutlet NSButton *addPairedDeviceButton;
   IBOutlet NSButton *removePairedDeviceButton;
   IBOutlet NSTextField *executedName;
+  IBOutlet NSMenu *mainMenu;
+  IBOutlet NSMenu *deviceMenuTemplate;
   IBOutlet StartupItem *startupItem;
 
   BOOL isPairing;
@@ -66,5 +68,7 @@ extern const NSInteger kPairingRequired;
 
 // Callback to select what to execute
 - (IBAction)selectExecuteAction:(id)sender;
+
+- (void)updateDevicesMenuWithDefaults:(NSUserDefaults *)defaults;
 
 @end
