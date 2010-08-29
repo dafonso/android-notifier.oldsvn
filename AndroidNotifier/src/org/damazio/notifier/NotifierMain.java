@@ -19,10 +19,11 @@ import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.preference.PreferenceActivity;
 import android.provider.Settings;
+import android.text.InputType;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -164,7 +165,7 @@ public class NotifierMain extends PreferenceActivity {
         boolean isChanging = !newValue.equals(oldValue);
         updateIpPreferences(isCustomIp, isChanging);
         if (isCustomIp) {
-          selectCustomIpAddress(listPreference);
+          selectCustomIpAddress(listPreference, preferences.getCustomTargetIpAddress());
         }
 
         return true;
@@ -218,22 +219,33 @@ public class NotifierMain extends PreferenceActivity {
    * previous value.
    *
    * @param preference the IP address type preference being set
+   * @param initialAddress the IP address to initially show in the dialog
    */
-  private void selectCustomIpAddress(final ListPreference preference) {
+  private void selectCustomIpAddress(
+      final ListPreference preference,
+      final String initialAddress) {
     AlertDialog.Builder alert = new AlertDialog.Builder(NotifierMain.this);
     alert.setTitle(R.string.custom_ip_title);
     alert.setMessage(R.string.custom_ip);
 
     // Set an EditText view to get user input 
     final EditText input = new EditText(NotifierMain.this);
-    input.setText(preferences.getCustomTargetIpAddress());
+    input.setText(initialAddress);
+    input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI);
     alert.setView(input);
 
     alert.setPositiveButton(android.R.string.ok,
         new DialogInterface.OnClickListener() {
           public void onClick(DialogInterface dialog, int whichButton) {
             String value = input.getText().toString();
-            preferences.setCustomTargetIpAddress(value);
+            if (!isValidCustomAddress(value)) {
+              // Show an error, then throw user back to the dialog
+              Toast.makeText(NotifierMain.this, R.string.invalid_custom_ip, Toast.LENGTH_SHORT)
+                  .show();
+              selectCustomIpAddress(preference, value);
+            } else {
+              preferences.setCustomTargetIpAddress(value);
+            }
           }
         });
 
@@ -246,6 +258,24 @@ public class NotifierMain extends PreferenceActivity {
         });
 
     alert.show();
+  }
+
+  // From http://stackoverflow.com/questions/106179
+  private static final String IP_ADDRESS_PATTERN =
+      "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}" +
+      "([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$";
+  private static final String HOSTNAME_PATTERN =
+      "^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*" +
+      "([A-Za-z]|[A-Za-z][A-Za-z0-9\\-]*[A-Za-z0-9])$";
+
+  /**
+   * Checks and returns whether the given address is a valid hostname or
+   * IP address. This does not ensure that the hostname will be successfully
+   * resolved.
+   */
+  private static boolean isValidCustomAddress(String address) {
+    return address.matches(IP_ADDRESS_PATTERN)
+        || address.matches(HOSTNAME_PATTERN);
   }
 
   /**

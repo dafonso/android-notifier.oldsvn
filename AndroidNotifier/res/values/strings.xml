@@ -30,6 +30,7 @@
     <string name="target_ip_address">Target IP address</string>
     <string name="custom_ip_title">Custom IP address</string>
     <string name="custom_ip">Please type in the address or hostname to send notifications to:</string>
+    <string name="invalid_custom_ip">Invalid IP address or hostname</string>
     <string name="wifi_sleep_policy">Wifi sleep policy</string>
     <string name="wifi_sleep_policy_summary">Controls when Android turns Wifi off\n(defaults to whenever the screen turns off)</string>
     <string name="enable_wifi">Auto-enable wifi</string>

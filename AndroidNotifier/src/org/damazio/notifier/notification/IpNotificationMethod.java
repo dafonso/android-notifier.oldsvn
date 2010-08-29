@@ -204,41 +204,38 @@ class IpNotificationMethod implements NotificationMethod {
   /**
    * Returns the proper address to send the notification to according to the
    * user's preferences, or null if it cannot be determined.
+   *
+   * @throws UnknownHostException if the address cannot be resolved
    */
-  private InetAddress getTargetAddress() {
+  private InetAddress getTargetAddress() throws UnknownHostException {
     String addressStr = preferences.getTargetIpAddress();
-    try {
-      if (addressStr.equals("global")) {
-        // Send to 255.255.255.255
-        return InetAddress.getByAddress(new byte[] { -1, -1, -1, -1 });
-      } else if (addressStr.equals("dhcp")) {
-        // Get the DHCP info from Wi-fi
-        DhcpInfo dhcp = null;
-        if (wifi != null) {
-          dhcp = wifi.getDhcpInfo();
-        }
-        if (dhcp == null) {
-          Log.e(NotifierConstants.LOG_TAG, "Could not obtain DHCP info");
-          return null;
-        }
-
-        // Calculate the broadcast address
-        int broadcast = (dhcp.ipAddress & dhcp.netmask) | ~dhcp.netmask;
-        byte[] quads = new byte[4];
-        for (int k = 0; k < 4; k++) {
-          quads[k] = (byte) ((broadcast >> k * 8) & 0xFF);
-        }
-        return InetAddress.getByAddress(quads);
-      } else if (addressStr.equals("custom")) {
-        // Get the custom IP address from the other preference key
-        addressStr = preferences.getCustomTargetIpAddress();
-        return InetAddress.getByName(addressStr);
-      } else {
-        Log.e(NotifierConstants.LOG_TAG, "Invalid value for IP target: " + addressStr);
+    if (addressStr.equals("global")) {
+      // Send to 255.255.255.255
+      return InetAddress.getByAddress(new byte[] { -1, -1, -1, -1 });
+    } else if (addressStr.equals("dhcp")) {
+      // Get the DHCP info from Wi-fi
+      DhcpInfo dhcp = null;
+      if (wifi != null) {
+        dhcp = wifi.getDhcpInfo();
+      }
+      if (dhcp == null) {
+        Log.e(NotifierConstants.LOG_TAG, "Could not obtain DHCP info");
         return null;
       }
-    } catch (UnknownHostException e) {
-      Log.e(NotifierConstants.LOG_TAG, "Could not resolve address " + addressStr, e);
+
+      // Calculate the broadcast address
+      int broadcast = (dhcp.ipAddress & dhcp.netmask) | ~dhcp.netmask;
+      byte[] quads = new byte[4];
+      for (int k = 0; k < 4; k++) {
+        quads[k] = (byte) ((broadcast >> k * 8) & 0xFF);
+      }
+      return InetAddress.getByAddress(quads);
+    } else if (addressStr.equals("custom")) {
+      // Get the custom IP address from the other preference key
+      addressStr = preferences.getCustomTargetIpAddress();
+      return InetAddress.getByName(addressStr);
+    } else {
+      Log.e(NotifierConstants.LOG_TAG, "Invalid value for IP target: " + addressStr);
       return null;
     }
   }
