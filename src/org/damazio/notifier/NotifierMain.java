@@ -254,11 +254,17 @@ public class NotifierMain extends PreferenceActivity {
   private void configureBluetoothPreferences() {
     CheckBoxPreference bluetoothPreference =
         (CheckBoxPreference) findPreference(getString(R.string.method_bluetooth_key));
+    CheckBoxPreference bluetoothCommandPreference =
+        (CheckBoxPreference) findPreference(getString(R.string.command_bluetooth_key));
     if (!BluetoothDeviceUtils.isBluetoothMethodSupported()) {
       // Disallow enabling bluetooth, if it's not supported
       bluetoothPreference.setChecked(false);
       bluetoothPreference.setEnabled(false);
       bluetoothPreference.setSummaryOff(R.string.eclair_required);
+
+      bluetoothCommandPreference.setChecked(false);
+      bluetoothCommandPreference.setEnabled(false);
+      bluetoothCommandPreference.setSummaryOff(R.string.eclair_required);
     } else {
       // Populate the list of bluetooth devices
       populateBluetoothDeviceList();
@@ -292,10 +298,16 @@ public class NotifierMain extends PreferenceActivity {
 
     CharSequence[] entriesArray = entries.toArray(new CharSequence[entries.size()]);
     CharSequence[] entryValuesArray = entryValues.toArray(new CharSequence[entryValues.size()]);
-    ListPreference devicesPreference =
+
+    ListPreference targetDevicePreference =
         (ListPreference) findPreference(getString(R.string.bluetooth_device_key));
-    devicesPreference.setEntryValues(entryValuesArray);
-    devicesPreference.setEntries(entriesArray);
+    targetDevicePreference.setEntryValues(entryValuesArray);
+    targetDevicePreference.setEntries(entriesArray);
+
+    ListPreference sourceDevicePreference =
+      (ListPreference) findPreference(getString(R.string.bluetooth_source_key));
+    sourceDevicePreference.setEntryValues(entryValuesArray);
+    sourceDevicePreference.setEntries(entriesArray);
   }
 
   /**

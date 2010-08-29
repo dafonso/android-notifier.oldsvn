@@ -127,6 +127,48 @@
                         android:summaryOff="@string/event_off" />
   </PreferenceCategory>
 
+  <!-- Commands -->
+  <PreferenceCategory android:title="@string/commands_title">
+    <CheckBoxPreference android:key="@string/command_enable_key"
+                        android:title="@string/command_enable"
+                        android:defaultValue="true"
+                        android:summaryOn="@string/command_enable_summary_on"
+                        android:summaryOff="@string/command_enable_summary_off" />
+    <CheckBoxPreference android:key="@string/command_call_key"
+                        android:title="@string/command_call"
+                        android:defaultValue="true"
+                        android:dependency="@string/command_enable_key"
+                        android:summaryOn="@string/command_summary_on"
+                        android:summaryOff="@string/command_summary_off" />
+    <CheckBoxPreference android:key="@string/command_sms_key"
+                        android:title="@string/command_sms"
+                        android:defaultValue="true"
+                        android:dependency="@string/command_enable_key"
+                        android:summaryOn="@string/command_summary_on"
+                        android:summaryOff="@string/command_summary_off" />
+
+    <CheckBoxPreference android:key="@string/command_bluetooth_key"
+                        android:title="@string/command_bluetooth"
+                        android:defaultValue="true"
+                        android:dependency="@string/command_enable_key"
+                        android:summaryOn="@string/command_source_on"
+                        android:summaryOff="@string/command_source_off" />
+
+    <ListPreference android:key="@string/bluetooth_source_key"
+                    android:title="@string/bluetooth_source_device"
+                    android:summary="@string/bluetooth_source_device_summary"
+                    android:defaultValue="any"
+                    android:dependency="@string/command_bluetooth_key" />
+
+    <CheckBoxPreference android:key="@string/command_wifi_key"
+                        android:title="@string/command_wifi"
+                        android:defaultValue="true"
+                        android:dependency="@string/command_enable_key"
+                        android:summaryOn="@string/command_source_on"
+                        android:summaryOff="@string/command_source_off" />
+
+  </PreferenceCategory>
+
   <!-- Misc -->
   <PreferenceCategory android:title="@string/misc_title">
     <Preference android:key="@string/test_notification_key"
