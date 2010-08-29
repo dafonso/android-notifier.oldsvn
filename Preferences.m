@@ -72,6 +72,10 @@ const NSInteger kPairingRequired = 1;
   [pool release];
 }
 
+- (void)awakeFromNib {
+  [self updateDevicesMenuWithDefaults:[NSUserDefaults standardUserDefaults]];
+}
+
 - (id)init {
   if (self = [super init]) {
     isPairing = NO;
@@ -126,6 +130,7 @@ const NSInteger kPairingRequired = 1;
     }
 
     [ud synchronize];
+    [self updateDevicesMenuWithDefaults:ud];
   }
 }
 
@@ -224,5 +229,42 @@ const NSInteger kPairingRequired = 1;
     [self updateExecuteAction];
   }
 }
+
+- (void)updateDevicesMenuWithDefaults:(NSUserDefaults *)defaults {
+  // Clear previous paired devices
+  while ([mainMenu numberOfItems]) {
+    NSMenuItem *item = [mainMenu itemAtIndex:0];
+
+    if ([item isSeparatorItem])
+      break;
+
+    [mainMenu removeItemAtIndex:0];
+  }
+
+  // Populate the paired devices into the menu
+  NSArray *pairedDevices = [defaults arrayForKey:kPreferencesPairedDevicesKey];
+  for (uint i = 0; i < [pairedDevices count]; i++) {
+    NSDictionary *pairedDevice = [pairedDevices objectAtIndex:i];    
+    NSString *pairedDeviceId = [pairedDevice objectForKey:@"deviceId"];
+    NSString *pairedDeviceName = [pairedDevice objectForKey:@"deviceName"];
+
+    // Add the menu item
+    NSMenuItem *deviceMenuItem =
+        [[[NSMenuItem alloc] initWithTitle:pairedDeviceName
+                                   action:NULL
+                            keyEquivalent:@""] autorelease];
+    [mainMenu insertItem:deviceMenuItem atIndex:0];
+
+    // Add the submenu
+    NSMenu *deviceMenu = [deviceMenuTemplate copy];
+    [deviceMenuItem setSubmenu:deviceMenu];
+
+    // Tag all the submenu items
+    NSArray *items = [deviceMenu itemArray];
+    for (NSMenuItem *item in items) {
+      [item setRepresentedObject:pairedDeviceId];
+    }
+  }
+}  
 
 @end

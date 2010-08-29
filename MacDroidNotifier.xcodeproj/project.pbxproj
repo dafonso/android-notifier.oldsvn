@@ -8,8 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* UI.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* UI.xib */; };
+		3731A159122AD72300DA07C8 /* BluetoothCommandSender.m in Sources */ = {isa = PBXBuildFile; fileRef = 3731A158122AD72300DA07C8 /* BluetoothCommandSender.m */; };
+		3731A15F122ADA9C00DA07C8 /* BluetoothDeviceMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3731A15E122ADA9C00DA07C8 /* BluetoothDeviceMapper.m */; };
 		373EC2DE11842CBA007477C8 /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 373EC2DD11842CBA007477C8 /* AsyncSocket.m */; };
 		373EC2E211842D54007477C8 /* TcpNotificationListener.m in Sources */ = {isa = PBXBuildFile; fileRef = 373EC2E111842D54007477C8 /* TcpNotificationListener.m */; };
+		3763CAFC120B6EB700733BAF /* CommandDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 3763CAFB120B6EB700733BAF /* CommandDispatcher.m */; };
+		3763CB64120BCA8A00733BAF /* CommandController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3763CB63120BCA8A00733BAF /* CommandController.m */; };
+		3763CB82120BCBC600733BAF /* Command.m in Sources */ = {isa = PBXBuildFile; fileRef = 3763CB81120BCBC600733BAF /* Command.m */; };
 		376DF26C10EBE0DA0065B914 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 376DF26B10EBE0DA0065B914 /* Sparkle.framework */; };
 		376DF27A10EBE1190065B914 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 376DF26B10EBE0DA0065B914 /* Sparkle.framework */; };
 		376DF29210EBE5140065B914 /* sparkle_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 376DF29110EBE5140065B914 /* sparkle_pub.pem */; };
@@ -94,10 +99,21 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* MacDroidNotifier_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MacDroidNotifier_Prefix.pch; sourceTree = "<group>"; };
 		371B4A05117A0A6D00A3AF2B /* ru */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		3731A157122AD72300DA07C8 /* BluetoothCommandSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BluetoothCommandSender.h; sourceTree = "<group>"; };
+		3731A158122AD72300DA07C8 /* BluetoothCommandSender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BluetoothCommandSender.m; sourceTree = "<group>"; };
+		3731A15A122AD73700DA07C8 /* CommandSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandSender.h; sourceTree = "<group>"; };
+		3731A15D122ADA9C00DA07C8 /* BluetoothDeviceMapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BluetoothDeviceMapper.h; sourceTree = "<group>"; };
+		3731A15E122ADA9C00DA07C8 /* BluetoothDeviceMapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BluetoothDeviceMapper.m; sourceTree = "<group>"; };
 		373EC2DC11842CBA007477C8 /* AsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncSocket.h; sourceTree = "<group>"; };
 		373EC2DD11842CBA007477C8 /* AsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncSocket.m; sourceTree = "<group>"; };
 		373EC2E011842D54007477C8 /* TcpNotificationListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TcpNotificationListener.h; sourceTree = "<group>"; };
 		373EC2E111842D54007477C8 /* TcpNotificationListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TcpNotificationListener.m; sourceTree = "<group>"; };
+		3763CAFA120B6EB700733BAF /* CommandDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandDispatcher.h; sourceTree = "<group>"; };
+		3763CAFB120B6EB700733BAF /* CommandDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommandDispatcher.m; sourceTree = "<group>"; };
+		3763CB62120BCA8A00733BAF /* CommandController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandController.h; sourceTree = "<group>"; };
+		3763CB63120BCA8A00733BAF /* CommandController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommandController.m; sourceTree = "<group>"; };
+		3763CB80120BCBC600733BAF /* Command.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Command.h; sourceTree = "<group>"; };
+		3763CB81120BCBC600733BAF /* Command.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Command.m; sourceTree = "<group>"; };
 		376511771172C3F8000B8A95 /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = zh_CN; path = zh_CN.lproj/UI.xib; sourceTree = "<group>"; };
 		376511781172C405000B8A95 /* zh_CN */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = zh_CN; path = zh_CN.lproj/Localizable.strings; sourceTree = "<group>"; };
 		376DF26B10EBE0DA0065B914 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
@@ -245,6 +261,7 @@
 			children = (
 				37CCD7F810F5786900CA6404 /* Actions */,
 				37753DBA10E562CA00A21D89 /* Notifications */,
+				3763CAF8120B6EA300733BAF /* Commands */,
 				080E96DDFE201D6D7F000001 /* Main Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				37753F7110E5891500A21D89 /* Utilities */,
@@ -287,6 +304,24 @@
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3763CAF8120B6EA300733BAF /* Commands */ = {
+			isa = PBXGroup;
+			children = (
+				3763CB80120BCBC600733BAF /* Command.h */,
+				3763CB81120BCBC600733BAF /* Command.m */,
+				3763CB62120BCA8A00733BAF /* CommandController.h */,
+				3763CB63120BCA8A00733BAF /* CommandController.m */,
+				3763CAFA120B6EB700733BAF /* CommandDispatcher.h */,
+				3763CAFB120B6EB700733BAF /* CommandDispatcher.m */,
+				3731A15A122AD73700DA07C8 /* CommandSender.h */,
+				3731A157122AD72300DA07C8 /* BluetoothCommandSender.h */,
+				3731A158122AD72300DA07C8 /* BluetoothCommandSender.m */,
+				3731A15D122ADA9C00DA07C8 /* BluetoothDeviceMapper.h */,
+				3731A15E122ADA9C00DA07C8 /* BluetoothDeviceMapper.m */,
+			);
+			name = Commands;
 			sourceTree = "<group>";
 		};
 		376511791172D476000B8A95 /* Images */ = {
@@ -503,6 +538,11 @@
 				37DFC3DF115DC6E0002EA00A /* CopyAction.m in Sources */,
 				373EC2DE11842CBA007477C8 /* AsyncSocket.m in Sources */,
 				373EC2E211842D54007477C8 /* TcpNotificationListener.m in Sources */,
+				3763CAFC120B6EB700733BAF /* CommandDispatcher.m in Sources */,
+				3763CB64120BCA8A00733BAF /* CommandController.m in Sources */,
+				3763CB82120BCBC600733BAF /* Command.m in Sources */,
+				3731A159122AD72300DA07C8 /* BluetoothCommandSender.m in Sources */,
+				3731A15F122ADA9C00DA07C8 /* BluetoothDeviceMapper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
