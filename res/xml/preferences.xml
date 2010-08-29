@@ -182,6 +182,11 @@
                 android:title="@string/report_bug"
                 android:summary="@string/report_bug_summary"
                 android:persistent="false" />
+    <CheckBoxPreference android:key="@string/show_notification_icon_key"
+                        android:title="@string/show_notification_icon"
+                        android:defaultValue="false"
+                        android:summaryOn="@string/show_notification_icon_summary_on"
+                        android:summaryOff="@string/show_notification_icon_summary_off" />
   </PreferenceCategory>
 
 </PreferenceScreen>

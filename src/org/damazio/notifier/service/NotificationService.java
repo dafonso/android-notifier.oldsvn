@@ -3,20 +3,25 @@ package org.damazio.notifier.service;
 import java.util.List;
 
 import org.damazio.notifier.NotifierConstants;
+import org.damazio.notifier.NotifierMain;
 import org.damazio.notifier.NotifierPreferences;
+import org.damazio.notifier.R;
 import org.damazio.notifier.command.BluetoothCommandListener;
 import org.damazio.notifier.notification.BluetoothDeviceUtils;
 import org.damazio.notifier.notification.Notification;
 import org.damazio.notifier.notification.Notifier;
 
 import android.app.ActivityManager;
-import android.app.Service;
 import android.app.ActivityManager.RunningServiceInfo;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentFilter.MalformedMimeTypeException;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.IBinder;
 import android.telephony.PhoneStateListener;
@@ -32,6 +37,7 @@ import android.util.Log;
 public class NotificationService extends Service {
  
   private NotifierPreferences preferences;
+  private ServicePreferencesListener preferenceListener;
   private Notifier notifier;
   private Handler instanceHandler;
 
@@ -41,6 +47,20 @@ public class NotificationService extends Service {
   private final SmsReceiver smsReceiver = new SmsReceiver(this);
   private final MmsReceiver mmsReceiver = new MmsReceiver(this);
   private BluetoothCommandListener bluetoothCommandListener;
+
+  /**
+   * Listener for changes to the preferences.
+   */
+  private class ServicePreferencesListener
+      implements SharedPreferences.OnSharedPreferenceChangeListener {
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+      if (key.equals(getString(R.string.show_notification_icon_key))) {
+        showOrHideLocalNotification();
+      }
+
+      // TODO: Start/stop listening for actions and commands
+    }
+  }
 
   /**
    * Sends the given notification.
@@ -97,10 +117,18 @@ public class NotificationService extends Service {
         // TODO
       }
     }
+
+    showOrHideLocalNotification();
+
+    preferenceListener = new ServicePreferencesListener();
+    preferences.registerOnSharedPreferenceChangeListener(preferenceListener);
   }
 
   @Override
   public void onDestroy() {
+    preferences.unregisterOnSharedPreferenceChangeListener(preferenceListener);
+    hideLocalNotification();
+
     if (bluetoothCommandListener != null) {
       bluetoothCommandListener.shutdown();
       try {
@@ -124,6 +152,50 @@ public class NotificationService extends Service {
   @Override
   public IBinder onBind(Intent arg0) {
 	return null;
+  }
+
+  /**
+   * Shows or hides the local notification, according to the user's preference.
+   */
+  private void showOrHideLocalNotification() {
+    // If enabled, show a notification
+    if (preferences.isServiceNotificationEnabled()) {
+      showLocalNotification();
+    } else {
+      hideLocalNotification();
+    }
+  }
+
+  /**
+   * Shows the local status bar notification.
+   */
+  private void showLocalNotification() {
+    android.app.Notification notification = new android.app.Notification();
+    PendingIntent intent = PendingIntent.getActivity(
+        this, 0,
+        new Intent(this, NotifierMain.class),
+        Intent.FLAG_ACTIVITY_NEW_TASK);
+    notification.setLatestEventInfo(this,
+        getString(R.string.app_name),
+        getString(R.string.notification_icon_text),
+        intent);
+
+    notification.icon = R.drawable.icon;
+    notification.flags = android.app.Notification.FLAG_NO_CLEAR
+                       | android.app.Notification.FLAG_ONGOING_EVENT;
+
+    NotificationManager notificationManager =
+        (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+    notificationManager.notify(R.string.notification_icon_text, notification);
+  }
+
+  /**
+   * Hides the local status bar notification.
+   */
+  private void hideLocalNotification() {
+    NotificationManager notificationManager =
+        (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+    notificationManager.cancel(R.string.notification_icon_text);
   }
 
   // Service control utilities.

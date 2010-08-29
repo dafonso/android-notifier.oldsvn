@@ -7,6 +7,7 @@ import org.damazio.notifier.notification.BluetoothDeviceUtils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
@@ -76,6 +77,16 @@ public class NotifierPreferences {
 
     // Goodbye old preferences
     oldPreferences.edit().clear().commit();
+  }
+
+  public void registerOnSharedPreferenceChangeListener(
+      OnSharedPreferenceChangeListener listener) {
+    preferences.registerOnSharedPreferenceChangeListener(listener);
+  }
+
+  public void unregisterOnSharedPreferenceChangeListener(
+      OnSharedPreferenceChangeListener listener) {
+    preferences.unregisterOnSharedPreferenceChangeListener(listener);
   }
 
   /**
@@ -297,5 +308,9 @@ public class NotifierPreferences {
   public String getSourceBluetoothDevice() {
     return preferences.getString(context.getString(R.string.bluetooth_source_key),
                                  BluetoothDeviceUtils.ANY_DEVICE);
+  }
+
+  public boolean isServiceNotificationEnabled() {
+    return preferences.getBoolean(context.getString(R.string.show_notification_icon_key), false);
   }
 }
