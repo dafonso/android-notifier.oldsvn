@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.NotifierPreferences;
+import org.damazio.notifier.command.BluetoothCommandListener;
+import org.damazio.notifier.notification.BluetoothDeviceUtils;
 import org.damazio.notifier.notification.Notification;
 import org.damazio.notifier.notification.Notifier;
 
@@ -38,6 +40,7 @@ public class NotificationService extends Service {
   private final BatteryReceiver batteryReceiver = new BatteryReceiver(this);
   private final SmsReceiver smsReceiver = new SmsReceiver(this);
   private final MmsReceiver mmsReceiver = new MmsReceiver(this);
+  private BluetoothCommandListener bluetoothCommandListener;
 
   /**
    * Sends the given notification.
@@ -81,10 +84,32 @@ public class NotificationService extends Service {
     } catch (MalformedMimeTypeException e) {
       Log.e(NotifierConstants.LOG_TAG, "Unable to register MMS receiver", e);
     }
+
+    // If enabled, start command listeners
+    // TODO: Handle preference changes
+    if (preferences.isCommandEnabled()) {
+      if (preferences.isBluetoothCommandEnabled() && BluetoothDeviceUtils.isBluetoothMethodSupported()) {
+        bluetoothCommandListener = new BluetoothCommandListener(preferences);
+        bluetoothCommandListener.start();
+      }
+
+      if (preferences.isWifiCommandEnabled()) {
+        // TODO
+      }
+    }
   }
 
   @Override
   public void onDestroy() {
+    if (bluetoothCommandListener != null) {
+      bluetoothCommandListener.shutdown();
+      try {
+        bluetoothCommandListener.join(1000);
+      } catch (InterruptedException e) {
+        Log.e(NotifierConstants.LOG_TAG, "Unable to join bluetooth listner", e);
+      }
+    }
+
     unregisterReceiver(mmsReceiver);
     unregisterReceiver(smsReceiver);
     unregisterReceiver(batteryReceiver);

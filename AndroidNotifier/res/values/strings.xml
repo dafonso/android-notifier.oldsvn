@@ -71,6 +71,22 @@
     <string name="event_on">This event will always be notified.</string>
     <string name="event_off">This event will NEVER be notified.</string>
 
+    <!-- Commands -->
+    <string name="commands_title">Commands</string>
+    <string name="command_enable">Accept commands</string>
+    <string name="command_enable_summary_on">This device will expect commands from the desktop application</string>
+    <string name="command_enable_summary_off">This device will IGNORE commands from the desktop application</string>
+    <string name="command_call">Start phone calls</string>
+    <string name="command_sms">Send SMS</string>
+    <string name="command_summary_on">This type of command will be executed</string>
+    <string name="command_summary_off">This type of command will be IGNORED</string>
+    <string name="command_bluetooth">Accept over bluetooth</string>
+    <string name="command_wifi">Accept over Wifi</string>
+    <string name="command_source_on">Commands from this source will be executed</string>
+    <string name="command_source_off">Commands from this source will be IGNORED</string>
+    <string name="bluetooth_source_device">Source device</string>
+    <string name="bluetooth_source_device_summary">Select the bluetooth device to accept commands from</string>
+
     <!-- Misc preferences -->
     <string name="misc_title">Miscelaneous</string>
     <string name="send_test_notification">Send test notification</string>

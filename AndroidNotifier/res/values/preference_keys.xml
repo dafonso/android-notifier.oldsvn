@@ -20,6 +20,12 @@
   <string name="event_mms_key">mmsEvent</string>
   <string name="event_battery_key">batteryEvent</string>
   <string name="event_voicemail_key">voicemailEvent</string>
+  <string name="command_enable_key">commandsEnabled</string>
+  <string name="command_call_key">commandCall</string>
+  <string name="command_sms_key">commandSms</string>
+  <string name="command_bluetooth_key">commandBluetooth</string>
+  <string name="command_wifi_key">commandWifi</string>
+  <string name="bluetooth_source_key">bluetoothSource</string>
 
   <!-- Fake preference keys - never saved, but show options in the preferences screen -->
   <string name="method_bluetooth_options_key">bluetoothOptions</string>

@@ -193,7 +193,7 @@ public class NotifierPreferences {
     return preferences.getString(context.getString(R.string.bluetooth_device_key),
                                  BluetoothDeviceUtils.ANY_DEVICE);
   }
-  
+
   /**
    * @return whether notifications should be sent over bluetooth
    */
@@ -269,5 +269,33 @@ public class NotifierPreferences {
    */
   public boolean getSendOverCellNetwork() {
     return preferences.getBoolean(context.getString(R.string.allow_cell_send_key), false);
+  }
+
+  public boolean isCommandEnabled() {
+    return preferences.getBoolean(context.getString(R.string.command_enable_key), true);
+  }
+
+  public boolean isCallCommandEnabled() {
+    return preferences.getBoolean(context.getString(R.string.command_call_key), true);
+  }
+
+  public boolean isSmsCommandEnabled() {
+    return preferences.getBoolean(context.getString(R.string.command_sms_key), true);
+  }
+
+  public boolean isBluetoothCommandEnabled() {
+    return preferences.getBoolean(context.getString(R.string.command_bluetooth_key), true);
+  }
+
+  public boolean isWifiCommandEnabled() {
+    return preferences.getBoolean(context.getString(R.string.command_wifi_key), true);
+  }
+
+  /**
+   * @return the address of the source bluetooth device, or "any"
+   */
+  public String getSourceBluetoothDevice() {
+    return preferences.getString(context.getString(R.string.bluetooth_source_key),
+                                 BluetoothDeviceUtils.ANY_DEVICE);
   }
 }
