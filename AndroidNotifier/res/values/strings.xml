@@ -70,9 +70,17 @@
     <string name="event_sms">SMS</string>
     <string name="event_mms">MMS</string>
     <string name="event_battery">Battery</string>
+    <string name="event_battery_options">Battery options</string>
     <string name="event_voicemail">Voicemail</string>
     <string name="event_on">This event will always be notified.</string>
     <string name="event_off">This event will NEVER be notified.</string>
+
+    <string name="battery_min_level">Min. battery level</string>
+    <string name="battery_max_level">Max. battery level</string>
+    <string name="battery_min_level_change">Min. battery change</string>
+    <string name="battery_min_level_summary">Battery levels below this won\'t be reported</string>
+    <string name="battery_max_level_summary">Battery levels above this won\'t be reported</string>
+    <string name="battery_min_level_change_summary">A change of less than this in battery level won\'t be reported</string>
 
     <!-- Commands -->
     <string name="commands_title">Commands</string>

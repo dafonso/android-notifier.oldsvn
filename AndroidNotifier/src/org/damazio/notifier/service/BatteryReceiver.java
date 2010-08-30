@@ -1,6 +1,7 @@
 package org.damazio.notifier.service;
 
 import org.damazio.notifier.NotifierConstants;
+import org.damazio.notifier.NotifierPreferences;
 import org.damazio.notifier.R;
 import org.damazio.notifier.notification.Notification;
 import org.damazio.notifier.notification.NotificationType;
@@ -18,11 +19,6 @@ import android.util.Log;
  * @author rdamazio
  */
 class BatteryReceiver extends BroadcastReceiver {
-
-  /**
-   * Minimum percentage of battery level change for us to send a notification.
-   */
-  private static final int MIN_LEVEL_CHANGE = 5;
   
   // Keep the last notified state - only send a notification if it has changed
   // We need this because the granularity of the battery level changes is much
@@ -31,9 +27,11 @@ class BatteryReceiver extends BroadcastReceiver {
   private int lastBatteryLevelPercentage = -1;
 
   private final NotificationService service;
+  private final NotifierPreferences preferences;
 
-  public BatteryReceiver(NotificationService service) {
+  public BatteryReceiver(NotificationService service, NotifierPreferences preferences) {
     this.service = service;
+    this.preferences = preferences;
   }
 
   @Override
@@ -96,8 +94,11 @@ class BatteryReceiver extends BroadcastReceiver {
     }
 
     // Only notify if there were relevant changes
+    int batteryLevelChange = lastBatteryLevelPercentage - batteryLevelPercentage;
     if (status != lastBatteryStatus ||
-        lastBatteryLevelPercentage - batteryLevelPercentage >= MIN_LEVEL_CHANGE) {
+        (batteryLevelPercentage >= preferences.getMinBatteryLevel() &&
+         batteryLevelPercentage <= preferences.getMaxBatteryLevel() &&
+         batteryLevelChange >= preferences.getMinBatteryLevelChange())) {
       Log.d(NotifierConstants.LOG_TAG, "Notifying of battery state change");
       String data = Integer.toString(batteryLevelPercentage);
       Notification notification =

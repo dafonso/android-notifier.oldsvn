@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
   xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res/org.damazio.notifier"
   android:title="@string/settings_title">
 
   <!-- Service -->
@@ -120,6 +121,31 @@
                         android:defaultValue="true"
                         android:summaryOn="@string/event_on"
                         android:summaryOff="@string/event_off" />
+    <PreferenceScreen android:key="@string/event_battery_options_key"
+                      android:title="@string/event_battery_options"
+                      android:dependency="@string/event_battery_key">
+      <org.damazio.notifier.SeekBarPreference
+          android:key="@string/battery_min_level_key"
+          android:title="@string/battery_min_level"
+          android:summary="@string/battery_min_level_summary"
+          android:defaultValue="0"
+          app:dialogMessage="@string/battery_min_level_summary"
+          app:suffix=" %" />
+      <org.damazio.notifier.SeekBarPreference
+          android:key="@string/battery_max_level_key"
+          android:title="@string/battery_max_level"
+          android:summary="@string/battery_max_level_summary"
+          android:defaultValue="100"
+          app:dialogMessage="@string/battery_max_level_summary"
+          app:suffix=" %" />
+      <org.damazio.notifier.SeekBarPreference
+          android:key="@string/battery_min_level_change_key"
+          android:title="@string/battery_min_level_change"
+          android:summary="@string/battery_min_level_change_summary"
+          android:defaultValue="5"
+          app:dialogMessage="@string/battery_min_level_change_summary"
+          app:suffix=" %" />
+    </PreferenceScreen>
     <CheckBoxPreference android:key="@string/event_voicemail_key"
                         android:title="@string/event_voicemail"
                         android:defaultValue="true"
