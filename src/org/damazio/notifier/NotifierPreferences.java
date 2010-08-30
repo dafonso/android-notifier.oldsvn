@@ -313,4 +313,16 @@ public class NotifierPreferences {
   public boolean isServiceNotificationEnabled() {
     return preferences.getBoolean(context.getString(R.string.show_notification_icon_key), false);
   }
+
+  public int getMinBatteryLevel() {
+    return preferences.getInt(context.getString(R.string.battery_min_level_key), 0);
+  }
+
+  public int getMaxBatteryLevel() {
+    return preferences.getInt(context.getString(R.string.battery_max_level_key), 0);
+  }
+
+  public int getMinBatteryLevelChange() {
+    return preferences.getInt(context.getString(R.string.battery_min_level_change_key), 0);
+  }
 }

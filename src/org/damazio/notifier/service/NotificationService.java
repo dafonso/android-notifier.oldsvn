@@ -43,7 +43,7 @@ public class NotificationService extends Service {
 
   private final PhoneStateListener ringListener = new PhoneRingListener(this);
   private final VoicemailListener voicemailListener = new VoicemailListener(this);
-  private final BatteryReceiver batteryReceiver = new BatteryReceiver(this);
+  private BatteryReceiver batteryReceiver;
   private final SmsReceiver smsReceiver = new SmsReceiver(this);
   private final MmsReceiver mmsReceiver = new MmsReceiver(this);
   private BluetoothCommandListener bluetoothCommandListener;
@@ -92,6 +92,7 @@ public class NotificationService extends Service {
     tm.listen(voicemailListener, PhoneStateListener.LISTEN_MESSAGE_WAITING_INDICATOR);
 
     // Register the battery receiver
+    batteryReceiver = new BatteryReceiver(this, preferences);
     registerReceiver(batteryReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 
     // Register the SMS receiver

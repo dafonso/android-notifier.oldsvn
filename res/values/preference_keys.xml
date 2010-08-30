@@ -27,6 +27,9 @@
   <string name="command_wifi_key">commandWifi</string>
   <string name="bluetooth_source_key">bluetoothSource</string>
   <string name="show_notification_icon_key">showNotificationIcon</string>
+  <string name="battery_min_level_key">minBatteryLevel</string>
+  <string name="battery_max_level_key">maxBatteryLevel</string>
+  <string name="battery_min_level_change_key">batteryMinLevelChange</string>
 
   <!-- Fake preference keys - never saved, but show options in the preferences screen -->
   <string name="method_bluetooth_options_key">bluetoothOptions</string>
@@ -36,4 +39,5 @@
   <string name="test_notification_key">testNotification</string>
   <string name="about_key">about</string>
   <string name="report_bug_key">reportBug</string>
+  <string name="event_battery_options_key">batteryOptions</string>
 </resources>
