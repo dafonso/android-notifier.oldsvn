@@ -36,7 +36,7 @@
   </application>
 
   <!-- Works best on 2.0+ (bluetooth support), but should be ok in 1.5 -->
-  <uses-sdk android:targetSdkVersion="8" android:minSdkVersion="3"/>
+  <uses-sdk android:minSdkVersion="3"/>
 
   <!-- Permissions for catching events -->
   <uses-permission android:name="android.permission.READ_PHONE_STATE" />
