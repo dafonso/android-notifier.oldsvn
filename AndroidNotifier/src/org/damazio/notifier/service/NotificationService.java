@@ -107,7 +107,9 @@ public class NotificationService extends Service {
     }
 
     // If enabled, start command listeners
+    // TODO: Re-enable after bugfix release
     // TODO: Handle preference changes
+    /*
     if (preferences.isCommandEnabled()) {
       if (preferences.isBluetoothCommandEnabled() && BluetoothDeviceUtils.isBluetoothMethodSupported()) {
         bluetoothCommandListener = new BluetoothCommandListener(preferences);
@@ -118,6 +120,7 @@ public class NotificationService extends Service {
         // TODO
       }
     }
+    */
 
     showOrHideLocalNotification();
 
