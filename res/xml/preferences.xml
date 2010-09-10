@@ -154,6 +154,7 @@
   </PreferenceCategory>
 
   <!-- Commands -->
+  <!-- TODO: Re-enable after bugfix release
   <PreferenceCategory android:title="@string/commands_title">
     <CheckBoxPreference android:key="@string/command_enable_key"
                         android:title="@string/command_enable"
@@ -194,6 +195,7 @@
                         android:summaryOff="@string/command_source_off" />
 
   </PreferenceCategory>
+  -->
 
   <!-- Misc -->
   <PreferenceCategory android:title="@string/misc_title">
