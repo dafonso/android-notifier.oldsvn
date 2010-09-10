@@ -284,17 +284,18 @@ public class NotifierMain extends PreferenceActivity {
   private void configureBluetoothPreferences() {
     CheckBoxPreference bluetoothPreference =
         (CheckBoxPreference) findPreference(getString(R.string.method_bluetooth_key));
-    CheckBoxPreference bluetoothCommandPreference =
-        (CheckBoxPreference) findPreference(getString(R.string.command_bluetooth_key));
+//    TODO: Re-enable after bugfix release
+//    CheckBoxPreference bluetoothCommandPreference =
+//        (CheckBoxPreference) findPreference(getString(R.string.command_bluetooth_key));
     if (!BluetoothDeviceUtils.isBluetoothMethodSupported()) {
       // Disallow enabling bluetooth, if it's not supported
       bluetoothPreference.setChecked(false);
       bluetoothPreference.setEnabled(false);
       bluetoothPreference.setSummaryOff(R.string.eclair_required);
 
-      bluetoothCommandPreference.setChecked(false);
-      bluetoothCommandPreference.setEnabled(false);
-      bluetoothCommandPreference.setSummaryOff(R.string.eclair_required);
+//      bluetoothCommandPreference.setChecked(false);
+//      bluetoothCommandPreference.setEnabled(false);
+//      bluetoothCommandPreference.setSummaryOff(R.string.eclair_required);
     } else {
       // Populate the list of bluetooth devices
       populateBluetoothDeviceList();
@@ -334,10 +335,11 @@ public class NotifierMain extends PreferenceActivity {
     targetDevicePreference.setEntryValues(entryValuesArray);
     targetDevicePreference.setEntries(entriesArray);
 
-    ListPreference sourceDevicePreference =
-      (ListPreference) findPreference(getString(R.string.bluetooth_source_key));
-    sourceDevicePreference.setEntryValues(entryValuesArray);
-    sourceDevicePreference.setEntries(entriesArray);
+    // TODO: Re-enable after bugfix release
+//    ListPreference sourceDevicePreference =
+//      (ListPreference) findPreference(getString(R.string.bluetooth_source_key));
+//    sourceDevicePreference.setEntryValues(entryValuesArray);
+//    sourceDevicePreference.setEntries(entriesArray);
   }
 
   /**
