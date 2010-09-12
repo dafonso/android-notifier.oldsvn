@@ -46,24 +46,33 @@ public class Notifier {
         continue;
       }
 
-      // Start a new thread with a looper to send the notification in
-      new Thread("Notification " + method.getName()) {
-        public void run() {
-          Looper.prepare();
-          final Looper looper = Looper.myLooper();
-          method.sendNotification(notification, new NotificationCallback() {
-            public void notificationSent(Notification notification) {
-              looper.quit();
-            }
-
-            public void notificationFailed(Notification notification, Throwable reason) {
-              looper.quit();
-            }
-          });
-          Looper.loop();
-        }
-      }.start();
+      Iterable<String> targets = method.getTargets();
+      for (final String target : targets) {
+        // Start a new thread with a looper to send the notification in
+        new Thread("Notification " + method.getName() + " for " + target) {
+          public void run() {
+            runNotificationThread(method, notification, target);
+          }
+        }.start();
+      }
     }
+  }
+
+  /**
+   * Sets up the current thread to send a notification (by starting a looper),
+   * then send it.
+   */
+  private void runNotificationThread(NotificationMethod method, Notification notification,
+      String target) {
+    Looper.prepare();
+    final Looper looper = Looper.myLooper();
+    method.sendNotification(notification, target, new NotificationCallback() {
+      public void notificationDone(
+          Notification notification, String target, Throwable failureReason) {
+        looper.quit();
+      }
+    });
+    Looper.loop();
   }
 
   /**
