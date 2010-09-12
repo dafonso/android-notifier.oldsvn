@@ -13,7 +13,7 @@
     <string name="service_started">Service gestart</string>
     <string name="stop_service">Stop service</string>
     <string name="service_stopped">Service gestopt</string>
-    <string name="start_at_boot">Start service bij opstart</string>
+    <string name="start_at_boot">Start service bij opstarten</string>
     <string name="start_at_boot_on">De service zal gestart worden bij het aanzetten van uw telefoon</string>
     <string name="start_at_boot_off">De service zal handmatig gestart moeten worden</string>
 
@@ -21,30 +21,33 @@
     <string name="methods_title">Notificatie opties</string>
     <string name="method_on">Notificatie zullen op deze manier verzonden worden</string>
     <string name="method_off">Notificatie zal NIET volgens deze manier verzonden worden</string>
-    <string name="eclair_required">Alleen Android 2.0 of hoger word ondersteund</string>
+    <string name="eclair_required">Alleen Android 2.0 of hoger wordt ondersteund</string>
     <string name="not_yet_implemented">Nog niet beschikbaar.</string>
 
     <!-- Wifi method -->
-    <string name="method_wifi">IP/Wifi</string>
-    <string name="wifi_options">IP/Wifi options</string>
+    <string name="method_ip">IP/wifi</string>
+    <string name="method_ip_summary_on">Notificaties worden verzonden over IP. Zorg ervoor dat de firewall connecties toestaat op port 10600.</string>
+    <string name="method_bluetooth_summary_on">Notifications worden verzonden via Bluetooth. Zie de opties hieronder om een target te selecteren.</string>
+    <string name="wifi_options">IP/wifi opties</string>
     <string name="target_ip_address">Doel IP adres</string>
     <string name="custom_ip_title">Aangepast IP adres</string>
     <string name="custom_ip">Type het IP adres of computernaam om de notificaties naar te verzenden:</string>
+    <string name="invalid_custom_ip">Incorrect IP addres of hostname</string>
     <string name="wifi_sleep_policy">Wifi slaap opties</string>
-    <string name="wifi_sleep_policy_summary">Besturing wanneer Android het wifi utschakeld\n(Standaard wanner het scherm op zwart gaat)</string>
+    <string name="wifi_sleep_policy_summary">Besturing wanneer Android wifi heeft uitgeschakeld\n(Standaard wanner het scherm op zwart gaat)</string>
     <string name="enable_wifi">Auto-enable wifi</string>
-    <string name="enable_wifi_summary_on">Het zal mogelijk zijn om via Wifi notificaties te versturen.</string>
-    <string name="enable_wifi_summary_off">Notificaties zullen niet over Wfifi verzonden worden</string>
+    <string name="enable_wifi_summary_on">Het zal mogelijk zijn om via wifi notificaties te versturen.</string>
+    <string name="enable_wifi_summary_off">Notificaties zullen niet over wifi verzonden worden</string>
     <string name="allow_cell_send">Verzenden via GSM netwerk</string>
-    <string name="allow_cell_send_summary_on">Notificaties verzenden via GSM netwerk als Wifi uitgeschakeld is</string>
-    <string name="allow_cell_send_summary_off">Notificaties zullen niet via het GSM netwerk verzonden worden als het Wifi uitgeschakeld is</string>
+    <string name="allow_cell_send_summary_on">Notificaties verzenden via GSM netwerk als wifi uitgeschakeld is</string>
+    <string name="allow_cell_send_summary_off">Notificaties zullen niet via het GSM netwerk verzonden worden als het wifi uitgeschakeld is</string>
     <string name="send_udp">Verzenden over UDP</string>
     <string name="send_udp_summary_on">Notificaties zullen over UDP verzonden worden (vereist voor broadcasting)</string>
     <string name="send_udp_summary_off">Notificaties zullen NIET over UDP worden verzonden (geen broadcasting)</string>
     <string name="send_tcp">Verzenden over TCP</string>
     <string name="send_tcp_summary_on">Notificaties verzenden over TCP</string>
     <string name="send_tcp_summary_off">Notificaties niet over TCP worden verzonden</string>
-    <string name="custom_ip_needed">Om dit te gebruiken moet u een appart IP doeladres instellen</string>
+    <string name="custom_ip_needed">Om dit te gebruiken moet u een apart IP doeladres instellen</string>
 
     <!-- Bluetooth method -->
     <string name="method_bluetooth">Bluetooth</string>
@@ -56,7 +59,7 @@
     <string name="enable_bluetooth">Auto-enable bluetooth</string>
     <string name="enable_bluetooth_summary_on">Bluetooth zal ingeschakeld worden voor het verzenden van de notificaties</string>
     <string name="enable_bluetooth_summary_off">Notificaties zullen niet over Bluetooth verzonden worden als het uit staat</string>
-    <string name="bluetooth_device_any">Any device</string>
+    <string name="bluetooth_device_any">Elk apparaat</string>    
 
     <!-- USB method -->
     <string name="method_usb">USB</string>
@@ -66,34 +69,64 @@
     <string name="event_ring">Telefoon ring</string>
     <string name="event_sms">SMS</string>
     <string name="event_mms">MMS</string>
-    <string name="event_battery">Batterrij</string>
+    <string name="event_battery">Batterij</string>
+    <string name="event_battery_options">Batterij instellingen</string>
     <string name="event_voicemail">Voicemail</string>
     <string name="event_on">Deze gebeurtenis zal altijd plaatsvinden.</string>
-    <string name="event_off">Deze gebeurtenis zal NOOIT plaatsvinden.</string>
+    <string name="event_off">Deze gebeurtenis zal NOOIT plaatsvinden.</string>  
+    
+    <string name="battery_min_level">Minimum batterij level</string>
+    <string name="battery_max_level">Maximum batterij level</string>
+    <string name="battery_min_level_change">Minimum batterij verandering</string>
+    <string name="battery_min_level_summary">Een verandering van de batterij onder dit niveau zal niet gemeld worden.</string>
+    <string name="battery_max_level_summary">Een verandering van de batterij boven dit niveau zal niet gemeld worden.</string>
+    <string name="battery_min_level_change_summary">Een verandering van de batterij onder dit percentage zal niet gemeld worden.</string>
+
+    <!-- Commands -->
+    <string name="commands_title">Commando\'s</string>
+    <string name="command_enable">Accepteer commando\'s</string>
+    <string name="command_enable_summary_on">Dit apparaat zal een commando van de desktop applicatie accepteren</string>
+    <string name="command_enable_summary_off">Dit apparaat zal GEEN commando van de desktop applicatie accepteren</string>
+    <string name="command_call">Start telefoon gesprek</string>
+    <string name="command_sms">Stuur SMS</string>
+    <string name="command_summary_on">Dit type commando zal geacepteerd worden</string>
+    <string name="command_summary_off">Dit type commando zal NIET geacepteerd worden</string>
+    <string name="command_bluetooth">Accepteer via bluetooth</string>
+    <string name="command_wifi">Accepteer via Wifi</string>
+    <string name="command_source_on">Commando\'s via deze connectie zullen geacepteerd worden</string>
+    <string name="command_source_off">Commando\'s via deze connectie zullen niet geacepteerd worden</string>
+    <string name="bluetooth_source_device">Commando afkomst</string>
+    <string name="bluetooth_source_device_summary">Selecteer welk bluetooth apparaat commando\'s mag versturen</string>
 
     <!-- Misc preferences -->
     <string name="misc_title">Overige instellingen</string>
     <string name="send_test_notification">Verzend test notificatie</string>
     <string name="test_notification_summary">Handig voor het testen en koppelen</string>
     <string name="ping_sent">Test notificatie verzonden</string>
-    <string name="about_menu">About Remote Notifier</string>
+    <string name="version">Versie %s</string>
+    <string name="about_menu">Over Remote Notifier</string>
     <string name="report_bug">Meld een bug</string>
     <string name="report_bug_summary">Gebruik deze optie direct nadat een fout is opgetreden.(log word gekopieerd naar klembord)</string>
-    <string name="report_bug_toast">Apllicatie log gekopieerd naar klembord.\nGelieve het te kopieren naar \'meld een bug\'.</string>
+    <string name="report_bug_toast">Aplicatie log gekopieerd naar het klembord.\nGelieve het te kopieren naar \'meld een bug\'.</string>
+    <string name="show_notification_icon">Geef notificatie icoon weer</string>
+    <string name="show_notification_icon_summary_on">Een notificatie icoon zal weergeven worden wanneeer de service draait op de telefoon.</string>
+    <string name="show_notification_icon_summary_off">Er zal geen icoon weergeven worden.</string>
 
     <!-- Welcome and about box contents -->
     <string name="about_title">Remote Notifier</string>
     <string name="welcome_title">Welkom bij Remote Notifier</string>
     <string name="about_message">Deze applicatie werkt samen met PC/Mac/Linux voor het weergeven van notificaties.\n\nBezoek onze website http://code.google.com/p/android-notifier/ voor meer informatie over de setup instructies en de desktop-client maar ook voor het geven van feedback en het melden van bugs.</string>
+    <string name="notification_icon_text">Luistert en stuurt remote notificaties</string>
 
     <!-- Notification contents -->
     <string name="ping_contents">Test notificatie</string>
     <string name="sms_contents">SMS van %s: %s</string>
     <string name="mms_contents">MMS van %s</string>
+    <string name="unknown_number">Onbekend nummer</string>
 
     <!-- These are composed, like "Charging, remaining charge: 75%".
          The %d%% is expected to be at the end. -->
-    <string name="battery_level">%s, tijd tot opgeladen: %d%%</string>
+    <string name="battery_level">%s tijd tot opgeladen: %d%%</string>
     <string name="battery_level_unknown">%s, oplaadtijd onbekend</string>
     <string name="battery_charging">Opladen</string>
     <string name="battery_discharging">Ontladen</string>
