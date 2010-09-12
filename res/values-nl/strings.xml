@@ -115,7 +115,7 @@
     <!-- Welcome and about box contents -->
     <string name="about_title">Remote Notifier</string>
     <string name="welcome_title">Welkom bij Remote Notifier</string>
-    <string name="about_message">Deze applicatie werkt samen met PC/Mac/Linux voor het weergeven van notificaties.\n\nBezoek onze website http://code.google.com/p/android-notifier/ voor meer informatie over de setup instructies en de desktop-client maar ook voor het geven van feedback en het melden van bugs.</string>
+    <string name="about_message">Deze applicatie werkt samen met PC/Mac/Linux voor het weergeven van notificaties.\n\nBezoek onze website http://bit.ly/android-notifier voor meer informatie over de setup instructies en de desktop-client maar ook voor het geven van feedback en het melden van bugs.</string>
     <string name="notification_icon_text">Luistert en stuurt remote notificaties</string>
 
     <!-- Notification contents -->

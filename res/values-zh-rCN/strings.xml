@@ -70,7 +70,7 @@
     <!-- Welcome and about box contents -->
     <string name="about_title">远程通告</string>
     <string name="welcome_title">欢迎使用 远程通告</string>
-    <string name="about_message">此程序需配合pc机或苹果机使用，可以在电脑上显示手机的通告，如来电、短信、彩信等。请访问网站\nhttp://code.google.com/p/android-notifier/ 阅读更详细的介绍及下载桌面端程序，也可以提交建议或反馈bug。</string>
+    <string name="about_message">此程序需配合pc机或苹果机使用，可以在电脑上显示手机的通告，如来电、短信、彩信等。请访问网站\nhttp://bit.ly/android-notifier 阅读更详细的介绍及下载桌面端程序，也可以提交建议或反馈bug。</string>
 
     <!-- Notification contents -->
     <string name="ping_contents">测试通告</string>
