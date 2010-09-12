@@ -249,7 +249,7 @@ public class NotifierMain extends PreferenceActivity {
         new DialogInterface.OnClickListener() {
           public void onClick(DialogInterface dialog, int whichButton) {
             String value = input.getText().toString();
-            if (!isValidCustomAddress(value)) {
+            if (!areValidCustomAddresses(value)) {
               // Show an error, then throw user back to the dialog
               Toast.makeText(NotifierMain.this, R.string.invalid_custom_ip, Toast.LENGTH_SHORT)
                   .show();
@@ -287,6 +287,20 @@ public class NotifierMain extends PreferenceActivity {
   private static boolean isValidCustomAddress(String address) {
     return address.matches(IP_ADDRESS_PATTERN)
         || address.matches(HOSTNAME_PATTERN);
+  }
+
+  /**
+   * Checks and returns whether the given string is a valid comma-separated
+   * list of custom addresses.
+   */
+  private boolean areValidCustomAddresses(String multipleAddresses) {
+    String[] addresses = multipleAddresses.split(",");
+    for (String address : addresses) {
+      if (!isValidCustomAddress(address)) {
+        return false;
+      }
+    }
+    return true;
   }
 
   /**

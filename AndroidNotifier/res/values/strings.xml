@@ -30,8 +30,8 @@
     <string name="method_bluetooth_summary_on">Notifications will be sent over Bluetooth. See options below to select a target device.</string>
     <string name="ip_options">IP/Wifi options</string>
     <string name="target_ip_address">Target IP address</string>
-    <string name="custom_ip_title">Custom IP address</string>
-    <string name="custom_ip">Please type in the address or hostname to send notifications to:</string>
+    <string name="custom_ip_title">Custom IP address(es)</string>
+    <string name="custom_ip">Please type in a comma-separated list of addresses or hostnames to send notifications to:</string>
     <string name="invalid_custom_ip">Invalid IP address or hostname</string>
     <string name="wifi_sleep_policy">Wifi sleep policy</string>
     <string name="wifi_sleep_policy_summary">Controls when Android turns Wifi off\n(defaults to whenever the screen turns off)</string>
