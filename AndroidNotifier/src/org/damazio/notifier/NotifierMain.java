@@ -138,7 +138,10 @@ public class NotifierMain extends PreferenceActivity {
     enableWifiPreference.setEnabled(!cellSendPreference.isChecked());
     enableWifiPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
       public boolean onPreferenceChange(Preference preference, Object newValue) {
-        cellSendPreference.setEnabled(!((Boolean) newValue));
+    	// Allow cell send if not auto-enabling wifi and using a custom IP
+    	boolean enableWifiValue = (Boolean) newValue;
+    	boolean customIp = preferences.getTargetIpAddress().equals("custom");
+        cellSendPreference.setEnabled(!enableWifiValue && customIp);
         return true;
       }
     });
@@ -193,16 +196,21 @@ public class NotifierMain extends PreferenceActivity {
   private void updateIpPreferences(boolean isCustomIp, boolean isChanging) {
     // TODO: Give some type of warning if both UDP and TCP are disabled
     final CheckBoxPreference sendTcpPreference =
-      (CheckBoxPreference) findPreference(getString(R.string.send_tcp_key));
+        (CheckBoxPreference) findPreference(getString(R.string.send_tcp_key));
     final CheckBoxPreference cellSendPreference =
-      (CheckBoxPreference) findPreference(getString(R.string.allow_cell_send_key));
+        (CheckBoxPreference) findPreference(getString(R.string.allow_cell_send_key));
+    final CheckBoxPreference enableWifiPreference =
+        (CheckBoxPreference) findPreference(getString(R.string.enable_wifi_key));
 
     if (isCustomIp) {
+      if (!enableWifiPreference.isChecked()) {
+        cellSendPreference.setEnabled(true);
+        cellSendPreference.setSummaryOff(R.string.allow_cell_send_summary_off);
+      }
+
       sendTcpPreference.setEnabled(true);
-      cellSendPreference.setEnabled(true);
       if (isChanging) sendTcpPreference.setChecked(true);
       sendTcpPreference.setSummaryOff(R.string.send_tcp_summary_off);
-      cellSendPreference.setSummaryOff(R.string.allow_cell_send_summary_off);
     } else {
       sendTcpPreference.setEnabled(false);
       sendTcpPreference.setChecked(false);
@@ -210,6 +218,9 @@ public class NotifierMain extends PreferenceActivity {
       cellSendPreference.setEnabled(false);
       cellSendPreference.setChecked(false);
       cellSendPreference.setSummaryOff(R.string.custom_ip_needed);
+
+      // Just in case having "send over cell network" enabled made this one be disabled
+      enableWifiPreference.setEnabled(true);
     }
   }
 
