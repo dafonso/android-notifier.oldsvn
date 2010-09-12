@@ -59,6 +59,7 @@
     <string name="enable_bluetooth">Auto-enable bluetooth</string>
     <string name="enable_bluetooth_summary_on">Bluetooth will be enabled to send notifications</string>
     <string name="enable_bluetooth_summary_off">Notifications won\'t be sent over Bluetooth if it\'s off</string>
+    <string name="bluetooth_device_all">All devices</string>
     <string name="bluetooth_device_any">Any device</string>
 
     <!-- USB method -->

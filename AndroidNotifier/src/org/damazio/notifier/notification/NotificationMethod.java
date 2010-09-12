@@ -18,7 +18,7 @@ interface NotificationMethod {
      *
      * @param failureReason the exception that caused the failure, if there was one
      */
-    void notificationDone(Notification notification, String target, Throwable failureReason);
+    void notificationDone(Notification notification, Object target, Throwable failureReason);
   }
 
   /**
@@ -28,13 +28,13 @@ interface NotificationMethod {
    * @param notification the notification to send
    * @param callback callback which is called
    */
-  void sendNotification(Notification notification, String target, NotificationCallback callback);
+  void sendNotification(Notification notification, Object target, NotificationCallback callback);
 
   /**
    * Returns a set of targets that notifications should be sent to.
    * {@link #sendNotification} will be called once (in parallel) for each target returned.
    */
-  Iterable<String> getTargets();
+  Iterable<? extends Object> getTargets();
 
   /**
    * @return the name of this notification method

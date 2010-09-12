@@ -202,7 +202,7 @@ public class NotifierPreferences {
    */
   public String getTargetBluetoothDevice() {
     return preferences.getString(context.getString(R.string.bluetooth_device_key),
-                                 BluetoothDeviceUtils.ANY_DEVICE);
+                                 BluetoothDeviceUtils.ALL_DEVICES);
   }
 
   /**

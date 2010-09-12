@@ -9,7 +9,7 @@ import java.util.Collections;
  */
 class UsbNotificationMethod implements NotificationMethod {
 
-  public void sendNotification(Notification notification, String target,
+  public void sendNotification(Notification notification, Object target,
       NotificationCallback callback) {
     // TODO(rdamazio): Implement
     callback.notificationDone(notification, target, null);

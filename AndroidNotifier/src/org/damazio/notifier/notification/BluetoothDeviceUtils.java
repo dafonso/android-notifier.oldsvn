@@ -1,5 +1,7 @@
 package org.damazio.notifier.notification;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -19,6 +21,7 @@ import android.util.Log;
  */
 public abstract class BluetoothDeviceUtils {
   public static final String ANY_DEVICE = "any";
+  public static final String ALL_DEVICES = "all";
   private static BluetoothDeviceUtils instance;
 
   /**
@@ -30,9 +33,10 @@ public abstract class BluetoothDeviceUtils {
       // Do nothing - no devices to add
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public BluetoothDevice findDeviceMatching(String targetDeviceAddress) {
-      return null;
+    public Iterable<BluetoothDevice> findDevicesMatching(String targetDeviceAddress) {
+      return Collections.EMPTY_LIST;
     }
   }
 
@@ -66,11 +70,13 @@ public abstract class BluetoothDeviceUtils {
     }
 
     @Override
-    public BluetoothDevice findDeviceMatching(String targetDeviceAddress) {
+    public Iterable<BluetoothDevice> findDevicesMatching(String targetDeviceAddress) {
       if (targetDeviceAddress.equals(ANY_DEVICE)) {
-        return findAnyDevice();
+        return Collections.singletonList(findAnyDevice());
+      } else if (targetDeviceAddress.equals(ALL_DEVICES)) {
+        return getAllDevices();
       } else {
-        return findDeviceByAddress(targetDeviceAddress);
+        return Collections.singletonList(findDeviceByAddress(targetDeviceAddress));
       }
     }
 
@@ -89,6 +95,24 @@ public abstract class BluetoothDeviceUtils {
       }
 
       return null;
+    }
+
+    /**
+     * Finds and returns all devices suitablefor sending notifications to.
+     */
+    private Iterable<BluetoothDevice> getAllDevices() {
+      ensureNotDiscovering();
+
+      // Filter out unsuitable devices
+      Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
+      Set<BluetoothDevice> result = new HashSet<BluetoothDevice>(pairedDevices.size());
+      for (BluetoothDevice device : pairedDevices) {
+        if (isSuitableDevice(device)) {
+          result.add(device);
+        }
+      }
+
+      return result;
     }
 
     /**
@@ -171,11 +195,12 @@ public abstract class BluetoothDeviceUtils {
   /**
    * Finds the bluetooth device with the given address.
    *
-   * @param targetDeviceAddress the address of the device, or
-   *        {@link #ANY_DEVICE} for using the first suitable device
-   * @return the device's descriptor, or null if not found
+   * @param targetDeviceAddress the address of the device,
+   *        {@link #ANY_DEVICE} for using the first suitable device, or
+   *        {@link #ALL_DEVICES} for returning all devices
+   * @return a list of descriptors for matching devices, or null if none found
    */
-  public abstract BluetoothDevice findDeviceMatching(String targetDeviceAddress);
+  public abstract Iterable<BluetoothDevice> findDevicesMatching(String targetDeviceAddress);
 
   /**
    * @return whether the bluetooth method is supported on this device
