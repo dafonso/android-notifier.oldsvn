@@ -46,8 +46,8 @@ public class Notifier {
         continue;
       }
 
-      Iterable<String> targets = method.getTargets();
-      for (final String target : targets) {
+      Iterable<?> targets = method.getTargets();
+      for (final Object target : targets) {
         // Start a new thread with a looper to send the notification in
         new Thread("Notification " + method.getName() + " for " + target) {
           public void run() {
@@ -63,12 +63,12 @@ public class Notifier {
    * then send it.
    */
   private void runNotificationThread(NotificationMethod method, Notification notification,
-      String target) {
+      Object target) {
     Looper.prepare();
     final Looper looper = Looper.myLooper();
     method.sendNotification(notification, target, new NotificationCallback() {
       public void notificationDone(
-          Notification notification, String target, Throwable failureReason) {
+          Notification notification, Object target, Throwable failureReason) {
         looper.quit();
       }
     });

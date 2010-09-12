@@ -328,29 +328,39 @@ public class NotifierMain extends PreferenceActivity {
    */
   private void populateBluetoothDeviceList() {
     // Build the list of entries and their values
-    List<String> entries = new ArrayList<String>();
-    List<String> entryValues = new ArrayList<String>();
+    List<String> sourceEntries = new ArrayList<String>();
+    List<String> sourceEntryValues = new ArrayList<String>();
 
     // First value is "any"
-    entries.add(getString(R.string.bluetooth_device_any));
-    entryValues.add(BluetoothDeviceUtils.ANY_DEVICE);
+    sourceEntries.add(getString(R.string.bluetooth_device_any));
+    sourceEntryValues.add(BluetoothDeviceUtils.ANY_DEVICE);
 
     // Other values are actual devices
-    BluetoothDeviceUtils.getInstance().populateDeviceLists(entries, entryValues);
+    BluetoothDeviceUtils.getInstance().populateDeviceLists(sourceEntries, sourceEntryValues);
 
-    CharSequence[] entriesArray = entries.toArray(new CharSequence[entries.size()]);
-    CharSequence[] entryValuesArray = entryValues.toArray(new CharSequence[entryValues.size()]);
+    // Create a separate list for the target devices
+    List<String> targetEntries = new ArrayList<String>(sourceEntries);
+    List<String> targetEntryValues = new ArrayList<String>(sourceEntryValues);
+
+    // Add the "all" option only to the targets
+    targetEntries.add(0, getString(R.string.bluetooth_device_all));
+    targetEntryValues.add(0, BluetoothDeviceUtils.ALL_DEVICES);
+
+    CharSequence[] sourceEntriesArray = sourceEntries.toArray(new CharSequence[sourceEntries.size()]);
+    CharSequence[] sourceEntryValuesArray = sourceEntryValues.toArray(new CharSequence[sourceEntryValues.size()]);
+    CharSequence[] targetEntriesArray = targetEntries.toArray(new CharSequence[targetEntries.size()]);
+    CharSequence[] targetEntryValuesArray = targetEntryValues.toArray(new CharSequence[targetEntryValues.size()]);
 
     ListPreference targetDevicePreference =
         (ListPreference) findPreference(getString(R.string.bluetooth_device_key));
-    targetDevicePreference.setEntryValues(entryValuesArray);
-    targetDevicePreference.setEntries(entriesArray);
+    targetDevicePreference.setEntryValues(targetEntryValuesArray);
+    targetDevicePreference.setEntries(targetEntriesArray);
 
     // TODO: Re-enable after bugfix release
 //    ListPreference sourceDevicePreference =
 //      (ListPreference) findPreference(getString(R.string.bluetooth_source_key));
-//    sourceDevicePreference.setEntryValues(entryValuesArray);
-//    sourceDevicePreference.setEntries(entriesArray);
+//    sourceDevicePreference.setEntryValues(sourceEntryValuesArray);
+//    sourceDevicePreference.setEntries(sourceEntriesArray);
   }
 
   /**

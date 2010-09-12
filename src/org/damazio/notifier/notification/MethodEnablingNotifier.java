@@ -10,9 +10,10 @@ import android.util.Log;
  * This timer is used to enable a notification method, then periodically retry
  * sending the given notification until the method is ready to send it.
  *
+ * @param <T> is the target type
  * @author rdamazio
  */
-abstract class MethodEnablingNotifier extends CountDownTimer {
+abstract class MethodEnablingNotifier<T> extends CountDownTimer {
   private static final long MAX_MEDIUM_WAIT_TIME_MS = 60000;
   private static final long MEDIUM_CHECK_INTERVAL_MS = 500;
 
@@ -21,9 +22,9 @@ abstract class MethodEnablingNotifier extends CountDownTimer {
   private boolean notificationSent = false;
   private final NotificationMethod method;
   private final NotificationCallback callback;
-  private final String target;
+  private final T target;
 
-  MethodEnablingNotifier(Notification notification, String target, NotificationCallback callback,
+  MethodEnablingNotifier(Notification notification, T target, NotificationCallback callback,
       boolean previousEnabledState, NotificationMethod method) {
     super(MAX_MEDIUM_WAIT_TIME_MS, MEDIUM_CHECK_INTERVAL_MS);
 

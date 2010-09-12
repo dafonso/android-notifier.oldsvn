@@ -39,7 +39,7 @@ class IpNotificationMethod implements NotificationMethod {
    * Class which waits for wifi to be enabled before sending a notification.
    * It will only wait up to a certain time before giving up.
    */
-  private class WifiDelayedNotifier extends MethodEnablingNotifier {
+  private class WifiDelayedNotifier extends MethodEnablingNotifier<String> {
     private static final String WIFI_LOCK_TAG = "org.damazio.notifier.WifiEnable";
 
     private WifiLock wifiLock;
@@ -90,7 +90,9 @@ class IpNotificationMethod implements NotificationMethod {
         (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
   }
 
-  public void sendNotification(Notification notification, String target, NotificationCallback callback) {
+  public void sendNotification(Notification notification, Object targetObj, NotificationCallback callback) {
+    String target = (String) targetObj;
+
     // If background data is disabled, don't send any of the background notifications
     // PING is the only notification that's sent from the app, so it's not considered background
     if (!connectivity.getBackgroundDataSetting() && notification.getType() != NotificationType.PING) {
