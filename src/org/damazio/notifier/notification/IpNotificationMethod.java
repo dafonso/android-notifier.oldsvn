@@ -2,6 +2,7 @@ package org.damazio.notifier.notification;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -118,7 +119,14 @@ class IpNotificationMethod implements NotificationMethod {
 
     // Connected, so try to send notification now
     try {
-      byte[] messageBytes = notification.toString().getBytes();
+      byte[] messageBytes;
+      try {
+        messageBytes = notification.toString().getBytes("UTF8");
+      } catch (UnsupportedEncodingException e) {
+        Log.e(NotifierConstants.LOG_TAG, "Unable to serialize message", e);
+        callback.notificationFailed(notification, e);
+        return;
+      }
       messageBytes = addDelimiter(messageBytes);
 
       // Get the address to send it to

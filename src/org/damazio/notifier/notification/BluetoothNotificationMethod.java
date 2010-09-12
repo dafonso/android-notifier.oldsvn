@@ -1,6 +1,7 @@
 package org.damazio.notifier.notification;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 
 import org.damazio.notifier.NotifierConstants;
@@ -147,7 +148,14 @@ class BluetoothNotificationMethod implements NotificationMethod {
       return;
     }
 
-    byte[] messageBytes = notification.toString().getBytes();
+    byte[] messageBytes;
+    try {
+      messageBytes = notification.toString().getBytes("UTF8");
+    } catch (UnsupportedEncodingException e) {
+      Log.e(NotifierConstants.LOG_TAG, "Unable to serialize message", e);
+      callback.notificationFailed(notification, e);
+      return;
+    }
 
     bluetoothAdapter.cancelDiscovery();
 
