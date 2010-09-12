@@ -78,7 +78,7 @@
     <!-- Welcome and about box contents -->
     <string name="about_title">Notificações Remotas</string>
     <string name="welcome_title">Bem-vindo ao Notificações Remotas</string>
-    <string name="about_message">Este aplicativo funciona em conjunto com um aplicativo para Mac/Linux/Windows para exibir notificações.\n\nPor favor visite o site http://code.google.com/p/android-notifier/ para ler instruções de configuração e para realizar o download do aplicativo desktop, assim como provêr feedback ou reportar problemas.</string>
+    <string name="about_message">Este aplicativo funciona em conjunto com um aplicativo para Mac/Linux/Windows para exibir notificações.\n\nPor favor visite o site http://bit.ly/android-notifier para ler instruções de configuração e para realizar o download do aplicativo desktop, assim como provêr feedback ou reportar problemas.</string>
 
     <!-- Notification contents -->
     <string name="ping_contents">Notificação de teste</string>
