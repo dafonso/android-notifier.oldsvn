@@ -93,22 +93,30 @@ class BatteryReceiver extends BroadcastReceiver {
       return;
     }
 
-    // Only notify if there were relevant changes
-    int batteryLevelChange = lastBatteryLevelPercentage - batteryLevelPercentage;
-    if (status != lastBatteryStatus ||
-        (batteryLevelPercentage >= preferences.getMinBatteryLevel() &&
-         batteryLevelPercentage <= preferences.getMaxBatteryLevel() &&
-         batteryLevelChange >= preferences.getMinBatteryLevelChange())) {
-      Log.d(NotifierConstants.LOG_TAG, "Notifying of battery state change");
-      String data = Integer.toString(batteryLevelPercentage);
-      Notification notification =
-          new Notification(context, NotificationType.BATTERY, data, contents);
-      service.sendNotification(notification);
+    synchronized (this) {
+      int batteryLevelChange = Math.abs(lastBatteryLevelPercentage - batteryLevelPercentage);
+      Log.d(NotifierConstants.LOG_TAG, "Battery level change: " + batteryLevelChange);
 
-      lastBatteryStatus = status;
-      lastBatteryLevelPercentage = batteryLevelPercentage;
-    } else {
-      Log.d(NotifierConstants.LOG_TAG, "Got battery update, but state change was not relevant");
+      // Only notify if there were relevant changes - either:
+      // 1. The status changed (charging/discharging/etc) and we're in range
+      // 2. The percentage changed enough and we're in range
+      boolean inRange =
+          batteryLevelPercentage >= preferences.getMinBatteryLevel() &&
+          batteryLevelPercentage <= preferences.getMaxBatteryLevel();
+      if (inRange &&
+          (status != lastBatteryStatus ||
+           batteryLevelChange >= preferences.getMinBatteryLevelChange())) {
+        Log.d(NotifierConstants.LOG_TAG, "Notifying of battery state change");
+        String data = Integer.toString(batteryLevelPercentage);
+        Notification notification =
+            new Notification(context, NotificationType.BATTERY, data, contents);
+        service.sendNotification(notification);
+  
+        lastBatteryStatus = status;
+        lastBatteryLevelPercentage = batteryLevelPercentage;
+      } else {
+        Log.d(NotifierConstants.LOG_TAG, "Got battery update, but state change was not relevant");
+      }
     }
   }
 }
