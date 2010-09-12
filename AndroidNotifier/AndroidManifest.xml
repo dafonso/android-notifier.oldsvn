@@ -37,6 +37,11 @@
 
   <!-- Works best on 2.0+ (bluetooth support), but should be ok in 1.5 -->
   <uses-sdk android:minSdkVersion="3"/>
+  <supports-screens
+          android:largeScreens="true"
+          android:normalScreens="true"
+          android:smallScreens="true"
+          android:anyDensity="true" />
 
   <!-- Permissions for catching events -->
   <uses-permission android:name="android.permission.READ_PHONE_STATE" />
