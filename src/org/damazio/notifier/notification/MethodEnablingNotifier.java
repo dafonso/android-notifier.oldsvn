@@ -21,12 +21,14 @@ abstract class MethodEnablingNotifier extends CountDownTimer {
   private boolean notificationSent = false;
   private final NotificationMethod method;
   private final NotificationCallback callback;
+  private final String target;
 
-  MethodEnablingNotifier(Notification notification, NotificationCallback callback,
+  MethodEnablingNotifier(Notification notification, String target, NotificationCallback callback,
       boolean previousEnabledState, NotificationMethod method) {
     super(MAX_MEDIUM_WAIT_TIME_MS, MEDIUM_CHECK_INTERVAL_MS);
 
     this.notification = notification;
+    this.target = target;
     this.callback = callback;
     this.previousEnabledState = previousEnabledState;
     this.method = method;
@@ -47,7 +49,7 @@ abstract class MethodEnablingNotifier extends CountDownTimer {
       notificationSent = true;
 
       // Send notification
-      method.sendNotification(notification, callback);
+      method.sendNotification(notification, target, callback);
 
       restorePreviousEnabledState();
     }
@@ -60,7 +62,7 @@ abstract class MethodEnablingNotifier extends CountDownTimer {
 
     if (!notificationSent) {
       Log.e(NotifierConstants.LOG_TAG, "Timed out while waiting for medium to connect");
-      callback.notificationFailed(notification, null);
+      callback.notificationDone(notification, target, null);
       restorePreviousEnabledState();
     }
   }
