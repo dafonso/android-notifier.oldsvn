@@ -11,6 +11,7 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.Collections;
 
 import org.damazio.notifier.NotifierConstants;
@@ -217,7 +218,9 @@ class IpNotificationMethod implements NotificationMethod {
     String addressStr = preferences.getTargetIpAddress();
     if (addressStr.equals("custom")) {
       // Get the custom IP address from the other preference key
-      addressStr = preferences.getCustomTargetIpAddress();
+      String multipleAddressesStr = preferences.getCustomTargetIpAddress();
+      String[] addresses = multipleAddressesStr.split(",");
+      return Arrays.asList(addresses);
     }
 
     return Collections.singletonList(addressStr);
