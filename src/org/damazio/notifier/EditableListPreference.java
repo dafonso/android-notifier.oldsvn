@@ -27,9 +27,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 /**
- * Preference which displays a list of strings and lets the user add, edit or remove elements.
- * This list is displayed as a separate screen.
- *
+ * Preference which displays a list of strings and lets the user add, edit or
+ * remove elements. This list is displayed as a separate screen.
+ * 
  * @author rdamazio
  */
 public class EditableListPreference extends Preference implements AdapterView.OnItemClickListener {
@@ -40,8 +40,8 @@ public class EditableListPreference extends Preference implements AdapterView.On
   private final String editDialogMessage;
   private final String addButtonTitle;
   private final String removeButtonTitle;
+  private final String listDelimiter;
   private final boolean allowDuplicates;
-  private String listDelimiter;
 
   // Data binding
   private ArrayAdapter<String> adapter;
@@ -56,19 +56,25 @@ public class EditableListPreference extends Preference implements AdapterView.On
 
     TypedArray styledAttrs = context.obtainStyledAttributes(attrs,
         R.styleable.EditableListPreference);
-    editDialogTitle = styledAttrs.getString(R.styleable.EditableListPreference_editDialogTitle);
-    editDialogMessage = styledAttrs.getString(R.styleable.EditableListPreference_editDialogMessage);
-    addButtonTitle = styledAttrs.getString(R.styleable.EditableListPreference_addButtonTitle);
-    removeButtonTitle = styledAttrs.getString(R.styleable.EditableListPreference_removeButtonTitle);
-    listDelimiter = styledAttrs.getString(R.styleable.EditableListPreference_listDelimiter);
-    if (listDelimiter == null) {
-      listDelimiter = DEFAULT_LIST_DELIMITER;
-    }
-    allowDuplicates = styledAttrs.getBoolean(R.styleable.EditableListPreference_allowDuplicates, true);
+    editDialogTitle = withDefault("",
+        styledAttrs.getString(R.styleable.EditableListPreference_editDialogTitle));
+    editDialogMessage = withDefault("",
+        styledAttrs.getString(R.styleable.EditableListPreference_editDialogMessage));
+    addButtonTitle = withDefault("",
+        styledAttrs.getString(R.styleable.EditableListPreference_addButtonTitle));
+    removeButtonTitle = withDefault("",
+        styledAttrs.getString(R.styleable.EditableListPreference_removeButtonTitle));
+    listDelimiter = withDefault(DEFAULT_LIST_DELIMITER,
+        styledAttrs.getString(R.styleable.EditableListPreference_listDelimiter));
+    allowDuplicates = styledAttrs.getBoolean(R.styleable.EditableListPreference_allowDuplicates,
+        true);
 
     contents = Collections.synchronizedList(new ArrayList<String>());
-    adapter = new ArrayAdapter<String>(
-        context, android.R.layout.simple_list_item_1, contents);
+    adapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, contents);
+  }
+
+  private static String withDefault(String def, String str) {
+    return (str == null ? def : str);
   }
 
   @Override
@@ -135,18 +141,17 @@ public class EditableListPreference extends Preference implements AdapterView.On
       alert.setView(entryText);
     }
 
-    alert.setPositiveButton(android.R.string.ok,
-        new DialogInterface.OnClickListener() {
-          public void onClick(DialogInterface dialog, int whichButton) {
-            EditText entryText = (EditText) entryDialog.findViewById(R.id.entry_dialog_text);
-            String value = entryText.getText().toString();
-            if (isNew) {
-              addNewValue(value);
-            } else {
-              updateValue(editPosition, value);
-            }
-          }
-        });
+    alert.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+      public void onClick(DialogInterface dialog, int whichButton) {
+        EditText entryText = (EditText) entryDialog.findViewById(R.id.entry_dialog_text);
+        String value = entryText.getText().toString();
+        if (isNew) {
+          addNewValue(value);
+        } else {
+          updateValue(editPosition, value);
+        }
+      }
+    });
 
     alert.setNeutralButton(android.R.string.cancel, null);
 
@@ -187,7 +192,7 @@ public class EditableListPreference extends Preference implements AdapterView.On
       String oldValue = contents.get(position);
       contents.remove(position);
       contents.add(position, value);
-  
+
       if (!persistList()) {
         // Failed to validate new value, revert it
         contents.remove(position);
@@ -203,9 +208,9 @@ public class EditableListPreference extends Preference implements AdapterView.On
         warnDuplicate(value);
         return;
       }
-  
+
       contents.add(value);
-  
+
       if (!persistList()) {
         // Failed to validate new value, remove it
         contents.remove(contents.size() - 1);
@@ -236,7 +241,8 @@ public class EditableListPreference extends Preference implements AdapterView.On
       // Load the previous values
       setValueString(getPersistedString(""));
     } else {
-      // Accept either a list of strings or a comma-separate string as the default
+      // Accept either a list of strings or a comma-separate string as the
+      // default
       if (defaultValue instanceof String) {
         setValueString((String) defaultValue);
       } else {
@@ -278,7 +284,8 @@ public class EditableListPreference extends Preference implements AdapterView.On
     synchronized (adapter) {
       int count = contents.size();
       for (int i = 0; i < count; i++) {
-        if (i > 0) builder.append(listDelimiter);
+        if (i > 0)
+          builder.append(listDelimiter);
         builder.append(contents.get(i));
       }
     }
@@ -313,9 +320,7 @@ public class EditableListPreference extends Preference implements AdapterView.On
 
     SavedState savedState = (SavedState) state;
     super.onRestoreInstanceState(savedState.getSuperState());
-    showEntryDialog(
-        savedState.editingPosition,
-        savedState.entryDialogBundle);
+    showEntryDialog(savedState.editingPosition, savedState.entryDialogBundle);
   }
 
   private static class SavedState extends BaseSavedState {
@@ -347,7 +352,7 @@ public class EditableListPreference extends Preference implements AdapterView.On
           public SavedState createFromParcel(Parcel in) {
             return new SavedState(in);
           }
-
+    
           @Override
           public SavedState[] newArray(int size) {
             return new SavedState[size];
