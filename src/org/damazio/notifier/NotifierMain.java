@@ -11,7 +11,6 @@ import org.damazio.notifier.notification.Notifier;
 import org.damazio.notifier.service.NotificationService;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -23,9 +22,7 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.provider.Settings;
-import android.text.InputType;
 import android.util.Log;
-import android.widget.EditText;
 import android.widget.Toast;
 
 /**
@@ -167,8 +164,22 @@ public class NotifierMain extends PreferenceActivity {
         boolean isCustomIp = value.equals("custom");
         boolean isChanging = !newValue.equals(oldValue);
         updateIpPreferences(isCustomIp, isChanging);
-        if (isCustomIp) {
-          selectCustomIpAddress(listPreference, preferences.getCustomTargetIpAddress());
+        return true;
+      }
+    });
+    EditableListPreference customIpsPreference =
+        (EditableListPreference) findPreference(getString(R.string.target_custom_ips_key));
+    customIpsPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+      @Override
+      public boolean onPreferenceChange(Preference preference, Object newValue) {
+        @SuppressWarnings("unchecked")
+        List<String> contents = (List<String>) newValue;
+
+        for (String address : contents) {
+          if (!isValidCustomAddress(address)) {
+            Toast.makeText(NotifierMain.this, R.string.invalid_custom_ip, Toast.LENGTH_LONG).show();
+            return false;
+          }
         }
 
         return true;
@@ -201,6 +212,8 @@ public class NotifierMain extends PreferenceActivity {
         (CheckBoxPreference) findPreference(getString(R.string.allow_cell_send_key));
     final CheckBoxPreference enableWifiPreference =
         (CheckBoxPreference) findPreference(getString(R.string.enable_wifi_key));
+    final EditableListPreference customIpsPreference =
+        (EditableListPreference) findPreference(getString(R.string.target_custom_ips_key));
 
     if (isCustomIp) {
       if (!enableWifiPreference.isChecked()) {
@@ -211,6 +224,7 @@ public class NotifierMain extends PreferenceActivity {
       sendTcpPreference.setEnabled(true);
       if (isChanging) sendTcpPreference.setChecked(true);
       sendTcpPreference.setSummaryOff(R.string.send_tcp_summary_off);
+      customIpsPreference.setEnabled(true);
     } else {
       sendTcpPreference.setEnabled(false);
       sendTcpPreference.setChecked(false);
@@ -218,57 +232,11 @@ public class NotifierMain extends PreferenceActivity {
       cellSendPreference.setEnabled(false);
       cellSendPreference.setChecked(false);
       cellSendPreference.setSummaryOff(R.string.custom_ip_needed);
+      customIpsPreference.setEnabled(false);
 
       // Just in case having "send over cell network" enabled made this one be disabled
       enableWifiPreference.setEnabled(true);
     }
-  }
-
-  /**
-   * Opens a dialog asking the user for the custom IP address to use.
-   * If the user cancels the dialog, the preference will be returned to its
-   * previous value.
-   *
-   * @param preference the IP address type preference being set
-   * @param initialAddress the IP address to initially show in the dialog
-   */
-  private void selectCustomIpAddress(
-      final ListPreference preference,
-      final String initialAddress) {
-    AlertDialog.Builder alert = new AlertDialog.Builder(NotifierMain.this);
-    alert.setTitle(R.string.custom_ip_title);
-    alert.setMessage(R.string.custom_ip);
-
-    // Set an EditText view to get user input 
-    final EditText input = new EditText(NotifierMain.this);
-    input.setText(initialAddress);
-    input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI);
-    alert.setView(input);
-
-    alert.setPositiveButton(android.R.string.ok,
-        new DialogInterface.OnClickListener() {
-          public void onClick(DialogInterface dialog, int whichButton) {
-            String value = input.getText().toString();
-            if (!areValidCustomAddresses(value)) {
-              // Show an error, then throw user back to the dialog
-              Toast.makeText(NotifierMain.this, R.string.invalid_custom_ip, Toast.LENGTH_SHORT)
-                  .show();
-              selectCustomIpAddress(preference, value);
-            } else {
-              preferences.setCustomTargetIpAddress(value);
-            }
-          }
-        });
-
-    final String previousAddress = preference.getValue();
-    alert.setNegativeButton(android.R.string.cancel,
-        new DialogInterface.OnClickListener() {
-          public void onClick(DialogInterface dialog, int whichButton) {
-            preference.setValue(previousAddress);
-          }
-        });
-
-    alert.show();
   }
 
   // From http://stackoverflow.com/questions/106179
@@ -287,20 +255,6 @@ public class NotifierMain extends PreferenceActivity {
   private static boolean isValidCustomAddress(String address) {
     return address.matches(IP_ADDRESS_PATTERN)
         || address.matches(HOSTNAME_PATTERN);
-  }
-
-  /**
-   * Checks and returns whether the given string is a valid comma-separated
-   * list of custom addresses.
-   */
-  private boolean areValidCustomAddresses(String multipleAddresses) {
-    String[] addresses = multipleAddresses.split(",");
-    for (String address : addresses) {
-      if (!isValidCustomAddress(address)) {
-        return false;
-      }
-    }
-    return true;
   }
 
   /**
