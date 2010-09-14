@@ -32,6 +32,14 @@
                       android:entries="@array/targetIps"
                       android:entryValues="@array/targetIpValues"
                       android:defaultValue="global" />
+      <org.damazio.notifier.EditableListPreference
+                      android:key="@string/target_custom_ips_key"
+                      android:title="@string/custom_ip_title"
+                      app:editDialogTitle="@string/add_custom_ip_title"
+                      app:editDialogMessage="@string/enter_custom_ip"
+                      app:addButtonTitle="@string/add_custom_ip_title"
+                      app:removeButtonTitle="@string/remove_custom_ip"
+                      app:allowDuplicates="false" />
       <CheckBoxPreference android:key="@string/send_udp_key"
                           android:title="@string/send_udp"
                           android:defaultValue="true"

@@ -5,4 +5,13 @@
     <attr name="dialogMessage" format="string" />
     <attr name="suffix" format="string" />
   </declare-styleable>
+
+  <declare-styleable name="EditableListPreference">
+    <attr name="editDialogTitle" format="string" />
+    <attr name="editDialogMessage" format="string" />
+    <attr name="addButtonTitle" format="string" />
+    <attr name="removeButtonTitle" format="string" />
+    <attr name="listDelimiter" format="string" />
+    <attr name="allowDuplicates" format="boolean" />
+  </declare-styleable>
 </resources>
