@@ -20,6 +20,7 @@
   <string name="event_mms_key">mmsEvent</string>
   <string name="event_battery_key">batteryEvent</string>
   <string name="event_voicemail_key">voicemailEvent</string>
+  <string name="event_user_key">userEvent</string>
   <string name="command_enable_key">commandsEnabled</string>
   <string name="command_call_key">commandCall</string>
   <string name="command_sms_key">commandSms</string>

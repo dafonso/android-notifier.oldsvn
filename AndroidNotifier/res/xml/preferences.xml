@@ -159,6 +159,11 @@
                         android:defaultValue="true"
                         android:summaryOn="@string/event_on"
                         android:summaryOff="@string/event_off" />
+    <CheckBoxPreference android:key="@string/event_user_key"
+                        android:title="@string/event_user"
+                        android:defaultValue="true"
+                        android:summaryOn="@string/event_user_summary_on"
+                        android:summaryOff="@string/event_off" />
   </PreferenceCategory>
 
   <!-- Commands -->

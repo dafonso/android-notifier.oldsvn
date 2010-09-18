@@ -44,6 +44,7 @@ public class NotificationService extends Service {
   private final PhoneStateListener ringListener = new PhoneRingListener(this);
   private final VoicemailListener voicemailListener = new VoicemailListener(this);
   private BatteryReceiver batteryReceiver;
+  private UserReceiver userReceiver = new UserReceiver(this);
   private final SmsReceiver smsReceiver = new SmsReceiver(this);
   private final MmsReceiver mmsReceiver = new MmsReceiver(this);
   private BluetoothCommandListener bluetoothCommandListener;
@@ -114,6 +115,9 @@ public class NotificationService extends Service {
         Log.e(NotifierConstants.LOG_TAG, "Unable to register MMS receiver", e);
       }
 
+      // Register the third-party user events receiver
+      registerReceiver(userReceiver, new IntentFilter(UserReceiver.ACTION));
+
       // If enabled, start command listeners
       // TODO: Re-enable after bugfix release
       // TODO: Handle preference changes
@@ -157,6 +161,7 @@ public class NotificationService extends Service {
       unregisterReceiver(mmsReceiver);
       unregisterReceiver(smsReceiver);
       unregisterReceiver(batteryReceiver);
+      unregisterReceiver(userReceiver);
 
       final TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
       tm.listen(ringListener, PhoneStateListener.LISTEN_NONE);
