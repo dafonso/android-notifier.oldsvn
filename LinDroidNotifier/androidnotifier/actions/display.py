@@ -38,5 +38,7 @@ class DisplayAction:
             return 'Phone received an MMS'
         elif (type == 'PING'):
             return 'Phone sent a ping'
+        elif (type == 'USER'):
+            return notification.data
         else:
             return "Unknown notification: %s" % type

@@ -47,6 +47,11 @@ class Preferences(GObject):
         'battery.execute': False,
         'battery.copy': False,
 
+        'user.display': False,
+        'user.mute': False,
+        'user.execute': False,
+        'user.copy': False,
+
         'executeTarget': None,
 
         'receiveNotificationsFrom': 'any', # Either 'any' or 'these'.
