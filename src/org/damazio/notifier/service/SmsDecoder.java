@@ -27,9 +27,22 @@ public abstract class SmsDecoder {
     public DonutImpl(Context context, Object pdu) {
       super(context, pdu);
 
-      SmsMessage message = SmsMessage.createFromPdu((byte[]) pdu);
-      body = message.getMessageBody();
-      sender = message.getOriginatingAddress();
+      SmsMessage message = null;
+      try {
+        message = SmsMessage.createFromPdu((byte[]) pdu);
+      } catch (NullPointerException e) {
+        // Workaround for Android bug
+        // http://code.google.com/p/android/issues/detail?id=11345
+        Log.e(NotifierConstants.LOG_TAG, "Invalid PDU", e);
+      }
+
+      if (message != null) {
+        body = message.getMessageBody();
+        sender = message.getOriginatingAddress();
+      } else {
+        body = null;
+        sender = null;
+      }
     }
 
     @Override
@@ -54,10 +67,22 @@ public abstract class SmsDecoder {
     public CupcakeImpl(Context context, Object pdu) {
       super(context, pdu);
 
-      android.telephony.gsm.SmsMessage message =
-          android.telephony.gsm.SmsMessage.createFromPdu((byte[]) pdu);
-      body = message.getMessageBody();
-      sender = message.getOriginatingAddress();
+      android.telephony.gsm.SmsMessage message = null;
+      try {
+        message = android.telephony.gsm.SmsMessage.createFromPdu((byte[]) pdu);
+      } catch (NullPointerException e) {
+        // Workaround for Android bug
+        // http://code.google.com/p/android/issues/detail?id=11345
+        Log.e(NotifierConstants.LOG_TAG, "Invalid PDU", e);
+      }
+
+      if (message != null) {
+        body = message.getMessageBody();
+        sender = message.getOriginatingAddress();
+      } else {
+        body = null;
+        sender = null;
+      }
     }
 
     @Override
@@ -92,6 +117,11 @@ public abstract class SmsDecoder {
    * Returns the plain SMS message body.
    */
   public abstract String getMessageBody();
+
+  public boolean isValidMessage() {
+    return getMessageBody() != null
+        && getSenderAddress() != null;
+  }
 
   protected SmsDecoder(Context context, Object pdu) {
     this.context = context;

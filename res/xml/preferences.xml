@@ -85,7 +85,7 @@
       <ListPreference android:key="@string/bluetooth_device_key"
                       android:title="@string/target_bluetooth_device"
                       android:summary="@string/target_bluetooth_device_summary"
-                      android:defaultValue="any" />
+                      android:defaultValue="all" />
 
       <Preference android:key="@string/bluetooth_pairing_key"
                   android:title="@string/bluetooth_pairing"

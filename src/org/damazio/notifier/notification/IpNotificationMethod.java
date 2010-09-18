@@ -244,7 +244,7 @@ class IpNotificationMethod implements NotificationMethod {
       }
       if (dhcp == null) {
         Log.e(NotifierConstants.LOG_TAG, "Could not obtain DHCP info");
-        return null;
+        throw new UnknownHostException("Unable to get DHCP info");
       }
 
       // Calculate the broadcast address
