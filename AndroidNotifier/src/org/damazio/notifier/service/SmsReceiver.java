@@ -39,6 +39,9 @@ class SmsReceiver extends BroadcastReceiver {
       Object[] pdus = (Object[]) bundle.get("pdus");
       for (int i = 0; i < pdus.length; i++) {
         SmsDecoder decoder = SmsDecoder.create(context, pdus[i]);
+        if (!decoder.isValidMessage()) {
+          continue;
+        }
 
         String contents = decoder.getSmsContents();
         String data = decoder.getSenderAddress();
