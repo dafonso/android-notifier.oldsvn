@@ -76,6 +76,8 @@
     <string name="event_battery">Battery</string>
     <string name="event_battery_options">Battery options</string>
     <string name="event_voicemail">Voicemail</string>
+    <string name="event_user">Third-party apps</string>
+    <string name="event_user_summary_on">Third-party apps will be allowed to send notifications (they need to directly support this app).</string>
     <string name="event_on">This event will always be notified.</string>
     <string name="event_off">This event will NEVER be notified.</string>
 

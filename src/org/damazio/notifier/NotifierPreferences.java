@@ -206,6 +206,13 @@ public class NotifierPreferences {
   }
 
   /**
+   * @return whether to send notifications when there's a new user message
+   */
+  public boolean isUserEventEnabled() {
+    return preferences.getBoolean(context.getString(R.string.event_user_key), true);
+  }
+  
+  /**
    * @return whether to send notifications over UDP
    */
   public boolean isSendUdpEnabled() {

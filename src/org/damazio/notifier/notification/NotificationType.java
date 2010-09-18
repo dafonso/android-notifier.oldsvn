@@ -17,5 +17,7 @@ public enum NotificationType {
   /** New voicemail */
   VOICEMAIL,
   /** Test notification. */
-  PING;
+  PING,
+  /** Third-party (user) message. */
+  USER;
 }

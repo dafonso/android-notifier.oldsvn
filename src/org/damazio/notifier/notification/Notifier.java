@@ -92,6 +92,8 @@ public class Notifier {
         return preferences.isVoicemailEventEnabled();
       case PING:
         return true;
+      case USER:
+          return preferences.isUserEventEnabled();
       default:
         return false;
     }
