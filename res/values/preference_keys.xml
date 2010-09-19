@@ -6,7 +6,7 @@
   <string name="start_at_boot_key">startAtBoot</string>
   <string name="method_ip_key">wifiMethod</string>
   <string name="target_ip_address_key">targetIpAddress</string>
-  <string name="target_custom_ip_address_key">targetCustomIpAddress</string>
+  <string name="target_custom_ips_key">targetCustomIpAddress</string>
   <string name="send_udp_key">sendUdp</string>
   <string name="send_tcp_key">sendTcp</string>
   <string name="enable_wifi_key">enableWifi</string>
@@ -20,6 +20,7 @@
   <string name="event_mms_key">mmsEvent</string>
   <string name="event_battery_key">batteryEvent</string>
   <string name="event_voicemail_key">voicemailEvent</string>
+  <string name="event_user_key">userEvent</string>
   <string name="command_enable_key">commandsEnabled</string>
   <string name="command_call_key">commandCall</string>
   <string name="command_sms_key">commandSms</string>

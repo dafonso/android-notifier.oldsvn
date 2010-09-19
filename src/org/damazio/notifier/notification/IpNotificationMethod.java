@@ -2,6 +2,7 @@ package org.damazio.notifier.notification;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -10,6 +11,8 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Arrays;
+import java.util.Collections;
 
 import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.NotifierPreferences;
@@ -37,14 +40,14 @@ class IpNotificationMethod implements NotificationMethod {
    * Class which waits for wifi to be enabled before sending a notification.
    * It will only wait up to a certain time before giving up.
    */
-  private class WifiDelayedNotifier extends MethodEnablingNotifier {
+  private class WifiDelayedNotifier extends MethodEnablingNotifier<String> {
     private static final String WIFI_LOCK_TAG = "org.damazio.notifier.WifiEnable";
 
     private WifiLock wifiLock;
 
-    private WifiDelayedNotifier(Notification notification, NotificationCallback callback,
-        boolean previousWifiEnabledState) {
-      super(notification, callback, previousWifiEnabledState, IpNotificationMethod.this);
+    private WifiDelayedNotifier(Notification notification, String target,
+        NotificationCallback callback, boolean previousWifiEnabledState) {
+      super(notification, target, callback, previousWifiEnabledState, IpNotificationMethod.this);
     }
 
     @Override
@@ -88,7 +91,9 @@ class IpNotificationMethod implements NotificationMethod {
         (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
   }
 
-  public void sendNotification(Notification notification, NotificationCallback callback) {
+  public void sendNotification(Notification notification, Object targetObj, NotificationCallback callback) {
+    String target = (String) targetObj;
+
     // If background data is disabled, don't send any of the background notifications
     // PING is the only notification that's sent from the app, so it's not considered background
     if (!connectivity.getBackgroundDataSetting() && notification.getType() != NotificationType.PING) {
@@ -104,25 +109,32 @@ class IpNotificationMethod implements NotificationMethod {
         Log.d(NotifierConstants.LOG_TAG, "Enabling wifi and delaying notification");
 
         // Check periodically if wifi connected, then try to send it
-        new WifiDelayedNotifier(notification, callback, wifi.isWifiEnabled()).start();
+        new WifiDelayedNotifier(notification, target, callback, wifi.isWifiEnabled()).start();
         return;
       } else if (canSendOverCellNetwork()) {
         // Wifi is not enabled, but we can try the cell network
       } else {
         // It won't be enabled, and we cannot send it over the cell phone network
         Log.d(NotifierConstants.LOG_TAG, "Not notifying over IP/wifi - not connected.");
-        callback.notificationFailed(notification, null);
+        callback.notificationDone(notification, target, null);
         return;
       }
     }
 
     // Connected, so try to send notification now
     try {
-      byte[] messageBytes = notification.toString().getBytes();
+      byte[] messageBytes;
+      try {
+        messageBytes = notification.toString().getBytes("UTF8");
+      } catch (UnsupportedEncodingException e) {
+        Log.e(NotifierConstants.LOG_TAG, "Unable to serialize message", e);
+        callback.notificationDone(notification, target, e);
+        return;
+      }
       messageBytes = addDelimiter(messageBytes);
 
       // Get the address to send it to
-      InetAddress address = getTargetAddress();
+      InetAddress address = getTargetAddress(target);
       Log.d(NotifierConstants.LOG_TAG,
           "Sending wifi notification to IP " + address.getHostAddress());
 
@@ -137,13 +149,13 @@ class IpNotificationMethod implements NotificationMethod {
         }
       }
 
-      callback.notificationSent(notification);
+      callback.notificationDone(notification, target, null);
       Log.i(NotifierConstants.LOG_TAG, "Sent notification over WiFi.");
     } catch (SocketException e) {
-      callback.notificationFailed(notification, e);
+      callback.notificationDone(notification, target, e);
       Log.e(NotifierConstants.LOG_TAG, "Unable to open socket", e);
     } catch (IOException e) {
-      callback.notificationFailed(notification, e);
+      callback.notificationDone(notification, target, e);
       Log.e(NotifierConstants.LOG_TAG, "Unable to send TCP or UDP packet", e);
     }
   }
@@ -201,14 +213,26 @@ class IpNotificationMethod implements NotificationMethod {
     Log.d(NotifierConstants.LOG_TAG, "Sent over UDP");
   }
 
+  @Override
+  public Iterable<String> getTargets() {
+    String addressStr = preferences.getTargetIpAddress();
+    if (addressStr.equals("custom")) {
+      // Get the custom IP address from the other preference key
+      String multipleAddressesStr = preferences.getCustomTargetIpAddresses();
+      String[] addresses = multipleAddressesStr.split(",");
+      return Arrays.asList(addresses);
+    }
+
+    return Collections.singletonList(addressStr);
+  }
+
   /**
    * Returns the proper address to send the notification to according to the
    * user's preferences, or null if it cannot be determined.
    *
    * @throws UnknownHostException if the address cannot be resolved
    */
-  private InetAddress getTargetAddress() throws UnknownHostException {
-    String addressStr = preferences.getTargetIpAddress();
+  private InetAddress getTargetAddress(String addressStr) throws UnknownHostException {
     if (addressStr.equals("global")) {
       // Send to 255.255.255.255
       return InetAddress.getByAddress(new byte[] { -1, -1, -1, -1 });
@@ -220,7 +244,7 @@ class IpNotificationMethod implements NotificationMethod {
       }
       if (dhcp == null) {
         Log.e(NotifierConstants.LOG_TAG, "Could not obtain DHCP info");
-        return null;
+        throw new UnknownHostException("Unable to get DHCP info");
       }
 
       // Calculate the broadcast address
@@ -230,13 +254,8 @@ class IpNotificationMethod implements NotificationMethod {
         quads[k] = (byte) ((broadcast >> k * 8) & 0xFF);
       }
       return InetAddress.getByAddress(quads);
-    } else if (addressStr.equals("custom")) {
-      // Get the custom IP address from the other preference key
-      addressStr = preferences.getCustomTargetIpAddress();
-      return InetAddress.getByName(addressStr);
     } else {
-      Log.e(NotifierConstants.LOG_TAG, "Invalid value for IP target: " + addressStr);
-      return null;
+      return InetAddress.getByName(addressStr);
     }
   }
 

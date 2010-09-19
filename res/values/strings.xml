@@ -30,8 +30,11 @@
     <string name="method_bluetooth_summary_on">Notifications will be sent over Bluetooth. See options below to select a target device.</string>
     <string name="ip_options">IP/Wifi options</string>
     <string name="target_ip_address">Target IP address</string>
-    <string name="custom_ip_title">Custom IP address</string>
-    <string name="custom_ip">Please type in the address or hostname to send notifications to:</string>
+    <string name="custom_ip_title">Custom IP address(es)</string>
+    <string name="add_custom_ip_title">Add custom IP address</string>
+    <string name="remove_custom_ip">Remove address</string>
+    <string name="duplicate_entry">\'%s\' is already on the list</string>
+    <string name="enter_custom_ip">Please enter an IP addresses or hostname to send notifications to:</string>
     <string name="invalid_custom_ip">Invalid IP address or hostname</string>
     <string name="wifi_sleep_policy">Wifi sleep policy</string>
     <string name="wifi_sleep_policy_summary">Controls when Android turns Wifi off\n(defaults to whenever the screen turns off)</string>
@@ -59,6 +62,7 @@
     <string name="enable_bluetooth">Auto-enable bluetooth</string>
     <string name="enable_bluetooth_summary_on">Bluetooth will be enabled to send notifications</string>
     <string name="enable_bluetooth_summary_off">Notifications won\'t be sent over Bluetooth if it\'s off</string>
+    <string name="bluetooth_device_all">All devices</string>
     <string name="bluetooth_device_any">Any device</string>
 
     <!-- USB method -->
@@ -72,6 +76,8 @@
     <string name="event_battery">Battery</string>
     <string name="event_battery_options">Battery options</string>
     <string name="event_voicemail">Voicemail</string>
+    <string name="event_user">Third-party apps</string>
+    <string name="event_user_summary_on">Third-party apps will be allowed to send notifications (they need to directly support this app).</string>
     <string name="event_on">This event will always be notified.</string>
     <string name="event_off">This event will NEVER be notified.</string>
 
@@ -115,7 +121,7 @@
     <!-- Welcome and about box contents -->
     <string name="about_title">Remote Notifier</string>
     <string name="welcome_title">Welcome to Remote Notifier</string>
-    <string name="about_message">This application works in conjunction with a PC/Mac counterpart to display notifications.\n\nPlease visit the website http://code.google.com/p/android-notifier/ to read setup instructions and get the desktop application, as well as give feedback or report bugs.</string>
+    <string name="about_message">This application works in conjunction with a PC/Mac counterpart to display notifications.\n\nPlease visit the website http://bit.ly/android-notifier to read setup instructions and get the desktop application, as well as give feedback or report bugs.</string>
     <string name="notification_icon_text">Listening and sending remote notifications</string>
 
     <!-- Notification contents -->

@@ -25,10 +25,16 @@
     <string name="not_yet_implemented">Ainda não implementado.</string>
 
     <!-- Wifi method -->
+    <string name="method_ip_summary_on">Notificações serão enviadas por IP. Garante que seu firewall aceita conexões na porta 10600.</string>
+    <string name="method_bluetooth_summary_on">Notificações serão enviadas via Bluetooth. Veja as opções abaixo para escolher o dispositivo-alvo.</string>
     <string name="ip_options">Opções de IP/Wifi</string>
     <string name="target_ip_address">Endereço IP de destino</string>
     <string name="custom_ip_title">Endereço IP customizado</string>
-    <string name="custom_ip">Por favor digite o endereço IP ou nome do host ao qual enviar notificações:</string>
+    <string name="add_custom_ip_title">Adicionar IP customizado</string>
+    <string name="remove_custom_ip">Remover endereço</string>
+    <string name="duplicate_entry">\'%s\' já está na lista</string>
+    <string name="enter_custom_ip">Por favor digite um endereço IP ou nome de host ao qual enviar notificações:</string>
+    <string name="invalid_custom_ip">Endereço IP ou host inválido</string>
     <string name="wifi_sleep_policy">Política de desligamento do Wifi</string>
     <string name="wifi_sleep_policy_summary">Controla quando o Android desliga o Wifi\n(por padrão, quando a tela desliga)</string>
     <string name="enable_wifi">Auto-habilitar wifi</string>
@@ -54,6 +60,7 @@
     <string name="enable_bluetooth">Auto-habilitar bluetooth</string>
     <string name="enable_bluetooth_summary_on">O bluetooth será habilitado para enviar notificações</string>
     <string name="enable_bluetooth_summary_off">Notificações não serão enviadas se o Bluetooth estiver desligado.</string>
+    <string name="bluetooth_device_all">Todos os dispositivos</string>
     <string name="bluetooth_device_any">Qualquer dispositivo</string>
 
     <!-- Event types -->
@@ -61,8 +68,18 @@
     <string name="event_ring">Toque do telefone</string>
     <string name="event_voicemail">Mensagem de voz</string>
     <string name="event_battery">Bateria</string>
+    <string name="event_battery_options">Opções de bateria</string>
+    <string name="event_user">Aplicativos</string>
+    <string name="event_user_summary_on">Aplicativos de terceiros poderão enviar notificações (eles precisam suportar este aplicativo diretamente).</string>
     <string name="event_on">Este evento será sempre notificado.</string>
     <string name="event_off">Este evento não será notificado NUNCA.</string>
+
+    <string name="battery_min_level">Nível mín. de bateria</string>
+    <string name="battery_max_level">Nível máx. de bateria</string>
+    <string name="battery_min_level_change">Mudança mín. de bateria</string>
+    <string name="battery_min_level_summary">Níveis de bateria abaixo deste valor não serão notificados</string>
+    <string name="battery_max_level_summary">Níveis de bateria acima deste valor não serão notificados</string>
+    <string name="battery_min_level_change_summary">Uma mudança menor que esta no nível da bateria não será notificada</string>
 
     <!-- Misc preferences -->
     <string name="misc_title">Miscelânea</string>
@@ -74,11 +91,14 @@
     <string name="version">Versão %s</string>
     <string name="report_bug_summary">Use logo após o problema acontecer (o log será copiado para a área de transferência)</string>
     <string name="report_bug_toast">O log do aplicativo foi copiado para a área de transferência.\nPor favor cole-o no relatório do bug.</string>
+    <string name="show_notification_icon">Mostrar ícone</string>
+    <string name="show_notification_icon_summary_on">Um ícone de notificação será mostrado no telefone enquando o serviço for executado.</string>
+    <string name="show_notification_icon_summary_off">Nenhum ícone de notificação será mostrado no telefone.</string>
 
     <!-- Welcome and about box contents -->
     <string name="about_title">Notificações Remotas</string>
     <string name="welcome_title">Bem-vindo ao Notificações Remotas</string>
-    <string name="about_message">Este aplicativo funciona em conjunto com um aplicativo para Mac/Linux/Windows para exibir notificações.\n\nPor favor visite o site http://code.google.com/p/android-notifier/ para ler instruções de configuração e para realizar o download do aplicativo desktop, assim como provêr feedback ou reportar problemas.</string>
+    <string name="about_message">Este aplicativo funciona em conjunto com um aplicativo para Mac/Linux/Windows para exibir notificações.\n\nPor favor visite o site http://bit.ly/android-notifier para ler instruções de configuração e para realizar o download do aplicativo desktop, assim como provêr feedback ou reportar problemas.</string>
 
     <!-- Notification contents -->
     <string name="ping_contents">Notificação de teste</string>

@@ -65,7 +65,8 @@ public class SeekBarPreference extends DialogPreference
 
     seekBar.setOnSeekBarChangeListener(this);
     seekBar.setMax(maxValue);
-    seekBar.setProgress(currentValue);  // Also triggers onProgressChanged
+    seekBar.setProgress(currentValue);  // May also trigger onProgressChanged
+    setCurrentValue(currentValue);  // Ensure text is updated
 
     return layout;
   }

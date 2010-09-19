@@ -11,7 +11,6 @@ import org.damazio.notifier.notification.Notifier;
 import org.damazio.notifier.service.NotificationService;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -23,9 +22,7 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.provider.Settings;
-import android.text.InputType;
 import android.util.Log;
-import android.widget.EditText;
 import android.widget.Toast;
 
 /**
@@ -138,7 +135,10 @@ public class NotifierMain extends PreferenceActivity {
     enableWifiPreference.setEnabled(!cellSendPreference.isChecked());
     enableWifiPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
       public boolean onPreferenceChange(Preference preference, Object newValue) {
-        cellSendPreference.setEnabled(!((Boolean) newValue));
+    	// Allow cell send if not auto-enabling wifi and using a custom IP
+    	boolean enableWifiValue = (Boolean) newValue;
+    	boolean customIp = preferences.getTargetIpAddress().equals("custom");
+        cellSendPreference.setEnabled(!enableWifiValue && customIp);
         return true;
       }
     });
@@ -164,8 +164,22 @@ public class NotifierMain extends PreferenceActivity {
         boolean isCustomIp = value.equals("custom");
         boolean isChanging = !newValue.equals(oldValue);
         updateIpPreferences(isCustomIp, isChanging);
-        if (isCustomIp) {
-          selectCustomIpAddress(listPreference, preferences.getCustomTargetIpAddress());
+        return true;
+      }
+    });
+    EditableListPreference customIpsPreference =
+        (EditableListPreference) findPreference(getString(R.string.target_custom_ips_key));
+    customIpsPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+      @Override
+      public boolean onPreferenceChange(Preference preference, Object newValue) {
+        @SuppressWarnings("unchecked")
+        List<String> contents = (List<String>) newValue;
+
+        for (String address : contents) {
+          if (!isValidCustomAddress(address)) {
+            Toast.makeText(NotifierMain.this, R.string.invalid_custom_ip, Toast.LENGTH_LONG).show();
+            return false;
+          }
         }
 
         return true;
@@ -193,16 +207,24 @@ public class NotifierMain extends PreferenceActivity {
   private void updateIpPreferences(boolean isCustomIp, boolean isChanging) {
     // TODO: Give some type of warning if both UDP and TCP are disabled
     final CheckBoxPreference sendTcpPreference =
-      (CheckBoxPreference) findPreference(getString(R.string.send_tcp_key));
+        (CheckBoxPreference) findPreference(getString(R.string.send_tcp_key));
     final CheckBoxPreference cellSendPreference =
-      (CheckBoxPreference) findPreference(getString(R.string.allow_cell_send_key));
+        (CheckBoxPreference) findPreference(getString(R.string.allow_cell_send_key));
+    final CheckBoxPreference enableWifiPreference =
+        (CheckBoxPreference) findPreference(getString(R.string.enable_wifi_key));
+    final EditableListPreference customIpsPreference =
+        (EditableListPreference) findPreference(getString(R.string.target_custom_ips_key));
 
     if (isCustomIp) {
+      if (!enableWifiPreference.isChecked()) {
+        cellSendPreference.setEnabled(true);
+        cellSendPreference.setSummaryOff(R.string.allow_cell_send_summary_off);
+      }
+
       sendTcpPreference.setEnabled(true);
-      cellSendPreference.setEnabled(true);
       if (isChanging) sendTcpPreference.setChecked(true);
       sendTcpPreference.setSummaryOff(R.string.send_tcp_summary_off);
-      cellSendPreference.setSummaryOff(R.string.allow_cell_send_summary_off);
+      customIpsPreference.setEnabled(true);
     } else {
       sendTcpPreference.setEnabled(false);
       sendTcpPreference.setChecked(false);
@@ -210,54 +232,11 @@ public class NotifierMain extends PreferenceActivity {
       cellSendPreference.setEnabled(false);
       cellSendPreference.setChecked(false);
       cellSendPreference.setSummaryOff(R.string.custom_ip_needed);
+      customIpsPreference.setEnabled(false);
+
+      // Just in case having "send over cell network" enabled made this one be disabled
+      enableWifiPreference.setEnabled(true);
     }
-  }
-
-  /**
-   * Opens a dialog asking the user for the custom IP address to use.
-   * If the user cancels the dialog, the preference will be returned to its
-   * previous value.
-   *
-   * @param preference the IP address type preference being set
-   * @param initialAddress the IP address to initially show in the dialog
-   */
-  private void selectCustomIpAddress(
-      final ListPreference preference,
-      final String initialAddress) {
-    AlertDialog.Builder alert = new AlertDialog.Builder(NotifierMain.this);
-    alert.setTitle(R.string.custom_ip_title);
-    alert.setMessage(R.string.custom_ip);
-
-    // Set an EditText view to get user input 
-    final EditText input = new EditText(NotifierMain.this);
-    input.setText(initialAddress);
-    input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI);
-    alert.setView(input);
-
-    alert.setPositiveButton(android.R.string.ok,
-        new DialogInterface.OnClickListener() {
-          public void onClick(DialogInterface dialog, int whichButton) {
-            String value = input.getText().toString();
-            if (!isValidCustomAddress(value)) {
-              // Show an error, then throw user back to the dialog
-              Toast.makeText(NotifierMain.this, R.string.invalid_custom_ip, Toast.LENGTH_SHORT)
-                  .show();
-              selectCustomIpAddress(preference, value);
-            } else {
-              preferences.setCustomTargetIpAddress(value);
-            }
-          }
-        });
-
-    final String previousAddress = preference.getValue();
-    alert.setNegativeButton(android.R.string.cancel,
-        new DialogInterface.OnClickListener() {
-          public void onClick(DialogInterface dialog, int whichButton) {
-            preference.setValue(previousAddress);
-          }
-        });
-
-    alert.show();
   }
 
   // From http://stackoverflow.com/questions/106179
@@ -284,17 +263,18 @@ public class NotifierMain extends PreferenceActivity {
   private void configureBluetoothPreferences() {
     CheckBoxPreference bluetoothPreference =
         (CheckBoxPreference) findPreference(getString(R.string.method_bluetooth_key));
-    CheckBoxPreference bluetoothCommandPreference =
-        (CheckBoxPreference) findPreference(getString(R.string.command_bluetooth_key));
+//    TODO: Re-enable after bugfix release
+//    CheckBoxPreference bluetoothCommandPreference =
+//        (CheckBoxPreference) findPreference(getString(R.string.command_bluetooth_key));
     if (!BluetoothDeviceUtils.isBluetoothMethodSupported()) {
       // Disallow enabling bluetooth, if it's not supported
       bluetoothPreference.setChecked(false);
       bluetoothPreference.setEnabled(false);
       bluetoothPreference.setSummaryOff(R.string.eclair_required);
 
-      bluetoothCommandPreference.setChecked(false);
-      bluetoothCommandPreference.setEnabled(false);
-      bluetoothCommandPreference.setSummaryOff(R.string.eclair_required);
+//      bluetoothCommandPreference.setChecked(false);
+//      bluetoothCommandPreference.setEnabled(false);
+//      bluetoothCommandPreference.setSummaryOff(R.string.eclair_required);
     } else {
       // Populate the list of bluetooth devices
       populateBluetoothDeviceList();
@@ -316,28 +296,39 @@ public class NotifierMain extends PreferenceActivity {
    */
   private void populateBluetoothDeviceList() {
     // Build the list of entries and their values
-    List<String> entries = new ArrayList<String>();
-    List<String> entryValues = new ArrayList<String>();
+    List<String> sourceEntries = new ArrayList<String>();
+    List<String> sourceEntryValues = new ArrayList<String>();
 
     // First value is "any"
-    entries.add(getString(R.string.bluetooth_device_any));
-    entryValues.add(BluetoothDeviceUtils.ANY_DEVICE);
+    sourceEntries.add(getString(R.string.bluetooth_device_any));
+    sourceEntryValues.add(BluetoothDeviceUtils.ANY_DEVICE);
 
     // Other values are actual devices
-    BluetoothDeviceUtils.getInstance().populateDeviceLists(entries, entryValues);
+    BluetoothDeviceUtils.getInstance().populateDeviceLists(sourceEntries, sourceEntryValues);
 
-    CharSequence[] entriesArray = entries.toArray(new CharSequence[entries.size()]);
-    CharSequence[] entryValuesArray = entryValues.toArray(new CharSequence[entryValues.size()]);
+    // Create a separate list for the target devices
+    List<String> targetEntries = new ArrayList<String>(sourceEntries);
+    List<String> targetEntryValues = new ArrayList<String>(sourceEntryValues);
+
+    // Add the "all" option only to the targets
+    targetEntries.add(0, getString(R.string.bluetooth_device_all));
+    targetEntryValues.add(0, BluetoothDeviceUtils.ALL_DEVICES);
+
+    CharSequence[] sourceEntriesArray = sourceEntries.toArray(new CharSequence[sourceEntries.size()]);
+    CharSequence[] sourceEntryValuesArray = sourceEntryValues.toArray(new CharSequence[sourceEntryValues.size()]);
+    CharSequence[] targetEntriesArray = targetEntries.toArray(new CharSequence[targetEntries.size()]);
+    CharSequence[] targetEntryValuesArray = targetEntryValues.toArray(new CharSequence[targetEntryValues.size()]);
 
     ListPreference targetDevicePreference =
         (ListPreference) findPreference(getString(R.string.bluetooth_device_key));
-    targetDevicePreference.setEntryValues(entryValuesArray);
-    targetDevicePreference.setEntries(entriesArray);
+    targetDevicePreference.setEntryValues(targetEntryValuesArray);
+    targetDevicePreference.setEntries(targetEntriesArray);
 
-    ListPreference sourceDevicePreference =
-      (ListPreference) findPreference(getString(R.string.bluetooth_source_key));
-    sourceDevicePreference.setEntryValues(entryValuesArray);
-    sourceDevicePreference.setEntries(entriesArray);
+    // TODO: Re-enable after bugfix release
+//    ListPreference sourceDevicePreference =
+//      (ListPreference) findPreference(getString(R.string.bluetooth_source_key));
+//    sourceDevicePreference.setEntryValues(sourceEntryValuesArray);
+//    sourceDevicePreference.setEntries(sourceEntriesArray);
   }
 
   /**

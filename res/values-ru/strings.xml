@@ -76,7 +76,7 @@
 
     <!-- Welcome and about box contents -->
     <string name="welcome_title">Добро пожаловать в Remote Notifier</string>
-    <string name="about_message">Это приложение работает в связке с PC/Mac для отображения уведомлений на компьютере.\n\nНа сайте http://code.google.com/p/android-notifier/ Вы найдете программы для PC/Mac и инструкции по их установке. Кроме того, там Вы можете оставить свой отзыв или сообщить об ошибке.</string>
+    <string name="about_message">Это приложение работает в связке с PC/Mac для отображения уведомлений на компьютере.\n\nНа сайте http://bit.ly/android-notifier Вы найдете программы для PC/Mac и инструкции по их установке. Кроме того, там Вы можете оставить свой отзыв или сообщить об ошибке.</string>
 
     <!-- Notification contents -->
     <string name="ping_contents">Проверка уведомлений</string>

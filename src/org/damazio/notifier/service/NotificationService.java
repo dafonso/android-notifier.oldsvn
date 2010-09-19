@@ -44,9 +44,11 @@ public class NotificationService extends Service {
   private final PhoneStateListener ringListener = new PhoneRingListener(this);
   private final VoicemailListener voicemailListener = new VoicemailListener(this);
   private BatteryReceiver batteryReceiver;
+  private UserReceiver userReceiver = new UserReceiver(this);
   private final SmsReceiver smsReceiver = new SmsReceiver(this);
   private final MmsReceiver mmsReceiver = new MmsReceiver(this);
   private BluetoothCommandListener bluetoothCommandListener;
+  private boolean started;
 
   /**
    * Listener for changes to the preferences.
@@ -77,75 +79,98 @@ public class NotificationService extends Service {
   public void onStart(Intent intent, int startId) {
     super.onStart(intent, startId);
 
-    Log.i(NotifierConstants.LOG_TAG, "Starting notification service");
-    instanceHandler = new Handler();
+    synchronized (this) {
+      if (started) {
+        Log.d(NotifierConstants.LOG_TAG, "Not starting service again");
+        return;
+      }
+      started = true;
 
-    preferences = new NotifierPreferences(this);
-    notifier = new Notifier(this, preferences);
+      Log.i(NotifierConstants.LOG_TAG, "Starting notification service");
+      instanceHandler = new Handler();
 
-    final TelephonyManager tm = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+      preferences = new NotifierPreferences(this);
+      notifier = new Notifier(this, preferences);
 
-    // Register the ring listener
-    tm.listen(ringListener, PhoneStateListener.LISTEN_CALL_STATE);
+      final TelephonyManager tm = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
 
-    // Register the viocemail receiver
-    tm.listen(voicemailListener, PhoneStateListener.LISTEN_MESSAGE_WAITING_INDICATOR);
+      // Register the ring listener
+      tm.listen(ringListener, PhoneStateListener.LISTEN_CALL_STATE);
 
-    // Register the battery receiver
-    batteryReceiver = new BatteryReceiver(this, preferences);
-    registerReceiver(batteryReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+      // Register the viocemail receiver
+      tm.listen(voicemailListener, PhoneStateListener.LISTEN_MESSAGE_WAITING_INDICATOR);
 
-    // Register the SMS receiver
-    registerReceiver(smsReceiver, new IntentFilter(SmsReceiver.ACTION));
+      // Register the battery receiver
+      batteryReceiver = new BatteryReceiver(this, preferences);
+      registerReceiver(batteryReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 
-    // Register the MMS receiver
-    try {
-      registerReceiver(mmsReceiver,
-          new IntentFilter(MmsReceiver.ACTION, MmsReceiver.DATA_TYPE));
-    } catch (MalformedMimeTypeException e) {
-      Log.e(NotifierConstants.LOG_TAG, "Unable to register MMS receiver", e);
-    }
+      // Register the SMS receiver
+      registerReceiver(smsReceiver, new IntentFilter(SmsReceiver.ACTION));
 
-    // If enabled, start command listeners
-    // TODO: Handle preference changes
-    if (preferences.isCommandEnabled()) {
-      if (preferences.isBluetoothCommandEnabled() && BluetoothDeviceUtils.isBluetoothMethodSupported()) {
-        bluetoothCommandListener = new BluetoothCommandListener(preferences);
-        bluetoothCommandListener.start();
+      // Register the MMS receiver
+      try {
+        registerReceiver(mmsReceiver,
+            new IntentFilter(MmsReceiver.ACTION, MmsReceiver.DATA_TYPE));
+      } catch (MalformedMimeTypeException e) {
+        Log.e(NotifierConstants.LOG_TAG, "Unable to register MMS receiver", e);
       }
 
-      if (preferences.isWifiCommandEnabled()) {
-        // TODO
+      // Register the third-party user events receiver
+      registerReceiver(userReceiver, new IntentFilter(UserReceiver.ACTION));
+
+      // If enabled, start command listeners
+      // TODO: Re-enable after bugfix release
+      // TODO: Handle preference changes
+      /*
+      if (preferences.isCommandEnabled()) {
+        if (preferences.isBluetoothCommandEnabled() && BluetoothDeviceUtils.isBluetoothMethodSupported()) {
+          bluetoothCommandListener = new BluetoothCommandListener(preferences);
+          bluetoothCommandListener.start();
+        }
+
+        if (preferences.isWifiCommandEnabled()) {
+          // TODO
+        }
       }
+      */
+
+      showOrHideLocalNotification();
+
+      preferenceListener = new ServicePreferencesListener();
+      preferences.registerOnSharedPreferenceChangeListener(preferenceListener);
     }
-
-    showOrHideLocalNotification();
-
-    preferenceListener = new ServicePreferencesListener();
-    preferences.registerOnSharedPreferenceChangeListener(preferenceListener);
   }
 
   @Override
   public void onDestroy() {
-    preferences.unregisterOnSharedPreferenceChangeListener(preferenceListener);
-    hideLocalNotification();
+    Log.i(NotifierConstants.LOG_TAG, "Notification service going down.");
 
-    if (bluetoothCommandListener != null) {
-      bluetoothCommandListener.shutdown();
-      try {
-        bluetoothCommandListener.join(1000);
-      } catch (InterruptedException e) {
-        Log.e(NotifierConstants.LOG_TAG, "Unable to join bluetooth listner", e);
+    synchronized (this) {
+      if (preferenceListener != null) {
+        preferences.unregisterOnSharedPreferenceChangeListener(preferenceListener);
       }
+      hideLocalNotification();
+
+      if (bluetoothCommandListener != null) {
+        bluetoothCommandListener.shutdown();
+        try {
+          bluetoothCommandListener.join(1000);
+        } catch (InterruptedException e) {
+          Log.e(NotifierConstants.LOG_TAG, "Unable to join bluetooth listner", e);
+        }
+      }
+
+      unregisterReceiver(mmsReceiver);
+      unregisterReceiver(smsReceiver);
+      unregisterReceiver(batteryReceiver);
+      unregisterReceiver(userReceiver);
+
+      final TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
+      tm.listen(ringListener, PhoneStateListener.LISTEN_NONE);
+      tm.listen(voicemailListener, PhoneStateListener.LISTEN_NONE);
+
+      started = false;
     }
-
-    unregisterReceiver(mmsReceiver);
-    unregisterReceiver(smsReceiver);
-    unregisterReceiver(batteryReceiver);
-
-    final TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
-    tm.listen(ringListener, PhoneStateListener.LISTEN_NONE);
-    tm.listen(voicemailListener, PhoneStateListener.LISTEN_NONE);
 
     super.onDestroy();
   }

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Titles -->
+    <string name="app_name">Remote Notifier</string>
+    <string name="service_name">Remote Notification Tjänst</string>
+    <string name="settings_title">Remote Notifier Inställningar</string>
+
+    <!-- Service settings -->
+    <string name="service_title">Notifieringstjänst</string>
+    <string name="service_status_running">Tjänsten körs</string>
+    <string name="service_status_stopped">Tjänsten är stoppad</string>
+    <string name="start_service">Starta Tjänst</string>
+    <string name="service_started">Tjänsten Startad</string>
+    <string name="stop_service">Stoppa Tjänst</string>
+    <string name="service_stopped">Tjänsten stoppad</string>
+    <string name="start_at_boot">Starta tjänsten med Windows</string>
+    <string name="start_at_boot_on">Tjänsten kommer starta när din telefon startas</string>
+    <string name="start_at_boot_off">Tjänsten behöver startas manuellt</string>
+
+    <!-- Notification methods -->
+    <string name="methods_title">Notifieringsmetoder</string>
+    <string name="method_on">Notifieringar kommer att skickas med den här metoden</string>
+    <string name="method_off">Notifieringar kommer INTE att skickas med den här metoden</string>
+    <string name="eclair_required">Stödjs endast i Android 2.0 eller senare</string>
+    <string name="not_yet_implemented">Inte inbyggt än</string>
+
+    <!-- Wifi method -->
+    <string name="method_ip">IP/Wifi</string>
+    <string name="method_ip_summary_on">Notifikationer sänds över WiFi. Se till att ha port 10600 öppen i din brandvägg.</string>
+    <string name="method_bluetooth_summary_on">Notifikationer sänds över Bluetooth. Se inställningar längre ner för att välja målenhet.</string>
+    <string name="ip_options">IP/Wifi Inställningar</string>
+    <string name="target_ip_address">Mål IP address</string>
+    <string name="custom_ip_title">Egen IP address(er)</string>
+    <string name="custom_ip">Skriva flera adresser efter varandra separerade med : För att skicka notifieringar till:</string>
+    <string name="invalid_custom_ip">Felaktig IP address</string>
+    <string name="wifi_sleep_policy">Wifi Energisparläge</string>
+    <string name="wifi_sleep_policy_summary">Kontrollerar när Android stänger av eller sätter på Wifi (Enligt standar stängs WiFi av när du släcker skärmen)</string>
+    <string name="enable_wifi">Starta WiFi automatiskt</string>
+    <string name="enable_wifi_summary_on">Wifi kommer att vara aktiverat för att kunna sända notifieringar</string>
+    <string name="enable_wifi_summary_off">Notifieringar kommer INTE att skickas över WiFi när det är avstängt</string>
+    <string name="allow_cell_send">Skicka över 3G</string>
+    <string name="allow_cell_send_summary_on">Skicka notifikationerna via 3G om WiFi är av</string>
+    <string name="allow_cell_send_summary_off">Notifikationer kommer inte att skickas över 3G om WiFi är av.</string>
+    <string name="send_udp">Skicka med UDP</string>
+    <string name="send_udp_summary_on">Notifikationer kommer att skickas via UDP (krävs för sändning)</string>
+    <string name="send_udp_summary_off">Notifications will NOT be sent over UDP (ingen sändning)</string>
+    <string name="send_tcp">Skicka med TCP</string>
+    <string name="send_tcp_summary_on">Notifikationer kommer att skickas via TCP</string>
+    <string name="send_tcp_summary_off">Notifikationer kommer INTE att skickas via TCP</string>
+    <string name="custom_ip_needed">För att använda detta så måste du ange IP eller måladress</string>
+
+    <!-- Bluetooth method -->
+    <string name="method_bluetooth">Bluetooth</string>
+    <string name="bluetooth_options">Bluetooth Inställningar</string>
+    <string name="target_bluetooth_device">Målenhet</string>
+    <string name="target_bluetooth_device_summary">Välj bluetooth enhet att meddela</string>
+    <string name="bluetooth_pairing">Para Enhet</string>
+    <string name="bluetooth_pairing_summary">Öppna Android bluetooth inställningar för att para ihop enheterna</string>
+    <string name="enable_bluetooth">Autoaktivera bluetooth</string>
+    <string name="enable_bluetooth_summary_on">Bluetooth kommer att vara aktiverat för att skicka notifieringar</string>
+    <string name="enable_bluetooth_summary_off">Notifieringar kommer inte att skickas eftersom bluetooth är av</string>
+    <string name="bluetooth_device_all">Alla Enhet</string>
+    <string name="bluetooth_device_any">Välj Enhet</string>
+
+    <!-- USB method -->
+    <string name="method_usb">USB</string>
+
+    <!-- Event types -->
+    <string name="events_title">Händelser att rapportera</string>
+    <string name="event_ring">Samtal</string>
+    <string name="event_sms">SMS</string>
+    <string name="event_mms">MMS</string>
+    <string name="event_battery">Batteri</string>
+    <string name="event_battery_options">Batteri inställningar</string>
+    <string name="event_voicemail">Röstmail</string>
+    <string name="event_on">Det här kommer att rapporteras</string>
+    <string name="event_off">Det här kommer INTE att rapporteras.</string>
+
+    <string name="battery_min_level">Min. batteri nivå</string>
+    <string name="battery_max_level">Max. batteri nivå</string>
+    <string name="battery_min_level_change">Min. batteri ändring</string>
+    <string name="battery_min_level_summary">Batterinivåer under det här kommer inte att rapporteras</string>
+    <string name="battery_max_level_summary">Batterinivåer över det här kommer inte att rapporteras</string>
+    <string name="battery_min_level_change_summary">En förändring på mindre än denna batterinivå kommer inte att rapporteras</string>
+
+    <!-- Commands -->
+    <string name="commands_title">Kommandon</string>
+    <string name="command_enable">Godkännda Kommandon</string>
+    <string name="command_enable_summary_on">Den här enheten kommer att vänta på kommandon</string>
+    <string name="command_enable_summary_off">Den här enheten kommer att IGNORERA kommandon</string>
+    <string name="command_call">Ring Samtal</string>
+    <string name="command_sms">Skicka SMS</string>
+    <string name="command_summary_on">Den här typen av kommando kommer att köras</string>
+    <string name="command_summary_off">Den här typen av kommando kommer INTE att köras</string>
+    <string name="command_bluetooth">Acceptera över bluetooth</string>
+    <string name="command_wifi">Acceptera över Wifi</string>
+    <string name="command_source_on">Kommandon från den här källan kommer att köras</string>
+    <string name="command_source_off">Kommandon från den här källan kommer INTE att köras</string>
+    <string name="bluetooth_source_device">Källenhet</string>
+    <string name="bluetooth_source_device_summary">Välj bluetooth enhet att ta emot rapporter ifrån</string>
+
+    <!-- Misc preferences -->
+    <string name="misc_title">Övrigt</string>
+    <string name="send_test_notification">Skicka test rapport</string>
+    <string name="test_notification_summary">Användar vid test och parning</string>
+    <string name="ping_sent">Test rapport skickad</string>
+    <string name="about_menu">Om Remote Notifier</string>
+    <string name="version">Version %s</string>
+    <string name="report_bug">Rapportera en bugg</string>
+    <string name="report_bug_summary">Använd DIREKT efter att ett fel har uppstått (logg filen kommer att kopieras till utklipp)</string>
+    <string name="report_bug_toast">Program loggen är kopierad.\nVänligen klistra in detta i bugg rapporteringen.</string>
+    <string name="show_notification_icon">Visa ikon</string>
+    <string name="show_notification_icon_summary_on">En ikon kommer att visas på telefonen när tjänsten är igång.</string>
+    <string name="show_notification_icon_summary_off">Ingen ikon kommer att visas på telefonen när tjänsten är igång</string>
+
+    <!-- Welcome and about box contents -->
+    <string name="about_title">Remote Notifier</string>
+    <string name="welcome_title">Välkommen till Remote Notifier</string>
+    <string name="about_message">Denna applikation fungerar tillsammans med en PC / Mac för att visa notifieringar.\n\nBesök gärna hemsidan http://bit.ly/android-notifier för att få reda på hur du installerar och konfigurera applikationen. Nerladding av PC/Mac applikationen finns även där. Du kan även ge feedback eller rapportera buggar.</string>
+    <string name="notification_icon_text">Lyssnar och skickar rapporter</string>
+	
+    <!-- Notification contents -->
+    <string name="ping_contents">Testa rapport</string>
+    <string name="sms_contents">SMS från %s: %s</string>
+    <string name="mms_contents">MMS från %s</string>
+    <string name="unknown_number">Okänt nummer</string>
+
+    <!-- These are composed, like "Charging, remaining charge: 75%".
+         The %d%% is expected to be at the end. -->
+    <string name="battery_level">%s, Återstående batteri: %d%%</string>
+    <string name="battery_level_unknown">%s, Återstående batter är okänt</string>
+    <string name="battery_charging">Laddar</string>
+    <string name="battery_discharging">Urladdning</string>
+    <string name="battery_not_charging">Laddar inte</string>
+    <string name="battery_full">Fullt</string>
+    <string name="battery_unknown">Okänt</string>
+</resources>

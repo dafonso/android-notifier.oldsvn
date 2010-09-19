@@ -1,12 +1,9 @@
 package org.damazio.notifier;
 
-import java.util.Map;
-
 import org.damazio.notifier.notification.BluetoothDeviceUtils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
@@ -18,8 +15,6 @@ import android.util.Log;
  * @author rdamazio
  */
 public class NotifierPreferences {
-  private static final String OLD_PREFERENCES_NAME = "org.damazio.notifier.preferences";
-
   private final SharedPreferences preferences;
   private final Context context;
 
@@ -27,56 +22,6 @@ public class NotifierPreferences {
     this.context = context;
 
     this.preferences = PreferenceManager.getDefaultSharedPreferences(context);
-
-    if (isFirstTime()) {
-      maybeMigrateOldPreferences();
-    }
-  }
-
-  /**
-   * Copies all previous preferences from the private custom-named file to the
-   * new, shared instance.
-   */
-  private void maybeMigrateOldPreferences() {
-    SharedPreferences oldPreferences =
-        context.getSharedPreferences(OLD_PREFERENCES_NAME, Context.MODE_PRIVATE);
-    // Don't migrate if there are no old preferences.
-    if (!oldPreferences.contains(context.getString(R.string.is_first_time_key)))
-      return;
-
-    Log.i(NotifierConstants.LOG_TAG, "Migrating old preferences");
-    Map<String, ?> allPrefs = oldPreferences.getAll();
-    Editor editor = preferences.edit();
-    for (Map.Entry<String, ?> entry : allPrefs.entrySet()) {
-      String key = entry.getKey();
-      if (preferences.contains(key)) {
-        Log.d(NotifierConstants.LOG_TAG, "Not migrating " + key + " - already exists");
-        continue;
-      }
-
-      Object value = entry.getValue();
-      if (value instanceof String) {
-        editor.putString(key, (String) value);
-      } else if (value instanceof Boolean) {
-        editor.putBoolean(key, (Boolean) value);
-      } else if (value instanceof Integer) {
-        editor.putInt(key, (Integer) value);
-      } else if (value instanceof Float) {
-        editor.putFloat(key, (Float) value);
-      } else if (value instanceof Long) {
-        editor.putLong(key, (Long) value);
-      } else {
-        Log.e(NotifierConstants.LOG_TAG, "Unknown value " + value +
-            " of type " + value.getClass().getName() + " for key " + key);
-        continue;
-      }
-
-      Log.i(NotifierConstants.LOG_TAG, "Migrated key=" + key + "; value=" + value);
-    }
-    editor.commit();
-
-    // Goodbye old preferences
-    oldPreferences.edit().clear().commit();
   }
 
   public void registerOnSharedPreferenceChangeListener(
@@ -131,9 +76,8 @@ public class NotifierPreferences {
    * @return the custom IP address to be used if "custom" was returned by
    *         {@link #getTargetIpAddress}
    */
-  public String getCustomTargetIpAddress() {
-    return preferences.getString(context.getString(R.string.target_custom_ip_address_key),
-        "255.255.255.255");
+  public String getCustomTargetIpAddresses() {
+    return preferences.getString(context.getString(R.string.target_custom_ips_key), "");
   }
 
   /**
@@ -144,7 +88,7 @@ public class NotifierPreferences {
    */
   public void setCustomTargetIpAddress(String address) {
     preferences.edit()
-        .putString(context.getString(R.string.target_custom_ip_address_key), address)
+        .putString(context.getString(R.string.target_custom_ips_key), address)
         .commit();
   }
 
@@ -202,7 +146,7 @@ public class NotifierPreferences {
    */
   public String getTargetBluetoothDevice() {
     return preferences.getString(context.getString(R.string.bluetooth_device_key),
-                                 BluetoothDeviceUtils.ANY_DEVICE);
+                                 BluetoothDeviceUtils.ALL_DEVICES);
   }
 
   /**
@@ -261,6 +205,13 @@ public class NotifierPreferences {
     return preferences.getBoolean(context.getString(R.string.event_voicemail_key), true);
   }
 
+  /**
+   * @return whether to send notifications when there's a new user message
+   */
+  public boolean isUserEventEnabled() {
+    return preferences.getBoolean(context.getString(R.string.event_user_key), true);
+  }
+  
   /**
    * @return whether to send notifications over UDP
    */

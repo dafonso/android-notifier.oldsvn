@@ -32,6 +32,14 @@
                       android:entries="@array/targetIps"
                       android:entryValues="@array/targetIpValues"
                       android:defaultValue="global" />
+      <org.damazio.notifier.EditableListPreference
+                      android:key="@string/target_custom_ips_key"
+                      android:title="@string/custom_ip_title"
+                      app:editDialogTitle="@string/add_custom_ip_title"
+                      app:editDialogMessage="@string/enter_custom_ip"
+                      app:addButtonTitle="@string/add_custom_ip_title"
+                      app:removeButtonTitle="@string/remove_custom_ip"
+                      app:allowDuplicates="false" />
       <CheckBoxPreference android:key="@string/send_udp_key"
                           android:title="@string/send_udp"
                           android:defaultValue="true"
@@ -77,7 +85,7 @@
       <ListPreference android:key="@string/bluetooth_device_key"
                       android:title="@string/target_bluetooth_device"
                       android:summary="@string/target_bluetooth_device_summary"
-                      android:defaultValue="any" />
+                      android:defaultValue="all" />
 
       <Preference android:key="@string/bluetooth_pairing_key"
                   android:title="@string/bluetooth_pairing"
@@ -151,9 +159,15 @@
                         android:defaultValue="true"
                         android:summaryOn="@string/event_on"
                         android:summaryOff="@string/event_off" />
+    <CheckBoxPreference android:key="@string/event_user_key"
+                        android:title="@string/event_user"
+                        android:defaultValue="true"
+                        android:summaryOn="@string/event_user_summary_on"
+                        android:summaryOff="@string/event_off" />
   </PreferenceCategory>
 
   <!-- Commands -->
+  <!-- TODO: Re-enable after bugfix release
   <PreferenceCategory android:title="@string/commands_title">
     <CheckBoxPreference android:key="@string/command_enable_key"
                         android:title="@string/command_enable"
@@ -194,6 +208,7 @@
                         android:summaryOff="@string/command_source_off" />
 
   </PreferenceCategory>
+  -->
 
   <!-- Misc -->
   <PreferenceCategory android:title="@string/misc_title">
