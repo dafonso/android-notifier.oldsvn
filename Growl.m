@@ -161,6 +161,10 @@ NSString *const kGrowlUrl = @"http://growl.info/";
       title = NSLocalizedString(@"Phone sent a ping", @"Ping title");
       name = @"PhonePing";
       break;
+    case USER:
+      title = [notification data];
+      name = @"PhoneThirdParty";
+      break;
     default:
       return nil;
   }

@@ -22,6 +22,7 @@ NSString *const kPreferencesMmsKey = @"mms";
 NSString *const kPreferencesBatteryKey = @"battery";
 NSString *const kPreferencesVoicemailKey = @"voicemail";
 NSString *const kPreferencesPingKey = @"ping";
+NSString *const kPreferencesUserKey = @"user";
 
 NSString *const kPreferencesDisplayKey = @"display";
 NSString *const kPreferencesMuteKey = @"mute";
@@ -56,14 +57,36 @@ const NSInteger kPairingRequired = 1;
           nil];
 
   // Set defaults for actions
-  [self setBool:YES forTypeKey:kPreferencesRingKey    forActionKey:kPreferencesDisplayKey inDictionary:settings];
-  [self setBool:YES forTypeKey:kPreferencesRingKey    forActionKey:kPreferencesMuteKey    inDictionary:settings];
-  [self setBool:YES forTypeKey:kPreferencesSmsKey     forActionKey:kPreferencesDisplayKey inDictionary:settings];
-  [self setBool:YES forTypeKey:kPreferencesMmsKey     forActionKey:kPreferencesDisplayKey inDictionary:settings];
-  [self setBool:YES forTypeKey:kPreferencesBatteryKey forActionKey:kPreferencesDisplayKey inDictionary:settings];
-  [self setBool:YES forTypeKey:kPreferencesPingKey    forActionKey:kPreferencesDisplayKey inDictionary:settings];
+  [self setBool:YES
+     forTypeKey:kPreferencesRingKey
+   forActionKey:kPreferencesDisplayKey
+   inDictionary:settings];
+  [self setBool:YES
+     forTypeKey:kPreferencesRingKey
+   forActionKey:kPreferencesMuteKey
+   inDictionary:settings];
+  [self setBool:YES
+     forTypeKey:kPreferencesSmsKey
+   forActionKey:kPreferencesDisplayKey
+   inDictionary:settings];
+  [self setBool:YES
+     forTypeKey:kPreferencesMmsKey
+   forActionKey:kPreferencesDisplayKey
+   inDictionary:settings];
+  [self setBool:YES
+     forTypeKey:kPreferencesBatteryKey
+   forActionKey:kPreferencesDisplayKey
+   inDictionary:settings];
+  [self setBool:YES
+     forTypeKey:kPreferencesPingKey
+   forActionKey:kPreferencesDisplayKey
+   inDictionary:settings];
   [self setBool:YES
      forTypeKey:kPreferencesVoicemailKey
+   forActionKey:kPreferencesDisplayKey
+   inDictionary:settings];
+  [self setBool:YES
+     forTypeKey:kPreferencesUserKey
    forActionKey:kPreferencesDisplayKey
    inDictionary:settings];
 

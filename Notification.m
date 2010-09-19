@@ -163,6 +163,8 @@
     *type = VOICEMAIL;
   } else if ([typeStr isEqualToString:@"PING"]) {
     *type = PING;
+  } else if ([typeStr isEqualToString:@"USER"]) {
+    *type = USER;
   } else {
     return NO;
   }
@@ -183,6 +185,8 @@
       return @"VOICEMAIL";
     case PING:
       return @"PING";
+    case USER:
+      return @"USER";
     default:
       return nil;
   }
