@@ -9,6 +9,30 @@
       <description>Most recent changes with links to updates.</description>
       <language>en</language>
          <item>
+            <title>Version 0.2.7</title>
+            <description><![CDATA[
+              <h1>ATTENTION</h1>
+              <p>The MacDroidNotifier application will soon be deprecated in favor of the multiplatform
+                 application being developed at
+                 <a href="http://code.google.com/p/android-notifier-desktop/">http://code.google.com/p/android-notifier-desktop/</a>.
+                 We suggest switching over to that application and reporting any issues in its project.
+                 You'll still get at least one more update of this app, but possibly not more than that.
+
+              <h3>Changes in this version:</h3>
+              <ul>
+                <li>Added PowerPC support
+                <li>Added notifications from third-party applications
+              </ul>
+            ]]></description>
+            <pubDate>Thu, 19 Set 2010 03:33:37 -0300</pubDate>
+            <enclosure
+                url="http://android-notifier.googlecode.com/files/MacDroidNotifier-0.2.7.dmg"
+                sparkle:version="0.2.7"
+                length="2419318"
+                sparkle:dsaSignature="MC0CFAiU0pVTtKZdp/VqcuuZbBUXsNYEAhUAmKHmpz+u7FpJDFocUCfL4AyUy3M="
+                type="application/octet-stream" />
+          </item>
+         <item>
             <title>Version 0.2.6</title>
             <description><![CDATA[
               <h3>Changes in this version:</h3>
@@ -24,41 +48,5 @@
                 sparkle:dsaSignature="MC0CFBqaM5xExREYuzAbyT4xE5qC1QFHAhUAj4Fx2N4AmWVwzOi6yI6dTVzR1Bw="
                 type="application/octet-stream" />
           </item>
-          <item>
-            <title>Version 0.2.5</title>
-            <description><![CDATA[
-              <h3>Changes in this version:</h3>
-              <ul>
-                <li>Fixed release mistake which left incomplete v2 protocol support
-              </ul>
-            ]]></description>
-            <pubDate>Thu, 28 Apr 2010 01:10:38 -0300</pubDate>
-            <enclosure
-                url="http://android-notifier.googlecode.com/files/MacDroidNotifier-0.2.5.dmg"
-                sparkle:version="0.2.5"
-                length="2255651"
-                sparkle:dsaSignature="MC0CFCs+0dpHdfoEXl+qbPDvP7oyRIIMAhUAicNqp1ncW0ofzahYazP3L8nYpYo="
-                type="application/octet-stream" />
-          </item>
-          <item>
-            <title>Version 0.2.4</title>
-            <description><![CDATA[
-              <h3>Changes in this version:</h3>
-              <ul>
-                <li>Added "copy to clipboard" action
-                <li>Added nice icons, thanks to Kahil Young
-                <li>Added Chinese translation, thanks to Michael Jiang
-                <li>Added Russian translation thanks to admin at krom dot org dot ru
-                <li>Support for the newer v2 protocol (ahead of the Android app using it)
-              </ul>
-            ]]></description>
-            <pubDate>Thu, 24 Apr 2010 23:52:26 -0300</pubDate>
-            <enclosure
-                url="http://android-notifier.googlecode.com/files/MacDroidNotifier-0.2.4.dmg"
-                sparkle:version="0.2.4"
-                length="2255406"
-                sparkle:dsaSignature="MCwCFGdRi/uWsyeEH2stk7hYq0xHqceDAhRxyIrML+/pWfEyRogRCQic5g0VqQ=="
-                type="application/octet-stream" />
-         </item>
    </channel>
 </rss>
