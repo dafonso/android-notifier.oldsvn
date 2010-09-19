@@ -12,7 +12,7 @@
         <string>PhoneMMS</string>
         <string>PhoneVoicemail</string>
         <string>PhonePing</string>
-        <string>PhoneThirdPartys</string>
+        <string>PhoneThirdParty</string>
       </array>
     </dict>
 </plist>
