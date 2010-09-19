@@ -14,7 +14,8 @@ typedef enum {
   SMS,
   MMS,
   VOICEMAIL,
-  PING
+  PING,
+  USER
 } NotificationType;
 
 // Class which keeps data about a single notification.

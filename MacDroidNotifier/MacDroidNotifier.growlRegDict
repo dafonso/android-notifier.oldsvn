@@ -12,6 +12,7 @@
         <string>PhoneMMS</string>
         <string>PhoneVoicemail</string>
         <string>PhonePing</string>
+        <string>PhoneThirdPartys</string>
       </array>
     </dict>
 </plist>
