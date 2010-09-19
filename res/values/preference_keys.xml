@@ -31,6 +31,8 @@
   <string name="battery_min_level_key">minBatteryLevel</string>
   <string name="battery_max_level_key">maxBatteryLevel</string>
   <string name="battery_min_level_change_key">batteryMinLevelChange</string>
+  <string name="enable_encryption_key">enableEncryption</string>
+  <string name="encryption_pass_key">encryptionPass</string>
 
   <!-- Fake preference keys - never saved, but show options in the preferences screen -->
   <string name="method_bluetooth_options_key">bluetoothOptions</string>

@@ -71,6 +71,15 @@
     <!-- USB method -->
     <string name="method_usb">USB</string>
 
+    <!-- Security -->
+    <string name="security_title">Security</string>
+    <string name="enable_encryption">Encrypt notifications</string>
+    <string name="enable_encryption_summary_on">All notifications will be encrypted. You MUST also configure the desktop application for this.</string>
+    <string name="enable_encryption_summary_off">Notifications will NOT be encrypted. Malicious users may be able to intercept or forge them.</string>
+    <string name="encryption_pass">Passphrase</string>
+    <string name="encryption_pass_summary">The password used to encrypt notifications.</string>
+    <string name="encryption_pass_entry">Please choose a pass phrase to encrypt notifications with. This must be the same as on the desktop application.\n</string>
+
     <!-- Event types -->
     <string name="events_title">Events to notify</string>
     <string name="event_ring">Phone ring</string>
