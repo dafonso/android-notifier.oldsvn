@@ -81,18 +81,6 @@ public class NotifierPreferences {
   }
 
   /**
-   * Sets the custom TCP/IP address to use if "custom" is returned by
-   * {@link #getTargetIpAddress}.
-   *
-   * @param address the IP address's textual representation
-   */
-  public void setCustomTargetIpAddress(String address) {
-    preferences.edit()
-        .putString(context.getString(R.string.target_custom_ips_key), address)
-        .commit();
-  }
-
-  /**
    * @return one of "screen", "plugged" or "never", describing the system's
    *         current wifi sleep policy
    */
