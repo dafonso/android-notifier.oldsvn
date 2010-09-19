@@ -252,8 +252,11 @@ public class EditableListPreference extends Preference implements AdapterView.On
   }
 
   public void setValueString(String value) {
-    String[] itemsStr = value.split(listDelimiter);
-    setValues(itemsStr);
+    if (value.length() > 0) {
+      setValues(value.split(listDelimiter));
+    } else {
+      setValues(new String[0]);
+    }
   }
 
   public void setValues(String[] values) {
