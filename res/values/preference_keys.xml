@@ -6,7 +6,7 @@
   <string name="start_at_boot_key">startAtBoot</string>
   <string name="method_ip_key">wifiMethod</string>
   <string name="target_ip_address_key">targetIpAddress</string>
-  <string name="target_custom_ips_key">targetCustomIpAddresses</string>
+  <string name="target_custom_ips_key">targetCustomIpAddress</string>
   <string name="send_udp_key">sendUdp</string>
   <string name="send_tcp_key">sendTcp</string>
   <string name="enable_wifi_key">enableWifi</string>
