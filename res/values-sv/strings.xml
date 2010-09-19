@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Titles -->
+    <string name="app_name">Remote Notifier</string>
     <string name="service_name">Remote Notification Tjänst</string>
     <string name="settings_title">Remote Notifier Inställningar</string>
 
@@ -12,7 +13,7 @@
     <string name="service_started">Tjänsten Startad</string>
     <string name="stop_service">Stoppa Tjänst</string>
     <string name="service_stopped">Tjänsten stoppad</string>
-    <string name="start_at_boot">Starta med Android</string>
+    <string name="start_at_boot">Starta tjänsten med Windows</string>
     <string name="start_at_boot_on">Tjänsten kommer starta när din telefon startas</string>
     <string name="start_at_boot_off">Tjänsten behöver startas manuellt</string>
 
@@ -30,10 +31,10 @@
     <string name="ip_options">IP/Wifi Inställningar</string>
     <string name="target_ip_address">Mål IP address</string>
     <string name="custom_ip_title">Egen IP address(er)</string>
-    <string name="custom_ip">Skriva flera adresser efter varandra separerade med : FÖr att skicka notifieringar till:</string>
+    <string name="custom_ip">Skriva flera adresser efter varandra separerade med : För att skicka notifieringar till:</string>
     <string name="invalid_custom_ip">Felaktig IP address</string>
     <string name="wifi_sleep_policy">Wifi Energisparläge</string>
-    <string name="wifi_sleep_policy_summary">Kontrollerar när Android stänger av eller sätter på Wifi (Enligt standar stängs WiFi av när du slävker skärmen)</string>
+    <string name="wifi_sleep_policy_summary">Kontrollerar när Android stänger av eller sätter på Wifi (Enligt standar stängs WiFi av när du släcker skärmen)</string>
     <string name="enable_wifi">Starta WiFi automatiskt</string>
     <string name="enable_wifi_summary_on">Wifi kommer att vara aktiverat för att kunna sända notifieringar</string>
     <string name="enable_wifi_summary_off">Notifieringar kommer INTE att skickas över WiFi när det är avstängt</string>
@@ -107,17 +108,17 @@
     <string name="version">Version %s</string>
     <string name="report_bug">Rapportera en bugg</string>
     <string name="report_bug_summary">Använd DIREKT efter att ett fel har uppstått (logg filen kommer att kopieras till utklipp)</string>
-    <string name="report_bug_toast">Progam loggen är kopierad.\nVänligen klistra in detta i bur rapporteringen.</string>
+    <string name="report_bug_toast">Program loggen är kopierad.\nVänligen klistra in detta i bugg rapporteringen.</string>
     <string name="show_notification_icon">Visa ikon</string>
-    <string name="show_notification_icon_summary_on">En notifierings ikon kommer att visas på telefonen när tjänsten är igång.</string>
-    <string name="show_notification_icon_summary_off">Inget kommer att visas på telefonen när tjänsten är igång.</string>
+    <string name="show_notification_icon_summary_on">En ikon kommer att visas på telefonen när tjänsten är igång.</string>
+    <string name="show_notification_icon_summary_off">Ingen ikon kommer att visas på telefonen när tjänsten är igång</string>
 
     <!-- Welcome and about box contents -->
     <string name="about_title">Remote Notifier</string>
     <string name="welcome_title">Välkommen till Remote Notifier</string>
-    <string name="about_message">Denna applikation fungerar tillsammans med en PC / Mac för att visa notifieringar.\n\nBesök gärna hemsidan http://bit.ly/android-notifier för att få reda på hur du installerar och konfigurera applikationen. Nerladding av dator versionen finns även där. Du kan även ge feedback eller rapporeta buggar.</string>
+    <string name="about_message">Denna applikation fungerar tillsammans med en PC / Mac för att visa notifieringar.\n\nBesök gärna hemsidan http://bit.ly/android-notifier för att få reda på hur du installerar och konfigurera applikationen. Nerladding av PC/Mac applikationen finns även där. Du kan även ge feedback eller rapportera buggar.</string>
     <string name="notification_icon_text">Lyssnar och skickar rapporter</string>
-
+	
     <!-- Notification contents -->
     <string name="ping_contents">Testa rapport</string>
     <string name="sms_contents">SMS från %s: %s</string>
