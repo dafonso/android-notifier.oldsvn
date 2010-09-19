@@ -14,7 +14,7 @@
     <string name="stop_service">Stoppa Tjänst</string>
     <string name="service_stopped">Tjänsten stoppad</string>
     <string name="start_at_boot">Starta tjänsten med Windows</string>
-    <string name="start_at_boot_on">Tjänsten kommer starta när din telefon startas</string>
+    <string name="start_at_boot_on">Tjänsten kommer att startas automatiskt</string>
     <string name="start_at_boot_off">Tjänsten behöver startas manuellt</string>
 
     <!-- Notification methods -->
@@ -34,7 +34,7 @@
     <string name="custom_ip">Skriva flera adresser efter varandra separerade med : För att skicka notifieringar till:</string>
     <string name="invalid_custom_ip">Felaktig IP address</string>
     <string name="wifi_sleep_policy">Wifi Energisparläge</string>
-    <string name="wifi_sleep_policy_summary">Kontrollerar när Android stänger av eller sätter på Wifi (Enligt standar stängs WiFi av när du släcker skärmen)</string>
+    <string name="wifi_sleep_policy_summary">Kontrollerar när Android stänger av eller sätter på Wifi (Enligt standard stängs WiFi av när du släcker skärmen)</string>
     <string name="enable_wifi">Starta WiFi automatiskt</string>
     <string name="enable_wifi_summary_on">Wifi kommer att vara aktiverat för att kunna sända notifieringar</string>
     <string name="enable_wifi_summary_off">Notifieringar kommer INTE att skickas över WiFi när det är avstängt</string>
@@ -75,7 +75,8 @@
     <string name="event_voicemail">Röstmail</string>
     <string name="event_on">Det här kommer att rapporteras</string>
     <string name="event_off">Det här kommer INTE att rapporteras.</string>
-
+	<string name="event_user">Tredjeparts program</string>
+    <string name="event_user_summary_on">Tredjeparts program får tillstång att skicka notifieringar (de måste stödja denna app för att det ska funka</string>
     <string name="battery_min_level">Min. batteri nivå</string>
     <string name="battery_max_level">Max. batteri nivå</string>
     <string name="battery_min_level_change">Min. batteri ändring</string>
