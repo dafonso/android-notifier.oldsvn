@@ -1,6 +1,8 @@
 package org.damazio.notifier.notification;
 
 import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
+import java.util.Arrays;
 import java.util.Set;
 
 import org.damazio.notifier.NotifierConstants;
@@ -78,6 +80,18 @@ public class Notifier {
       return null;
     }
     payload = addDelimiter(payload);
+
+    // Encrypt the payload if requested
+    if (preferences.isEncryptionEnabled()) {
+      Encryption encryption = new Encryption(preferences.getEncryptionPassphrase());
+      try {
+        payload = encryption.encrypt(payload);
+        Log.d(NotifierConstants.LOG_TAG, "Encrypted payload: " + Arrays.toString(payload));
+      } catch (GeneralSecurityException e) {
+        Log.e(NotifierConstants.LOG_TAG, "Unable to encrypt payload, aborting", e);
+        return null;
+      }
+    }
 
     return payload;
   }

@@ -264,4 +264,12 @@ public class NotifierPreferences {
   public int getMinBatteryLevelChange() {
     return preferences.getInt(context.getString(R.string.battery_min_level_change_key), 0);
   }
+
+  public boolean isEncryptionEnabled() {
+    return preferences.getBoolean(context.getString(R.string.enable_encryption_key), false);
+  }
+
+  public String getEncryptionPassphrase() {
+    return preferences.getString(context.getString(R.string.encryption_pass_key), "");
+  }
 }
