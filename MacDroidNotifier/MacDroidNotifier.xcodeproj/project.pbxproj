@@ -621,7 +621,7 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				PRODUCT_NAME = MacDroidNotifier;
-				VALID_ARCHS = "x86_64 i386";
+				VALID_ARCHS = "x86_64 i386 ppc";
 			};
 			name = Release;
 		};
