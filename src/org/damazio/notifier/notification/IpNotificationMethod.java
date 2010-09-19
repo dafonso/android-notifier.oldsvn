@@ -2,7 +2,6 @@ package org.damazio.notifier.notification;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -45,9 +44,10 @@ class IpNotificationMethod implements NotificationMethod {
 
     private WifiLock wifiLock;
 
-    private WifiDelayedNotifier(Notification notification, String target,
+    private WifiDelayedNotifier(byte[] payload, String target, boolean isForeground,
         NotificationCallback callback, boolean previousWifiEnabledState) {
-      super(notification, target, callback, previousWifiEnabledState, IpNotificationMethod.this);
+      super(payload, target, isForeground, callback, previousWifiEnabledState,
+          IpNotificationMethod.this);
     }
 
     @Override
@@ -79,7 +79,6 @@ class IpNotificationMethod implements NotificationMethod {
   private static final int UDP_PORT = 10600;
   private static final int TCP_PORT = 10600;
   private static final int TCP_CONNECT_TIMEOUT_MS = 5000;
-  private static final byte DELIMITER_BYTE = 0;
   private final NotifierPreferences preferences;
   private final WifiManager wifi;
   private final ConnectivityManager connectivity;
@@ -91,12 +90,13 @@ class IpNotificationMethod implements NotificationMethod {
         (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
   }
 
-  public void sendNotification(Notification notification, Object targetObj, NotificationCallback callback) {
+  public void sendNotification(byte[] payload, Object targetObj, NotificationCallback callback,
+      boolean isForeground) {
     String target = (String) targetObj;
 
     // If background data is disabled, don't send any of the background notifications
     // PING is the only notification that's sent from the app, so it's not considered background
-    if (!connectivity.getBackgroundDataSetting() && notification.getType() != NotificationType.PING) {
+    if (!isForeground && !connectivity.getBackgroundDataSetting()) {
       Log.w(NotifierConstants.LOG_TAG, "Background data is turned off, not notifying.");
       return;
     }
@@ -109,69 +109,46 @@ class IpNotificationMethod implements NotificationMethod {
         Log.d(NotifierConstants.LOG_TAG, "Enabling wifi and delaying notification");
 
         // Check periodically if wifi connected, then try to send it
-        new WifiDelayedNotifier(notification, target, callback, wifi.isWifiEnabled()).start();
+        new WifiDelayedNotifier(payload, target, isForeground, callback, wifi.isWifiEnabled())
+            .start();
         return;
       } else if (canSendOverCellNetwork()) {
         // Wifi is not enabled, but we can try the cell network
       } else {
         // It won't be enabled, and we cannot send it over the cell phone network
         Log.d(NotifierConstants.LOG_TAG, "Not notifying over IP/wifi - not connected.");
-        callback.notificationDone(notification, target, null);
+        callback.notificationDone(target, null);
         return;
       }
     }
 
     // Connected, so try to send notification now
     try {
-      byte[] messageBytes;
-      try {
-        messageBytes = notification.toString().getBytes("UTF8");
-      } catch (UnsupportedEncodingException e) {
-        Log.e(NotifierConstants.LOG_TAG, "Unable to serialize message", e);
-        callback.notificationDone(notification, target, e);
-        return;
-      }
-      messageBytes = addDelimiter(messageBytes);
-
       // Get the address to send it to
       InetAddress address = getTargetAddress(target);
       Log.d(NotifierConstants.LOG_TAG,
           "Sending wifi notification to IP " + address.getHostAddress());
 
       if (preferences.isSendUdpEnabled()) {
-        sendUdpNotification(messageBytes, address);
+        sendUdpNotification(payload, address);
       }
       if (preferences.isSendTcpEnabled()) {
         if (preferences.getTargetIpAddress().equals("custom")) {
-          sendTcpNotification(messageBytes, address);
+          sendTcpNotification(payload, address);
         } else {
           Log.e(NotifierConstants.LOG_TAG, "TCP enabled but trying to use a broadcast address");
         }
       }
 
-      callback.notificationDone(notification, target, null);
+      callback.notificationDone(target, null);
       Log.i(NotifierConstants.LOG_TAG, "Sent notification over WiFi.");
     } catch (SocketException e) {
-      callback.notificationDone(notification, target, e);
+      callback.notificationDone(target, e);
       Log.e(NotifierConstants.LOG_TAG, "Unable to open socket", e);
     } catch (IOException e) {
-      callback.notificationDone(notification, target, e);
+      callback.notificationDone(target, e);
       Log.e(NotifierConstants.LOG_TAG, "Unable to send TCP or UDP packet", e);
     }
-  }
-
-  /**
-   * Adds a final delimiter to the message so that its end can be easily
-   * detected.
-   *
-   * @param messageBytes the original message bytes
-   * @return message bytes with the delimiter
-   */
-  private byte[] addDelimiter(byte[] messageBytes) {
-    byte[] result = new byte[messageBytes.length  + 1];
-    System.arraycopy(messageBytes, 0, result, 0, messageBytes.length);
-    result[messageBytes.length] = DELIMITER_BYTE;
-    return result;
   }
 
   /**

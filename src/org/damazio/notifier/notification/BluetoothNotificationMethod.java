@@ -1,7 +1,6 @@
 package org.damazio.notifier.notification;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 
 import org.damazio.notifier.NotifierConstants;
@@ -40,9 +39,10 @@ class BluetoothNotificationMethod implements NotificationMethod {
     private static final String BLUETOOTH_LOCK_TAG = "org.damazio.notifier.BluetoothEnable";
     private WakeLock wakeLock;
 
-    public BluetoothDelayedNotifier(Notification notification, BluetoothDevice target,
+    public BluetoothDelayedNotifier(byte[] payload, BluetoothDevice target, boolean isForeground,
         NotificationCallback callback, boolean previousEnabledState) {
-      super(notification, target, callback, previousEnabledState, BluetoothNotificationMethod.this);
+      super(payload, target, isForeground, callback, previousEnabledState,
+          BluetoothNotificationMethod.this);
     }
 
     @Override
@@ -88,11 +88,12 @@ class BluetoothNotificationMethod implements NotificationMethod {
     this.deviceUtils = BluetoothDeviceUtils.getInstance();
   }
 
-  public void sendNotification(Notification notification, Object targetObj, NotificationCallback callback) {
+  public void sendNotification(byte[] payload, Object targetObj, NotificationCallback callback,
+      boolean isForeground) {
     BluetoothDevice target = (BluetoothDevice) targetObj;
 
     if (isBluetoothReady()) {
-      doSendNotification(notification, target, callback);
+      doSendNotification(payload, target, callback);
       return;
     }
 
@@ -100,16 +101,16 @@ class BluetoothNotificationMethod implements NotificationMethod {
     // because it's in discovery mode.
     if (preferences.getEnableBluetooth()) {
       Log.d(NotifierConstants.LOG_TAG, "Enabling bluetooth and delaying notification");
-      sendDelayedNotification(notification, target, callback);
+      sendDelayedNotification(payload, target, isForeground, callback);
       return;
     } else if (bluetoothAdapter.isDiscovering()) {
       Log.d(NotifierConstants.LOG_TAG, "Delaying bluetooth notification until discovery is done");
       bluetoothAdapter.cancelDiscovery();
-      sendDelayedNotification(notification, target, callback);
+      sendDelayedNotification(payload, target, isForeground, callback);
       return;
     } else {
       Log.e(NotifierConstants.LOG_TAG, "Not sending bluetooth notification - not enabled");
-      callback.notificationDone(notification, target, null);
+      callback.notificationDone(target, null);
     }
   }
 
@@ -119,10 +120,10 @@ class BluetoothNotificationMethod implements NotificationMethod {
    * @param notification the notification to send
    * @param callback 
    */
-  private void sendDelayedNotification(Notification notification, BluetoothDevice target,
+  private void sendDelayedNotification(byte[] payload, BluetoothDevice target, boolean isForeground,
       NotificationCallback callback) {
-    new BluetoothDelayedNotifier(notification, target, callback, bluetoothAdapter.isEnabled())
-        .start();
+    new BluetoothDelayedNotifier(payload, target, isForeground, callback,
+        bluetoothAdapter.isEnabled()).start();
   }
 
   /**
@@ -134,17 +135,8 @@ class BluetoothNotificationMethod implements NotificationMethod {
    * @param notification the notification to send
    * @param callback 
    */
-  private synchronized void doSendNotification(Notification notification,
+  private synchronized void doSendNotification(byte[] payload,
       BluetoothDevice targetDevice, NotificationCallback callback) {
-    byte[] messageBytes;
-    try {
-      messageBytes = notification.toString().getBytes("UTF8");
-    } catch (UnsupportedEncodingException e) {
-      Log.e(NotifierConstants.LOG_TAG, "Unable to serialize message", e);
-      callback.notificationDone(notification, targetDevice, e);
-      return;
-    }
-
     bluetoothAdapter.cancelDiscovery();
 
     int retries = 0;
@@ -156,7 +148,7 @@ class BluetoothNotificationMethod implements NotificationMethod {
         Log.d(NotifierConstants.LOG_TAG,
             "Connecting to Bluetooth device " + targetDevice.getName());
         socket.connect();
-        socket.getOutputStream().write(messageBytes);
+        socket.getOutputStream().write(payload);
         socket.close();
 
         // Done, exit the while loop
@@ -177,7 +169,7 @@ class BluetoothNotificationMethod implements NotificationMethod {
         if (retries > MAX_RETRIES) {
           Log.e(NotifierConstants.LOG_TAG,
               "Giving up sending bluetooth notification after " + retries + " retries", e);
-          callback.notificationDone(notification, targetDevice, e);
+          callback.notificationDone(targetDevice, e);
           return;
         }
 
@@ -187,7 +179,7 @@ class BluetoothNotificationMethod implements NotificationMethod {
       }
     }
 
-    callback.notificationDone(notification, targetDevice, null);
+    callback.notificationDone(targetDevice, null);
     Log.d(NotifierConstants.LOG_TAG, "Sent notification over Bluetooth (" + retries + " retries).");
   }
 

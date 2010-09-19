@@ -9,10 +9,10 @@ import java.util.Collections;
  */
 class UsbNotificationMethod implements NotificationMethod {
 
-  public void sendNotification(Notification notification, Object target,
-      NotificationCallback callback) {
+  public void sendNotification(byte[] payload, Object target, NotificationCallback callback,
+      boolean isForeground) {
     // TODO(rdamazio): Implement
-    callback.notificationDone(notification, target, null);
+    callback.notificationDone(target, null);
   }
 
   public String getName() {
