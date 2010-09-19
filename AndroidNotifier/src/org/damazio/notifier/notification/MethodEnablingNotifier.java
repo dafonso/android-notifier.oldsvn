@@ -17,19 +17,21 @@ abstract class MethodEnablingNotifier<T> extends CountDownTimer {
   private static final long MAX_MEDIUM_WAIT_TIME_MS = 60000;
   private static final long MEDIUM_CHECK_INTERVAL_MS = 500;
 
-  private final Notification notification;
+  private final byte[] payload;
   private final boolean previousEnabledState;
   private boolean notificationSent = false;
   private final NotificationMethod method;
   private final NotificationCallback callback;
   private final T target;
+  private final boolean isForeground;
 
-  MethodEnablingNotifier(Notification notification, T target, NotificationCallback callback,
-      boolean previousEnabledState, NotificationMethod method) {
+  MethodEnablingNotifier(byte[] payload, T target, boolean isForeground,
+      NotificationCallback callback, boolean previousEnabledState, NotificationMethod method) {
     super(MAX_MEDIUM_WAIT_TIME_MS, MEDIUM_CHECK_INTERVAL_MS);
 
-    this.notification = notification;
+    this.payload = payload;
     this.target = target;
+    this.isForeground = isForeground;
     this.callback = callback;
     this.previousEnabledState = previousEnabledState;
     this.method = method;
@@ -50,7 +52,7 @@ abstract class MethodEnablingNotifier<T> extends CountDownTimer {
       notificationSent = true;
 
       // Send notification
-      method.sendNotification(notification, target, callback);
+      method.sendNotification(payload, target, callback, isForeground);
 
       restorePreviousEnabledState();
     }
@@ -63,7 +65,7 @@ abstract class MethodEnablingNotifier<T> extends CountDownTimer {
 
     if (!notificationSent) {
       Log.e(NotifierConstants.LOG_TAG, "Timed out while waiting for medium to connect");
-      callback.notificationDone(notification, target, null);
+      callback.notificationDone(target, null);
       restorePreviousEnabledState();
     }
   }

@@ -1,5 +1,6 @@
 package org.damazio.notifier.notification;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Set;
 
 import org.damazio.notifier.NotifierConstants;
@@ -18,6 +19,7 @@ import android.util.Log;
  */
 public class Notifier {
 
+  private static final byte DELIMITER_BYTE = 0;
   private final Set<NotificationMethod> allMethods;
   private final NotifierPreferences preferences;
 
@@ -39,7 +41,16 @@ public class Notifier {
       return;
     }
 
+    // Serialize the notification
     Log.d(NotifierConstants.LOG_TAG, "Sending notification: " + notification);
+    final byte[] payload = serializeNotification(notification);
+    if (payload == null) {
+      return;
+    }
+
+    // Ping notifications can only be sent from the UI
+    final boolean isForeground = notification.getType() == NotificationType.PING;
+
     for (final NotificationMethod method : allMethods) {
       // Skip the method if disabled
       if (!method.isEnabled()) {
@@ -51,27 +62,53 @@ public class Notifier {
         // Start a new thread with a looper to send the notification in
         new Thread("Notification " + method.getName() + " for " + target) {
           public void run() {
-            runNotificationThread(method, notification, target);
+            runNotificationThread(method, payload, target, isForeground);
           }
         }.start();
       }
     }
   }
 
+  private byte[] serializeNotification(Notification notification) {
+    byte[] payload;
+    try {
+      payload = notification.toString().getBytes("UTF8");
+    } catch (UnsupportedEncodingException e) {
+      Log.e(NotifierConstants.LOG_TAG, "Unable to serialize message", e);
+      return null;
+    }
+    payload = addDelimiter(payload);
+
+    return payload;
+  }
+
+  /**
+   * Adds a final delimiter to the message so that its end can be easily
+   * detected.
+   *
+   * @param messageBytes the original message bytes
+   * @return message bytes with the delimiter
+   */
+  private byte[] addDelimiter(byte[] messageBytes) {
+    byte[] result = new byte[messageBytes.length  + 1];
+    System.arraycopy(messageBytes, 0, result, 0, messageBytes.length);
+    result[messageBytes.length] = DELIMITER_BYTE;
+    return result;
+  }
+
   /**
    * Sets up the current thread to send a notification (by starting a looper),
    * then send it.
    */
-  private void runNotificationThread(NotificationMethod method, Notification notification,
-      Object target) {
+  private void runNotificationThread(NotificationMethod method, byte[] payload,
+      Object target, boolean isForeground) {
     Looper.prepare();
     final Looper looper = Looper.myLooper();
-    method.sendNotification(notification, target, new NotificationCallback() {
-      public void notificationDone(
-          Notification notification, Object target, Throwable failureReason) {
+    method.sendNotification(payload, target, new NotificationCallback() {
+      public void notificationDone(Object target, Throwable failureReason) {
         looper.quit();
       }
-    });
+    }, isForeground);
     Looper.loop();
   }
 
