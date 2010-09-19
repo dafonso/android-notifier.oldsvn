@@ -29,6 +29,9 @@
     <string name="method_ip_summary_on">Notifications will be sent over IP. Make sure your firewall allows connections on port 10600.</string>
     <string name="method_bluetooth_summary_on">Notifications will be sent over Bluetooth. See options below to select a target device.</string>
     <string name="ip_options">IP/Wifi options</string>
+    <string name="method_ip_options_target">Target IPs/hosts</string>
+    <string name="method_ip_options_protocol">Notification protocol</string>
+    <string name="method_ip_options_enabling">Wifi enabling</string>
     <string name="target_ip_address">Target IP address</string>
     <string name="custom_ip_title">Custom IP address(es)</string>
     <string name="add_custom_ip_title">Add custom IP address</string>

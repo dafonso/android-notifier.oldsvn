@@ -5,7 +5,7 @@
   android:title="@string/settings_title">
 
   <!-- Service -->
-  <PreferenceCategory android:title="@string/service_title">
+  <PreferenceScreen android:title="@string/service_title">
     <Preference android:key="@string/service_state_key"
                 android:title="@string/start_service"
                 android:persistent="false" />
@@ -14,10 +14,15 @@
                         android:defaultValue="true"
                         android:summaryOn="@string/start_at_boot_on"
                         android:summaryOff="@string/start_at_boot_off" />
-  </PreferenceCategory>
+    <CheckBoxPreference android:key="@string/show_notification_icon_key"
+                        android:title="@string/show_notification_icon"
+                        android:defaultValue="false"
+                        android:summaryOn="@string/show_notification_icon_summary_on"
+                        android:summaryOff="@string/show_notification_icon_summary_off" />
+  </PreferenceScreen>
 
   <!-- Methods -->
-  <PreferenceCategory android:title="@string/methods_title">
+  <PreferenceScreen android:title="@string/methods_title">
     <!-- IP/Wifi -->
     <CheckBoxPreference android:key="@string/method_ip_key"
                         android:title="@string/method_ip"
@@ -27,49 +32,51 @@
     <PreferenceScreen android:key="@string/method_ip_options_key"
                       android:title="@string/ip_options"
                       android:dependency="@string/method_ip_key">
-      <ListPreference android:key="@string/target_ip_address_key"
-                      android:title="@string/target_ip_address"
-                      android:entries="@array/targetIps"
-                      android:entryValues="@array/targetIpValues"
-                      android:defaultValue="global" />
-      <org.damazio.notifier.EditableListPreference
-                      android:key="@string/target_custom_ips_key"
-                      android:title="@string/custom_ip_title"
-                      app:editDialogTitle="@string/add_custom_ip_title"
-                      app:editDialogMessage="@string/enter_custom_ip"
-                      app:addButtonTitle="@string/add_custom_ip_title"
-                      app:removeButtonTitle="@string/remove_custom_ip"
-                      app:allowDuplicates="false" />
-      <CheckBoxPreference android:key="@string/send_udp_key"
-                          android:title="@string/send_udp"
-                          android:defaultValue="true"
-                          android:summaryOn="@string/send_udp_summary_on"
-                          android:summaryOff="@string/send_udp_summary_off" />
-      <CheckBoxPreference android:key="@string/send_tcp_key"
-                          android:title="@string/send_tcp"
-                          android:defaultValue="true"
-                          android:summaryOn="@string/send_tcp_summary_on"
-                          android:summaryOff="@string/send_tcp_summary_off" />
-
-      <CheckBoxPreference android:key="@string/allow_cell_send_key"
-                          android:title="@string/allow_cell_send"
-                          android:summaryOn="@string/allow_cell_send_summary_on"
-                          android:summaryOff="@string/allow_cell_send_summary_off"
-                          android:defaultValue="false" />
-
-      <CheckBoxPreference android:key="@string/enable_wifi_key"
-                          android:title="@string/enable_wifi"
-                          android:summaryOn="@string/enable_wifi_summary_on"
-                          android:summaryOff="@string/enable_wifi_summary_off"
-                          android:defaultValue="false" />
-
-      <ListPreference android:key="@string/wifi_sleep_policy_key"
-                      android:title="@string/wifi_sleep_policy"
-                      android:summary="@string/wifi_sleep_policy_summary"
-                      android:entries="@array/wifiSleepPolicies"
-                      android:entryValues="@array/wifiSleepPolicyValues"
-                      android:persistent="false" />
-
+      <PreferenceCategory android:title="@string/method_ip_options_target">
+        <ListPreference android:key="@string/target_ip_address_key"
+                        android:title="@string/target_ip_address"
+                        android:entries="@array/targetIps"
+                        android:entryValues="@array/targetIpValues"
+                        android:defaultValue="global" />
+        <org.damazio.notifier.EditableListPreference
+                        android:key="@string/target_custom_ips_key"
+                        android:title="@string/custom_ip_title"
+                        app:editDialogTitle="@string/add_custom_ip_title"
+                        app:editDialogMessage="@string/enter_custom_ip"
+                        app:addButtonTitle="@string/add_custom_ip_title"
+                        app:removeButtonTitle="@string/remove_custom_ip"
+                        app:allowDuplicates="false" />
+      </PreferenceCategory>
+      <PreferenceCategory android:title="@string/method_ip_options_enabling">
+        <CheckBoxPreference android:key="@string/enable_wifi_key"
+                            android:title="@string/enable_wifi"
+                            android:summaryOn="@string/enable_wifi_summary_on"
+                            android:summaryOff="@string/enable_wifi_summary_off"
+                            android:defaultValue="false" />
+        <ListPreference android:key="@string/wifi_sleep_policy_key"
+                        android:title="@string/wifi_sleep_policy"
+                        android:summary="@string/wifi_sleep_policy_summary"
+                        android:entries="@array/wifiSleepPolicies"
+                        android:entryValues="@array/wifiSleepPolicyValues"
+                        android:persistent="false" />
+      </PreferenceCategory>
+      <PreferenceCategory android:title="@string/method_ip_options_protocol">
+        <CheckBoxPreference android:key="@string/send_udp_key"
+                            android:title="@string/send_udp"
+                            android:defaultValue="true"
+                            android:summaryOn="@string/send_udp_summary_on"
+                            android:summaryOff="@string/send_udp_summary_off" />
+        <CheckBoxPreference android:key="@string/send_tcp_key"
+                            android:title="@string/send_tcp"
+                            android:defaultValue="true"
+                            android:summaryOn="@string/send_tcp_summary_on"
+                            android:summaryOff="@string/send_tcp_summary_off" />
+        <CheckBoxPreference android:key="@string/allow_cell_send_key"
+                            android:title="@string/allow_cell_send"
+                            android:summaryOn="@string/allow_cell_send_summary_on"
+                            android:summaryOff="@string/allow_cell_send_summary_off"
+                            android:defaultValue="false" />
+      </PreferenceCategory>
     </PreferenceScreen>
 
     <!-- Bluetooth -->
@@ -105,10 +112,10 @@
                         android:defaultValue="false"
                         android:summary="@string/not_yet_implemented"
                         android:enabled="false" />
-  </PreferenceCategory>
+  </PreferenceScreen>
 
   <!-- Events -->
-  <PreferenceCategory android:title="@string/events_title">
+  <PreferenceScreen android:title="@string/events_title">
     <CheckBoxPreference android:key="@string/event_ring_key"
                         android:title="@string/event_ring"
                         android:defaultValue="true"
@@ -164,11 +171,11 @@
                         android:defaultValue="true"
                         android:summaryOn="@string/event_user_summary_on"
                         android:summaryOff="@string/event_off" />
-  </PreferenceCategory>
+  </PreferenceScreen>
 
   <!-- Commands -->
   <!-- TODO: Re-enable after bugfix release
-  <PreferenceCategory android:title="@string/commands_title">
+  <PreferenceScreen android:title="@string/commands_title">
     <CheckBoxPreference android:key="@string/command_enable_key"
                         android:title="@string/command_enable"
                         android:defaultValue="true"
@@ -207,7 +214,7 @@
                         android:summaryOn="@string/command_source_on"
                         android:summaryOff="@string/command_source_off" />
 
-  </PreferenceCategory>
+  </PreferenceScreen>
   -->
 
   <!-- Misc -->
@@ -223,11 +230,6 @@
                 android:title="@string/report_bug"
                 android:summary="@string/report_bug_summary"
                 android:persistent="false" />
-    <CheckBoxPreference android:key="@string/show_notification_icon_key"
-                        android:title="@string/show_notification_icon"
-                        android:defaultValue="false"
-                        android:summaryOn="@string/show_notification_icon_summary_on"
-                        android:summaryOff="@string/show_notification_icon_summary_off" />
   </PreferenceCategory>
 
 </PreferenceScreen>
