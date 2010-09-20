@@ -91,10 +91,14 @@ const NSUInteger kLastNotificationCount = 10;
 - (NSData*)decryptNotificationData:(NSData*)encryptedData {
   // Try decrypting it
   NSString* key = [passPhraseStorage passPhrase];
+  if ([key length] == 0) return nil;
+
+  // Initialization vector
   char iv[kCCBlockSize3DES];
   bzero(iv, kCCBlockSize3DES);
 
   // Pad key
+  // TODO: This is insecure, use a crypto hash on the key instead
   const char* rawKey = [key UTF8String];
   char paddedKey[kCCKeySize3DES];
   bzero(paddedKey, kCCKeySize3DES);
@@ -162,7 +166,6 @@ const NSUInteger kLastNotificationCount = 10;
   // First try handling the notification directly
   if (![self handlePlainNotificationData:data]) {
     // Didn't work, try decrypting it if enabled
-    // TODO: Check if enabled
     NSData *decryptedData = [self decryptNotificationData:data];
     if (decryptedData != nil) {
       [self handlePlainNotificationData:decryptedData];
