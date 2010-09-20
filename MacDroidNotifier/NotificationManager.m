@@ -7,6 +7,8 @@
 
 #import "NotificationManager.h"
 
+#import <CommonCrypto/CommonCryptor.h>
+
 #import "ActionDispatcher.h"
 #import "BluetoothNotificationListener.h"
 #import "Notification.h"
@@ -85,20 +87,57 @@ const NSUInteger kLastNotificationCount = 10;
   return NO;
 }
 
-- (void)handleRawNotification:(NSData *)data {
+- (NSData*)decryptNotificationData:(NSData*)encryptedData {
+  // Try decrypting it
+  NSString* key = @"xxx";  // TODO: Read from prefs
+  char iv[kCCBlockSize3DES];
+  bzero(iv, kCCBlockSize3DES);
+
+  // Pad key
+  const char* rawKey = [key UTF8String];
+  char paddedKey[kCCKeySize3DES];
+  bzero(paddedKey, kCCKeySize3DES);
+  memcpy(paddedKey, rawKey, MIN(kCCKeySize3DES, strlen(rawKey)));
+
+  // Prepare output buffer
+  size_t resultSize;
+  char outBuffer[4096];
+
+  CCCryptorStatus ccStatus;
+  ccStatus = CCCrypt(kCCDecrypt,
+                     kCCAlgorithm3DES,
+                     kCCOptionPKCS7Padding,
+                     rawKey, kCCKeySize3DES,
+                     iv,
+                     [encryptedData bytes], [encryptedData length],
+                     (void*) outBuffer, 4096,
+                     &resultSize);
+  if (ccStatus != kCCSuccess) {
+    NSLog(@"Failed to decrypt: %d", ccStatus);
+    return nil;
+  }
+
+  return [NSData dataWithBytes:outBuffer length:resultSize];
+}
+
+- (BOOL)handlePlainNotificationData:(NSData *)data {
   // Discard the ending marker if present
   NSUInteger len = [data length];
   char* contents = (char *) [data bytes];
   if (contents[len - 1] == 0) len--;
 
-  // Conver to a string
-  NSString *notificationStr = [[NSString alloc] initWithBytes:[data bytes]
+  // Convert to a string
+  NSString *notificationStr = [[NSString alloc] initWithBytes:contents
                                                        length:len
                                                      encoding:NSUTF8StringEncoding];
+  if (notificationStr == nil) {
+    return NO;
+  }
+
   Notification *notification = [Notification notificationFromString:notificationStr];
   [notificationStr release];
   if (notification == nil) {
-    return;
+    return NO;
   }
 
   NSLog(@"Received notification %@", notification);
@@ -113,6 +152,19 @@ const NSUInteger kLastNotificationCount = 10;
     // Dispatch for pairing handling
     if ([notification type] == PING) {
       [preferences handlePairingNotification:notification];
+    }
+  }
+  return YES;
+}
+
+- (void)handleRawNotification:(NSData *)data {
+  // First try handling the notification directly
+  if (![self handlePlainNotificationData:data]) {
+    // Didn't work, try decrypting it if enabled
+    // TODO: Check if enabled
+    NSData *decryptedData = [self decryptNotificationData:data];
+    if (decryptedData != nil) {
+      [self handlePlainNotificationData:decryptedData];
     }
   }
 }
