@@ -5,6 +5,7 @@ import java.security.GeneralSecurityException;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.DESedeKeySpec;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
@@ -16,7 +17,7 @@ public class Encryption {
 
   public static final int MAX_KEY_LENGTH = DESedeKeySpec.DES_EDE_KEY_LEN;
   private static final String ENCRYPTION_KEY_TYPE = "DESede";
-  private static final String ENCRYPTION_ALGORITHM = "DESede/CBC/PKCS5Padding";
+  private static final String ENCRYPTION_ALGORITHM = "DESede/CBC/PKCS7Padding";
   private final SecretKeySpec keySpec;
 
   public Encryption(String passphrase) {
@@ -47,7 +48,8 @@ public class Encryption {
 
   private byte[] doCipher(byte[] original, int mode) throws GeneralSecurityException {
     Cipher cipher = Cipher.getInstance(ENCRYPTION_ALGORITHM);
-    cipher.init(mode, keySpec);
+    IvParameterSpec iv = new IvParameterSpec(new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 });
+    cipher.init(mode, keySpec, iv);
     return cipher.doFinal(original);
   }
 }
