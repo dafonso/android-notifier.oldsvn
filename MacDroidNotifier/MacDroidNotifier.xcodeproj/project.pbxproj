@@ -12,6 +12,9 @@
 		3731A15F122ADA9C00DA07C8 /* BluetoothDeviceMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3731A15E122ADA9C00DA07C8 /* BluetoothDeviceMapper.m */; };
 		373EC2DE11842CBA007477C8 /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 373EC2DD11842CBA007477C8 /* AsyncSocket.m */; };
 		373EC2E211842D54007477C8 /* TcpNotificationListener.m in Sources */ = {isa = PBXBuildFile; fileRef = 373EC2E111842D54007477C8 /* TcpNotificationListener.m */; };
+		375321701247362C00E31688 /* PassPhraseStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3753216F1247362C00E31688 /* PassPhraseStorage.m */; };
+		3753219F124741B500E31688 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3753219E124741B500E31688 /* CoreFoundation.framework */; };
+		375321A1124741B600E31688 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 375321A0124741B600E31688 /* Security.framework */; };
 		3763CAFC120B6EB700733BAF /* CommandDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 3763CAFB120B6EB700733BAF /* CommandDispatcher.m */; };
 		3763CB64120BCA8A00733BAF /* CommandController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3763CB63120BCA8A00733BAF /* CommandController.m */; };
 		3763CB82120BCBC600733BAF /* Command.m in Sources */ = {isa = PBXBuildFile; fileRef = 3763CB81120BCBC600733BAF /* Command.m */; };
@@ -108,6 +111,10 @@
 		373EC2DD11842CBA007477C8 /* AsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncSocket.m; sourceTree = "<group>"; };
 		373EC2E011842D54007477C8 /* TcpNotificationListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TcpNotificationListener.h; sourceTree = "<group>"; };
 		373EC2E111842D54007477C8 /* TcpNotificationListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TcpNotificationListener.m; sourceTree = "<group>"; };
+		3753216E1247362C00E31688 /* PassPhraseStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PassPhraseStorage.h; sourceTree = "<group>"; };
+		3753216F1247362C00E31688 /* PassPhraseStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PassPhraseStorage.m; sourceTree = "<group>"; };
+		3753219E124741B500E31688 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		375321A0124741B600E31688 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		3763CAFA120B6EB700733BAF /* CommandDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandDispatcher.h; sourceTree = "<group>"; };
 		3763CAFB120B6EB700733BAF /* CommandDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommandDispatcher.m; sourceTree = "<group>"; };
 		3763CB62120BCA8A00733BAF /* CommandController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandController.h; sourceTree = "<group>"; };
@@ -207,6 +214,8 @@
 				3775423110E5D2E000A21D89 /* IOBluetoothUI.framework in Frameworks */,
 				376DF26C10EBE0DA0065B914 /* Sparkle.framework in Frameworks */,
 				37E89D82110BFBF5006CBE71 /* AudioToolbox.framework in Frameworks */,
+				3753219F124741B500E31688 /* CoreFoundation.framework in Frameworks */,
+				375321A1124741B600E31688 /* Security.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,6 +243,8 @@
 				3775422F10E5D2E000A21D89 /* IOBluetoothUI.framework */,
 				377540C810E5B64500A21D89 /* Growl.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+				3753219E124741B500E31688 /* CoreFoundation.framework */,
+				375321A0124741B600E31688 /* Security.framework */,
 			);
 			name = "Linked Frameworks";
 			sourceTree = "<group>";
@@ -384,6 +395,8 @@
 				373EC2DD11842CBA007477C8 /* AsyncSocket.m */,
 				37753F7210E5893600A21D89 /* AsyncUdpSocket.h */,
 				37753F7310E5893600A21D89 /* AsyncUdpSocket.m */,
+				3753216E1247362C00E31688 /* PassPhraseStorage.h */,
+				3753216F1247362C00E31688 /* PassPhraseStorage.m */,
 				379B9A6110E87759007B1FCA /* StartupItem.h */,
 				379B9A6210E87759007B1FCA /* StartupItem.m */,
 				37E89D54110BF9FD006CBE71 /* SoundVolume.h */,
@@ -543,6 +556,7 @@
 				3763CB82120BCBC600733BAF /* Command.m in Sources */,
 				3731A159122AD72300DA07C8 /* BluetoothCommandSender.m in Sources */,
 				3731A15F122ADA9C00DA07C8 /* BluetoothDeviceMapper.m in Sources */,
+				375321701247362C00E31688 /* PassPhraseStorage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,6 +10,7 @@
 
 @class ActionDispatcher;
 @class Notification;
+@class PassPhraseStorage;
 @class Preferences;
 
 // Notification manager, which receives raw notifications from the listeners,
@@ -21,6 +22,9 @@
 
   // Preferences, for pairing with new devices
   IBOutlet Preferences *preferences;
+
+  // Keychain storage of the pass phrase
+  IBOutlet PassPhraseStorage *passPhraseStorage;
 
   // Listeners which receive notifications and pass them to this object
   NSArray *listeners;
