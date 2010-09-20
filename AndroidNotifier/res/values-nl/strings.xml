@@ -28,10 +28,16 @@
     <string name="method_ip">IP/wifi</string>
     <string name="method_ip_summary_on">Notificaties worden verzonden over IP. Zorg ervoor dat de firewall connecties toestaat op port 10600.</string>
     <string name="method_bluetooth_summary_on">Notifications worden verzonden via Bluetooth. Zie de opties hieronder om een target te selecteren.</string>
-    <string name="wifi_options">IP/wifi opties</string>
+    <string name="ip_options">IP/Wifi opties</string>
+    <string name="method_ip_options_target">Doel IPs/hosts</string>
+    <string name="method_ip_options_protocol">Notificatie protocol</string>
+    <string name="method_ip_options_enabling">Wifi activering</string>
     <string name="target_ip_address">Doel IP adres</string>
     <string name="custom_ip_title">Aangepast IP adres</string>
-    <string name="custom_ip">Type het IP adres of computernaam om de notificaties naar te verzenden:</string>
+    <string name="add_custom_ip_title">Voeg aangepast IP adres toe</string>
+    <string name="remove_custom_ip">Verwijder adres</string>
+    <string name="duplicate_entry">\'%s\' is staat reeds in de lijst</string>
+    <string name="enter_custom_ip">Geef een IP adres of hostnaam in om notificaties naar te verzenden:</string>
     <string name="invalid_custom_ip">Incorrect IP addres of hostname</string>
     <string name="wifi_sleep_policy">Wifi slaap opties</string>
     <string name="wifi_sleep_policy_summary">Besturing wanneer Android wifi heeft uitgeschakeld\n(Standaard wanner het scherm op zwart gaat)</string>
@@ -59,10 +65,20 @@
     <string name="enable_bluetooth">Auto-enable bluetooth</string>
     <string name="enable_bluetooth_summary_on">Bluetooth zal ingeschakeld worden voor het verzenden van de notificaties</string>
     <string name="enable_bluetooth_summary_off">Notificaties zullen niet over Bluetooth verzonden worden als het uit staat</string>
+    <string name="bluetooth_device_all">Alle apparaten</string>
     <string name="bluetooth_device_any">Elk apparaat</string>    
 
     <!-- USB method -->
     <string name="method_usb">USB</string>
+
+    <!-- Security -->
+    <string name="security_title">Beveiliging</string>
+    <string name="enable_encryption">Codeer notificaties</string>
+    <string name="enable_encryption_summary_on">Alle notificaties zullen gecodeerd worden. U MOET ook de desktop applicatie instellen voor deze functie.</string>
+    <string name="enable_encryption_summary_off">Notificaties zullen NIET gecodeerd worden. Uw berichten kunnen onderschept worden of vervalst.</string>
+    <string name="encryption_pass">wachtwoordzin</string>
+    <string name="encryption_pass_summary">Het wachtwoord dat gebruikt wordt om notificaties te coderen.</string>
+    <string name="encryption_pass_entry">Kies aub een wachtwoordzin om uw notificaties mee te coderen. Deze moet hetzelfde zijn als in de desktop applicatie.\n</string>
 
     <!-- Event types -->
     <string name="events_title">Gebeurtenissen</string>
@@ -72,6 +88,8 @@
     <string name="event_battery">Batterij</string>
     <string name="event_battery_options">Batterij instellingen</string>
     <string name="event_voicemail">Voicemail</string>
+    <string name="event_user">Derde partij apps</string>
+    <string name="event_user_summary_on">Derde partij apps zullen toegelaten worden om notificaties te verzenden (ze moeten hiervoor deze app ondersteunen).</string>
     <string name="event_on">Deze gebeurtenis zal altijd plaatsvinden.</string>
     <string name="event_off">Deze gebeurtenis zal NOOIT plaatsvinden.</string>  
     
@@ -103,8 +121,8 @@
     <string name="send_test_notification">Verzend test notificatie</string>
     <string name="test_notification_summary">Handig voor het testen en koppelen</string>
     <string name="ping_sent">Test notificatie verzonden</string>
-    <string name="version">Versie %s</string>
     <string name="about_menu">Over Remote Notifier</string>
+    <string name="version">Versie %s</string>
     <string name="report_bug">Meld een bug</string>
     <string name="report_bug_summary">Gebruik deze optie direct nadat een fout is opgetreden.(log word gekopieerd naar klembord)</string>
     <string name="report_bug_toast">Aplicatie log gekopieerd naar het klembord.\nGelieve het te kopieren naar \'meld een bug\'.</string>
