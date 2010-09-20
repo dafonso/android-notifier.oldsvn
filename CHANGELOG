@@ -1,6 +1,0 @@
-WinDroidNotifier Changelog
-
-Version 0.1
-Added Notification method: UDP Multicast
-Support for "Growl for Windows"
-Added autorun feature
