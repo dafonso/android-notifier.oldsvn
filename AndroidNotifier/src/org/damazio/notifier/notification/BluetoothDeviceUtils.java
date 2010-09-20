@@ -72,11 +72,21 @@ public abstract class BluetoothDeviceUtils {
     @Override
     public Iterable<BluetoothDevice> findDevicesMatching(String targetDeviceAddress) {
       if (targetDeviceAddress.equals(ANY_DEVICE)) {
-        return Collections.singletonList(findAnyDevice());
+        BluetoothDevice anyDevice = findAnyDevice();
+        if (anyDevice != null) {
+          return Collections.singletonList(anyDevice);
+        } else {
+          return Collections.emptyList();
+        }
       } else if (targetDeviceAddress.equals(ALL_DEVICES)) {
         return getAllDevices();
       } else {
-        return Collections.singletonList(findDeviceByAddress(targetDeviceAddress));
+        BluetoothDevice device = findDeviceByAddress(targetDeviceAddress);
+        if (device != null) {
+          return Collections.singletonList(device);
+        } else {
+          return Collections.emptyList();
+        }
       }
     }
 
