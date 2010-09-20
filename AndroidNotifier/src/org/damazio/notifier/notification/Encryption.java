@@ -2,11 +2,16 @@ package org.damazio.notifier.notification;
 
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import javax.crypto.Cipher;
-import javax.crypto.spec.DESedeKeySpec;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+
+import org.damazio.notifier.NotifierConstants;
+
+import android.util.Log;
 
 /**
  * Helper class for encrypting and decrypting payloads using arbitrary string passphrases.
@@ -15,27 +20,23 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public class Encryption {
 
-  public static final int MAX_KEY_LENGTH = DESedeKeySpec.DES_EDE_KEY_LEN;
-  private static final String ENCRYPTION_KEY_TYPE = "DESede";
-  private static final String ENCRYPTION_ALGORITHM = "DESede/CBC/PKCS7Padding";
+  private static final String ENCRYPTION_KEY_TYPE = "AES";
+  private static final String ENCRYPTION_ALGORITHM = "AES/CBC/PKCS7Padding";
+
   private final SecretKeySpec keySpec;
+  private final byte[] iv;
 
   public Encryption(String passphrase) {
-    byte[] key;
+    byte[] passPhraseBytes;
     try {
-      key = passphrase.getBytes("UTF8");
+      passPhraseBytes = passphrase.getBytes("UTF8");
     } catch (UnsupportedEncodingException e) {
       throw new IllegalArgumentException(e);
     }
 
-    key = padKeyToLength(key, DESedeKeySpec.DES_EDE_KEY_LEN);
-    keySpec = new SecretKeySpec(key, ENCRYPTION_KEY_TYPE);
-  }
-
-  private byte[] padKeyToLength(byte[] key, int len) {
-    byte[] newKey = new byte[len];
-    System.arraycopy(key, 0, newKey, 0, key.length);
-    return newKey;
+    byte[] keyBytes = doMD5(passPhraseBytes);
+    iv = doMD5(keyBytes);
+    keySpec = new SecretKeySpec(keyBytes, ENCRYPTION_KEY_TYPE);
   }
 
   public byte[] encrypt(byte[] unencrypted) throws GeneralSecurityException {
@@ -48,8 +49,18 @@ public class Encryption {
 
   private byte[] doCipher(byte[] original, int mode) throws GeneralSecurityException {
     Cipher cipher = Cipher.getInstance(ENCRYPTION_ALGORITHM);
-    IvParameterSpec iv = new IvParameterSpec(new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 });
-    cipher.init(mode, keySpec, iv);
+    cipher.init(mode, keySpec, new IvParameterSpec(iv));
     return cipher.doFinal(original);
+  }
+
+  private byte[] doMD5(byte[] data) {
+    try {
+      MessageDigest md = MessageDigest.getInstance("MD5");
+      md.update(data);
+      return md.digest();
+    } catch (NoSuchAlgorithmException e) {
+      Log.e(NotifierConstants.LOG_TAG, "Algorithm not available", e);
+      return null;
+    }
   }
 }

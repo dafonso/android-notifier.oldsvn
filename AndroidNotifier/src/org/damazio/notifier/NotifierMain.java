@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.damazio.notifier.backup.BackupPreferencesListener;
 import org.damazio.notifier.notification.BluetoothDeviceUtils;
-import org.damazio.notifier.notification.Encryption;
 import org.damazio.notifier.notification.Notification;
 import org.damazio.notifier.notification.NotificationType;
 import org.damazio.notifier.notification.Notifier;
@@ -24,7 +23,6 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.provider.Settings;
-import android.text.InputFilter;
 import android.text.InputType;
 import android.util.Log;
 import android.widget.EditText;
@@ -384,9 +382,6 @@ public class NotifierMain extends PreferenceActivity {
         InputType.TYPE_CLASS_TEXT |
         InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS |
         InputType.TYPE_TEXT_VARIATION_PASSWORD);
-    encryptionPassEditText.setFilters(new InputFilter[] {
-       new InputFilter.LengthFilter(Encryption.MAX_KEY_LENGTH)
-    });
   }
 
   /**
