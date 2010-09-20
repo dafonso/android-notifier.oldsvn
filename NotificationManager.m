@@ -12,6 +12,7 @@
 #import "ActionDispatcher.h"
 #import "BluetoothNotificationListener.h"
 #import "Notification.h"
+#import "PassPhraseStorage.h"
 #import "Preferences.h"
 #import "TcpNotificationListener.h"
 #import "UdpNotificationListener.h"
@@ -89,7 +90,7 @@ const NSUInteger kLastNotificationCount = 10;
 
 - (NSData*)decryptNotificationData:(NSData*)encryptedData {
   // Try decrypting it
-  NSString* key = @"xxx";  // TODO: Read from prefs
+  NSString* key = [passPhraseStorage passPhrase];
   char iv[kCCBlockSize3DES];
   bzero(iv, kCCBlockSize3DES);
 
