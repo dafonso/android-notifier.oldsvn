@@ -301,7 +301,6 @@ public class EditableListPreference extends Preference implements AdapterView.On
 
   @Override
   protected Parcelable onSaveInstanceState() {
-    Log.d(NotifierConstants.LOG_TAG, "Saving state");
     final Parcelable superState = super.onSaveInstanceState();
     if (entryDialog == null || !entryDialog.isShowing()) {
       return superState;
