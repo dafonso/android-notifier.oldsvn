@@ -8,6 +8,7 @@
 #import "NotificationManager.h"
 
 #import <CommonCrypto/CommonCryptor.h>
+#import <CommonCrypto/CommonDigest.h>
 
 #import "ActionDispatcher.h"
 #import "BluetoothNotificationListener.h"
@@ -90,29 +91,28 @@ const NSUInteger kLastNotificationCount = 10;
 
 - (NSData*)decryptNotificationData:(NSData*)encryptedData {
   // Try decrypting it
-  NSString* key = [passPhraseStorage passPhrase];
-  if ([key length] == 0) return nil;
+  NSString* passPhrase = [passPhraseStorage passPhrase];
+  if ([passPhrase length] == 0) return nil;
 
-  // Initialization vector
-  char iv[kCCBlockSize3DES];
-  bzero(iv, kCCBlockSize3DES);
+  // Hash the passphrase to get the key
+  NSData* keyData = [passPhrase dataUsingEncoding:NSUTF8StringEncoding];
+  unsigned char keyHash[CC_MD5_DIGEST_LENGTH];
+  CC_MD5([keyData bytes], (CC_LONG) [keyData length], keyHash);
 
-  // Pad key
-  // TODO: This is insecure, use a crypto hash on the key instead
-  const char* rawKey = [key UTF8String];
-  char paddedKey[kCCKeySize3DES];
-  bzero(paddedKey, kCCKeySize3DES);
-  memcpy(paddedKey, rawKey, MIN(kCCKeySize3DES, strlen(rawKey)));
+  // Initialization vector, also based on the key
+  unsigned char iv[CC_MD5_DIGEST_LENGTH];
+  CC_MD5(keyHash, CC_MD5_DIGEST_LENGTH, iv);
 
-  // Prepare output buffer
+  // Prepare output
   size_t resultSize;
   char outBuffer[4096];
 
+  // Decrypt
   CCCryptorStatus ccStatus;
   ccStatus = CCCrypt(kCCDecrypt,
-                     kCCAlgorithm3DES,
+                     kCCAlgorithmAES128,
                      kCCOptionPKCS7Padding,
-                     rawKey, kCCKeySize3DES,
+                     keyHash, CC_MD5_DIGEST_LENGTH,
                      iv,
                      [encryptedData bytes], [encryptedData length],
                      (void*) outBuffer, 4096,
