@@ -254,7 +254,8 @@ const NSInteger kPairingRequired = 1;
 }
 
 - (void)updateDevicesMenuWithDefaults:(NSUserDefaults *)defaults {
-  [mainMenu removeItemAtIndex:0];
+  if ([[mainMenu itemAtIndex:0] isSeparatorItem])
+    [mainMenu removeItemAtIndex:0];
 /* TODO: Re-enable commands
   // Clear previous paired devices
   while ([mainMenu numberOfItems]) {
