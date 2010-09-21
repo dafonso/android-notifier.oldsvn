@@ -1,0 +1,47 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0 http://maven.apache.org/xsd/assembly-1.1.0.xsd">
+	<id>linux-${architecture}</id>
+	<formats>
+		<format>zip</format>
+	</formats>
+	<baseDirectory>${project.artifactId}</baseDirectory>
+	<files>
+		<file>
+            <source>${project.build.directory}/${project.build.finalName}.jar</source>
+            <destName>${project.artifactId}.jar</destName>
+            <fileMode>0755</fileMode>
+		</file>
+		<file>
+			<source>src/assembly/linux/run.sh</source>
+			<fileMode>0755</fileMode>
+			<lineEnding>unix</lineEnding>
+		</file>
+		<file>
+			<source>src/assembly/linux/icon-readme.txt</source>
+			<outputDirectory>icons</outputDirectory>
+			<lineEnding>unix</lineEnding>
+		</file>
+	</files>
+	<fileSets>
+		<fileSet>
+			<directory>src/main/resources/com/google/code/notifier/desktop</directory>
+			<outputDirectory>icons</outputDirectory>
+			<includes>
+				<include>*.png</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>src/main/resources/com/google/code/notifier/desktop/notification/broadcast</directory>
+			<outputDirectory>icons</outputDirectory>
+			<includes>
+				<include>*.png</include>
+			</includes>
+		</fileSet>
+	</fileSets>
+	<dependencySets>
+		<dependencySet>
+			<outputDirectory>lib</outputDirectory>
+			<useProjectArtifact>false</useProjectArtifact>
+		</dependencySet>
+	</dependencySets>
+</assembly>

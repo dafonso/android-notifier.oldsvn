@@ -1,0 +1,4 @@
+#instructions Download file manually using the link from http://code.google.com/p/growlbuildlistener/ and execute
+
+mvn install:install-file -DgroupId=com.binaryblizzard.jgrowl -DartifactId=jgrowl -Dversion=0.1 -Dpackaging=jar -Dfile=binaryblizzard.jar
+mvn install:install-file -DgroupId=com.binaryblizzard.jgrowl -DartifactId=jgrowl -Dversion=0.1 -Dpackaging=jar -Dfile=src.zip -Dclassifier=sources
