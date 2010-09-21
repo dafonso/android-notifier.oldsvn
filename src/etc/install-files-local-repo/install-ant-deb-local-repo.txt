@@ -1,0 +1,3 @@
+#instructions Download jar file manually from http://code.google.com/p/ant-deb-task/ and execute
+
+mvn install:install-file -DgroupId=com.googlecode.ant_deb_task -DartifactId=ant_deb_task -Dversion=0.0.1 -Dpackaging=jar -Dfile=ant-deb-0.0.1.jar

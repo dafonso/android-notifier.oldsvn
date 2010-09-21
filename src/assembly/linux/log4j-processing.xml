@@ -1,0 +1,6 @@
+<processor>
+	<modify>
+		<name>log4j.appender.LogFile.File</name>
+		<value>${user.home}/.local/share/android-notifier-desktop/android-notifier-desktop.log</value>
+	</modify>
+</processor>

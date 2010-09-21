@@ -1,0 +1,13 @@
+Windows goals:
+clean assembly:assembly build-helper:parse-version com.akathist.maven.plugins.launch4j:launch4j-maven-plugin:launch4j nsis:generate-project nsis:compile -Pwindows-x86,!windows-x86_64
+
+MacOSX:
+clean package assembly:assembly osxappbundle:bundle -Pmac-x86,!mac-x86_64
+
+Linux:
+clean assembly:assembly build-helper:parse-version antrun:run rpm:rpm -Plinux-gtk-x86,!linux-gtk-x86_64,fedora-x86,!fedora-x86_64,!linux-zip-x86,!linux-zip-x86_64
+
+- fedora profile is only necessary if generating RPMs for Fedora Linux)
+- linux-zip profiles builds should not execute antrun plugin 
+
+* Packages.gz generation: dpkg-scanpackages binary-i386 /dev/null | gzip -9c >> Packages.gz
