@@ -1,0 +1,26 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0 http://maven.apache.org/xsd/assembly-1.1.0.xsd">
+	<id>linux</id>
+	<formats>
+		<format>dir</format>
+	</formats>
+	<baseDirectory>${project.artifactId}</baseDirectory>
+	<files>
+		<file>
+            <source>${project.build.directory}/${project.build.finalName}.jar</source>
+            <destName>${project.artifactId}.jar</destName>
+            <fileMode>0755</fileMode>
+		</file>
+		<file>
+			<source>src/assembly/linux/run.sh</source>
+			<outputDirectory>../../</outputDirectory>
+			<lineEnding>unix</lineEnding>
+		</file>
+	</files>
+	<dependencySets>
+		<dependencySet>
+			<outputDirectory>lib</outputDirectory>
+			<useProjectArtifact>false</useProjectArtifact>
+		</dependencySet>
+	</dependencySets>
+</assembly>

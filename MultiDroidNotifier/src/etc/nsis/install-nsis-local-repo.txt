@@ -1,0 +1,1 @@
+mvn install:install-file -DpomFile=pom.xml -Dfile=nsis-maven-plugin-1.0.jar
