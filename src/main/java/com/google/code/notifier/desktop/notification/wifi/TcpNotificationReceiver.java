@@ -53,7 +53,15 @@ public class TcpNotificationReceiver extends AbstractNotificationReceiver {
 		bootstrap.setOption("child.tcpNoDelay", true);
 		bootstrap.setOption("child.keepAlive", true);
 
-		allChannels.add(bootstrap.bind(new InetSocketAddress(PORT)));
+		try {
+			allChannels.add(bootstrap.bind(new InetSocketAddress(PORT)));
+		} catch (ChannelException e) {
+			// Don't propagate bind exceptions because the user may start
+			// AND from two user sessions in his OS
+			if (!(e.getCause() instanceof BindException)) {
+				throw e;
+			}
+		}
 	}
 
 	@Override
