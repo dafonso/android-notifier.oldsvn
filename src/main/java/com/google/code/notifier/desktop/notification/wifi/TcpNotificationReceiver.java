@@ -24,12 +24,15 @@ import org.jboss.netty.bootstrap.*;
 import org.jboss.netty.channel.*;
 import org.jboss.netty.channel.group.*;
 import org.jboss.netty.channel.socket.nio.*;
+import org.slf4j.*;
 
 import com.google.code.notifier.desktop.notification.*;
 
 public class TcpNotificationReceiver extends AbstractNotificationReceiver {
 
 	public static final String NAME = "TCP";
+
+	private static final Logger logger = LoggerFactory.getLogger(TcpNotificationReceiver.class);
 
 	private ChannelGroup allChannels;
 	private ChannelFactory factory;
@@ -58,7 +61,9 @@ public class TcpNotificationReceiver extends AbstractNotificationReceiver {
 		} catch (ChannelException e) {
 			// Don't propagate bind exceptions because the user may start
 			// AND from two user sessions in his OS
-			if (!(e.getCause() instanceof BindException)) {
+			if (e.getCause() instanceof BindException) {
+				logger.warn("Failed to bind to TCP port, there can be only one program bound to a given port, dont worry, you will still be able to get UDP notifications", e);
+			} else {
 				throw e;
 			}
 		}
