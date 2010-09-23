@@ -28,7 +28,7 @@ import com.google.code.notifier.desktop.*;
 
 public class NotificationPipelineFactory implements ChannelPipelineFactory {
 
-	public static final int MAX_MESSAGE_LENGTH = 1024;
+	public static final int MAX_MESSAGE_LENGTH = 100 * 1024;
 	public static final ChannelBuffer MESSAGE_DELIMITER = ChannelBuffers.wrappedBuffer(new byte[] { 0 });
 	public static final int READ_TIMEOUT = 30;
 
@@ -37,19 +37,23 @@ public class NotificationPipelineFactory implements ChannelPipelineFactory {
 	private final NotificationManager notificationManager;
 	private final NotificationParser<String> notificationParser;
 	private final boolean hasTimeout;
+	private final boolean useDelimiter;
 
-	public NotificationPipelineFactory(ChannelGroup channelGroup, Application application, NotificationManager notificationManager, NotificationParser<String> notificationParser, boolean hasTimeout) {
+	public NotificationPipelineFactory(ChannelGroup channelGroup, Application application, NotificationManager notificationManager, NotificationParser<String> notificationParser, boolean hasTimeout, boolean useDelimiter) {
 		this.channelGroup = channelGroup;
 		this.application = application;
 		this.notificationManager = notificationManager;
 		this.notificationParser = notificationParser;
 		this.hasTimeout = hasTimeout;
+		this.useDelimiter = useDelimiter;
 	}
 
 	@Override
 	public ChannelPipeline getPipeline() throws Exception {
 		ChannelPipeline pipeline = Channels.pipeline();
-		pipeline.addLast("delimiter", new DelimiterBasedFrameDecoder(MAX_MESSAGE_LENGTH, MESSAGE_DELIMITER));
+		if (useDelimiter) {
+			pipeline.addLast("delimiter", new DelimiterBasedFrameDecoder(MAX_MESSAGE_LENGTH, MESSAGE_DELIMITER));
+		}
 
 		if (hasTimeout) {
 			Timer timer = new HashedWheelTimer();
