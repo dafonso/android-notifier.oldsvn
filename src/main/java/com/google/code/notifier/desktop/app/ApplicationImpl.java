@@ -53,6 +53,7 @@ public class ApplicationImpl implements Application {
 
 	private @Inject @Tcp NotificationReceiver tcpReceiver;
 	private @Inject @Udp NotificationReceiver udpReceiver;
+	private @Inject @Upnp NotificationReceiver upnpReceiver;
 	private @Inject @Bluetooth NotificationReceiver bluetoothReceiver;
 
 	private @Inject NotificationManager notificationManager;
@@ -129,6 +130,11 @@ public class ApplicationImpl implements Application {
 		ok |= adjustLifecycle(udpReceiver, enabled, RECEIVER);
 
 		return ok;
+	}
+
+	@Override
+	public boolean adjustUpnpReceiver(boolean enabled) {
+		return adjustLifecycle(upnpReceiver, enabled, RECEIVER);
 	}
 
 	@Override
@@ -319,6 +325,7 @@ public class ApplicationImpl implements Application {
 	protected Map<NotificationReceiver, Boolean> getReceivers(ApplicationPreferences preferences) {
 		return ImmutableMap.of(tcpReceiver, preferences.isReceptionWithWifi(),
 							   udpReceiver, preferences.isReceptionWithWifi(),
+							   upnpReceiver, preferences.isReceptionWithUpnp(),
 							   bluetoothReceiver, preferences.isReceptionWithBluetooth());
 	}
 
