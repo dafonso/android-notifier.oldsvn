@@ -75,6 +75,8 @@ public class UpnpNotificationReceiver extends AbstractNotificationReceiver {
 						} else {
 							logger.info("Another device mapped port [{}] before me, cannot map port", PORT);
 						}
+					} else {
+						logger.info("No upnp internet devices found");
 					}
 				} catch (IOException e) {
 					logger.error("Error communicating with upnp internet devices", e);
