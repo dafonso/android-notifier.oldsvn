@@ -119,12 +119,12 @@ public class PreferencesDialog extends Dialog {
 			startAtLoginCheckboxLData.horizontalIndent = 5;
 			startAtLoginCheckbox.setLayoutData(startAtLoginCheckboxLData);
 			startAtLoginCheckbox.setText("Start at login");
-			startAtLoginCheckbox.setToolTipText("Start Android Notifier Desktop when you login (Windows-only)");
+			startAtLoginCheckbox.setToolTipText("Start Android Notifier Desktop when you login");
 			startAtLoginCheckbox.setSelection(preferences.isStartAtLogin());
 			startAtLoginCheckbox.addListener(SWT.Selection, new Listener() {
 				@Override
 				public void handleEvent(Event event) {
-					if (OperatingSystems.CURRENT_FAMILY != Family.WINDOWS) {
+					if (OperatingSystems.CURRENT_FAMILY == Family.MAC) {
 						Dialogs.showError(swtManager, "Start at Login Support", "Please, use your system Startup Manager to start me at login.", false);
 						startAtLoginCheckbox.setSelection(false);
 					} else {
