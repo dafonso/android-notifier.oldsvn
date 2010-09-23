@@ -225,7 +225,7 @@ public class PreferencesDialog extends Dialog {
 			GridData internetCheckboxLData = new GridData();
 			internetCheckboxLData.horizontalIndent = 5;
 			internetCheckbox.setLayoutData(internetCheckboxLData);
-			internetCheckbox.setText("Internet");
+			internetCheckbox.setText("Internet (UPnP)");
 			internetCheckbox.setSelection(preferences.isReceptionWithUpnp());
 			internetCheckbox.setToolTipText("Make " + Application.NAME + " configure port forwarding automatically in your router to get notifications over cell network, see Setup wiki page for more information");
 			internetCheckbox.setEnabled(preferences.isReceptionWithWifi());
