@@ -1,0 +1,4 @@
+#instructions Download UPNPLib 1.0.4 zip file manually from http://www.sbbi.net/site/toys/download.html and execute the following command inside libs
+
+#file sbbi-upnplib-1.0.4.jar
+mvn install:install-file -DgroupId=net.sbbi.upnp -DartifactId=upnplib -Dversion=1.0.4 -Dpackaging=jar -Dfile=sbbi-upnplib-1.0.4.jar
