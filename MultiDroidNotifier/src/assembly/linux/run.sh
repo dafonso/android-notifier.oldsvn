@@ -14,4 +14,4 @@ if [ -d  ~/.java/.userPrefs/com/google/code/notifier ]; then
   rm -fr ~/.java/.userPrefs/com/google/code/notifier
 fi
 
-java -Djava.util.prefs.userRoot=$configDir/android-notifier-desktop -Djava.net.preferIPv4Stack=true -client -Xms8m -Xmx32m -jar /usr/share/android-notifier-desktop/android-notifier-desktop.jar $1
+java -DconfigDir=$configDir -Djava.util.prefs.userRoot=$configDir/android-notifier-desktop -Djava.net.preferIPv4Stack=true -client -Xms8m -Xmx32m -jar /usr/share/android-notifier-desktop/android-notifier-desktop.jar $1
