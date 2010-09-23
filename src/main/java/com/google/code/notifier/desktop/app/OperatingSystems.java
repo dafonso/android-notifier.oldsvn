@@ -32,6 +32,9 @@ public class OperatingSystems {
 	private static final String WINDOWS_EXE = System.getProperty("launch4j.exefile", Application.ARTIFACT_ID + ".exe");
 	private static final String WINDOWS_SHORTCUT = Application.ARTIFACT_ID + ".lnk";
 
+	private static final String LINUX_APPLICATIONS_DIR = "/usr/share/applications";
+	private static final String LINUX_DESKTOP_FILE = Application.ARTIFACT_ID + ".desktop";
+
 	private static final String WINDOWS_LINE_DELIMITER = "\r\n";
 	private static final String UNIX_LINE_DELIMITER = "\n";
 
@@ -50,9 +53,10 @@ public class OperatingSystems {
 				addToWindowsStartup();
 				break;
 			case MAC:
+				// Not supported
 				break;
 			case LINUX:
-				// linux is a horrible mess on desktop, do nothing
+				addToLinuxStartup();
 				break;
 			default:
 				throw new IllegalStateException("Unknown family: " + CURRENT_FAMILY);
@@ -65,9 +69,10 @@ public class OperatingSystems {
 				removeFromWindowsStartup();
 				break;
 			case MAC:
+				// Not supported
 				break;
 			case LINUX:
-				// linux is a horrible mess on desktop, do nothing
+				removeFromLinuxStartup();
 				break;
 			default:
 				throw new IllegalStateException("Unknown family: " + CURRENT_FAMILY);
@@ -219,6 +224,33 @@ public class OperatingSystems {
 		return new File("C:\\Users\\" + username + "\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup");
 	}
 
+	private static void addToLinuxStartup() throws IOException {
+		File startupDir = getLinuxStartupDir();
+		File desktopFile = new File(LINUX_APPLICATIONS_DIR, LINUX_DESKTOP_FILE);
+		if (!desktopFile.isFile()) {
+			throw new IOException("Could not find .desktop file");
+		}
+		File targetFile = new File(startupDir, LINUX_DESKTOP_FILE);
+		Files.copy(desktopFile, targetFile);
+	}
+
+	private static void removeFromLinuxStartup() throws IOException {
+		File startupDir = getLinuxStartupDir();
+		File targetFile = new File(startupDir, LINUX_DESKTOP_FILE);
+		if (targetFile.exists() && !targetFile.delete()) {
+			throw new IOException("Could not delete .desktop file from autostart directory");
+		}
+	}
+
+	private static File getLinuxStartupDir() throws IOException {
+		String configDir = System.getProperty("configDir");
+		File startupDir = new File(configDir, "autostart");
+		if (!startupDir.isDirectory()) {
+			throw new IOException("Could not find autostart directory");
+		}
+		return startupDir;
+	}
+
 	static File getMacStartupDir() throws IOException {
 		String userHome = System.getProperty("user.home");
 		File startupDir = new File(userHome + "/Library/LaunchAgents");
@@ -227,5 +259,4 @@ public class OperatingSystems {
 		}
 		return startupDir;
 	}
-
 }
