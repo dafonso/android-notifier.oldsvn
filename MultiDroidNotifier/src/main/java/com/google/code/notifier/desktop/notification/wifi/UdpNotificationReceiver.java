@@ -48,7 +48,7 @@ public class UdpNotificationReceiver extends AbstractNotificationReceiver {
 	public void doStart() {
 		factory = new OioDatagramChannelFactory(Executors.newCachedThreadPool());
 		bootstrap = new ConnectionlessBootstrap(factory);
-		bootstrap.setPipelineFactory(new NotificationPipelineFactory(allChannels, getApplication(), getNotificationManager(), getNotificationParser(), false));
+		bootstrap.setPipelineFactory(new NotificationPipelineFactory(allChannels, getApplication(), getNotificationManager(), getNotificationParser(), false, false));
 		bootstrap.bind(new InetSocketAddress(PORT));
 	}
 
