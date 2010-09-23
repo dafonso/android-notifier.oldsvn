@@ -28,6 +28,7 @@ public class ApplicationPreferences {
 
 	private static final String START_AT_LOGIN = "startAtLogin";
 	private static final String RECEPTION_WITH_WIFI = "receptionWithWifi";
+	private static final String RECEPTION_WITH_UPNP = "receptionWithUpnp";
 	private static final String RECEPTION_WITH_BLUETOOTH = "receptionWithBluetooth";
 	private static final String RECEPTION_WITH_USB = "receptionWithUsb";
 	private static final String DISPLAY_WITH_SYSTEM_DEFAULT = "displayWithSystemDefault";
@@ -46,6 +47,7 @@ public class ApplicationPreferences {
 	private boolean startAtLogin;
 
 	private boolean receptionWithWifi;
+	private boolean receptionWithUpnp;
 	private boolean receptionWithBluetooth;
 	private boolean receptionWithUsb;
 
@@ -67,6 +69,7 @@ public class ApplicationPreferences {
 		Preferences prefs = Preferences.userNodeForPackage(ApplicationPreferences.class);
 		startAtLogin = prefs.getBoolean(START_AT_LOGIN, false);
 		receptionWithWifi = prefs.getBoolean(RECEPTION_WITH_WIFI, true);
+		receptionWithUpnp = prefs.getBoolean(RECEPTION_WITH_UPNP, false);
 		receptionWithBluetooth = prefs.getBoolean(RECEPTION_WITH_BLUETOOTH, false);
 		receptionWithUsb = prefs.getBoolean(RECEPTION_WITH_USB, false);
 		displayWithSystemDefault = prefs.getBoolean(DISPLAY_WITH_SYSTEM_DEFAULT, true);
@@ -98,6 +101,7 @@ public class ApplicationPreferences {
 		Preferences prefs = Preferences.userNodeForPackage(ApplicationPreferences.class);
 		prefs.putBoolean(START_AT_LOGIN, startAtLogin);
 		prefs.putBoolean(RECEPTION_WITH_WIFI, receptionWithWifi);
+		prefs.putBoolean(RECEPTION_WITH_UPNP, receptionWithUpnp);
 		prefs.putBoolean(RECEPTION_WITH_BLUETOOTH, receptionWithBluetooth);
 		prefs.putBoolean(RECEPTION_WITH_USB, receptionWithUsb);
 		prefs.putBoolean(DISPLAY_WITH_SYSTEM_DEFAULT, displayWithSystemDefault);
@@ -193,6 +197,14 @@ public class ApplicationPreferences {
 		this.receptionWithWifi = receptionWithWifi;
 	}
 
+	public boolean isReceptionWithUpnp() {
+		return receptionWithUpnp;
+	}
+
+	public void setReceptionWithUpnp(boolean receptionWithUpnp) {
+		this.receptionWithUpnp = receptionWithUpnp;
+	}
+
 	public boolean isReceptionWithBluetooth() {
 		return receptionWithBluetooth;
 	}
@@ -256,6 +268,8 @@ public class ApplicationPreferences {
 		builder.append(startAtLogin);
 		builder.append(", receptionWithWifi=");
 		builder.append(receptionWithWifi);
+		builder.append(", receptionWithUpnp=");
+		builder.append(receptionWithUpnp);
 		builder.append(", receptionWithBluetooth=");
 		builder.append(receptionWithBluetooth);
 		builder.append(", receptionWithUsb=");

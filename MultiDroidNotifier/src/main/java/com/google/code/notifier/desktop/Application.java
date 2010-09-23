@@ -20,7 +20,6 @@ package com.google.code.notifier.desktop;
 public interface Application {
 
 	String NAME = "Android Notifier";
-	String FULL_NAME = NAME + " Desktop";
 	String ARTIFACT_ID = "android-notifier-desktop";
 	String ICON_NAME = "icon.png";
 	String ICON_NAME_MAC = "icon-mac.png";
@@ -33,6 +32,8 @@ public interface Application {
 	boolean adjustStartAtLogin(boolean enabled, boolean silent);
 
 	boolean adjustWifiReceiver(boolean enabled);
+
+	boolean adjustUpnpReceiver(boolean enabled);
 
 	boolean adjustBluetoothReceiver(boolean enabled);
 

@@ -31,6 +31,7 @@ import com.google.code.notifier.desktop.app.*;
 import com.google.code.notifier.desktop.notification.*;
 import com.google.code.notifier.desktop.notification.bluetooth.*;
 import com.google.code.notifier.desktop.notification.broadcast.*;
+import com.google.code.notifier.desktop.notification.upnp.*;
 import com.google.code.notifier.desktop.notification.wifi.*;
 import com.google.code.notifier.desktop.parsing.*;
 import com.google.code.notifier.desktop.service.*;
@@ -77,18 +78,18 @@ public class Main {
 			if (line.hasOption(IS_RUNNING_SHORT)) {
 				ServiceClient client = new ServiceClientImpl();
 				if (client.isRunning()) {
-					showMessage(Application.FULL_NAME + " is running");
+					showMessage(Application.NAME + " is running");
 				} else {
-					showMessage(Application.FULL_NAME + " is not running");
+					showMessage(Application.NAME + " is not running");
 				}
 				return;
 			}
 			if (line.hasOption(STOP_SHORT)) {
 				ServiceClient client = new ServiceClientImpl();
 				if (client.stop()) {
-					showMessage("Sent stop signal to " + Application.FULL_NAME + " successfully");
+					showMessage("Sent stop signal to " + Application.NAME + " successfully");
 				} else {
-					showMessage(Application.FULL_NAME + " is not running or an error occurred, see log for details");
+					showMessage(Application.NAME + " is not running or an error occurred, see log for details");
 				}
 				return;
 			}
@@ -97,7 +98,7 @@ public class Main {
 			boolean showPreferences = line.hasOption(SHOW_PREFERENCES_SHORT);
 
 			if (!getExclusiveExecutionLock()) {
-				showMessage("There can be only one instance of " + Application.FULL_NAME + " running at a time");
+				showMessage("There can be only one instance of " + Application.NAME + " running at a time");
 				return;
 			}
 			Injector injector = Guice.createInjector(Stage.PRODUCTION, new Module());
@@ -122,6 +123,7 @@ public class Main {
 
 			bind(NotificationReceiver.class).annotatedWith(Tcp.class).to(TcpNotificationReceiver.class).in(Singleton.class);
 			bind(NotificationReceiver.class).annotatedWith(Udp.class).to(UdpNotificationReceiver.class).in(Singleton.class);
+			bind(NotificationReceiver.class).annotatedWith(Upnp.class).to(UpnpNotificationReceiver.class).in(Singleton.class);
 			bind(NotificationReceiver.class).annotatedWith(Bluetooth.class).to(BluetoothNotificationReceiver.class).in(Singleton.class);
 
 			bind(TrayManager.class).to(SwtTrayManager.class).in(Singleton.class);
@@ -145,7 +147,7 @@ public class Main {
 		options.addOption(NO_TRAY_SHORT, NO_TRAY_LONG, false, "don't show tray icon (System default notification display will not be shown)");
 		options.addOption(SHOW_PREFERENCES_SHORT, SHOW_PREFERENCES_LONG, false, "show preferences window immediately");
 		options.addOption(IS_RUNNING_SHORT, IS_RUNNING_LONG, false, "show running status");
-		options.addOption(STOP_SHORT, STOP_LONG, false, "stop " + Application.FULL_NAME + " if it's running");
+		options.addOption(STOP_SHORT, STOP_LONG, false, "stop " + Application.NAME + " if it's running");
 		options.addOption(HELP_SHORT, HELP_LONG, false, "show help information");
 		return options;
 	}
@@ -200,7 +202,7 @@ public class Main {
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
-						Dialogs.showInfo(swtManager, Application.FULL_NAME, msg, true);
+						Dialogs.showInfo(swtManager, Application.NAME, msg, true);
 						try {
 							SECONDS.sleep(5);
 						} catch (InterruptedException e) {

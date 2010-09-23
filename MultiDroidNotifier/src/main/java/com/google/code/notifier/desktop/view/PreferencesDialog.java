@@ -49,6 +49,7 @@ public class PreferencesDialog extends Dialog {
 
 	private Group notificationReceptionMethodsGroup;
 	private Button wifiCheckbox;
+	private Button internetCheckbox;
 	private Button bluetoothCheckbox;
 	// private Button usbCheckbox; USB notifications are not yet supported by the android app
 
@@ -190,6 +191,18 @@ public class PreferencesDialog extends Dialog {
 					new Thread(new Runnable() {
 						@Override
 						public void run() {
+							if (!enabled && preferences.isReceptionWithUpnp()) {
+								application.adjustUpnpReceiver(false);
+								preferences.setReceptionWithUpnp(false);
+								swtManager.update(new Runnable() {
+									@Override
+									public void run() {
+										if (!internetCheckbox.isDisposed()) {
+											internetCheckbox.setSelection(false);
+										}
+									}
+								});
+							}
 							if (application.adjustWifiReceiver(enabled)) {
 								preferences.setReceptionWithWifi(enabled);
 							} else {
@@ -205,6 +218,45 @@ public class PreferencesDialog extends Dialog {
 							}
 						}
 					}, PREF_CHANGE_THREAD_NAME).start();
+				}
+			});
+
+			internetCheckbox = new Button(notificationReceptionMethodsGroup, SWT.CHECK | SWT.LEFT);
+			GridData internetCheckboxLData = new GridData();
+			internetCheckboxLData.horizontalIndent = 5;
+			internetCheckbox.setLayoutData(internetCheckboxLData);
+			internetCheckbox.setText("Internet");
+			internetCheckbox.setSelection(preferences.isReceptionWithUpnp());
+			internetCheckbox.setToolTipText("Make " + Application.NAME + " configure port forwarding automatically in your router to get notifications over cell network, see Setup wiki page for more information");
+			internetCheckbox.setEnabled(preferences.isReceptionWithWifi());
+			internetCheckbox.addListener(SWT.Selection, new Listener() {
+				@Override
+				public void handleEvent(Event event) {
+					final boolean enabled = internetCheckbox.getSelection();
+					new Thread(new Runnable() {
+						@Override
+						public void run() {
+							if (application.adjustUpnpReceiver(enabled)) {
+								preferences.setReceptionWithUpnp(enabled);
+							} else {
+								preferences.setReceptionWithUpnp(!enabled);
+								swtManager.update(new Runnable() {
+									@Override
+									public void run() {
+										if (!internetCheckbox.isDisposed()) {
+											internetCheckbox.setSelection(!enabled);
+										}
+									}
+								});
+							}
+						}
+					}, PREF_CHANGE_THREAD_NAME).start();
+				}
+			});
+			wifiCheckbox.addListener(SWT.Selection, new Listener() {
+				@Override
+				public void handleEvent(Event event) {
+					internetCheckbox.setEnabled(wifiCheckbox.getSelection());
 				}
 			});
 
