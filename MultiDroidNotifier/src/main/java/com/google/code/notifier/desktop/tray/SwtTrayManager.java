@@ -28,7 +28,6 @@ import org.eclipse.swt.widgets.*;
 import com.google.code.notifier.desktop.*;
 import com.google.code.notifier.desktop.app.*;
 import com.google.code.notifier.desktop.view.*;
-import com.google.common.base.*;
 import com.google.inject.*;
 
 public class SwtTrayManager implements TrayManager {
@@ -147,7 +146,7 @@ public class SwtTrayManager implements TrayManager {
 				if (!swtManager.getShell().isDisposed()) {
 					ToolTip tip = new ToolTip(swtManager.getShell(), SWT.BALLOON | SWT.ICON_INFORMATION);
 					tip.setText(notification.getTitle(""));
-					tip.setMessage(Strings.nullToEmpty(notification.getDescription()));
+					tip.setMessage(notification.getDescription() == null ? "No description" : notification.getDescription());
 					trayItem.setToolTip(tip);
 					tip.setVisible(true);
 				}
