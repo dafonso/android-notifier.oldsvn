@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.util.Base64;
 import android.util.Log;
 
 /**
@@ -269,7 +270,21 @@ public class NotifierPreferences {
     return preferences.getBoolean(context.getString(R.string.enable_encryption_key), false);
   }
 
-  public String getEncryptionPassphrase() {
-    return preferences.getString(context.getString(R.string.encryption_pass_key), "");
+  /**
+   * @return the notification encryption key, or null if one is not defined
+   */
+  public byte[] getEncryptionKey() {
+    String base64Key = preferences.getString(
+        context.getString(R.string.encryption_pass_key), "");
+    if (base64Key.length() == 0) {
+      return null;
+    }
+
+    try {
+      return Base64.decode(base64Key, Base64.DEFAULT);
+    } catch (IllegalArgumentException e) {
+      Log.e(NotifierConstants.LOG_TAG, "Failed to read encryption key from '" + base64Key + "'.");
+      return null;
+    }
   }
 }
