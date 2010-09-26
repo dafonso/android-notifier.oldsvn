@@ -94,10 +94,17 @@ const NSUInteger kLastNotificationCount = 10;
   NSString* passPhrase = [passPhraseStorage passPhrase];
   if ([passPhrase length] == 0) return nil;
 
-  // Hash the passphrase to get the key
+  // Hash the passphrase multiple times to get the key
+  // There's no need to store the hashed version since the system keychain
+  // is already assumed secure.
   NSData* keyData = [passPhrase dataUsingEncoding:NSUTF8StringEncoding];
   unsigned char keyHash[CC_MD5_DIGEST_LENGTH];
   CC_MD5([keyData bytes], (CC_LONG) [keyData length], keyHash);
+  unsigned char newKeyHash[CC_MD5_DIGEST_LENGTH];
+  for (int i = 0; i < 9; i++) {
+    CC_MD5(keyHash, CC_MD5_DIGEST_LENGTH, newKeyHash);
+    memcpy(keyHash, newKeyHash, CC_MD5_DIGEST_LENGTH);
+  }
 
   // Initialization vector, also based on the key
   unsigned char iv[CC_MD5_DIGEST_LENGTH];
@@ -168,6 +175,7 @@ const NSUInteger kLastNotificationCount = 10;
     // Didn't work, try decrypting it if enabled
     NSData *decryptedData = [self decryptNotificationData:data];
     if (decryptedData != nil) {
+      NSLog(@"Got encrypted notification");
       [self handlePlainNotificationData:decryptedData];
     }
   }
