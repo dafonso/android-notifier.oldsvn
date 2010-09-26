@@ -14,4 +14,9 @@
     <attr name="listDelimiter" format="string" />
     <attr name="allowDuplicates" format="boolean" />
   </declare-styleable>
+
+  <declare-styleable name="EncodedPasswordPreference">
+    <attr name="numHashes" format="integer" />
+    <attr name="hashAlgorithm" format="string" />
+  </declare-styleable>
 </resources>

@@ -78,7 +78,7 @@
     <string name="enable_encryption_summary_off">Notifications will NOT be encrypted. Malicious users may be able to intercept or forge them.</string>
     <string name="encryption_pass">Passphrase</string>
     <string name="encryption_pass_summary">The password used to encrypt notifications.</string>
-    <string name="encryption_pass_entry">Please choose a pass phrase to encrypt notifications with. This must be the same as on the desktop application.\n</string>
+    <string name="encryption_pass_entry">Please enter a new pass phrase to encrypt notifications with. This must be the same as on the desktop application.\n</string>
 
     <!-- Event types -->
     <string name="events_title">Events to notify</string>
