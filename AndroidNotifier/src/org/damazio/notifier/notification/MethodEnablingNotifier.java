@@ -43,18 +43,20 @@ abstract class MethodEnablingNotifier<T> extends CountDownTimer {
   @Override
   public void onTick(long millisUntilFinished) {
     if (!notificationSent && isMediumReady()) {
-      Log.d(NotifierConstants.LOG_TAG, "Method " + method.getName()
-          + " connected, sending delayed notification after "
-          + (MAX_MEDIUM_WAIT_TIME_MS - millisUntilFinished) + "ms");
-
-      // Ignore next ticks
-      cancel();
-      notificationSent = true;
-
-      // Send notification
-      method.sendNotification(payload, target, callback, isForeground);
-
-      restorePreviousEnabledState();
+      try {
+        Log.d(NotifierConstants.LOG_TAG, "Method " + method.getName()
+            + " connected, sending delayed notification after "
+            + (MAX_MEDIUM_WAIT_TIME_MS - millisUntilFinished) + "ms");
+  
+        // Ignore next ticks
+        cancel();
+        notificationSent = true;
+  
+        // Send notification
+        method.sendNotification(payload, target, callback, isForeground);
+      } finally {
+        restorePreviousEnabledState();
+      }
     }
   }
 
@@ -65,8 +67,11 @@ abstract class MethodEnablingNotifier<T> extends CountDownTimer {
 
     if (!notificationSent) {
       Log.e(NotifierConstants.LOG_TAG, "Timed out while waiting for medium to connect");
-      callback.notificationDone(target, null);
-      restorePreviousEnabledState();
+      try {
+        callback.notificationDone(target, null);
+      } finally {
+        restorePreviousEnabledState();
+      }
     }
   }
 
