@@ -1,4 +1,4 @@
-package org.damazio.notifier.notification;
+package org.damazio.notifier.util;
 
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
@@ -15,6 +15,9 @@ import android.util.Log;
 
 /**
  * Helper class for encrypting and decrypting payloads using arbitrary string passphrases.
+ * This requires converting the passphrase into a byte array key.
+ * This class also includes utilities for encoding that byte array in a string-safe way
+ * for storage.
  *
  * @author rdamazio
  */
@@ -26,7 +29,16 @@ public class Encryption {
   private final SecretKeySpec keySpec;
   private final byte[] iv;
 
-  public Encryption(String passphrase) {
+  /**
+   * Converts a user-entered pass phrase into a hashed binary value which is
+   * used as the encryption key.
+   * @param hashAlgorithm 
+   */
+  public static byte[] passPhraseToKey(String passphrase, String hashAlgorithm, int numHashes) {
+    if (numHashes < 1) {
+      throw new IllegalArgumentException("Need a positive hash count");
+    }
+
     byte[] passPhraseBytes;
     try {
       passPhraseBytes = passphrase.getBytes("UTF8");
@@ -34,8 +46,18 @@ public class Encryption {
       throw new IllegalArgumentException(e);
     }
 
-    byte[] keyBytes = doMD5(passPhraseBytes);
-    iv = doMD5(keyBytes);
+    // Hash it multiple times to keep the paranoid people happy :)
+    byte[] keyBytes = passPhraseBytes;
+    for (int i = 0; i < numHashes; i++) {
+      keyBytes = doDigest(keyBytes, hashAlgorithm);
+    }
+
+    return keyBytes;
+  }
+
+  public Encryption(byte[] keyBytes) {
+    // Use an MD5 to generate an arbitrary initialization vector
+    iv = doDigest(keyBytes, "MD5");
     keySpec = new SecretKeySpec(keyBytes, ENCRYPTION_KEY_TYPE);
   }
 
@@ -53,14 +75,14 @@ public class Encryption {
     return cipher.doFinal(original);
   }
 
-  private byte[] doMD5(byte[] data) {
+  private static byte[] doDigest(byte[] data, String algorithm) {
     try {
-      MessageDigest md = MessageDigest.getInstance("MD5");
+      MessageDigest md = MessageDigest.getInstance(algorithm);
       md.update(data);
       return md.digest();
     } catch (NoSuchAlgorithmException e) {
       Log.e(NotifierConstants.LOG_TAG, "Algorithm not available", e);
-      return null;
+      throw new IllegalArgumentException(e);
     }
   }
 }

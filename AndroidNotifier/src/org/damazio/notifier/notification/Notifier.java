@@ -2,12 +2,12 @@ package org.damazio.notifier.notification;
 
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
-import java.util.Arrays;
 import java.util.Set;
 
 import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.NotifierPreferences;
 import org.damazio.notifier.notification.NotificationMethod.NotificationCallback;
+import org.damazio.notifier.util.Encryption;
 
 import android.content.Context;
 import android.os.Looper;
@@ -71,6 +71,12 @@ public class Notifier {
     }
   }
 
+  /**
+   * Serializes the notification into a byte array, applying all necessary transformations.
+   *
+   * @param notification the notification to serialize
+   * @return the serialized version
+   */
   private byte[] serializeNotification(Notification notification) {
     byte[] payload;
     try {
@@ -82,15 +88,33 @@ public class Notifier {
     payload = addDelimiter(payload);
 
     // Encrypt the payload if requested
-    if (preferences.isEncryptionEnabled()) {
-      Encryption encryption = new Encryption(preferences.getEncryptionPassphrase());
-      try {
-        payload = encryption.encrypt(payload);
-        Log.d(NotifierConstants.LOG_TAG, "Encrypted payload: " + Arrays.toString(payload));
-      } catch (GeneralSecurityException e) {
-        Log.e(NotifierConstants.LOG_TAG, "Unable to encrypt payload, aborting", e);
-        return null;
-      }
+    payload = maybeEncrypt(payload);
+
+    return payload;
+  }
+
+  /**
+   * Encrypts the given payload if the configuration has requested it.
+   *
+   * @param payload the payload to encrypt
+   * @return the encrypted payload
+   */
+  private byte[] maybeEncrypt(byte[] payload) {
+    if (!preferences.isEncryptionEnabled()) {
+      return payload;
+    }
+
+    byte[] encryptionKey = preferences.getEncryptionKey();
+    if (encryptionKey == null) {
+      Log.w(NotifierConstants.LOG_TAG, "No encryption key specified");
+      return payload;
+    }
+
+    Encryption encryption = new Encryption(encryptionKey);
+    try {
+      return encryption.encrypt(payload);
+    } catch (GeneralSecurityException e) {
+      Log.e(NotifierConstants.LOG_TAG, "Unable to encrypt payload", e);
     }
 
     return payload;

@@ -16,16 +16,13 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
-import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.provider.Settings;
-import android.text.InputType;
 import android.util.Log;
-import android.widget.EditText;
 import android.widget.Toast;
 
 /**
@@ -373,15 +370,6 @@ public class NotifierMain extends PreferenceActivity {
         return true;
       }
     });
-
-    // Set up the passphrase entry box
-    EditTextPreference encryptionPassPreference =
-        (EditTextPreference) findPreference(getString(R.string.encryption_pass_key));
-    EditText encryptionPassEditText = encryptionPassPreference.getEditText();
-    encryptionPassEditText.setInputType(
-        InputType.TYPE_CLASS_TEXT |
-        InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS |
-        InputType.TYPE_TEXT_VARIATION_PASSWORD);
   }
 
   /**
