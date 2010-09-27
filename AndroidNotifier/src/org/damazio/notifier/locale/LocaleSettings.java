@@ -96,6 +96,7 @@ public class LocaleSettings {
 
   private void appendOnOffKeepBlurb(int blurbRes, OnOffKeep value,
       StringBuilder blurbBuilder) {
+    // TODO: Proper i18n here
     switch (value) {
       case ON:
         blurbBuilder.append(
