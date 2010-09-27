@@ -138,23 +138,6 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                         android:enabled="false" />
   </PreferenceScreen>
 
-  <!-- Security -->
-  <PreferenceScreen android:title="@string/security_title">
-    <CheckBoxPreference android:key="@string/enable_encryption_key"
-                        android:title="@string/enable_encryption"
-                        android:summaryOn="@string/enable_encryption_summary_on"
-                        android:summaryOff="@string/enable_encryption_summary_off"
-                        android:defaultValue="false" />
-    <org.damazio.notifier.EncodedPasswordPreference
-                        android:key="@string/encryption_pass_key"
-                        android:title="@string/encryption_pass"
-                        android:summary="@string/encryption_pass_summary"
-                        android:dialogTitle="@string/encryption_pass"
-                        android:dialogMessage="@string/encryption_pass_entry"
-                        android:dependency="@string/enable_encryption_key"
-                        app:numHashes="10" />
-  </PreferenceScreen>
-
   <!-- Events -->
   <PreferenceScreen android:title="@string/events_title">
     <CheckBoxPreference android:key="@string/event_ring_key"
@@ -257,6 +240,23 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   </PreferenceScreen>
   -->
+
+  <!-- Security -->
+  <PreferenceScreen android:title="@string/security_title">
+    <CheckBoxPreference android:key="@string/enable_encryption_key"
+                        android:title="@string/enable_encryption"
+                        android:summaryOn="@string/enable_encryption_summary_on"
+                        android:summaryOff="@string/enable_encryption_summary_off"
+                        android:defaultValue="false" />
+    <org.damazio.notifier.EncodedPasswordPreference
+                        android:key="@string/encryption_pass_key"
+                        android:title="@string/encryption_pass"
+                        android:summary="@string/encryption_pass_summary"
+                        android:dialogTitle="@string/encryption_pass"
+                        android:dialogMessage="@string/encryption_pass_entry"
+                        android:dependency="@string/enable_encryption_key"
+                        app:numHashes="10" />
+  </PreferenceScreen>
 
   <!-- Misc -->
   <PreferenceCategory android:title="@string/misc_title">
