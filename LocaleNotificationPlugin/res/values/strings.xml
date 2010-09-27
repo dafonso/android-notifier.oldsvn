@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="app_name">Remote Notification Locale Plugin</string>
+  <!-- Plugin registration -->
+  <string name="app_name">Locale Remote Notification Plugin</string>
   <string name="plugin_name">Remote Notification</string>
+
+  <!-- Settings screen -->
+  <string name="title">Notitication title:</string>
+  <string name="description">Notitication description:</string>
+
+  <!-- Helper activity -->
+  <string name="plugin_dialog_title"><i>Locale</i> and <i>Android Notifier</i> Required</string>
+  <string name="plugin_dialog_install">Install Locale</string>
+  <string name="plugin_dialog_need_locale_message"><i>Locale</i> and <i>Android Notifier</i> are required to use this plug-in.  Would you like to install <i>Locale</i>?</string>
+  <string name="plugin_dialog_need_locale_informative">Tap \"Install\" to find <i>Locale</i> on the Android Market.</string>
+  <string name="plugin_dialog_market_not_available">Application is not installed on your phone.</string>
 </resources>
