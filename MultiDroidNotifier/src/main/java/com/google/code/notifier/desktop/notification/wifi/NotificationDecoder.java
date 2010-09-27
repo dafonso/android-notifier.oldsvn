@@ -28,17 +28,18 @@ public class NotificationDecoder extends OneToOneDecoder {
 	public static final char FIELD_SEPARATOR = '/';
 	public static final String SUPPORTED_VERSION = "v2";
 
-	private final NotificationParser<String> notificationParser;
+	private final NotificationParser<byte[]> notificationParser;
 
-	public NotificationDecoder(NotificationParser<String> notificationParser) {
+	public NotificationDecoder(NotificationParser<byte[]> notificationParser) {
 		this.notificationParser = notificationParser;
 	}
 
 	@Override
 	protected Object decode(ChannelHandlerContext ctx, Channel channel, Object msg) throws Exception {
 		ChannelBuffer buffer = (ChannelBuffer) msg;
-		String text = new String(buffer.array(), NotificationReceiver.DEFAULT_CHARSET);
-		return notificationParser.parse(text);
+		byte[] data = new byte[buffer.readableBytes()];
+		buffer.readBytes(data);
+		return notificationParser.parse(data);
 	}
 
 }

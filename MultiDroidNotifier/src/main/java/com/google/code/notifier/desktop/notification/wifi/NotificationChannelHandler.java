@@ -19,6 +19,7 @@ package com.google.code.notifier.desktop.notification.wifi;
 
 import org.jboss.netty.channel.*;
 import org.jboss.netty.channel.group.*;
+import org.jboss.netty.channel.socket.*;
 import org.slf4j.*;
 
 import com.google.code.notifier.desktop.*;
@@ -45,13 +46,17 @@ public class NotificationChannelHandler extends SimpleChannelHandler {
 	@Override
 	public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
 		Notification notification = (Notification) e.getMessage();
-		notificationManager.notificationReceived(notification);
+		if (notification != null) {
+			notificationManager.notificationReceived(notification);
+		}
 	}
 
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e) throws Exception {
 		logger.error("Error handling network notification", e.getCause());
-		e.getChannel().close();
-		application.showError(Application.NAME + " Wifi Error", "An error occurred while receiving wifi notification.");
+		if (!(e.getChannel() instanceof DatagramChannel)) { // Cannot close datagram channels
+			e.getChannel().close();
+		}
+		application.showError(Application.NAME + " Wifi Error", "An error occurred while receiving wifi notification:\n" + e.getCause().getMessage());
 	}
 }

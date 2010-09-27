@@ -69,16 +69,18 @@ public class BluetoothNotificationReceiver extends AbstractNotificationReceiver 
 						notifier = (StreamConnectionNotifier) Connector.open(URL);
 						while (!Thread.currentThread().isInterrupted()) {
 							StreamConnection connection = null;
-							StreamConnectionInputSupplier inputSupplier = null;
+							InputStream inputStream = null;
 							try {
 								// acceptAndOpen() will never return without connection and it
 								// cannot be interrupted
 								connection = notifier.acceptAndOpen();
-								inputSupplier = new StreamConnectionInputSupplier(connection);
-								String text = CharStreams.toString(inputSupplier);
+								inputStream = connection.openInputStream();
+								byte[] data = ByteStreams.toByteArray(inputStream);
 								if (enabled) {
-									Notification notification = getNotificationParser().parse(text);
-									getNotificationManager().notificationReceived(notification);
+									Notification notification = getNotificationParser().parse(data);
+									if (notification != null) {
+										getNotificationManager().notificationReceived(notification);
+									}
 								}
 							} catch (InterruptedIOException e) {
 								break;
@@ -90,13 +92,7 @@ public class BluetoothNotificationReceiver extends AbstractNotificationReceiver 
 									getApplication().showError(Application.NAME + " Bluetooth Error", "An error ocurred while receiving bluetooth notification.");
 								}
 							} finally {
-								if (inputSupplier != null) {
-									try {
-										inputSupplier.getInput().close();
-									} catch (IOException e1) {
-										logger.warn("Error closing bluetooth stream", e1);
-									}
-								}
+								Closeables.closeQuietly(inputStream);
 								if (connection != null) {
 									try {
 										connection.close();
@@ -131,21 +127,4 @@ public class BluetoothNotificationReceiver extends AbstractNotificationReceiver 
 		enabled = false;
 	}
 
-	private static class StreamConnectionInputSupplier implements InputSupplier<InputStreamReader> {
-
-		private final StreamConnection connection;
-		private InputStreamReader inputStreamReader;
-
-		public StreamConnectionInputSupplier(StreamConnection connection) {
-			this.connection = connection;
-		}
-
-		@Override
-		public InputStreamReader getInput() throws IOException {
-			if (inputStreamReader == null) {
-				inputStreamReader = new InputStreamReader(connection.openInputStream(), DEFAULT_CHARSET);
-			}
-			return inputStreamReader;
-		}
-	}
 }

@@ -35,11 +35,11 @@ public class NotificationPipelineFactory implements ChannelPipelineFactory {
 	private final ChannelGroup channelGroup;
 	private final Application application;
 	private final NotificationManager notificationManager;
-	private final NotificationParser<String> notificationParser;
+	private final NotificationParser<byte[]> notificationParser;
 	private final boolean hasTimeout;
 	private final boolean useDelimiter;
 
-	public NotificationPipelineFactory(ChannelGroup channelGroup, Application application, NotificationManager notificationManager, NotificationParser<String> notificationParser, boolean hasTimeout, boolean useDelimiter) {
+	public NotificationPipelineFactory(ChannelGroup channelGroup, Application application, NotificationManager notificationManager, NotificationParser<byte[]> notificationParser, boolean hasTimeout, boolean useDelimiter) {
 		this.channelGroup = channelGroup;
 		this.application = application;
 		this.notificationManager = notificationManager;
