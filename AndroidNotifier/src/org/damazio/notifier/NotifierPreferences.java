@@ -25,13 +25,13 @@
 package org.damazio.notifier;
 
 import org.damazio.notifier.notification.BluetoothDeviceUtils;
+import org.damazio.notifier.util.Base64;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.util.Base64;
 import android.util.Log;
 
 /**

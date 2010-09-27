@@ -24,6 +24,7 @@
  */
 package org.damazio.notifier;
 
+import org.damazio.notifier.util.Base64;
 import org.damazio.notifier.util.Encryption;
 
 import android.content.Context;
@@ -31,7 +32,6 @@ import android.content.res.TypedArray;
 import android.preference.EditTextPreference;
 import android.text.InputType;
 import android.util.AttributeSet;
-import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
 
