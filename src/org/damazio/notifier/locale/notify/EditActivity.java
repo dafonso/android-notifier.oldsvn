@@ -74,40 +74,41 @@ public class EditActivity extends Activity implements View.OnClickListener {
 
   @Override
   public void finish() {
-    if (isCancelled) {
-      setResult(RESULT_CANCELED);
+    try {
+      if (isCancelled) {
+        setResult(RESULT_CANCELED);
+        return;
+      }
+  
+      String title = titleText.getText().toString();
+      String description = descriptionText.getText().toString();
+      boolean hasTitle = (title.length() > 0);
+      boolean hasDescription = (description.length() > 0);
+      if (!hasTitle && !hasDescription) {
+        setResult(com.twofortyfouram.Intent.RESULT_REMOVE);
+        return;
+      }
+  
+      Bundle resultBundle = new Bundle();
+      if (hasTitle) {
+        resultBundle.putString(Constants.EXTRA_TITLE, title);
+      }
+      if (hasDescription) {
+        resultBundle.putString(Constants.EXTRA_DESCRIPTION, description);
+      }
+  
+      String blurb = title + "/" + description;
+      if (blurb.length() > com.twofortyfouram.Intent.MAXIMUM_BLURB_LENGTH) {
+        blurb = blurb.substring(0, com.twofortyfouram.Intent.MAXIMUM_BLURB_LENGTH - 3) + "...";
+      }
+  
+      Intent returnIntent = new Intent();
+      returnIntent.putExtra(com.twofortyfouram.Intent.EXTRA_BUNDLE, resultBundle);
+      returnIntent.putExtra(com.twofortyfouram.Intent.EXTRA_STRING_BLURB, blurb);
+      setResult(RESULT_OK, returnIntent);
+    } finally {
       super.finish();
-      return;
     }
-
-    String title = titleText.getText().toString();
-    String description = descriptionText.getText().toString();
-    boolean hasTitle = (title.length() > 0);
-    boolean hasDescription = (description.length() > 0);
-    if (!hasTitle && !hasDescription) {
-      setResult(com.twofortyfouram.Intent.RESULT_REMOVE);
-      return;
-    }
-
-    Bundle resultBundle = new Bundle();
-    if (hasTitle) {
-      resultBundle.putString(Constants.EXTRA_TITLE, title);
-    }
-    if (hasDescription) {
-      resultBundle.putString(Constants.EXTRA_DESCRIPTION, description);
-    }
-
-    String blurb = title + "/" + description;
-    if (blurb.length() > com.twofortyfouram.Intent.MAXIMUM_BLURB_LENGTH) {
-      blurb = blurb.substring(0, com.twofortyfouram.Intent.MAXIMUM_BLURB_LENGTH - 3) + "...";
-    }
-
-    Intent returnIntent = new Intent();
-    returnIntent.putExtra(com.twofortyfouram.Intent.EXTRA_BUNDLE, resultBundle);
-    returnIntent.putExtra(com.twofortyfouram.Intent.EXTRA_STRING_BLURB, blurb);
-    setResult(RESULT_OK, returnIntent);
-
-    super.finish();
   }
 
   @Override
