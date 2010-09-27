@@ -186,7 +186,11 @@ public class NotificationService extends Service {
         }
       }
 
-      unregisterReceiver(mmsReceiver);
+      try {
+        unregisterReceiver(mmsReceiver);
+      } catch (IllegalArgumentException e) {
+        Log.e(NotifierConstants.LOG_TAG, "Unable to unregister MMS receiver", e);
+      }
       unregisterReceiver(smsReceiver);
       unregisterReceiver(batteryReceiver);
       unregisterReceiver(userReceiver);
@@ -222,17 +226,18 @@ public class NotificationService extends Service {
    * Shows the local status bar notification.
    */
   private void showLocalNotification() {
-    android.app.Notification notification = new android.app.Notification();
+    String notificationText = getString(R.string.notification_icon_text);
+    android.app.Notification notification = new android.app.Notification(
+        R.drawable.icon, notificationText, System.currentTimeMillis());
     PendingIntent intent = PendingIntent.getActivity(
         this, 0,
         new Intent(this, NotifierMain.class),
         Intent.FLAG_ACTIVITY_NEW_TASK);
     notification.setLatestEventInfo(this,
         getString(R.string.app_name),
-        getString(R.string.notification_icon_text),
+        notificationText,
         intent);
 
-    notification.icon = R.drawable.icon;
     notification.flags = android.app.Notification.FLAG_NO_CLEAR
                        | android.app.Notification.FLAG_ONGOING_EVENT;
 

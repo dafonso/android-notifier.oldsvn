@@ -24,6 +24,7 @@
  */
 package org.damazio.notifier;
 
+import org.damazio.notifier.util.Base64;
 import org.damazio.notifier.util.Encryption;
 
 import android.content.Context;
@@ -31,8 +32,8 @@ import android.content.res.TypedArray;
 import android.preference.EditTextPreference;
 import android.text.InputType;
 import android.util.AttributeSet;
-import android.util.Base64;
 import android.view.View;
+import android.widget.EditText;
 
 /**
  * An {@link EditTextPreference} which expects password input and saves a hashed,
@@ -81,8 +82,16 @@ public class EncodedPasswordPreference extends EditTextPreference {
   }
 
   @Override
-  protected boolean persistString(String value) {
-    return super.persistString(encodePassword(value));
+  protected void onDialogClosed(boolean positive) {
+    if (positive) {
+      // Encode the entered text
+      EditText editText = getEditText();
+      String encodedPassword = encodePassword(editText.getText().toString());
+      editText.setText(encodedPassword);
+    }
+
+    // Now let it be saved
+    super.onDialogClosed(positive);
   }
 
   @Override

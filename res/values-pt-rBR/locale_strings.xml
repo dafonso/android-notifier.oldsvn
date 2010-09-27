@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="locale_notifications_enabled">Notificações</string>
+  <string name="locale_notifications_enabled_summary">Habilitar ou desabilitar o envio de notificações</string>
+  <string name="locale_notifications_enabled_blurb">Estado: %s</string>
+
+  <string-array name="locale_on_off_keep">
+    <item>Habilitar</item>
+    <item>Desabilitar</item>
+    <item>Manter como está</item>
+  </string-array>
+</resources>

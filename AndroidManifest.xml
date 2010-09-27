@@ -26,14 +26,15 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.damazio.notifier"
-    android:versionCode="9"
-    android:versionName="0.2.6">
+    android:versionCode="11"
+    android:versionName="0.2.8">
 
   <application android:icon="@drawable/icon"
                android:label="@string/app_name"
                android:backupAgent=".backup.NotifierBackupAgentHelper">
     <!-- The activity which displays preferences and starts the service -->
-    <activity android:name=".NotifierMain" android:label="@string/app_name">
+    <activity android:name=".NotifierMain"
+              android:label="@string/app_name">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
@@ -57,6 +58,20 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <!-- Key for backing up preferences to Google's backup service -->
 	<meta-data android:name="com.google.android.backup.api_key"
 	           android:value="AEdPqrEAAAAIqP6mL1Nk0PnTfEgJS7Nd2OKLcce1MD-LN62uTA" />
+
+    <!-- Locale/Tasker integration -->
+    <activity android:name=".locale.EditActivity"
+              android:label="@string/settings_title"
+              android:icon="@drawable/settings">
+      <intent-filter>
+        <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />
+      </intent-filter>
+    </activity>
+    <receiver android:name=".locale.FireReceiver">
+      <intent-filter>
+        <action android:name="com.twofortyfouram.locale.intent.action.FIRE_SETTING" />
+      </intent-filter>
+    </receiver>
   </application>
 
   <!-- Works best on 2.0+ (bluetooth support), but should be ok in 1.5 -->
