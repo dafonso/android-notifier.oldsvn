@@ -31,6 +31,10 @@ public class ApplicationPreferences {
 	private static final String RECEPTION_WITH_UPNP = "receptionWithUpnp";
 	private static final String RECEPTION_WITH_BLUETOOTH = "receptionWithBluetooth";
 	private static final String RECEPTION_WITH_USB = "receptionWithUsb";
+
+	private static final String ENCRYPT_COMMUNICATION = "encryptCommunication";
+	private static final String COMMUNICATION_PASSWORD = "communicationPassword";
+
 	private static final String DISPLAY_WITH_SYSTEM_DEFAULT = "displayWithSystemDefault";
 	private static final String DISPLAY_WITH_GROWL = "displayWithGrowl";
 	private static final String DISPLAY_WITH_LIBNOTIFY = "displayWithLibnotify";
@@ -43,6 +47,8 @@ public class ApplicationPreferences {
 	private static final String NOTIFICATION_COMMAND = "_command";
 
 	private static final char ALLOWED_DEVICES_IDS_SEPARATOR = '|';
+	private static final Splitter ALLOWED_DEVICES_IDS_SPLITTER = Splitter.on(ALLOWED_DEVICES_IDS_SEPARATOR).omitEmptyStrings();
+	private static final Joiner ALLOWED_DEVICES_IDS_JOINER = Joiner.on(ALLOWED_DEVICES_IDS_SEPARATOR);
 
 	private boolean startAtLogin;
 
@@ -50,6 +56,9 @@ public class ApplicationPreferences {
 	private boolean receptionWithUpnp;
 	private boolean receptionWithBluetooth;
 	private boolean receptionWithUsb;
+
+	private boolean encryptCommunication;
+	private byte[] communicationPassword;
 
 	private boolean displayWithSystemDefault;
 	private boolean displayWithGrowl;
@@ -72,11 +81,15 @@ public class ApplicationPreferences {
 		receptionWithUpnp = prefs.getBoolean(RECEPTION_WITH_UPNP, false);
 		receptionWithBluetooth = prefs.getBoolean(RECEPTION_WITH_BLUETOOTH, false);
 		receptionWithUsb = prefs.getBoolean(RECEPTION_WITH_USB, false);
+
+		encryptCommunication = prefs.getBoolean(ENCRYPT_COMMUNICATION, false);
+		communicationPassword = prefs.getByteArray(COMMUNICATION_PASSWORD, new byte[0]);
+
 		displayWithSystemDefault = prefs.getBoolean(DISPLAY_WITH_SYSTEM_DEFAULT, true);
 		displayWithGrowl = prefs.getBoolean(DISPLAY_WITH_GROWL, false);
 		displayWithLibnotify = prefs.getBoolean(DISPLAY_WITH_LIBNOTIFY, false);
 		receptionFromAnyDevice = prefs.getBoolean(RECEPTION_FROM_ANY_DEVICE, true);
-		allowedDevicesIds = Sets.newTreeSet(Splitter.on(ALLOWED_DEVICES_IDS_SEPARATOR).omitEmptyStrings().split(prefs.get(ALLOWED_DEVICES_IDS, "")));
+		allowedDevicesIds = Sets.newTreeSet(ALLOWED_DEVICES_IDS_SPLITTER.split(prefs.get(ALLOWED_DEVICES_IDS, "")));
 
 		for (Notification.Type type : Notification.Type.values()) {
 			String enabledName = type.name() + NOTIFICATION_ENABLED;
@@ -104,11 +117,15 @@ public class ApplicationPreferences {
 		prefs.putBoolean(RECEPTION_WITH_UPNP, receptionWithUpnp);
 		prefs.putBoolean(RECEPTION_WITH_BLUETOOTH, receptionWithBluetooth);
 		prefs.putBoolean(RECEPTION_WITH_USB, receptionWithUsb);
+
+		prefs.putBoolean(ENCRYPT_COMMUNICATION, encryptCommunication);
+		prefs.putByteArray(COMMUNICATION_PASSWORD, communicationPassword);
+
 		prefs.putBoolean(DISPLAY_WITH_SYSTEM_DEFAULT, displayWithSystemDefault);
 		prefs.putBoolean(DISPLAY_WITH_GROWL, displayWithGrowl);
 		prefs.putBoolean(DISPLAY_WITH_LIBNOTIFY, displayWithLibnotify);
 		prefs.putBoolean(RECEPTION_FROM_ANY_DEVICE, receptionFromAnyDevice);
-		prefs.put(ALLOWED_DEVICES_IDS, Joiner.on(ALLOWED_DEVICES_IDS_SEPARATOR).join(allowedDevicesIds));
+		prefs.put(ALLOWED_DEVICES_IDS, ALLOWED_DEVICES_IDS_JOINER.join(allowedDevicesIds));
 
 		for (Notification.Type type : Notification.Type.values()) {
 			String enabledName = type.name() + NOTIFICATION_ENABLED;
@@ -221,6 +238,22 @@ public class ApplicationPreferences {
 		this.receptionWithUsb = receptionWithUsb;
 	}
 
+	public boolean isEncryptCommunication() {
+		return encryptCommunication;
+	}
+
+	public void setEncryptCommunication(boolean encryptCommunication) {
+		this.encryptCommunication = encryptCommunication;
+	}
+
+	public byte[] getCommunicationPassword() {
+		return communicationPassword;
+	}
+
+	public void setCommunicationPassword(byte[] communicationPassword) {
+		this.communicationPassword = communicationPassword;
+	}
+
 	public boolean isDisplayWithSystemDefault() {
 		return displayWithSystemDefault;
 	}
@@ -274,6 +307,10 @@ public class ApplicationPreferences {
 		builder.append(receptionWithBluetooth);
 		builder.append(", receptionWithUsb=");
 		builder.append(receptionWithUsb);
+		builder.append(", encryptCommunication=");
+		builder.append(encryptCommunication);
+		builder.append(", communicationPassword=");
+		builder.append(communicationPassword);
 		builder.append(", displayWithSystemDefault=");
 		builder.append(displayWithSystemDefault);
 		builder.append(", displayWithGrowl=");

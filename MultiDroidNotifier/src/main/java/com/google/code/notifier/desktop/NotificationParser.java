@@ -19,6 +19,7 @@ package com.google.code.notifier.desktop;
 
 public interface NotificationParser<T> {
 
+	void setEncryption(boolean decrypt, byte[] key);
 	Notification parse(T data);
 
 }

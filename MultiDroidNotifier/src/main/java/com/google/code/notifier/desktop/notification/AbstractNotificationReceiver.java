@@ -27,13 +27,13 @@ public abstract class AbstractNotificationReceiver extends AbstractLifecycle imp
 	public static final int SHUTDOWN_TIMEOUT = 10000;
 
 	private @Inject NotificationManager notificationManager;
-	private @Inject NotificationParser<String> notificationParser;
+	private @Inject NotificationParser<byte[]> notificationParser;
 	
 	public NotificationManager getNotificationManager() {
 		return notificationManager;
 	}
 
-	public NotificationParser<String> getNotificationParser() {
+	public NotificationParser<byte[]> getNotificationParser() {
 		return notificationParser;
 	}
 }
