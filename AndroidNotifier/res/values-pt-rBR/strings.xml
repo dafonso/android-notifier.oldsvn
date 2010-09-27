@@ -52,6 +52,9 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <string name="method_ip_summary_on">Notificações serão enviadas por IP. Garante que seu firewall aceita conexões na porta 10600.</string>
     <string name="method_bluetooth_summary_on">Notificações serão enviadas via Bluetooth. Veja as opções abaixo para escolher o dispositivo-alvo.</string>
     <string name="ip_options">Opções de IP/Wifi</string>
+    <string name="method_ip_options_target">IPs/hosts de destino</string>
+    <string name="method_ip_options_protocol">Protocol de notificação</string>
+    <string name="method_ip_options_enabling">Habilitar Wifi</string>
     <string name="target_ip_address">Endereço IP de destino</string>
     <string name="custom_ip_title">Endereço IP customizado</string>
     <string name="add_custom_ip_title">Adicionar IP customizado</string>
@@ -86,6 +89,15 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <string name="enable_bluetooth_summary_off">Notificações não serão enviadas se o Bluetooth estiver desligado.</string>
     <string name="bluetooth_device_all">Todos os dispositivos</string>
     <string name="bluetooth_device_any">Qualquer dispositivo</string>
+
+    <!-- Security -->
+    <string name="security_title">Segurança</string>
+    <string name="enable_encryption">Encriptar notificações</string>
+    <string name="enable_encryption_summary_on">Todas as notificações serão criptografadas. Você DEVE configurar o aplicativo desktop da mesma forma.</string>
+    <string name="enable_encryption_summary_off">Notificações NÃO serão criptografadas. Usuários maliciosos podem interceptar ou falsificar notificações.</string>
+    <string name="encryption_pass">Palavra-chave</string>
+    <string name="encryption_pass_summary">A palavra-chave usada para encriptar notificações.</string>
+    <string name="encryption_pass_entry">Por favor digite uma nova palavra-chave para encriptar notificações. Você deve usar a mesma que no aplicativo desktop.\n</string>
 
     <!-- Event types -->
     <string name="events_title">Eventos a notificar:</string>
