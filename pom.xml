@@ -224,6 +224,7 @@
 						<exclude>**/GrowlPatched.java</exclude>
 						<exclude>**/MalformedShortcutException.java</exclude>
 						<exclude>**/Shortcut.java</exclude>
+						<exclude>**/Encryption.java</exclude>
 					</excludes>
 					<mapping>
 						<java>SLASHSTAR_STYLE</java>
@@ -344,6 +345,7 @@
 					<javaApplicationStub>src/assembly/macosx/JavaApplicationStub</javaApplicationStub>
 					<vmOptions>-Djava.net.preferIPv4Stack=true -client</vmOptions>
 					<additionalOptions>
+                        <CFBundleIdentifier>${project.groupId}</CFBundleIdentifier>
 						<LSUIElement>true</LSUIElement>
 					</additionalOptions>
 				</configuration>
