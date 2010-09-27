@@ -186,7 +186,11 @@ public class NotificationService extends Service {
         }
       }
 
-      unregisterReceiver(mmsReceiver);
+      try {
+        unregisterReceiver(mmsReceiver);
+      } catch (IllegalArgumentException e) {
+        Log.e(NotifierConstants.LOG_TAG, "Unable to unregister MMS receiver", e);
+      }
       unregisterReceiver(smsReceiver);
       unregisterReceiver(batteryReceiver);
       unregisterReceiver(userReceiver);
