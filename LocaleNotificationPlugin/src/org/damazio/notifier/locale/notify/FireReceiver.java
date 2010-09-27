@@ -31,7 +31,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 /**
- * Receiver which executes settings changes when requested by Locale.
+ * Receiver which sends notifications when requested by Locale.
  *
  * @author rdamazio
  */
