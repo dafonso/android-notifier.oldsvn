@@ -37,9 +37,13 @@ public class PreferencesDialog extends Dialog {
 
 	private static final String PREF_CHANGE_THREAD_NAME = "preferences";
 
+	private static final String PASSWORD_SET_MESSAGE = "Passphrase is set, click here to change it";
+	private static final String PASSWORD_NOT_SET_MESSAGE = "Passphrase is not set, click here to set one";
+
 	private final Application application;
 	private final ApplicationPreferences preferences;
 	private final NotificationManager notificationManager;
+	private final NotificationParser<?> notificationParser;
 	private final SwtManager swtManager;
 
 	private Shell dialogShell;
@@ -52,6 +56,9 @@ public class PreferencesDialog extends Dialog {
 	private Button internetCheckbox;
 	private Button bluetoothCheckbox;
 	// private Button usbCheckbox; USB notifications are not yet supported by the android app
+
+	private Button encryptCommunicationCheckbox;
+	private Text communicationPasswordText;
 
 	private Group notificationDisplayMethodsGroup;
 	private Button systemDefaultCheckbox;
@@ -70,10 +77,11 @@ public class PreferencesDialog extends Dialog {
 
 	private Button okButton;
 
-	public PreferencesDialog(Application application, NotificationManager notificationManager, SwtManager swtManager) {
+	public PreferencesDialog(Application application, NotificationManager notificationManager, NotificationParser<?> notificationParser, SwtManager swtManager) {
 		super(swtManager.getShell(), SWT.NULL);
 		this.application = application;
 		this.notificationManager = notificationManager;
+		this.notificationParser = notificationParser;
 		this.swtManager = swtManager;
 		preferences = new ApplicationPreferences();
 	}
@@ -155,6 +163,7 @@ public class PreferencesDialog extends Dialog {
 
 			notificationReceptionMethodsGroup = new Group(dialogShell, SWT.NONE);
 			GridLayout notificationMethodsGroupLayout = new GridLayout();
+			notificationMethodsGroupLayout.numColumns = 2;
 			notificationReceptionMethodsGroup.setLayout(notificationMethodsGroupLayout);
 			FormData notificationMethodsGroupLData = new FormData();
 			notificationMethodsGroupLData.top = new FormAttachment(generalGroup, 5);
@@ -166,6 +175,7 @@ public class PreferencesDialog extends Dialog {
 			wifiCheckbox = new Button(notificationReceptionMethodsGroup, SWT.CHECK | SWT.LEFT);
 			GridData wifiCheckboxLData = new GridData();
 			wifiCheckboxLData.horizontalIndent = 5;
+			wifiCheckboxLData.horizontalSpan = 2;
 			wifiCheckbox.setLayoutData(wifiCheckboxLData);
 			
 			// This description is for information and help configuring the android app
@@ -224,6 +234,7 @@ public class PreferencesDialog extends Dialog {
 			internetCheckbox = new Button(notificationReceptionMethodsGroup, SWT.CHECK | SWT.LEFT);
 			GridData internetCheckboxLData = new GridData();
 			internetCheckboxLData.horizontalIndent = 5;
+			internetCheckboxLData.horizontalSpan = 2;
 			internetCheckbox.setLayoutData(internetCheckboxLData);
 			internetCheckbox.setText("Internet (UPnP)");
 			internetCheckbox.setSelection(preferences.isReceptionWithUpnp());
@@ -263,6 +274,7 @@ public class PreferencesDialog extends Dialog {
 			bluetoothCheckbox = new Button(notificationReceptionMethodsGroup, SWT.CHECK | SWT.LEFT);
 			GridData bluetoothCheckboxLData = new GridData();
 			bluetoothCheckboxLData.horizontalIndent = 5;
+			bluetoothCheckboxLData.horizontalSpan = 2;
 			bluetoothCheckbox.setLayoutData(bluetoothCheckboxLData);
 			bluetoothCheckbox.setText("Bluetooth");
 			bluetoothCheckbox.setSelection(preferences.isReceptionWithBluetooth());
@@ -308,6 +320,92 @@ public class PreferencesDialog extends Dialog {
 			 * }
 			 * });
 			 */
+
+			encryptCommunicationCheckbox = new Button(notificationReceptionMethodsGroup, SWT.CHECK | SWT.LEFT);
+			GridData encryptCommunicationCheckboxLData = new GridData();
+			encryptCommunicationCheckboxLData.horizontalIndent = 5;
+			encryptCommunicationCheckboxLData.horizontalSpan = 2;
+			encryptCommunicationCheckbox.setLayoutData(encryptCommunicationCheckboxLData);
+			encryptCommunicationCheckbox.setText("Decrypt notifications");
+			encryptCommunicationCheckbox.setSelection(preferences.isEncryptCommunication());
+			encryptCommunicationCheckbox.setToolTipText("'Encrypt notifications' must be enabled in android app");
+			encryptCommunicationCheckbox.addListener(SWT.Selection, new Listener() {
+				@Override
+				public void handleEvent(Event event) {
+					boolean enabled = encryptCommunicationCheckbox.getSelection();
+					byte[] key = new byte[0];
+					notificationParser.setEncryption(enabled, key);
+					preferences.setEncryptCommunication(enabled);
+					preferences.setCommunicationPassword(key);
+					communicationPasswordText.setMessage(PASSWORD_NOT_SET_MESSAGE);
+				}
+			});
+
+			Label communicationPasswordLabel = new Label(notificationReceptionMethodsGroup, SWT.NONE);
+			GridData communicationPasswordLabelLData = new GridData();
+			communicationPasswordLabelLData.horizontalIndent = 5;
+			communicationPasswordLabel.setLayoutData(communicationPasswordLabelLData);
+			communicationPasswordLabel.setText("Passphrase:");
+
+			communicationPasswordText = new Text(notificationReceptionMethodsGroup, SWT.BORDER | SWT.SINGLE | SWT.PASSWORD);
+			GridData communicationPasswordTextLData = new GridData();
+			communicationPasswordTextLData.grabExcessHorizontalSpace = true;
+			communicationPasswordTextLData.horizontalAlignment = GridData.FILL;
+			communicationPasswordText.setLayoutData(communicationPasswordTextLData);
+			if (preferences.getCommunicationPassword().length > 0) {
+				communicationPasswordText.setMessage(PASSWORD_SET_MESSAGE);
+			} else {
+				communicationPasswordText.setMessage(PASSWORD_NOT_SET_MESSAGE);
+			}
+			if (OperatingSystems.CURRENT_FAMILY == OperatingSystems.Family.LINUX) {
+				communicationPasswordText.setEditable(preferences.isEncryptCommunication());
+			} else {
+				communicationPasswordText.setEnabled(preferences.isEncryptCommunication());
+			}
+			communicationPasswordText.setToolTipText("Type the security passphrase set in your device");
+			communicationPasswordText.addKeyListener(new KeyListener() {
+				@Override
+				public void keyPressed(KeyEvent e) {
+					// Do nothing
+				}
+
+				@Override
+				public void keyReleased(KeyEvent e) {
+					String password = communicationPasswordText.getText();
+					setCommunicationPassword(password);
+				}
+			});
+			communicationPasswordText.addListener(SWT.FocusIn, new Listener() {
+				@Override
+				public void handleEvent(Event event) {
+					setCommunicationPassword("");
+				}
+			});
+			communicationPasswordText.addListener(SWT.FocusOut, new Listener() {
+				@Override
+				public void handleEvent(Event event) {
+					String password = communicationPasswordText.getText();
+					setCommunicationPassword(password);
+					if (communicationPasswordText.getText().length() == 0) {
+						communicationPasswordText.setMessage(PASSWORD_NOT_SET_MESSAGE);
+					} else {
+						communicationPasswordText.setMessage(PASSWORD_SET_MESSAGE);
+					}
+					communicationPasswordText.setText("");
+				}
+			});
+			encryptCommunicationCheckbox.addListener(SWT.Selection, new Listener() {
+				@Override
+				public void handleEvent(Event event) {
+					boolean enabled = encryptCommunicationCheckbox.getSelection();
+					if (OperatingSystems.CURRENT_FAMILY == OperatingSystems.Family.LINUX) {
+						communicationPasswordText.setEditable(enabled);
+					} else {
+						communicationPasswordText.setEnabled(enabled);
+					}
+				}
+			});
+
 			// Notification Display Group
 
 			notificationDisplayMethodsGroup = new Group(dialogShell, SWT.NONE);
@@ -685,7 +783,6 @@ public class PreferencesDialog extends Dialog {
 		GridData commandTextLData = new GridData();
 	    commandTextLData.grabExcessHorizontalSpace = true;
 	    commandTextLData.horizontalAlignment = GridData.FILL;
-
 		commandText.setLayoutData(commandTextLData);
 		// Set text in different thread so the dialog will not depend on the size of the text
 		swtManager.update(new Runnable() {
@@ -760,5 +857,11 @@ public class PreferencesDialog extends Dialog {
 		item.setControl(composite);
 
 		return item;
+	}
+
+	protected void setCommunicationPassword(String password) {
+		byte[] key = password.length() == 0 ? new byte[0] : Encryption.passPhraseToKey(password);
+		notificationParser.setEncryption(true, key);
+		preferences.setCommunicationPassword(key);
 	}
 }

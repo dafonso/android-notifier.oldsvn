@@ -57,6 +57,7 @@ public class ApplicationImpl implements Application {
 	private @Inject @Bluetooth NotificationReceiver bluetoothReceiver;
 
 	private @Inject NotificationManager notificationManager;
+	private @Inject NotificationParser<byte[]> notificationParser; 
 	private @Inject UpdateManager updateManager;
 	private @Inject ServiceServer serviceServer;
 
@@ -112,7 +113,7 @@ public class ApplicationImpl implements Application {
 		swtManager.update(new Runnable() {
 			@Override
 			public void run() {
-				PreferencesDialog preferencesDialog = new PreferencesDialog(ApplicationImpl.this, notificationManager, swtManager);
+				PreferencesDialog preferencesDialog = new PreferencesDialog(ApplicationImpl.this, notificationManager, notificationParser, swtManager);
 				preferencesDialog.open();
 			}
 		});

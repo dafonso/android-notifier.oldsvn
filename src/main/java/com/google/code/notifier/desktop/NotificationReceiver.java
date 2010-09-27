@@ -17,10 +17,5 @@
  */
 package com.google.code.notifier.desktop;
 
-import java.nio.charset.*;
-
-import com.google.common.base.*;
-
 public interface NotificationReceiver extends Lifecycle, Named {
-	Charset DEFAULT_CHARSET = Charsets.UTF_8;
 }
