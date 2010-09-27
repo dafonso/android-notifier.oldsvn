@@ -32,7 +32,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 /**
- * Activity displayed when the user wants to edit the Locale notification settings.
+ * Activity displayed when the user wants to edit the remote notification to be sent.
  *
  * @author rdamazio
  */
