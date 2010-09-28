@@ -64,6 +64,13 @@
 			<version>3.2.1.Final</version>
 		</dependency>
 
+        <!-- Protocol Buffers -->
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+
 		<!-- SWT -->
 		<dependency>
 			<groupId>org.eclipse.swt</groupId>
@@ -169,6 +176,12 @@
 			<resource>
 				<directory>src/main/resources</directory>
 			</resource>
+            <resource>
+                <directory>src/main/protobuf</directory>
+                <excludes>
+                    <exclude>**/*</exclude>
+                </excludes>
+            </resource>
 			<resource>
 				<directory>src/assembly</directory>
 				<excludes>
@@ -209,6 +222,29 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
+            <!-- Protocol Buffers Compilation -->
+            <plugin>
+                <groupId>com.google.protobuf.tools</groupId>
+                <artifactId>maven-protoc-plugin</artifactId>
+                <version>0.0.1</version>
+                <configuration>
+                    <protocExecutable>src/main/protobuf/protoc</protocExecutable>
+                    <protoSourceRoot>src/main/protobuf</protoSourceRoot>
+                    <outputDirectory>src/main/java</outputDirectory>
+                    <includes>
+                        <include>**/*.proto</include>
+                    </includes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
 			<!-- Source code license -->
 			<plugin>
