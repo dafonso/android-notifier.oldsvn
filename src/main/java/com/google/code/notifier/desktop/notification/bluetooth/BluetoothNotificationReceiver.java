@@ -25,6 +25,7 @@ import javax.microedition.io.*;
 import org.slf4j.*;
 
 import com.google.code.notifier.desktop.*;
+import com.google.code.notifier.desktop.app.*;
 import com.google.code.notifier.desktop.notification.*;
 import com.google.common.base.*;
 import com.google.common.io.*;
@@ -32,7 +33,9 @@ import com.google.common.io.*;
 public class BluetoothNotificationReceiver extends AbstractNotificationReceiver {
 
 	public static final String NAME = "bluetooth";
-	public static final String URL = "btspp://localhost:7674047e6e474bf0831f209e3f9dd23f;name=AndroidNotifierService;authenticate=true";
+	public static final String BASE_URL = "btspp://localhost:7674047e6e474bf0831f209e3f9dd23f;name=AndroidNotifierService;authenticate=true";
+	public static final String URL_MAC = BASE_URL;
+	public static final String URL_WINDOWS_LINUX = BASE_URL + ";encrypt=true";
 
 	private static final Logger logger = LoggerFactory.getLogger(BluetoothNotificationReceiver.class);
 
@@ -66,7 +69,11 @@ public class BluetoothNotificationReceiver extends AbstractNotificationReceiver 
 				public void run() {
 					StreamConnectionNotifier notifier = null;
 					try {
-						notifier = (StreamConnectionNotifier) Connector.open(URL);
+						if (OperatingSystems.CURRENT_FAMILY == OperatingSystems.Family.MAC) {
+							notifier = (StreamConnectionNotifier) Connector.open(URL_MAC);
+						} else {
+							notifier = (StreamConnectionNotifier) Connector.open(URL_WINDOWS_LINUX);
+						}
 						while (!Thread.currentThread().isInterrupted()) {
 							StreamConnection connection = null;
 							InputStream inputStream = null;
