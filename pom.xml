@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.google.code.android-notifier-desktop</groupId>
+	<groupId>com.notifier.android-notifier-desktop</groupId>
 	<artifactId>android-notifier-desktop</artifactId>
 	<packaging>jar</packaging>
 	<version>0.5-SNAPSHOT</version>
@@ -21,7 +21,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<mainclass>com.google.code.notifier.desktop.Main</mainclass>
+		<mainclass>com.notifier.desktop.Main</mainclass>
 		<assembly.file>src/assembly/assembly.xml</assembly.file>
 	</properties>
 
@@ -408,7 +408,7 @@
 							<tarfileset dir="src/assembly/linux" prefix="usr/share/icons">
 								<include name="*.png" />
 							</tarfileset>
-							<tarfileset dir="src/main/resources/com/google/code/notifier/desktop/notification/broadcast" prefix="usr/share/icons/${project.artifactId}">
+							<tarfileset dir="src/main/resources/com/notifier/desktop/notification/broadcast" prefix="usr/share/icons/${project.artifactId}">
 								<include name="*.png" />
 							</tarfileset>
 						</deb>
@@ -481,7 +481,7 @@
 							<directory>/usr/share/icons/${project.artifactId}</directory>
 							<sources>
 								<source>
-									<location>src/main/resources/com/google/code/notifier/desktop/notification/broadcast</location>
+									<location>src/main/resources/com/notifier/desktop/notification/broadcast</location>
 								</source>
 							</sources>
 						</mapping>
@@ -832,20 +832,20 @@
 	</issueManagement>
 
 	<scm>
-		<connection>scm:svn:https://android-notifier-desktop.googlecode.com/svn/trunk/android-notifier-desktop</connection>
-		<developerConnection>scm:svn:https://android-notifier-desktop.googlecode.com/svn/trunk/android-notifier-desktop</developerConnection>
-		<url>http://code.google.com/p/android-notifier-desktop/source/browse</url>
+		<connection>scm:svn:https://android-notifier.googlecode.com/svn/trunk/MultiDroidNotifier</connection>
+		<developerConnection>scm:svn:https://android-notifier.googlecode.com/svn/trunk/MultiDroidNotifier</developerConnection>
+		<url>http://code.google.com/p/android-notifier/source/browse/#svn/trunk/MultiDroidNotifier</url>
 	</scm>
 
 	<distributionManagement>
 		<repository>
 			<id>android-notifier-desktop-repo-releases</id>
-			<url>svn:https://android-notifier-desktop.googlecode.com/svn/maven-repo/releases</url>
+			<url>svn:https://android-notifier.googlecode.com/svn/maven-repo/releases</url>
 			<uniqueVersion>false</uniqueVersion>
 		</repository>
 		<snapshotRepository>
 			<id>android-notifier-desktop-repo-snapshots</id>
-			<url>svn:https://android-notifier-desktop.googlecode.com/svn/maven-repo/snapshots</url>
+			<url>svn:https://android-notifier.googlecode.com/svn/maven-repo/snapshots</url>
 			<uniqueVersion>false</uniqueVersion>
 		</snapshotRepository>
 	</distributionManagement>
