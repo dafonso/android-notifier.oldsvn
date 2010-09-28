@@ -27,7 +27,7 @@ import com.google.code.notifier.desktop.app.*;
 public class LibnotifyNotificationBroadcaster extends AbstractLifecycle implements NotificationBroadcaster {
 
 	public static final String LIB_NOTIFY_COMMAND = "notify-send";
-	private static final String ICON_DIRECTORY = "/usr/share/icons/android-notifier-desktop/";
+	private static final String ICON_DIRECTORY = "/usr/share/icons/" + Application.ARTIFACT_ID + "/";
 
 	private static final Logger logger = LoggerFactory.getLogger(LibnotifyNotificationBroadcaster.class);
 
@@ -37,7 +37,7 @@ public class LibnotifyNotificationBroadcaster extends AbstractLifecycle implemen
 	}
 
 	@Override
-	protected void doStart() throws Exception {
+	protected void doStart() {
 		ProcessBuilder builder = new ProcessBuilder(LIB_NOTIFY_COMMAND);
 		try {
 			builder.start();
