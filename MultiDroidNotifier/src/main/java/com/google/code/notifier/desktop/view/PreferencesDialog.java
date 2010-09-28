@@ -59,6 +59,7 @@ public class PreferencesDialog extends Dialog {
 
 	private Button encryptCommunicationCheckbox;
 	private Text communicationPasswordText;
+	private boolean communicationPasswordChanged;
 
 	private Group notificationDisplayMethodsGroup;
 	private Button systemDefaultCheckbox;
@@ -371,6 +372,7 @@ public class PreferencesDialog extends Dialog {
 
 				@Override
 				public void keyReleased(KeyEvent e) {
+					communicationPasswordChanged = true;
 					String password = communicationPasswordText.getText();
 					setCommunicationPassword(password);
 				}
@@ -378,18 +380,20 @@ public class PreferencesDialog extends Dialog {
 			communicationPasswordText.addListener(SWT.FocusIn, new Listener() {
 				@Override
 				public void handleEvent(Event event) {
-					setCommunicationPassword("");
+					communicationPasswordChanged = false;
 				}
 			});
 			communicationPasswordText.addListener(SWT.FocusOut, new Listener() {
 				@Override
 				public void handleEvent(Event event) {
-					String password = communicationPasswordText.getText();
-					setCommunicationPassword(password);
-					if (communicationPasswordText.getText().length() == 0) {
-						communicationPasswordText.setMessage(PASSWORD_NOT_SET_MESSAGE);
-					} else {
-						communicationPasswordText.setMessage(PASSWORD_SET_MESSAGE);
+					if (communicationPasswordChanged) {
+						String password = communicationPasswordText.getText();
+						setCommunicationPassword(password);
+						if (communicationPasswordText.getText().length() == 0) {
+							communicationPasswordText.setMessage(PASSWORD_NOT_SET_MESSAGE);
+						} else {
+							communicationPasswordText.setMessage(PASSWORD_SET_MESSAGE);
+						}
 					}
 					communicationPasswordText.setText("");
 				}
