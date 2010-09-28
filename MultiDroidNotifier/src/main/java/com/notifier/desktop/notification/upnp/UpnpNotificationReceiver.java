@@ -70,6 +70,7 @@ public class UpnpNotificationReceiver extends AbstractNotificationReceiver {
 						}
 
 						boolean added = internetDevice.addPortMapping(Application.NAME, null, PORT, PORT, localAddress, 0, "TCP");
+						added &= internetDevice.addPortMapping(Application.NAME, null, PORT, PORT, localAddress, 0, "UDP");
 						if (added) {
 							logger.info("Added UPNP mapping to port [{}] successfully", PORT);
 						} else {
@@ -92,6 +93,7 @@ public class UpnpNotificationReceiver extends AbstractNotificationReceiver {
 		if (internetDevice != null) {
 			try {
 				internetDevice.deletePortMapping(null, PORT, "TCP");
+				internetDevice.deletePortMapping(null, PORT, "UDP");
 				logger.info("Removed UPNP mapping to port [{}] successfully", PORT);
 			} catch (Exception e) {
 				logger.warn("Error deleting upnp port mapping", e);
