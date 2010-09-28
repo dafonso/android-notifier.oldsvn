@@ -24,14 +24,14 @@
 	</files>
 	<fileSets>
 		<fileSet>
-			<directory>src/main/resources/com/google/code/notifier/desktop</directory>
+			<directory>src/main/resources/com/notifier/desktop</directory>
 			<outputDirectory>icons</outputDirectory>
 			<includes>
 				<include>*.png</include>
 			</includes>
 		</fileSet>
 		<fileSet>
-			<directory>src/main/resources/com/google/code/notifier/desktop/notification/broadcast</directory>
+			<directory>src/main/resources/com/notifier/desktop/notification/broadcast</directory>
 			<outputDirectory>icons</outputDirectory>
 			<includes>
 				<include>*.png</include>
