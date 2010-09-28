@@ -31,15 +31,14 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
     <!-- Service settings -->
     <string name="service_title">Notification Service</string>
-    <string name="service_status_running">Service is currently running</string>
-    <string name="service_status_stopped">Service is currently stopped</string>
-    <string name="start_service">Start service</string>
     <string name="service_started">Service started</string>
-    <string name="stop_service">Stop service</string>
     <string name="service_stopped">Service stopped</string>
     <string name="start_at_boot">Start service at boot</string>
     <string name="start_at_boot_on">The service will start when you turn your phone on</string>
     <string name="start_at_boot_off">The service will have to be started manually</string>
+    <string name="notifications_enabled">Enable notifications</string>
+    <string name="notifications_enabled_summary_on">Notifications will be sent</string>
+    <string name="notifications_enabled_summary_off">Notifications will NOT be sent</string>
 
     <!-- Notification methods -->
     <string name="methods_title">Notification methods</string>

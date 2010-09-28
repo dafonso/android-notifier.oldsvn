@@ -27,6 +27,7 @@ package org.damazio.notifier.service;
 import org.damazio.notifier.notification.Notification;
 import org.damazio.notifier.notification.NotificationType;
 
+import android.content.Context;
 import android.telephony.PhoneStateListener;
 
 /**
@@ -35,16 +36,18 @@ import android.telephony.PhoneStateListener;
  * @author rdamazio
  */
 public class VoicemailListener extends PhoneStateListener {
-  private final NotificationService service;
 
-  public VoicemailListener(NotificationService service) {
-    this.service = service;
+  private final Context context;
+
+  public VoicemailListener(Context context) {
+    this.context = context;
   }
 
   @Override
   public void onMessageWaitingIndicatorChanged(boolean mwi) {
     if (mwi) {
-      service.sendNotification(new Notification(service, NotificationType.VOICEMAIL, null, null));
+      Notification notification = new Notification(context, NotificationType.VOICEMAIL, null, null);
+      NotificationService.startAndSend(context, notification);
     }
   }
 }

@@ -83,6 +83,19 @@ public class NotifierPreferences {
   }
 
   /**
+   * @return whether the service should send notifications
+   */
+  public boolean areNotificationsEnabled() {
+    return preferences.getBoolean(context.getString(R.string.notifications_enabled_key), true);
+  }
+
+  public void setNotificationsEnabled(boolean enabled) {
+    preferences.edit()
+        .putBoolean(context.getString(R.string.notifications_enabled_key), enabled)
+        .commit();
+  }
+
+  /**
    * @return whether notifications should be sent over TCP/IP
    */
   public boolean isIpMethodEnabled() {

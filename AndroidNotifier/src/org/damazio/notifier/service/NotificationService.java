@@ -32,8 +32,6 @@ import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.NotifierMain;
 import org.damazio.notifier.NotifierPreferences;
 import org.damazio.notifier.R;
-import org.damazio.notifier.command.BluetoothCommandListener;
-import org.damazio.notifier.notification.BluetoothDeviceUtils;
 import org.damazio.notifier.notification.Notification;
 import org.damazio.notifier.notification.Notifier;
 
@@ -46,7 +44,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.IntentFilter.MalformedMimeTypeException;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.IBinder;
@@ -62,18 +59,19 @@ import android.util.Log;
  */
 public class NotificationService extends Service {
  
+  /**
+   * If a {@link Notification} object is passed as this extra when starting
+   * the service, that notification will be sent.
+   */
+  private static final String EXTRA_NOTIFICATION = "org.damazio.notifier.service.EXTRA_NOTIFICATION";
+
   private NotifierPreferences preferences;
   private ServicePreferencesListener preferenceListener;
   private Notifier notifier;
   private Handler instanceHandler;
 
-  private final PhoneStateListener ringListener = new PhoneRingListener(this);
   private final VoicemailListener voicemailListener = new VoicemailListener(this);
-  private BatteryReceiver batteryReceiver;
-  private UserReceiver userReceiver = new UserReceiver(this);
-  private final SmsReceiver smsReceiver = new SmsReceiver(this);
-  private final MmsReceiver mmsReceiver = new MmsReceiver(this);
-  private BluetoothCommandListener bluetoothCommandListener;
+  private final BatteryReceiver batteryReceiver = new BatteryReceiver();
   private boolean started;
 
   /**
@@ -82,18 +80,20 @@ public class NotificationService extends Service {
   private class ServicePreferencesListener
       implements SharedPreferences.OnSharedPreferenceChangeListener {
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-      if (key.equals(getString(R.string.show_notification_icon_key))) {
+      if (key.equals(getString(R.string.notifications_enabled_key))) {
+        if (!preferences.areNotificationsEnabled()) {
+          stopSelf();
+        }
+      } else if (key.equals(getString(R.string.show_notification_icon_key))) {
         showOrHideLocalNotification();
       }
-
-      // TODO: Start/stop listening for actions and commands
     }
   }
 
   /**
    * Sends the given notification.
    */
-  public void sendNotification(final Notification notification) {
+  private void sendNotification(final Notification notification) {
     instanceHandler.post(new Runnable() {
       public void run() {
         notifier.sendNotification(notification);
@@ -101,70 +101,55 @@ public class NotificationService extends Service {
     });
   }
 
+  /**
+   * If the given intent carries a bundled notification in its extras, sends it.
+   */
+  private void sendIntentNotification(Intent intent) {
+    Notification notification = intent.getParcelableExtra(EXTRA_NOTIFICATION);
+    if (notification != null) {
+      sendNotification(notification);
+    }
+  }
+
   @Override
   public void onStart(Intent intent, int startId) {
     super.onStart(intent, startId);
 
     synchronized (this) {
-      if (started) {
-        Log.d(NotifierConstants.LOG_TAG, "Not starting service again");
+      preferences = new NotifierPreferences(this);
+      if (!preferences.areNotificationsEnabled()) {
+        Log.w(NotifierConstants.LOG_TAG, "Not starting service - notifications disabled");
+        stopSelf();
         return;
       }
-      started = true;
+
+      if (started) {
+        Log.d(NotifierConstants.LOG_TAG, "Not starting service again");
+        sendIntentNotification(intent);
+        return;
+      }
 
       Log.i(NotifierConstants.LOG_TAG, "Starting notification service");
+      started = true;
       instanceHandler = new Handler();
 
-      preferences = new NotifierPreferences(this);
       notifier = new Notifier(this, preferences);
 
+      // Register the voicemail receiver
       final TelephonyManager tm = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-
-      // Register the ring listener
-      tm.listen(ringListener, PhoneStateListener.LISTEN_CALL_STATE);
-
-      // Register the viocemail receiver
       tm.listen(voicemailListener, PhoneStateListener.LISTEN_MESSAGE_WAITING_INDICATOR);
 
       // Register the battery receiver
-      batteryReceiver = new BatteryReceiver(this, preferences);
+      // (can't be registered in the manifest for some reason)
       registerReceiver(batteryReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-
-      // Register the SMS receiver
-      registerReceiver(smsReceiver, new IntentFilter(SmsReceiver.ACTION));
-
-      // Register the MMS receiver
-      try {
-        registerReceiver(mmsReceiver,
-            new IntentFilter(MmsReceiver.ACTION, MmsReceiver.DATA_TYPE));
-      } catch (MalformedMimeTypeException e) {
-        Log.e(NotifierConstants.LOG_TAG, "Unable to register MMS receiver", e);
-      }
-
-      // Register the third-party user events receiver
-      registerReceiver(userReceiver, new IntentFilter(UserReceiver.ACTION));
-
-      // If enabled, start command listeners
-      // TODO: Re-enable after bugfix release
-      // TODO: Handle preference changes
-      /*
-      if (preferences.isCommandEnabled()) {
-        if (preferences.isBluetoothCommandEnabled() && BluetoothDeviceUtils.isBluetoothMethodSupported()) {
-          bluetoothCommandListener = new BluetoothCommandListener(preferences);
-          bluetoothCommandListener.start();
-        }
-
-        if (preferences.isWifiCommandEnabled()) {
-          // TODO
-        }
-      }
-      */
 
       showOrHideLocalNotification();
 
       preferenceListener = new ServicePreferencesListener();
       preferences.registerOnSharedPreferenceChangeListener(preferenceListener);
     }
+
+    sendIntentNotification(intent);
   }
 
   @Override
@@ -177,26 +162,9 @@ public class NotificationService extends Service {
       }
       hideLocalNotification();
 
-      if (bluetoothCommandListener != null) {
-        bluetoothCommandListener.shutdown();
-        try {
-          bluetoothCommandListener.join(1000);
-        } catch (InterruptedException e) {
-          Log.e(NotifierConstants.LOG_TAG, "Unable to join bluetooth listner", e);
-        }
-      }
-
-      try {
-        unregisterReceiver(mmsReceiver);
-      } catch (IllegalArgumentException e) {
-        Log.e(NotifierConstants.LOG_TAG, "Unable to unregister MMS receiver", e);
-      }
-      unregisterReceiver(smsReceiver);
       unregisterReceiver(batteryReceiver);
-      unregisterReceiver(userReceiver);
 
       final TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
-      tm.listen(ringListener, PhoneStateListener.LISTEN_NONE);
       tm.listen(voicemailListener, PhoneStateListener.LISTEN_NONE);
 
       started = false;
@@ -226,24 +194,29 @@ public class NotificationService extends Service {
    * Shows the local status bar notification.
    */
   private void showLocalNotification() {
-    String notificationText = getString(R.string.notification_icon_text);
+    android.app.Notification notification = createLocalNotification(this);
+
+    NotificationManager notificationManager =
+        (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+    notificationManager.notify(R.string.notification_icon_text, notification);
+  }
+
+  private static android.app.Notification createLocalNotification(Context context) {
+    String notificationText = context.getString(R.string.notification_icon_text);
     android.app.Notification notification = new android.app.Notification(
         R.drawable.icon, notificationText, System.currentTimeMillis());
     PendingIntent intent = PendingIntent.getActivity(
-        this, 0,
-        new Intent(this, NotifierMain.class),
+        context, 0,
+        new Intent(context, NotifierMain.class),
         Intent.FLAG_ACTIVITY_NEW_TASK);
-    notification.setLatestEventInfo(this,
-        getString(R.string.app_name),
+    notification.setLatestEventInfo(context,
+        context.getString(R.string.app_name),
         notificationText,
         intent);
 
     notification.flags = android.app.Notification.FLAG_NO_CLEAR
                        | android.app.Notification.FLAG_ONGOING_EVENT;
-
-    NotificationManager notificationManager =
-        (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-    notificationManager.notify(R.string.notification_icon_text, notification);
+    return notification;
   }
 
   /**
@@ -264,11 +237,17 @@ public class NotificationService extends Service {
     context.startService(new Intent(context, NotificationService.class));
   }
 
+  public static void startAndSend(Context context, Notification notification) {
+    Intent intent = new Intent(context, NotificationService.class);
+    intent.putExtra(EXTRA_NOTIFICATION, notification);
+    context.startService(intent);
+  }
+
   /**
    * Uses the given context to determine whether the service is already running.
    */
   public static boolean isRunning(Context context) {
-    ActivityManager activityManager = (ActivityManager)context.getSystemService(ACTIVITY_SERVICE);
+    ActivityManager activityManager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
     List<RunningServiceInfo> services = activityManager.getRunningServices(Integer.MAX_VALUE);
 
     for (RunningServiceInfo serviceInfo : services) {

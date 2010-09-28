@@ -24,33 +24,39 @@
  */
 package org.damazio.notifier.service;
 
+import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.notification.Notification;
 import org.damazio.notifier.notification.NotificationType;
 
-import android.telephony.PhoneStateListener;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 /**
  * Listener which can detect and notify when the phone rings.
  *
  * @author rdamazio
  */
-class PhoneRingListener extends PhoneStateListener {
-  private final NotificationService service;
-  private CallerId callerId;
-
-  public PhoneRingListener(NotificationService context) {
-    this.service = context;
-    this.callerId = CallerId.create(context);
-  }
-
+public class PhoneStateReceiver extends BroadcastReceiver {
   @Override
-  public void onCallStateChanged(int state, String incomingNumber) {
-    if (state == TelephonyManager.CALL_STATE_RINGING) {
+  public void onReceive(Context context, Intent intent) {
+    if (!intent.getAction().equals(TelephonyManager.ACTION_PHONE_STATE_CHANGED)) {
+      Log.e(NotifierConstants.LOG_TAG,
+          "Wrong intent received by phone state receiver - " + intent.getAction());
+      return;
+    }
+
+    String stateStr = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
+    if (TelephonyManager.EXTRA_STATE_RINGING.equals(stateStr)) {
+      CallerId callerId = CallerId.create(context);
+
+      String incomingNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
       String notificationContents = callerId.buildCallerIdString(incomingNumber);
       Notification notification =
-          new Notification(service, NotificationType.RING, incomingNumber, notificationContents);
-      service.sendNotification(notification);
+          new Notification(context, NotificationType.RING, incomingNumber, notificationContents);
+      NotificationService.startAndSend(context, notification);
     }
   }
 }

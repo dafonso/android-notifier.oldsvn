@@ -25,13 +25,15 @@
 package org.damazio.notifier.notification;
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Data object which represents a notification.
  *
  * @author rdamazio
  */
-public class Notification {
+public class Notification implements Parcelable {
 
   private static final String PROTOCOL_VERSION = "v2";
   private final String deviceId;
@@ -39,6 +41,15 @@ public class Notification {
   private final NotificationType type;
   private final String data;
   private final String description;
+
+  private Notification(String deviceId, String notificationId, NotificationType type,
+      String data, String description) {
+    this.deviceId = deviceId;
+    this.notificationId = notificationId;
+    this.type = type;
+    this.data = data;
+    this.description = description;
+  }
 
   public Notification(Context context, NotificationType type, String data, String description) {
     this.deviceId = DeviceIdProvider.getDeviceId(context);
@@ -48,7 +59,7 @@ public class Notification {
     this.data = data;
     this.description = description;
   }
-
+  
   /**
    * @return the type of notification
    */
@@ -100,4 +111,37 @@ public class Notification {
     }
     return Long.toHexString(hashCode);
   }
+
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    // By saving the timestamp, we ensure device ID and notification ID are
+    // consistently rebuilt
+    dest.writeString(deviceId);
+    dest.writeString(notificationId);
+    dest.writeInt(type.ordinal());
+    dest.writeString(data);
+    dest.writeString(description);
+  }
+
+  public static final Creator<Notification> CREATOR = new Creator<Notification>() {
+    @Override
+    public Notification[] newArray(int size) {
+      return new Notification[size];
+    }
+
+    @Override
+    public Notification createFromParcel(Parcel source) {
+      String deviceId = source.readString();
+      String notificationId = source.readString();
+      NotificationType type = NotificationType.values()[source.readInt()];
+      String data = source.readString();
+      String description = source.readString();
+      return new Notification(deviceId, notificationId, type, data, description);
+    }
+  };
 }

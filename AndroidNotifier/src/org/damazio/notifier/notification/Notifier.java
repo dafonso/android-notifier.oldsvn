@@ -46,8 +46,8 @@ import android.util.Log;
 public class Notifier {
 
   private static final byte DELIMITER_BYTE = 0;
-  private final Set<NotificationMethod> allMethods;
   private final NotifierPreferences preferences;
+  private final Set<NotificationMethod> allMethods;
 
   public Notifier(Context context, NotifierPreferences preferences) {
     this.preferences = preferences;

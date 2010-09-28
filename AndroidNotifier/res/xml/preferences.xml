@@ -30,9 +30,11 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   <!-- Service -->
   <PreferenceScreen android:title="@string/service_title">
-    <Preference android:key="@string/service_state_key"
-                android:title="@string/start_service"
-                android:persistent="false" />
+    <CheckBoxPreference android:key="@string/notifications_enabled_key"
+                        android:title="@string/notifications_enabled"
+                        android:defaultValue="true"
+                        android:summaryOn="@string/notifications_enabled_summary_on"
+                        android:summaryOff="@string/notifications_enabled_summary_off" />
     <CheckBoxPreference android:key="@string/start_at_boot_key"
                         android:title="@string/start_at_boot"
                         android:defaultValue="true"
