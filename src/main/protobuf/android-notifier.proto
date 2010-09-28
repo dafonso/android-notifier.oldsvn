@@ -1,6 +1,6 @@
 package android_notifier;
 
-option java_package = "com.google.code.notifier.message";
+option java_package = "com.notifier.protocol";
 option java_outer_classname = "Protocol";
 option optimize_for = LITE_RUNTIME;
 
