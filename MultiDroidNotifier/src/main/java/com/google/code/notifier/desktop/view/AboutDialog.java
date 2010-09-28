@@ -28,7 +28,7 @@ import com.google.code.notifier.desktop.*;
 
 public class AboutDialog extends org.eclipse.swt.widgets.Dialog {
 
-	public static final String PROJECT_URL = "http://code.google.com/p/android-notifier-desktop/";
+	public static final String PROJECT_URL = "http://code.google.com/p/android-notifier/";
 
 	private static final Logger logger = LoggerFactory.getLogger(AboutDialog.class);
 

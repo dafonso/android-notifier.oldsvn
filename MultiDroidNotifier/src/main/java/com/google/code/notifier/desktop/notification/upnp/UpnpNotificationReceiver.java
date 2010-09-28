@@ -46,7 +46,7 @@ public class UpnpNotificationReceiver extends AbstractNotificationReceiver {
 	}
 
 	@Override
-	protected void doStart() throws Exception {
+	protected void doStart() {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -55,7 +55,7 @@ public class UpnpNotificationReceiver extends AbstractNotificationReceiver {
 					if (internetDevices != null && internetDevices.length > 0) {
 						internetDevice = internetDevices[0];
 						logger.debug("Found upnp internet device [{}]", internetDevice.getIGDRootDevice().getModelName());
-						
+
 						String localAddress = null;
 						for (int i = 0; i < MAX_WAITS_FOR_LOCAL_ADDRESS && localAddress == null; i++) {
 							localAddress = InetAddresses.getLocalHostAddress();
