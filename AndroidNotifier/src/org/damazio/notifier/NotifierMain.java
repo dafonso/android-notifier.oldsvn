@@ -59,7 +59,6 @@ import android.widget.Toast;
 public class NotifierMain extends PreferenceActivity {
   private Notifier notifier;
   private NotifierPreferences preferences;
-  private Preference serviceStatePreference;
   private BackupPreferencesListener backupPreferencesListener;
 
   @Override
@@ -133,17 +132,17 @@ public class NotifierMain extends PreferenceActivity {
    * Configures preference actions related to the service.
    */
   private void configureServicePreferences() {
-    // Attach an action to start and stop the service
-    serviceStatePreference = findPreference(getString(R.string.service_state_key));
-    serviceStatePreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-      public boolean onPreferenceClick(Preference preference) {
-        toggleServiceStatus();
+    // Make the enable notifications preference start or stop the service
+    CheckBoxPreference enabledPreference =
+        (CheckBoxPreference) findPreference(getString(R.string.notifications_enabled_key));
+    enabledPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+      @Override
+      public boolean onPreferenceChange(Preference preference, Object newValue) {
+        boolean enabled = (Boolean) newValue;
+        setServiceStarted(enabled);
         return true;
       }
     });
-
-    // Update the status that shows whether the service is initially running
-    updateServiceStatus();
   }
 
   /**
@@ -399,31 +398,20 @@ public class NotifierMain extends PreferenceActivity {
   /**
    * Toggles the service status between running and stopped.
    */
-  private void toggleServiceStatus() {
+  private void setServiceStarted(boolean start) {
     boolean isServiceRunning = NotificationService.isRunning(this);
-    int textId;
-    if (isServiceRunning) {
-      NotificationService.stop(this);
-      textId = R.string.service_stopped;
-    } else {
+    int textId = -1;
+    if (start && !isServiceRunning) {
       NotificationService.start(this);
       textId = R.string.service_started;
+    } else if (!start && isServiceRunning) {
+      NotificationService.stop(this);
+      textId = R.string.service_stopped;
     }
-    Toast.makeText(this, textId, Toast.LENGTH_SHORT).show();
-    updateServiceStatus();
-  }
 
-  /**
-   * Updates the service status on the UI.
-   */
-  private void updateServiceStatus() {
-    boolean isServiceRunning = NotificationService.isRunning(this);
-      serviceStatePreference.setSummary(isServiceRunning
-          ? R.string.service_status_running
-          : R.string.service_status_stopped);
-      serviceStatePreference.setTitle(isServiceRunning
-          ? R.string.stop_service
-          : R.string.start_service);
+    if (textId != -1) {
+      Toast.makeText(this, textId, Toast.LENGTH_SHORT).show();
+    }
   }
 
   /**
@@ -439,8 +427,8 @@ public class NotifierMain extends PreferenceActivity {
 
     String contents = getString(R.string.ping_contents);
     Notification notification =
-        new Notification(NotifierMain.this, NotificationType.PING, null, contents);
-    notifier.sendNotification(notification);
+        new Notification(this, NotificationType.PING, null, contents);
+    NotificationService.startAndSend(this, notification);
 
     Toast.makeText(this, R.string.ping_sent, Toast.LENGTH_LONG).show();
   }

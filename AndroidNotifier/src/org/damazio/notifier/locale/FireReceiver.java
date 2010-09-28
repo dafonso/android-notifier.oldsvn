@@ -25,6 +25,7 @@
 package org.damazio.notifier.locale;
 
 import org.damazio.notifier.NotifierConstants;
+import org.damazio.notifier.NotifierPreferences;
 import org.damazio.notifier.R;
 import org.damazio.notifier.locale.LocaleSettings.OnOffKeep;
 import org.damazio.notifier.service.NotificationService;
@@ -61,9 +62,14 @@ public class FireReceiver extends BroadcastReceiver {
     boolean running = NotificationService.isRunning(context);
     if (enabledState == OnOffKeep.ON && !running) {
       Log.d(NotifierConstants.LOG_TAG, "Locale starting service");
+      new NotifierPreferences(context).setNotificationsEnabled(true);
       NotificationService.start(context);
     } else if (enabledState == OnOffKeep.OFF && running) {
       Log.d(NotifierConstants.LOG_TAG, "Locale stopping service");
+      new NotifierPreferences(context).setNotificationsEnabled(false);
+
+      // Changing the preference should be enough for the service to suicide,
+      // but we kill it just in case.
       NotificationService.stop(context);
     }
   }

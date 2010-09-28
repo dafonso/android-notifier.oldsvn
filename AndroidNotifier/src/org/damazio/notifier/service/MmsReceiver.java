@@ -44,9 +44,9 @@ import android.util.Log;
  *
  * @author rdamazio
  */
-class MmsReceiver extends BroadcastReceiver {
-  static final String ACTION = "android.provider.Telephony.WAP_PUSH_RECEIVED";
-  static final String DATA_TYPE = "application/vnd.wap.mms-message";
+public class MmsReceiver extends BroadcastReceiver {
+  private static final String ACTION = "android.provider.Telephony.WAP_PUSH_RECEIVED";
+  private static final String DATA_TYPE = "application/vnd.wap.mms-message";
 
   private final NotificationService service;
 
@@ -86,7 +86,7 @@ class MmsReceiver extends BroadcastReceiver {
         data = fromStr;
       }
       Notification notification = new Notification(context, NotificationType.MMS, data, contents);
-      service.sendNotification(notification);
+      NotificationService.startAndSend(context, notification);
     }
   }
 }

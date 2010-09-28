@@ -39,14 +39,8 @@ import android.util.Log;
  *
  * @author rdamazio
  */
-class SmsReceiver extends BroadcastReceiver {
-  static final String ACTION = "android.provider.Telephony.SMS_RECEIVED";
-
-  private final NotificationService service;
-
-  public SmsReceiver(NotificationService service) {
-    this.service = service;
-  }
+public class SmsReceiver extends BroadcastReceiver {
+  private static final String ACTION = "android.provider.Telephony.SMS_RECEIVED";
 
   @Override
   public void onReceive(Context context, Intent intent) {
@@ -71,7 +65,7 @@ class SmsReceiver extends BroadcastReceiver {
         String data = decoder.getSenderAddress();
         Log.d(NotifierConstants.LOG_TAG, "Received Sms: " + contents);
         Notification notification = new Notification(context, NotificationType.SMS, data, contents);
-        service.sendNotification(notification);
+        NotificationService.startAndSend(context, notification);
         notificationSent = true;
       }
     }
@@ -79,7 +73,7 @@ class SmsReceiver extends BroadcastReceiver {
     if (!notificationSent) {
       // If no notification sent (extra info was not there), send one without info
       Notification notification = new Notification(context, NotificationType.SMS, null, null);
-      service.sendNotification(notification);
+      NotificationService.startAndSend(context, notification);
     }
   }
 }

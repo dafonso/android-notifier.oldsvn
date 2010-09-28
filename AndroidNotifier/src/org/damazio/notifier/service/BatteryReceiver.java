@@ -50,14 +50,6 @@ class BatteryReceiver extends BroadcastReceiver {
   private int lastBatteryStatus = -1;
   private int lastBatteryLevelPercentage = -1;
 
-  private final NotificationService service;
-  private final NotifierPreferences preferences;
-
-  public BatteryReceiver(NotificationService service, NotifierPreferences preferences) {
-    this.service = service;
-    this.preferences = preferences;
-  }
-
   @Override
   public void onReceive(Context context, Intent intent) {
     if (!intent.getAction().equals(Intent.ACTION_BATTERY_CHANGED)) {
@@ -117,6 +109,7 @@ class BatteryReceiver extends BroadcastReceiver {
       return;
     }
 
+    NotifierPreferences preferences = new NotifierPreferences(context);
     synchronized (this) {
       int batteryLevelChange = Math.abs(lastBatteryLevelPercentage - batteryLevelPercentage);
       Log.d(NotifierConstants.LOG_TAG, "Battery level change: " + batteryLevelChange);
@@ -134,7 +127,7 @@ class BatteryReceiver extends BroadcastReceiver {
         String data = Integer.toString(batteryLevelPercentage);
         Notification notification =
             new Notification(context, NotificationType.BATTERY, data, contents);
-        service.sendNotification(notification);
+        NotificationService.startAndSend(context, notification);
   
         lastBatteryStatus = status;
         lastBatteryLevelPercentage = batteryLevelPercentage;

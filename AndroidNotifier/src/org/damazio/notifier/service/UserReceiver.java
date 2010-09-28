@@ -39,7 +39,7 @@ import android.util.Log;
  *
  * @author Maarten 'MrSnowflake' Krijn
  */
-class UserReceiver extends BroadcastReceiver {
+public class UserReceiver extends BroadcastReceiver {
   /**
    * The intent action to use when sending broadcasts.
    */
@@ -56,12 +56,6 @@ class UserReceiver extends BroadcastReceiver {
    * Either this or {@link #EXTRA_TITLE} (or both) must be set.
    */
   static final String EXTRA_DESCRIPTION = "description";
-
-  private final NotificationService service;
-
-  public UserReceiver(NotificationService service) {
-    this.service = service;
-  }
 
   @Override
   public void onReceive(Context context, Intent intent) {
@@ -85,7 +79,7 @@ class UserReceiver extends BroadcastReceiver {
       Log.d(NotifierConstants.LOG_TAG, "Notifying of user message");
       Notification notification =
           new Notification(context, NotificationType.USER, title, message);
-      service.sendNotification(notification);
+      NotificationService.startAndSend(context, notification);
     } else {
       Log.d(NotifierConstants.LOG_TAG, "Got empty user message");
     }
