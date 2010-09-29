@@ -44,15 +44,19 @@ static const char kAccountName[] = "passphrase";
                                           &passwordLength, &password,
                                           NULL);
   if (status != 0) return @"";
-
-  NSString *passwordStr = [NSString stringWithUTF8String:password];
+  
+  NSString *passwordStr = [[[NSString alloc] initWithBytes:password
+                                                    length:passwordLength
+                                                  encoding:NSUTF8StringEncoding]
+                           autorelease];
   SecKeychainItemFreeContent(NULL, password);
   return passwordStr;
 }
 
 - (void)setPassPhrase:(NSString *)passPhrase {
-  const char* utf8pass = [passPhrase UTF8String];
-  UInt32 len = (UInt32) strlen(utf8pass);
+  NSData* passPhraseData = [passPhrase dataUsingEncoding:NSUTF8StringEncoding];
+  const char* utf8pass = [passPhraseData bytes];
+  UInt32 len = (UInt32) [passPhraseData length];
   OSStatus status;
 
   SecKeychainItemRef itemRef;
