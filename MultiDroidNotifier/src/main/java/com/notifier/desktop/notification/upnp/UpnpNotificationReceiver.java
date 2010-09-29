@@ -91,13 +91,17 @@ public class UpnpNotificationReceiver extends AbstractNotificationReceiver {
 	@Override
 	protected void doStop() {
 		if (internetDevice != null) {
-			try {
-				internetDevice.deletePortMapping(null, PORT, "TCP");
-				internetDevice.deletePortMapping(null, PORT, "UDP");
-				logger.info("Removed UPNP mapping to port [{}] successfully", PORT);
-			} catch (Exception e) {
-				logger.warn("Error deleting upnp port mapping", e);
-			}
+			deletePortMapping("TCP");
+			deletePortMapping("UDP");
+			logger.info("Removed UPNP mappings to port [{}]", PORT);
+		}
+	}
+
+	protected void deletePortMapping(String protocol) {
+		try {
+			internetDevice.deletePortMapping(null, PORT, protocol);
+		} catch (Exception e) {
+			logger.warn("Error deleting upnp port mapping for protocol [" + protocol + "]", e);
 		}
 	}
 }
