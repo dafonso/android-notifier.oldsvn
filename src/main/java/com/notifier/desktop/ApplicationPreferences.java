@@ -50,6 +50,8 @@ public class ApplicationPreferences {
 	private static final Splitter ALLOWED_DEVICES_IDS_SPLITTER = Splitter.on(ALLOWED_DEVICES_IDS_SEPARATOR).omitEmptyStrings();
 	private static final Joiner ALLOWED_DEVICES_IDS_JOINER = Joiner.on(ALLOWED_DEVICES_IDS_SEPARATOR);
 
+	private static final String EXPAND_PREFERENCE_GROUP = "_expand";
+
 	private boolean startAtLogin;
 
 	private boolean receptionWithWifi;
@@ -69,9 +71,12 @@ public class ApplicationPreferences {
 
 	private Map<String, Object> notificationsSettings;
 
+	private Map<Group, Boolean> groupsExpansion;
+
 	public ApplicationPreferences() {
 		allowedDevicesIds = Sets.newTreeSet();
 		notificationsSettings = Maps.newHashMap();
+		groupsExpansion = Maps.newEnumMap(Group.class);
 	}
 
 	public void read() {
@@ -108,6 +113,10 @@ public class ApplicationPreferences {
 			String command = prefs.get(commandName, "");
 			notificationsSettings.put(commandName, command);
 		}
+
+		for (Group group : Group.values()) {
+			groupsExpansion.put(group, prefs.getBoolean(group.name() + EXPAND_PREFERENCE_GROUP, true));
+		}
 	}
 
 	public void write() throws IOException {
@@ -139,6 +148,11 @@ public class ApplicationPreferences {
 
 			String commandName = type.name() + NOTIFICATION_COMMAND;
 			prefs.put(commandName, (String)notificationsSettings.get(commandName));
+		}
+
+		for (Group group : Group.values()) {
+			boolean expand = groupsExpansion.get(group);
+			prefs.putBoolean(group.name() + EXPAND_PREFERENCE_GROUP, expand);
 		}
 
 		try {
@@ -194,6 +208,14 @@ public class ApplicationPreferences {
 	public String getNotificationCommand(Notification.Type type) {
 		String name = type.name() + NOTIFICATION_COMMAND;
 		return (String)notificationsSettings.get(name);
+	}
+
+	public boolean isGroupExpanded(Group group) {
+		return groupsExpansion.get(group);
+	}
+
+	public void setGroupExpanded(Group group, boolean expanded) {
+		groupsExpansion.put(group, expanded);
 	}
 
 	// Getters/Setters
@@ -347,4 +369,7 @@ public class ApplicationPreferences {
 		return builder.toString();
 	}
 
+	public static enum Group {
+		GENERAL, RECEPTION, DISPLAY, ACTION, PAIRING
+	}
 }

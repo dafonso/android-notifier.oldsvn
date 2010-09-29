@@ -19,6 +19,7 @@ package com.notifier.desktop.view;
 
 import java.io.*;
 
+import org.eclipse.nebula.widgets.pgroup.*;
 import org.eclipse.swt.*;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.layout.*;
@@ -27,6 +28,7 @@ import org.slf4j.*;
 
 import com.google.common.base.*;
 import com.notifier.desktop.*;
+import com.notifier.desktop.ApplicationPreferences.Group;
 import com.notifier.desktop.app.*;
 import com.notifier.desktop.app.OperatingSystems.*;
 import com.notifier.desktop.util.*;
@@ -48,10 +50,10 @@ public class PreferencesDialog extends Dialog {
 
 	private Shell dialogShell;
 
-	private Group generalGroup;
+	private PGroup generalGroup;
 	private Button startAtLoginCheckbox;
 
-	private Group notificationReceptionMethodsGroup;
+	private PGroup notificationReceptionMethodsGroup;
 	private Button wifiCheckbox;
 	private Button internetCheckbox;
 	private Button bluetoothCheckbox;
@@ -61,19 +63,19 @@ public class PreferencesDialog extends Dialog {
 	private Text communicationPasswordText;
 	private boolean communicationPasswordChanged;
 
-	private Group notificationDisplayMethodsGroup;
+	private PGroup notificationDisplayMethodsGroup;
 	private Button systemDefaultCheckbox;
 	private Button growlCheckbox;
 	private Button libnotifyCheckbox;
 
-	private Group devicesGroup;
+	private PGroup devicesGroup;
 	private Button anyDeviceRadioButton;
 	private Button onlyDeviceRadioButton;
 	private List devicesList;
 	private Button addDeviceButton;
 	private Button removeDeviceButton;
 
-	private Group notificationActionsGroup;
+	private PGroup notificationActionsGroup;
 	private TabFolder notificationTypesTabFolder;
 
 	private Button okButton;
@@ -93,8 +95,11 @@ public class PreferencesDialog extends Dialog {
 
 			Shell parent = getParent();
 			dialogShell = new Shell(parent, SWT.DIALOG_TRIM);
+			dialogShell.setBackgroundMode(SWT.INHERIT_DEFAULT);
 
-			dialogShell.setLayout(new FormLayout());
+			FormLayout shellLayout = new FormLayout();
+			shellLayout.marginBottom = 10;
+			dialogShell.setLayout(shellLayout);
 			dialogShell.setText(Application.NAME + " Preferences");
 			dialogShell.addDisposeListener(new DisposeListener() {
 				@Override
@@ -112,7 +117,8 @@ public class PreferencesDialog extends Dialog {
 
 			// General Group
 
-			generalGroup = new Group(dialogShell, SWT.NONE);
+			//generalGroup = new Group(dialogShell, SWT.NONE);
+			generalGroup = createPGroup();
 			GridLayout generalGroupLayout = new GridLayout();
 			generalGroupLayout.makeColumnsEqualWidth = true;
 			generalGroup.setLayout(generalGroupLayout);
@@ -122,6 +128,7 @@ public class PreferencesDialog extends Dialog {
 			generalGroupLData.right = new FormAttachment(100, -10);
 			generalGroup.setLayoutData(generalGroupLData);
 			generalGroup.setText("General Options");
+			generalGroup.addExpandListener(new GroupExpandListener(ApplicationPreferences.Group.GENERAL));
 
 			startAtLoginCheckbox = new Button(generalGroup, SWT.CHECK | SWT.LEFT);
 			GridData startAtLoginCheckboxLData = new GridData();
@@ -159,10 +166,12 @@ public class PreferencesDialog extends Dialog {
 					}
 				}
 			});
+			generalGroup.setExpanded(preferences.isGroupExpanded(ApplicationPreferences.Group.GENERAL));
 
 			// Notification Reception Group
 
-			notificationReceptionMethodsGroup = new Group(dialogShell, SWT.NONE);
+			//notificationReceptionMethodsGroup = new Group(dialogShell, SWT.NONE);
+			notificationReceptionMethodsGroup = createPGroup();
 			GridLayout notificationMethodsGroupLayout = new GridLayout();
 			notificationMethodsGroupLayout.numColumns = 2;
 			notificationReceptionMethodsGroup.setLayout(notificationMethodsGroupLayout);
@@ -172,6 +181,7 @@ public class PreferencesDialog extends Dialog {
 			notificationMethodsGroupLData.right = new FormAttachment(100, -10);
 			notificationReceptionMethodsGroup.setLayoutData(notificationMethodsGroupLData);
 			notificationReceptionMethodsGroup.setText("Notification Reception Methods");
+			notificationReceptionMethodsGroup.addExpandListener(new GroupExpandListener(ApplicationPreferences.Group.RECEPTION));
 
 			wifiCheckbox = new Button(notificationReceptionMethodsGroup, SWT.CHECK | SWT.LEFT);
 			GridData wifiCheckboxLData = new GridData();
@@ -409,10 +419,12 @@ public class PreferencesDialog extends Dialog {
 					}
 				}
 			});
+			notificationReceptionMethodsGroup.setExpanded(preferences.isGroupExpanded(ApplicationPreferences.Group.RECEPTION));
 
 			// Notification Display Group
 
-			notificationDisplayMethodsGroup = new Group(dialogShell, SWT.NONE);
+			//notificationDisplayMethodsGroup = new Group(dialogShell, SWT.NONE);
+			notificationDisplayMethodsGroup = createPGroup();
 			GridLayout notificationDisplayMethodsGroupLayout = new GridLayout();
 			notificationDisplayMethodsGroupLayout.makeColumnsEqualWidth = true;
 			notificationDisplayMethodsGroup.setLayout(notificationDisplayMethodsGroupLayout);
@@ -422,6 +434,7 @@ public class PreferencesDialog extends Dialog {
 			notificationDisplayMethodsGroupLData.right = new FormAttachment(100, -10);
 			notificationDisplayMethodsGroup.setLayoutData(notificationDisplayMethodsGroupLData);
 			notificationDisplayMethodsGroup.setText("Notification Display Methods");
+			notificationDisplayMethodsGroup.addExpandListener(new GroupExpandListener(ApplicationPreferences.Group.DISPLAY));
 
 			systemDefaultCheckbox = new Button(notificationDisplayMethodsGroup, SWT.CHECK | SWT.LEFT);
 			GridData systemDefaultCheckboxLData = new GridData();
@@ -520,9 +533,11 @@ public class PreferencesDialog extends Dialog {
 					}
 				});
 			}
+			notificationDisplayMethodsGroup.setExpanded(preferences.isGroupExpanded(ApplicationPreferences.Group.DISPLAY));
 
 			// Notification Actions Groups
-			notificationActionsGroup = new Group(dialogShell, SWT.NONE);
+			//notificationActionsGroup = new Group(dialogShell, SWT.NONE);
+			notificationActionsGroup = createPGroup();
 			FillLayout notificationActionsGroupLayout = new FillLayout();
 			notificationActionsGroupLayout.marginHeight = 5;
 			notificationActionsGroup.setLayout(notificationActionsGroupLayout);
@@ -532,16 +547,19 @@ public class PreferencesDialog extends Dialog {
 			notificationActionsGroupLData.right = new FormAttachment(100, -10);
 			notificationActionsGroup.setLayoutData(notificationActionsGroupLData);
 			notificationActionsGroup.setText("Notification Actions");
+			notificationActionsGroup.addExpandListener(new GroupExpandListener(ApplicationPreferences.Group.ACTION));
 
 			notificationTypesTabFolder = new TabFolder(notificationActionsGroup, SWT.NONE);
 			for (Notification.Type type : Notification.Type.values()) {
 				createNotificationTypeTabItem(notificationTypesTabFolder, type);
 			}
 			notificationTypesTabFolder.pack();
+			notificationActionsGroup.setExpanded(preferences.isGroupExpanded(ApplicationPreferences.Group.ACTION));
 
 			// Devices Group
 
-			devicesGroup = new Group(dialogShell, SWT.NONE);
+			//devicesGroup = new Group(dialogShell, SWT.NONE);
+			devicesGroup = createPGroup();
 			GridLayout devicesGroupLayout = new GridLayout();
 			devicesGroupLayout.numColumns = 2;
 			devicesGroup.setLayout(devicesGroupLayout);
@@ -551,6 +569,7 @@ public class PreferencesDialog extends Dialog {
 			devicesGroupLData.right = new FormAttachment(100, -10);
 			devicesGroup.setLayoutData(devicesGroupLData);
 			devicesGroup.setText("Devices");
+			devicesGroup.addExpandListener(new GroupExpandListener(ApplicationPreferences.Group.PAIRING));
 
 			anyDeviceRadioButton = new Button(devicesGroup, SWT.RADIO | SWT.LEFT);
 			GridData anyDeviceComboBoxLData = new GridData();
@@ -657,6 +676,7 @@ public class PreferencesDialog extends Dialog {
 					}
 				}
 			});
+			devicesGroup.setExpanded(preferences.isGroupExpanded(ApplicationPreferences.Group.PAIRING));
 
 			// OK/Cancel Buttons
 
@@ -664,9 +684,9 @@ public class PreferencesDialog extends Dialog {
 			FormData okButtonLData = new FormData();
 			okButtonLData.width = 70;
 			okButtonLData.height = 28;
-			okButtonLData.top = new FormAttachment(devicesGroup, 10);
+			okButtonLData.top = new FormAttachment(devicesGroup, 7);
 			okButtonLData.right = new FormAttachment(100, -10);
-			okButtonLData.bottom = new FormAttachment(100, -10);
+			//okButtonLData.bottom = new FormAttachment(100, -10);
 			okButton.setLayoutData(okButtonLData);
 			okButton.setText("Save");
 			okButton.addListener(SWT.Selection, new Listener() {
@@ -675,23 +695,7 @@ public class PreferencesDialog extends Dialog {
 					dialogShell.close();
 				}
 			});
-/* No cancel support
-			cancelButton = new Button(dialogShell, SWT.PUSH | SWT.CENTER);
-			FormData cancelButtonLData = new FormData();
-			cancelButtonLData.width = 70;
-			cancelButtonLData.height = 28;
-			cancelButtonLData.top = new FormAttachment(devicesGroup, 10);
-			cancelButtonLData.right = new FormAttachment(okButton, -10);
-			cancelButtonLData.bottom = new FormAttachment(100, -10);
-			cancelButton.setLayoutData(cancelButtonLData);
-			cancelButton.setText("Cancel");
-			cancelButton.addListener(SWT.Selection, new Listener() {
-				@Override
-				public void handleEvent(Event event) {
-					dialogShell.close();
-				}
-			});
-*/
+
 			dialogShell.layout();
 			dialogShell.pack();
 
@@ -863,9 +867,38 @@ public class PreferencesDialog extends Dialog {
 		return item;
 	}
 
+	protected PGroup createPGroup() {
+		PGroup group = new PGroup(dialogShell, SWT.SMOOTH);
+		group.setStrategy(new SimpleGroupStrategy());
+		group.setToggleRenderer(new TreeNodeToggleRenderer());
+		
+		return group;
+	}
+
 	protected void setCommunicationPassword(String password) {
 		byte[] key = password.length() == 0 ? new byte[0] : Encryption.passPhraseToKey(password);
 		notificationParser.setEncryption(true, key);
 		preferences.setCommunicationPassword(key);
+	}
+
+	class GroupExpandListener implements ExpandListener {
+		
+		private final ApplicationPreferences.Group group;
+
+		public GroupExpandListener(Group group) {
+			this.group = group;
+		}
+
+		@Override
+		public void itemCollapsed(ExpandEvent e) {
+			preferences.setGroupExpanded(group, false);
+			dialogShell.pack();
+		}
+
+		@Override
+		public void itemExpanded(ExpandEvent e) {
+			preferences.setGroupExpanded(group, true);
+			dialogShell.pack();
+		}
 	}
 }
