@@ -26,23 +26,24 @@ import com.google.common.base.*;
 import com.google.common.collect.*;
 import com.google.inject.*;
 import com.notifier.desktop.*;
+import com.notifier.desktop.exception.*;
 
-public class TextProtocolNotificationParser extends EncryptedNotificationParser {
+public class TextNotificationParser extends EncryptedNotificationParser {
 
 	public static final Charset CHARSET = Charsets.UTF_8;
 	public static final char FIELD_SEPARATOR = '/';
 	public static final int FIELD_COUNT = 6;
 	public static final String SUPPORTED_VERSION = "v2";
 
-	private static final Logger logger = LoggerFactory.getLogger(TextProtocolNotificationParser.class);
+	private static final Logger logger = LoggerFactory.getLogger(TextNotificationParser.class);
 
 	@Inject
-	public TextProtocolNotificationParser(Provider<ApplicationPreferences> preferencesProvider) {
+	public TextNotificationParser(Provider<ApplicationPreferences> preferencesProvider) {
 		super(preferencesProvider.get());
 	}
 
 	@Override
-	public Notification parse(byte[] msg) {
+	public Notification parse(byte[] msg) throws ParseException {
 		byte[] msgToUse = decryptIfNecessary(msg);
 		if (msgToUse == null) {
 			return null;
@@ -58,7 +59,7 @@ public class TextProtocolNotificationParser extends EncryptedNotificationParser 
 		Iterator<String> iterator = splitted.iterator();
 		String version = iterator.next();
 		if (!SUPPORTED_VERSION.equals(version)) {
-			throw new IllegalStateException("Protocol version [" + version + "] is not supported");
+			throw new ParseException("Protocol version [" + version + "] is not supported");
 		}
 
 		String deviceId = iterator.next();

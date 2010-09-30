@@ -115,7 +115,7 @@ public class Main {
 		protected void configure() {
 			bind(Application.class).to(ApplicationImpl.class).in(Singleton.class);
 			bind(NotificationManager.class).to(NotificationManagerImpl.class).in(Singleton.class);
-			bind(new TypeLiteral<NotificationParser<byte[]>>() {}).to(TextProtocolNotificationParser.class).in(Singleton.class);
+			bind(new TypeLiteral<NotificationParser<byte[]>>() {}).to(MultiNotificationParser.class).in(Singleton.class);
 
 			bind(NotificationBroadcaster.class).annotatedWith(Tray.class).to(TrayNotificationBroadcaster.class).in(Singleton.class);
 			bind(NotificationBroadcaster.class).annotatedWith(Growl.class).to(GrowlNotificationBroadcaster.class).in(Singleton.class);
