@@ -53,8 +53,8 @@ public class LibnotifyNotificationBroadcaster extends AbstractLifecycle implemen
 		}
 
 		String iconName = notification.getType() == Notification.Type.BATTERY ? notification.getBatteryIconName() : notification.getType().getIconName();
-		String title = notification.getTitle("\"\"");
-		String description = notification.getDescription() == null ? "\"\"" : notification.getDescription();
+		String title = notification.getTitle();
+		String description = notification.getDescription();
 
 		ProcessBuilder builder = new ProcessBuilder(LIB_NOTIFY_COMMAND, "-i", ICON_DIRECTORY + iconName, "-c", notification.getType().name(), title, description);
 		try {

@@ -146,8 +146,8 @@ public class SwtTrayManager implements TrayManager {
 			public void run() {
 				if (!swtManager.getShell().isDisposed()) {
 					ToolTip tip = new ToolTip(swtManager.getShell(), SWT.BALLOON | SWT.ICON_INFORMATION);
-					tip.setText(notification.getTitle(Application.NAME));
-					tip.setMessage(notification.getDescription() == null ? "No description" : notification.getDescription());
+					tip.setText(notification.getTitle());
+					tip.setMessage(notification.getDescription());
 					trayItem.setToolTip(tip);
 					tip.setVisible(true);
 				}
