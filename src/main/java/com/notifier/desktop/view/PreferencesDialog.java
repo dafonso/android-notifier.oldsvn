@@ -615,8 +615,8 @@ public class PreferencesDialog extends Dialog {
 			devicesList = new List(devicesGroup, SWT.SINGLE | SWT.BORDER);
 			devicesList.setLayoutData(devicesListLData);
 			devicesList.setEnabled(!preferences.isReceptionFromAnyDevice());
-			for (String deviceId : preferences.getAllowedDevicesIds()) {
-				devicesList.add(deviceId);
+			for (Long deviceId : preferences.getAllowedDevicesIds()) {
+				devicesList.add(deviceId.toString());
 			}
 
 			addDeviceButton = new Button(devicesGroup, SWT.PUSH | SWT.CENTER);
@@ -639,12 +639,12 @@ public class PreferencesDialog extends Dialog {
 					});
 					notificationManager.waitForPairing(new NotificationManager.PairingListener() {
 						@Override
-						public boolean onPairingSuccessful(final String deviceId) {
+						public boolean onPairingSuccessful(final long deviceId) {
 							if (preferences.addAllowedDeviceId(deviceId)) {
 								swtManager.update(new Runnable() {
 									@Override
 									public void run() {
-										devicesList.add(deviceId);
+										devicesList.add(Long.toString(deviceId));
 										notificationManager.setPairedDevices(devicesList.getItems());
 										dialog.close();
 									}
@@ -670,7 +670,7 @@ public class PreferencesDialog extends Dialog {
 					String[] items = devicesList.getSelection();
 					if (items.length > 0) {
 						String deviceId = items[0];
-						preferences.removeAllowedDeviceId(deviceId);
+						preferences.removeAllowedDeviceId(Long.parseLong(deviceId));
 						devicesList.remove(deviceId);
 						notificationManager.setPairedDevices(devicesList.getItems());
 					}

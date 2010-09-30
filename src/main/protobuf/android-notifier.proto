@@ -5,8 +5,8 @@ option java_outer_classname = "Protocol";
 option optimize_for = LITE_RUNTIME;
 
 message Notification {
-    required fixed32 device_id = 1;
-    required fixed32 id = 2;
+    required fixed64 device_id = 1;
+    required fixed64 id = 2;
     required Type type = 3;
     required string description = 4;
 
@@ -30,29 +30,29 @@ message Notification {
 
 message Search {
     message Request {
-        required string device_id = 1;
-        required string id = 2;
+        required fixed64 device_id = 1;
+        required fixed64 id = 2;
         required string query = 3;
     }
 
     message Response {
-        required string device_id = 1;
-        required string id = 2;
+        required fixed64 device_id = 1;
+        required fixed64 id = 2;
         repeated Contact contacts = 3;
     }
 }
 
 message SendSms {
     message Request {
-        required string device_id = 1;
-        required string id = 2;
+        required fixed64 device_id = 1;
+        required fixed64 id = 2;
         required string phone_number = 3;
         required string sms_message = 4;
     }
 
     message Response {
-        required string device_id = 1;
-        required string id = 2;
+        required fixed64 device_id = 1;
+        required fixed64 id = 2;
         required int32 result_code = 3;
     }
 }
