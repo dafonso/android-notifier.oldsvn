@@ -67,7 +67,7 @@ public class ApplicationPreferences {
 	private boolean displayWithLibnotify;
 
 	private boolean receptionFromAnyDevice;
-	private Set<String> allowedDevicesIds;
+	private Set<Long> allowedDevicesIds;
 
 	private Map<String, Object> notificationsSettings;
 
@@ -94,7 +94,15 @@ public class ApplicationPreferences {
 		displayWithGrowl = prefs.getBoolean(DISPLAY_WITH_GROWL, false);
 		displayWithLibnotify = prefs.getBoolean(DISPLAY_WITH_LIBNOTIFY, false);
 		receptionFromAnyDevice = prefs.getBoolean(RECEPTION_FROM_ANY_DEVICE, true);
-		allowedDevicesIds = Sets.newTreeSet(ALLOWED_DEVICES_IDS_SPLITTER.split(prefs.get(ALLOWED_DEVICES_IDS, "")));
+		
+		Iterable<String> allowedIds = ALLOWED_DEVICES_IDS_SPLITTER.split(prefs.get(ALLOWED_DEVICES_IDS, ""));
+		Iterable<Long> allowedIdNumbers = Iterables.transform(allowedIds, new Function<String, Long>() {
+			@Override
+			public Long apply(String from) {
+				return Long.parseLong(from);
+			}
+		});
+		allowedDevicesIds = Sets.newTreeSet(allowedIdNumbers);
 
 		for (Notification.Type type : Notification.Type.values()) {
 			String enabledName = type.name() + NOTIFICATION_ENABLED;
@@ -162,11 +170,11 @@ public class ApplicationPreferences {
 		}
 	}
 
-	public boolean addAllowedDeviceId(String deviceId) {
+	public boolean addAllowedDeviceId(Long deviceId) {
 		return allowedDevicesIds.add(deviceId);
 	}
 
-	public void removeAllowedDeviceId(String deviceId) {
+	public void removeAllowedDeviceId(Long deviceId) {
 		allowedDevicesIds.remove(deviceId);
 	}
 
@@ -308,11 +316,11 @@ public class ApplicationPreferences {
 		this.receptionFromAnyDevice = receptionFromAnyDevice;
 	}
 
-	public Set<String> getAllowedDevicesIds() {
+	public Set<Long> getAllowedDevicesIds() {
 		return allowedDevicesIds;
 	}
 
-	public void setAllowedDevicesIds(Set<String> allowedDevicesIds) {
+	public void setAllowedDevicesIds(Set<Long> allowedDevicesIds) {
 		this.allowedDevicesIds = allowedDevicesIds;
 	}
 

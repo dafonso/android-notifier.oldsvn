@@ -91,19 +91,19 @@ public final class Protocol {
       // @@protoc_insertion_point(enum_scope:android_notifier.Notification.Type)
     }
     
-    // required fixed32 device_id = 1;
+    // required fixed64 device_id = 1;
     public static final int DEVICE_ID_FIELD_NUMBER = 1;
     private boolean hasDeviceId;
-    private int deviceId_ = 0;
+    private long deviceId_ = 0L;
     public boolean hasDeviceId() { return hasDeviceId; }
-    public int getDeviceId() { return deviceId_; }
+    public long getDeviceId() { return deviceId_; }
     
-    // required fixed32 id = 2;
+    // required fixed64 id = 2;
     public static final int ID_FIELD_NUMBER = 2;
     private boolean hasId;
-    private int id_ = 0;
+    private long id_ = 0L;
     public boolean hasId() { return hasId; }
-    public int getId() { return id_; }
+    public long getId() { return id_; }
     
     // required .android_notifier.Notification.Type type = 3;
     public static final int TYPE_FIELD_NUMBER = 3;
@@ -169,10 +169,10 @@ public final class Protocol {
                         throws java.io.IOException {
       getSerializedSize();
       if (hasDeviceId()) {
-        output.writeFixed32(1, getDeviceId());
+        output.writeFixed64(1, getDeviceId());
       }
       if (hasId()) {
-        output.writeFixed32(2, getId());
+        output.writeFixed64(2, getId());
       }
       if (hasType()) {
         output.writeEnum(3, getType().getNumber());
@@ -205,11 +205,11 @@ public final class Protocol {
       size = 0;
       if (hasDeviceId()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeFixed32Size(1, getDeviceId());
+          .computeFixed64Size(1, getDeviceId());
       }
       if (hasId()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeFixed32Size(2, getId());
+          .computeFixed64Size(2, getId());
       }
       if (hasType()) {
         size += com.google.protobuf.CodedOutputStream
@@ -428,12 +428,12 @@ public final class Protocol {
               }
               break;
             }
-            case 13: {
-              setDeviceId(input.readFixed32());
+            case 9: {
+              setDeviceId(input.readFixed64());
               break;
             }
-            case 21: {
-              setId(input.readFixed32());
+            case 17: {
+              setId(input.readFixed64());
               break;
             }
             case 24: {
@@ -473,39 +473,39 @@ public final class Protocol {
       }
       
       
-      // required fixed32 device_id = 1;
+      // required fixed64 device_id = 1;
       public boolean hasDeviceId() {
         return result.hasDeviceId();
       }
-      public int getDeviceId() {
+      public long getDeviceId() {
         return result.getDeviceId();
       }
-      public Builder setDeviceId(int value) {
+      public Builder setDeviceId(long value) {
         result.hasDeviceId = true;
         result.deviceId_ = value;
         return this;
       }
       public Builder clearDeviceId() {
         result.hasDeviceId = false;
-        result.deviceId_ = 0;
+        result.deviceId_ = 0L;
         return this;
       }
       
-      // required fixed32 id = 2;
+      // required fixed64 id = 2;
       public boolean hasId() {
         return result.hasId();
       }
-      public int getId() {
+      public long getId() {
         return result.getId();
       }
-      public Builder setId(int value) {
+      public Builder setId(long value) {
         result.hasId = true;
         result.id_ = value;
         return this;
       }
       public Builder clearId() {
         result.hasId = false;
-        result.id_ = 0;
+        result.id_ = 0L;
         return this;
       }
       
@@ -699,19 +699,19 @@ public final class Protocol {
         return defaultInstance;
       }
       
-      // required string device_id = 1;
+      // required fixed64 device_id = 1;
       public static final int DEVICE_ID_FIELD_NUMBER = 1;
       private boolean hasDeviceId;
-      private java.lang.String deviceId_ = "";
+      private long deviceId_ = 0L;
       public boolean hasDeviceId() { return hasDeviceId; }
-      public java.lang.String getDeviceId() { return deviceId_; }
+      public long getDeviceId() { return deviceId_; }
       
-      // required string id = 2;
+      // required fixed64 id = 2;
       public static final int ID_FIELD_NUMBER = 2;
       private boolean hasId;
-      private java.lang.String id_ = "";
+      private long id_ = 0L;
       public boolean hasId() { return hasId; }
-      public java.lang.String getId() { return id_; }
+      public long getId() { return id_; }
       
       // required string query = 3;
       public static final int QUERY_FIELD_NUMBER = 3;
@@ -733,10 +733,10 @@ public final class Protocol {
                           throws java.io.IOException {
         getSerializedSize();
         if (hasDeviceId()) {
-          output.writeString(1, getDeviceId());
+          output.writeFixed64(1, getDeviceId());
         }
         if (hasId()) {
-          output.writeString(2, getId());
+          output.writeFixed64(2, getId());
         }
         if (hasQuery()) {
           output.writeString(3, getQuery());
@@ -751,11 +751,11 @@ public final class Protocol {
         size = 0;
         if (hasDeviceId()) {
           size += com.google.protobuf.CodedOutputStream
-            .computeStringSize(1, getDeviceId());
+            .computeFixed64Size(1, getDeviceId());
         }
         if (hasId()) {
           size += com.google.protobuf.CodedOutputStream
-            .computeStringSize(2, getId());
+            .computeFixed64Size(2, getId());
         }
         if (hasQuery()) {
           size += com.google.protobuf.CodedOutputStream
@@ -932,12 +932,12 @@ public final class Protocol {
                 }
                 break;
               }
-              case 10: {
-                setDeviceId(input.readString());
+              case 9: {
+                setDeviceId(input.readFixed64());
                 break;
               }
-              case 18: {
-                setId(input.readString());
+              case 17: {
+                setId(input.readFixed64());
                 break;
               }
               case 26: {
@@ -949,45 +949,39 @@ public final class Protocol {
         }
         
         
-        // required string device_id = 1;
+        // required fixed64 device_id = 1;
         public boolean hasDeviceId() {
           return result.hasDeviceId();
         }
-        public java.lang.String getDeviceId() {
+        public long getDeviceId() {
           return result.getDeviceId();
         }
-        public Builder setDeviceId(java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  result.hasDeviceId = true;
+        public Builder setDeviceId(long value) {
+          result.hasDeviceId = true;
           result.deviceId_ = value;
           return this;
         }
         public Builder clearDeviceId() {
           result.hasDeviceId = false;
-          result.deviceId_ = getDefaultInstance().getDeviceId();
+          result.deviceId_ = 0L;
           return this;
         }
         
-        // required string id = 2;
+        // required fixed64 id = 2;
         public boolean hasId() {
           return result.hasId();
         }
-        public java.lang.String getId() {
+        public long getId() {
           return result.getId();
         }
-        public Builder setId(java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  result.hasId = true;
+        public Builder setId(long value) {
+          result.hasId = true;
           result.id_ = value;
           return this;
         }
         public Builder clearId() {
           result.hasId = false;
-          result.id_ = getDefaultInstance().getId();
+          result.id_ = 0L;
           return this;
         }
         
@@ -1041,19 +1035,19 @@ public final class Protocol {
         return defaultInstance;
       }
       
-      // required string device_id = 1;
+      // required fixed64 device_id = 1;
       public static final int DEVICE_ID_FIELD_NUMBER = 1;
       private boolean hasDeviceId;
-      private java.lang.String deviceId_ = "";
+      private long deviceId_ = 0L;
       public boolean hasDeviceId() { return hasDeviceId; }
-      public java.lang.String getDeviceId() { return deviceId_; }
+      public long getDeviceId() { return deviceId_; }
       
-      // required string id = 2;
+      // required fixed64 id = 2;
       public static final int ID_FIELD_NUMBER = 2;
       private boolean hasId;
-      private java.lang.String id_ = "";
+      private long id_ = 0L;
       public boolean hasId() { return hasId; }
-      public java.lang.String getId() { return id_; }
+      public long getId() { return id_; }
       
       // repeated .android_notifier.Contact contacts = 3;
       public static final int CONTACTS_FIELD_NUMBER = 3;
@@ -1082,10 +1076,10 @@ public final class Protocol {
                           throws java.io.IOException {
         getSerializedSize();
         if (hasDeviceId()) {
-          output.writeString(1, getDeviceId());
+          output.writeFixed64(1, getDeviceId());
         }
         if (hasId()) {
-          output.writeString(2, getId());
+          output.writeFixed64(2, getId());
         }
         for (com.notifier.protocol.Protocol.Contact element : getContactsList()) {
           output.writeMessage(3, element);
@@ -1100,11 +1094,11 @@ public final class Protocol {
         size = 0;
         if (hasDeviceId()) {
           size += com.google.protobuf.CodedOutputStream
-            .computeStringSize(1, getDeviceId());
+            .computeFixed64Size(1, getDeviceId());
         }
         if (hasId()) {
           size += com.google.protobuf.CodedOutputStream
-            .computeStringSize(2, getId());
+            .computeFixed64Size(2, getId());
         }
         for (com.notifier.protocol.Protocol.Contact element : getContactsList()) {
           size += com.google.protobuf.CodedOutputStream
@@ -1288,12 +1282,12 @@ public final class Protocol {
                 }
                 break;
               }
-              case 10: {
-                setDeviceId(input.readString());
+              case 9: {
+                setDeviceId(input.readFixed64());
                 break;
               }
-              case 18: {
-                setId(input.readString());
+              case 17: {
+                setId(input.readFixed64());
                 break;
               }
               case 26: {
@@ -1307,45 +1301,39 @@ public final class Protocol {
         }
         
         
-        // required string device_id = 1;
+        // required fixed64 device_id = 1;
         public boolean hasDeviceId() {
           return result.hasDeviceId();
         }
-        public java.lang.String getDeviceId() {
+        public long getDeviceId() {
           return result.getDeviceId();
         }
-        public Builder setDeviceId(java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  result.hasDeviceId = true;
+        public Builder setDeviceId(long value) {
+          result.hasDeviceId = true;
           result.deviceId_ = value;
           return this;
         }
         public Builder clearDeviceId() {
           result.hasDeviceId = false;
-          result.deviceId_ = getDefaultInstance().getDeviceId();
+          result.deviceId_ = 0L;
           return this;
         }
         
-        // required string id = 2;
+        // required fixed64 id = 2;
         public boolean hasId() {
           return result.hasId();
         }
-        public java.lang.String getId() {
+        public long getId() {
           return result.getId();
         }
-        public Builder setId(java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  result.hasId = true;
+        public Builder setId(long value) {
+          result.hasId = true;
           result.id_ = value;
           return this;
         }
         public Builder clearId() {
           result.hasId = false;
-          result.id_ = getDefaultInstance().getId();
+          result.id_ = 0L;
           return this;
         }
         
@@ -1642,19 +1630,19 @@ public final class Protocol {
         return defaultInstance;
       }
       
-      // required string device_id = 1;
+      // required fixed64 device_id = 1;
       public static final int DEVICE_ID_FIELD_NUMBER = 1;
       private boolean hasDeviceId;
-      private java.lang.String deviceId_ = "";
+      private long deviceId_ = 0L;
       public boolean hasDeviceId() { return hasDeviceId; }
-      public java.lang.String getDeviceId() { return deviceId_; }
+      public long getDeviceId() { return deviceId_; }
       
-      // required string id = 2;
+      // required fixed64 id = 2;
       public static final int ID_FIELD_NUMBER = 2;
       private boolean hasId;
-      private java.lang.String id_ = "";
+      private long id_ = 0L;
       public boolean hasId() { return hasId; }
-      public java.lang.String getId() { return id_; }
+      public long getId() { return id_; }
       
       // required string phone_number = 3;
       public static final int PHONE_NUMBER_FIELD_NUMBER = 3;
@@ -1684,10 +1672,10 @@ public final class Protocol {
                           throws java.io.IOException {
         getSerializedSize();
         if (hasDeviceId()) {
-          output.writeString(1, getDeviceId());
+          output.writeFixed64(1, getDeviceId());
         }
         if (hasId()) {
-          output.writeString(2, getId());
+          output.writeFixed64(2, getId());
         }
         if (hasPhoneNumber()) {
           output.writeString(3, getPhoneNumber());
@@ -1705,11 +1693,11 @@ public final class Protocol {
         size = 0;
         if (hasDeviceId()) {
           size += com.google.protobuf.CodedOutputStream
-            .computeStringSize(1, getDeviceId());
+            .computeFixed64Size(1, getDeviceId());
         }
         if (hasId()) {
           size += com.google.protobuf.CodedOutputStream
-            .computeStringSize(2, getId());
+            .computeFixed64Size(2, getId());
         }
         if (hasPhoneNumber()) {
           size += com.google.protobuf.CodedOutputStream
@@ -1893,12 +1881,12 @@ public final class Protocol {
                 }
                 break;
               }
-              case 10: {
-                setDeviceId(input.readString());
+              case 9: {
+                setDeviceId(input.readFixed64());
                 break;
               }
-              case 18: {
-                setId(input.readString());
+              case 17: {
+                setId(input.readFixed64());
                 break;
               }
               case 26: {
@@ -1914,45 +1902,39 @@ public final class Protocol {
         }
         
         
-        // required string device_id = 1;
+        // required fixed64 device_id = 1;
         public boolean hasDeviceId() {
           return result.hasDeviceId();
         }
-        public java.lang.String getDeviceId() {
+        public long getDeviceId() {
           return result.getDeviceId();
         }
-        public Builder setDeviceId(java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  result.hasDeviceId = true;
+        public Builder setDeviceId(long value) {
+          result.hasDeviceId = true;
           result.deviceId_ = value;
           return this;
         }
         public Builder clearDeviceId() {
           result.hasDeviceId = false;
-          result.deviceId_ = getDefaultInstance().getDeviceId();
+          result.deviceId_ = 0L;
           return this;
         }
         
-        // required string id = 2;
+        // required fixed64 id = 2;
         public boolean hasId() {
           return result.hasId();
         }
-        public java.lang.String getId() {
+        public long getId() {
           return result.getId();
         }
-        public Builder setId(java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  result.hasId = true;
+        public Builder setId(long value) {
+          result.hasId = true;
           result.id_ = value;
           return this;
         }
         public Builder clearId() {
           result.hasId = false;
-          result.id_ = getDefaultInstance().getId();
+          result.id_ = 0L;
           return this;
         }
         
@@ -2027,19 +2009,19 @@ public final class Protocol {
         return defaultInstance;
       }
       
-      // required string device_id = 1;
+      // required fixed64 device_id = 1;
       public static final int DEVICE_ID_FIELD_NUMBER = 1;
       private boolean hasDeviceId;
-      private java.lang.String deviceId_ = "";
+      private long deviceId_ = 0L;
       public boolean hasDeviceId() { return hasDeviceId; }
-      public java.lang.String getDeviceId() { return deviceId_; }
+      public long getDeviceId() { return deviceId_; }
       
-      // required string id = 2;
+      // required fixed64 id = 2;
       public static final int ID_FIELD_NUMBER = 2;
       private boolean hasId;
-      private java.lang.String id_ = "";
+      private long id_ = 0L;
       public boolean hasId() { return hasId; }
-      public java.lang.String getId() { return id_; }
+      public long getId() { return id_; }
       
       // required int32 result_code = 3;
       public static final int RESULT_CODE_FIELD_NUMBER = 3;
@@ -2061,10 +2043,10 @@ public final class Protocol {
                           throws java.io.IOException {
         getSerializedSize();
         if (hasDeviceId()) {
-          output.writeString(1, getDeviceId());
+          output.writeFixed64(1, getDeviceId());
         }
         if (hasId()) {
-          output.writeString(2, getId());
+          output.writeFixed64(2, getId());
         }
         if (hasResultCode()) {
           output.writeInt32(3, getResultCode());
@@ -2079,11 +2061,11 @@ public final class Protocol {
         size = 0;
         if (hasDeviceId()) {
           size += com.google.protobuf.CodedOutputStream
-            .computeStringSize(1, getDeviceId());
+            .computeFixed64Size(1, getDeviceId());
         }
         if (hasId()) {
           size += com.google.protobuf.CodedOutputStream
-            .computeStringSize(2, getId());
+            .computeFixed64Size(2, getId());
         }
         if (hasResultCode()) {
           size += com.google.protobuf.CodedOutputStream
@@ -2260,12 +2242,12 @@ public final class Protocol {
                 }
                 break;
               }
-              case 10: {
-                setDeviceId(input.readString());
+              case 9: {
+                setDeviceId(input.readFixed64());
                 break;
               }
-              case 18: {
-                setId(input.readString());
+              case 17: {
+                setId(input.readFixed64());
                 break;
               }
               case 24: {
@@ -2277,45 +2259,39 @@ public final class Protocol {
         }
         
         
-        // required string device_id = 1;
+        // required fixed64 device_id = 1;
         public boolean hasDeviceId() {
           return result.hasDeviceId();
         }
-        public java.lang.String getDeviceId() {
+        public long getDeviceId() {
           return result.getDeviceId();
         }
-        public Builder setDeviceId(java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  result.hasDeviceId = true;
+        public Builder setDeviceId(long value) {
+          result.hasDeviceId = true;
           result.deviceId_ = value;
           return this;
         }
         public Builder clearDeviceId() {
           result.hasDeviceId = false;
-          result.deviceId_ = getDefaultInstance().getDeviceId();
+          result.deviceId_ = 0L;
           return this;
         }
         
-        // required string id = 2;
+        // required fixed64 id = 2;
         public boolean hasId() {
           return result.hasId();
         }
-        public java.lang.String getId() {
+        public long getId() {
           return result.getId();
         }
-        public Builder setId(java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  result.hasId = true;
+        public Builder setId(long value) {
+          result.hasId = true;
           result.id_ = value;
           return this;
         }
         public Builder clearId() {
           result.hasId = false;
-          result.id_ = getDefaultInstance().getId();
+          result.id_ = 0L;
           return this;
         }
         
