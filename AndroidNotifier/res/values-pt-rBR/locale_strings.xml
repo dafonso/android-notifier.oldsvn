@@ -31,8 +31,12 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <string name="locale_ip_enabled">Enviar por IP</string>
   <string name="locale_ip_enabled_summary">Habilita ou desabilita o envio de notificações sobre IP/Wifi</string>
 
+  <string name="locale_wifi_autoenable_summary">Habilita ou desabilita a habilitação de Wifi para enviar notificações</string>
+
   <string name="locale_bt_enabled">Enviar por Bluetooth</string>
   <string name="locale_bt_enabled_summary">Habilita ou desabilita o envio de notificações sobre Bluetooth</string>
+
+  <string name="locale_bt_autoenable_summary">Habilita ou desabilita a habilitação de Bluetooth para enviar notificações</string>
 
   <string name="locale_bt_target_blurb">Destino BT: %s</string>
 
