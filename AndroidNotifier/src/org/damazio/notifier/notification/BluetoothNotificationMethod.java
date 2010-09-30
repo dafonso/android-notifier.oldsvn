@@ -123,7 +123,7 @@ class BluetoothNotificationMethod implements NotificationMethod {
 
     // Delay the notification if either bluetooth is disabled, or if it's not ready
     // because it's in discovery mode.
-    if (preferences.getEnableBluetooth()) {
+    if (preferences.getAutoEnableBluetooth()) {
       Log.d(NotifierConstants.LOG_TAG, "Enabling bluetooth and delaying notification");
       sendDelayedNotification(payload, target, isForeground, callback);
       return;

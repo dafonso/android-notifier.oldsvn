@@ -46,7 +46,9 @@ public class LocaleSettings {
   private final Context context;
   private OnOffKeep enabledState = OnOffKeep.KEEP;
   private OnOffKeep ipEnabledState = OnOffKeep.KEEP;
+  private OnOffKeep wifiAutoEnableState = OnOffKeep.KEEP;
   private OnOffKeep bluetoothEnabledState = OnOffKeep.KEEP;
+  private OnOffKeep bluetoothAutoEnableState = OnOffKeep.KEEP;
   private String targetIp = OnOffKeep.KEEP.name();
   private String bluetoothTarget = OnOffKeep.KEEP.name();
   private String[] customIps = new String[0];
@@ -73,6 +75,14 @@ public class LocaleSettings {
     this.ipEnabledState = ipEnabledState;
   }
 
+  public OnOffKeep getWifiAutoEnableState() {
+    return wifiAutoEnableState;
+  }
+
+  public void setWifiAutoEnableState(OnOffKeep wifiAutoEnableState) {
+    this.wifiAutoEnableState = wifiAutoEnableState;
+  }
+
   public String getTargetIp() {
     return targetIp;
   }
@@ -97,6 +107,14 @@ public class LocaleSettings {
     this.bluetoothEnabledState = bluetoothEnabledState;
   }
 
+  public OnOffKeep getBluetoothAutoEnableState() {
+    return bluetoothAutoEnableState;
+  }
+
+  public void setBluetoothAutoEnableState(OnOffKeep bluetoothAutoEnableState) {
+    this.bluetoothAutoEnableState = bluetoothAutoEnableState;
+  }
+
   public String getBluetoothTarget() {
     return bluetoothTarget;
   }
@@ -108,7 +126,9 @@ public class LocaleSettings {
   public boolean hasChanges() {
     if (enabledState != OnOffKeep.KEEP) return true;
     if (ipEnabledState != OnOffKeep.KEEP) return true;
+    if (wifiAutoEnableState != OnOffKeep.KEEP) return true;
     if (bluetoothEnabledState != OnOffKeep.KEEP) return true;
+    if (bluetoothAutoEnableState != OnOffKeep.KEEP) return true;
     if (customIps.length > 0) return true;
     if (!targetIp.equals(OnOffKeep.KEEP.name())) return true;
     if (!bluetoothTarget.equals(OnOffKeep.KEEP.name())) return true;
@@ -124,8 +144,12 @@ public class LocaleSettings {
         context.getString(R.string.locale_change_enabled_key));
     ipEnabledState = getOnOffKeep(bundle,
         context.getString(R.string.locale_ip_enabled_key));
+    wifiAutoEnableState = getOnOffKeep(bundle,
+        context.getString(R.string.locale_wifi_autoenable_key));
     bluetoothEnabledState = getOnOffKeep(bundle,
         context.getString(R.string.locale_bt_enabled_key));
+    bluetoothAutoEnableState = getOnOffKeep(bundle,
+        context.getString(R.string.locale_bt_autoenable_key));
 
     targetIp = bundle.getString(context.getString(R.string.locale_target_ip_key));
     if (targetIp == null) targetIp = OnOffKeep.KEEP.name();
@@ -141,7 +165,9 @@ public class LocaleSettings {
     Bundle result = new Bundle();
     putOnOffKeep(context.getString(R.string.locale_change_enabled_key), enabledState, result);
     putOnOffKeep(context.getString(R.string.locale_ip_enabled_key), ipEnabledState, result);
+    putOnOffKeep(context.getString(R.string.locale_wifi_autoenable_key), wifiAutoEnableState, result);
     putOnOffKeep(context.getString(R.string.locale_bt_enabled_key), bluetoothEnabledState, result);
+    putOnOffKeep(context.getString(R.string.locale_bt_autoenable_key), bluetoothAutoEnableState, result);
 
     if (!OnOffKeep.KEEP.name().equals(targetIp)) {
       result.putString(context.getString(R.string.locale_target_ip_key), targetIp);
@@ -162,7 +188,9 @@ public class LocaleSettings {
     boolean first = true;
     first = appendOnOffKeepBlurb(R.string.locale_notifications_enabled_blurb, enabledState, blurbBuilder, first);
     first = appendOnOffKeepBlurb(R.string.locale_ip_enabled_blurb, ipEnabledState, blurbBuilder, first);
+    first = appendOnOffKeepBlurb(R.string.locale_wifi_autoenable_blurb, wifiAutoEnableState, blurbBuilder, first);
     first = appendOnOffKeepBlurb(R.string.locale_bt_enabled_blurb, bluetoothEnabledState, blurbBuilder, first);
+    first = appendOnOffKeepBlurb(R.string.locale_bt_autoenable_blurb, bluetoothAutoEnableState, blurbBuilder, first);
 
     if (!OnOffKeep.KEEP.name().equals(targetIp)) {
       first = appendBlurbDelimiter(blurbBuilder, first);

@@ -68,8 +68,10 @@ public class EditActivity extends PreferenceActivity implements OnPreferenceChan
     // Populate settings
     populateListPreference(R.string.locale_change_enabled_key, settings.getEnabledState().name());
     populateListPreference(R.string.locale_ip_enabled_key, settings.getIpEnabledState().name());
+    populateListPreference(R.string.locale_wifi_autoenable_key, settings.getWifiAutoEnableState().name());
     ListPreference bluetoothEnabledPreference =
         populateListPreference(R.string.locale_bt_enabled_key, settings.getBluetoothEnabledState().name());
+    populateListPreference(R.string.locale_bt_autoenable_key, settings.getBluetoothAutoEnableState().name());
     populateListPreference(R.string.locale_target_ip_key, settings.getTargetIp());
 
     EditableListPreference customIpsPreference =
@@ -126,8 +128,12 @@ public class EditActivity extends PreferenceActivity implements OnPreferenceChan
       settings.setEnabledState(OnOffKeep.valueOf((String) newValue));
     } else if (getString(R.string.locale_ip_enabled_key).equals(key)) {
       settings.setIpEnabledState(OnOffKeep.valueOf((String) newValue));
+    } else if (getString(R.string.locale_wifi_autoenable_key).equals(key)) {
+      settings.setWifiAutoEnableState(OnOffKeep.valueOf((String) newValue));
     } else if (getString(R.string.locale_bt_enabled_key).equals(key)) {
       settings.setBluetoothEnabledState(OnOffKeep.valueOf((String) newValue));
+    } else if (getString(R.string.locale_bt_autoenable_key).equals(key)) {
+      settings.setBluetoothAutoEnableState(OnOffKeep.valueOf((String) newValue));
     } else if (getString(R.string.locale_target_ip_key).equals(key)) {
       settings.setTargetIp((String) newValue);
     } else if (getString(R.string.locale_custom_ip_key).equals(key)) {
