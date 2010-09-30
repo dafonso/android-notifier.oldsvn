@@ -29,7 +29,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   android:title="@string/settings_title">
 
   <!-- Service -->
-  <PreferenceScreen android:title="@string/service_title">
+  <PreferenceScreen android:title="@string/notifications_title">
     <CheckBoxPreference android:key="@string/notifications_enabled_key"
                         android:title="@string/notifications_enabled"
                         android:defaultValue="true"
