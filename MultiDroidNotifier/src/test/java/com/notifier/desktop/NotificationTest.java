@@ -37,7 +37,7 @@ public class NotificationTest {
 	}
 
 	protected void testBatteryIcon(String data, String expected) {
-		Notification notification = new Notification(null, null, Notification.Type.BATTERY, data, null);
+		Notification notification = new Notification(0, 0, Notification.Type.BATTERY, data, null);
 		assertEquals(Notification.BATTERY_ICON_PREFIX + expected + Notification.BATTERY_ICON_SUFFIX, notification.getBatteryIconName());
 	}
 }

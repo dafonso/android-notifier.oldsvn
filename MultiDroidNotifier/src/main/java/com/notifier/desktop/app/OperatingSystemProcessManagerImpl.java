@@ -60,11 +60,11 @@ public class OperatingSystemProcessManagerImpl implements OperatingSystemProcess
 		boolean notifiedError = false;
 		Iterable<String> commands = COMMAND_SPLITTER.split(command);
 		for (String c : commands) {
-			c = c.replace(DEVICE_ID_PLACEHOLDER, notification.getDeviceId());
-			c = c.replace(NOTIFICATION_ID_PLACEHOLDER, notification.getNotificationId());
+			c = c.replace(DEVICE_ID_PLACEHOLDER, Long.toString(notification.getDeviceId()));
+			c = c.replace(NOTIFICATION_ID_PLACEHOLDER, Long.toString(notification.getNotificationId()));
 			c = c.replace(NOTIFICATION_TYPE_PLACEHOLDER, notification.getType().name());
 			c = c.replace(NOTIFICATION_DATA_PLACEHOLDER, notification.getData());
-			c = c.replace(NOTIFICATION_DESCRIPTION_PLACEHOLDER, notification.getDescription());
+			c = c.replace(NOTIFICATION_DESCRIPTION_PLACEHOLDER, "\"" + notification.getDescription() + "\"");
 			c = c.replace(NOTIFICATION_TITLE_PLACEHOLDER, notification.getTitle("\"\""));
 
 			final String commandToExecute = c;
@@ -89,7 +89,7 @@ public class OperatingSystemProcessManagerImpl implements OperatingSystemProcess
 						} catch (Exception e) {
 							logger.error("Could not get command output: " + commandToExecute, e);
 						}
-						
+
 						try {
 							int exitCode = process.waitFor();
 							logger.info("Command [{}] exited with code [{}]", commandToExecute, exitCode);

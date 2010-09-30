@@ -40,9 +40,9 @@ public class NotificationManagerImpl implements NotificationManager {
 	private final OperatingSystemProcessManager processManager;
 	private final ImmutableList<NotificationBroadcaster> broadcasters;
 
-	private final ConcurrentMap<String, Notification> lastNotifications;
+	private final ConcurrentMap<Long, Notification> lastNotifications;
 	private boolean receptionFromAnyDevice;
-	private Set<String> allowedDevicesIds;
+	private Set<Long> allowedDevicesIds;
 	private final Map<Notification.Type, NotificationConfiguration> notificationConfigurations;
 
 	private AtomicBoolean waitingForPairing;
@@ -116,7 +116,7 @@ public class NotificationManagerImpl implements NotificationManager {
 	public void setPairedDevices(String[] deviceIds) {
 		this.allowedDevicesIds = Sets.newTreeSet();
 		for (String deviceId : deviceIds) {
-			this.allowedDevicesIds.add(deviceId);
+			this.allowedDevicesIds.add(Long.parseLong(deviceId));
 		}
 	}
 

@@ -37,6 +37,6 @@ public interface NotificationManager {
 	void setNotificationCommand(Notification.Type type, String command);
 
 	interface PairingListener {
-		boolean onPairingSuccessful(String deviceId);
+		boolean onPairingSuccessful(long deviceId);
 	}
 }
