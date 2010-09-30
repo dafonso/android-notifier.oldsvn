@@ -4,29 +4,19 @@ import java.io.*;
 
 import org.junit.*;
 
-import com.google.inject.util.*;
 import com.google.protobuf.*;
 import com.notifier.desktop.*;
 import com.notifier.protocol.*;
 
 import static org.junit.Assert.*;
 
-public class ProtobufNotificationParserTest {
+public class ProtobufNotificationParserTest extends AbstractNotificationParserTest {
 
 	@Test
 	public void parse() throws Exception {
 		boolean encrypted = false;
-		int deviceId = 123;
-		int id = 12345;
-		String data = "1234567890";
-		String description = "Test description";
 
-		Protocol.Notification.Builder builder = Protocol.Notification.newBuilder();
-		builder.setDeviceId(deviceId).setId(id);
-		builder.setType(Protocol.Notification.Type.RING).setPhoneNumber(data);
-		builder.setDescription(description);
-
-		Protocol.Notification protoNotification = builder.build();
+		Protocol.Notification protoNotification = createProtobufNotification();
 		byte[] protoData = protoNotification.toByteArray();
 
 		int length = protoData.length;
@@ -43,17 +33,10 @@ public class ProtobufNotificationParserTest {
 		byte[] msg = baos.toByteArray();
 		assertEquals(length, msg.length);
 
-		ApplicationPreferences preferences = new ApplicationPreferences();
-		preferences.setEncryptCommunication(false);
-		preferences.setCommunicationPassword(new byte[0]);
-
-		ProtobufNotificationParser parser = new ProtobufNotificationParser(Providers.of(preferences));
+		ProtobufNotificationParser parser = new ProtobufNotificationParser(getPreferencesProvider());
 		Notification notification = parser.parse(msg);
 
-		assertEquals(Integer.toString(deviceId), notification.getDeviceId());
-		assertEquals(Integer.toString(id), notification.getNotificationId());
-		assertEquals(Notification.Type.RING, notification.getType());
-		assertEquals(data, notification.getData());
-		assertEquals(description, notification.getDescription());
+		Notification expectedNotification = createNotification();
+		assertEquals(expectedNotification, notification);
 	}
 }
