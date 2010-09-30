@@ -261,6 +261,7 @@
 						<exclude>**/MalformedShortcutException.java</exclude>
 						<exclude>**/Shortcut.java</exclude>
 						<exclude>**/Encryption.java</exclude>
+						<exclude>src/main/java/org/eclipse/nebula/**/*.java</exclude>
 					</excludes>
 					<mapping>
 						<java>SLASHSTAR_STYLE</java>
