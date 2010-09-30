@@ -23,6 +23,8 @@ public class Notification {
 
 	public static final String BATTERY_ICON_PREFIX = "battery";
 	public static final String BATTERY_ICON_SUFFIX = ".png";
+	public static final String DEFAULT_TITLE = Application.NAME;
+	public static final String DEFAULT_DESCRIPTION = "No description";
 
 	private final long deviceId;
 	private final long notificationId;
@@ -100,9 +102,9 @@ public class Notification {
 		this.description = description;
 	}
 
-	public String getTitle(String emptyTitle) {
+	public String getTitle() {
 		if (Notification.Type.USER == type) {
-			return data == null ? emptyTitle : data;
+			return Strings.isNullOrEmpty(data) ? DEFAULT_TITLE : data;
 		} else {
 			return type.getTitle();
 		}
@@ -149,7 +151,7 @@ public class Notification {
 	}
 
 	public String getDescription() {
-		return description;
+		return Strings.isNullOrEmpty(description) ? DEFAULT_DESCRIPTION : description;
 	}
 
 	@Override
