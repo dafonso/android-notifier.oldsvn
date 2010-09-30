@@ -17,9 +17,11 @@
  */
 package com.notifier.desktop;
 
+import com.notifier.desktop.exception.*;
+
 public interface NotificationParser<T> {
 
 	void setEncryption(boolean decrypt, byte[] key);
-	Notification parse(T data);
+	Notification parse(T data) throws ParseException;
 
 }

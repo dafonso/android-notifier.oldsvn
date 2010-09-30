@@ -18,21 +18,16 @@
 package com.notifier.desktop.parsing;
 
 import java.nio.charset.*;
-import java.security.*;
 import java.util.*;
-
-import javax.crypto.*;
 
 import org.slf4j.*;
 
 import com.google.common.base.*;
 import com.google.common.collect.*;
 import com.google.inject.*;
-import com.google.inject.Provider;
 import com.notifier.desktop.*;
-import com.notifier.desktop.util.*;
 
-public class TextProtocolNotificationParser implements NotificationParser<byte[]> {
+public class TextProtocolNotificationParser extends EncryptedNotificationParser {
 
 	public static final Charset CHARSET = Charsets.UTF_8;
 	public static final char FIELD_SEPARATOR = '/';
@@ -41,36 +36,16 @@ public class TextProtocolNotificationParser implements NotificationParser<byte[]
 
 	private static final Logger logger = LoggerFactory.getLogger(TextProtocolNotificationParser.class);
 
-	private boolean decrypt;
-	private Encryption encryption;
-
 	@Inject
 	public TextProtocolNotificationParser(Provider<ApplicationPreferences> preferencesProvider) {
-		ApplicationPreferences preferences = preferencesProvider.get();
-		setEncryption(preferences.isEncryptCommunication(), preferences.getCommunicationPassword());
+		super(preferencesProvider.get());
 	}
 
 	@Override
 	public Notification parse(byte[] msg) {
-		byte[] msgToUse;
-		if (decrypt) {
-			if (encryption == null) {
-				logger.debug("Decryption enabled but no password set, ignoring notification");
-				return null;
-			}
-			try {
-				msgToUse = encryption.decrypt(msg);
-			} catch (GeneralSecurityException e) {
-				if (e instanceof IllegalBlockSizeException) { // Message is not encrypted
-					logger.debug("Got notification not encrypted but set to decrypt, ignoring");
-					return null;
-				} else {
-					logger.debug("Got notification but could not decrypt it, ignoring");
-					return null;
-				}
-			}
-		} else {
-			msgToUse = msg;
+		byte[] msgToUse = decryptIfNecessary(msg);
+		if (msgToUse == null) {
+			return null;
 		}
 
 		String s = new String(msgToUse, CHARSET);
@@ -101,12 +76,4 @@ public class TextProtocolNotificationParser implements NotificationParser<byte[]
 		return new Notification(deviceId, notificationId, type, data, contents.toString());
 	}
 
-	public void setEncryption(boolean decrypt, byte[] key) {
-		this.decrypt = decrypt;
-		if (key.length > 0) {
-			encryption = new Encryption(key);
-		} else {
-			encryption = null;
-		}
-	}
 }
