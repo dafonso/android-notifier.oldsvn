@@ -195,8 +195,14 @@ public class NotifierPreferences {
   /**
    * @return whether to enable wifi to send a notification
    */
-  public boolean getEnableWifi() {
+  public boolean getWifiAutoEnable() {
     return preferences.getBoolean(context.getString(R.string.enable_wifi_key), false);
+  }
+
+  public void setWifiAutoEnable(boolean autoEnable) {
+    preferences.edit()
+        .putBoolean(context.getString(R.string.enable_wifi_key), autoEnable)
+        .commit();
   }
 
   /**
@@ -237,10 +243,19 @@ public class NotifierPreferences {
   /**
    * @return whether to enable bluetooth to send a notification
    */
-  public boolean getEnableBluetooth() {
+  public boolean getAutoEnableBluetooth() {
     return preferences.getBoolean(context.getString(R.string.enable_bluetooth_key), false);
   }
-  
+
+  /**
+   * Sets whether to auto-enable bluetooth when sending a notification.
+   */
+  public void setAutoEnableBluetooth(boolean autoEnable) {
+    preferences.edit()
+        .putBoolean(context.getString(R.string.enable_bluetooth_key), autoEnable)
+        .commit();
+  }
+
   /**
    * @return whether notifications should be sent over USB
    */

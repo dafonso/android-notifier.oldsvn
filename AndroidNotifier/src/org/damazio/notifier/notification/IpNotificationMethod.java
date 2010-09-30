@@ -127,7 +127,7 @@ class IpNotificationMethod implements NotificationMethod {
 
     // Check if wifi is disabled
     if (!isWifiConnected()) {
-      if (preferences.getEnableWifi() || isWifiConnecting()) {
+      if (preferences.getWifiAutoEnable() || isWifiConnecting()) {
         // We should enable it, or if it's already being enabled
         // (in which case we just send it after a little while)
         Log.d(NotifierConstants.LOG_TAG, "Enabling wifi and delaying notification");

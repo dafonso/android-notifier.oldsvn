@@ -54,9 +54,11 @@ public class FireReceiver extends BroadcastReceiver {
 
     setEnabledState(settings, preferences, context);
     setIpEnabledState(settings, preferences);
+    setWifiAutoEnableState(settings, preferences);
     setTargetIp(settings, preferences);
     setCustomIps(settings, preferences);
     setBluetoothEnabledState(settings, preferences);
+    setBluetoothAutoEnableState(settings, preferences);
     setBluetoothTarget(settings, preferences);
   }
 
@@ -89,10 +91,24 @@ public class FireReceiver extends BroadcastReceiver {
     }
   }
 
+  private void setWifiAutoEnableState(LocaleSettings settings, NotifierPreferences preferences) {
+    OnOffKeep state = settings.getWifiAutoEnableState();
+    if (state != OnOffKeep.KEEP) {
+      preferences.setWifiAutoEnable(state == OnOffKeep.ON);
+    }
+  }
+
   private void setBluetoothEnabledState(LocaleSettings settings, NotifierPreferences preferences) {
     OnOffKeep state = settings.getBluetoothEnabledState();
     if (state != OnOffKeep.KEEP) {
       preferences.setBluetoothMethodEnabled(state == OnOffKeep.ON);
+    }
+  }
+
+  private void setBluetoothAutoEnableState(LocaleSettings settings, NotifierPreferences preferences) {
+    OnOffKeep state = settings.getBluetoothAutoEnableState();
+    if (state != OnOffKeep.KEEP) {
+      preferences.setAutoEnableBluetooth(state == OnOffKeep.ON);
     }
   }
 
