@@ -62,8 +62,8 @@ public class TextNotificationParser extends EncryptedNotificationParser {
 			throw new ParseException("Protocol version [" + version + "] is not supported");
 		}
 
-		String deviceId = iterator.next();
-		String notificationId = iterator.next();
+		long deviceId = Long.parseLong(iterator.next(), 16);
+		long notificationId = Long.parseLong(iterator.next(), 16);
 		Notification.Type type = Notification.Type.valueOf(iterator.next());
 		String data = iterator.next();
 		StringBuilder contents = new StringBuilder();

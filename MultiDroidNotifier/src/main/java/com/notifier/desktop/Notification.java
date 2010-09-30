@@ -24,8 +24,8 @@ public class Notification {
 	public static final String BATTERY_ICON_PREFIX = "battery";
 	public static final String BATTERY_ICON_SUFFIX = ".png";
 
-	private final String deviceId;
-	private final String notificationId;
+	private final long deviceId;
+	private final long notificationId;
 	private final Type type;
 	private final String data;
 	private final String description;
@@ -92,7 +92,7 @@ public class Notification {
 		}
 	}
 
-	public Notification(String deviceId, String notificationId, Type type, String data, String description) {
+	public Notification(long deviceId, long notificationId, Type type, String data, String description) {
 		this.deviceId = deviceId;
 		this.notificationId = notificationId;
 		this.type = type;
@@ -132,11 +132,11 @@ public class Notification {
 		return BATTERY_ICON_PREFIX + level + BATTERY_ICON_SUFFIX;
 	}
 
-	public String getDeviceId() {
+	public long getDeviceId() {
 		return deviceId;
 	}
 
-	public String getNotificationId() {
+	public long getNotificationId() {
 		return notificationId;
 	}
 
@@ -158,8 +158,8 @@ public class Notification {
 		int result = 1;
 		result = prime * result + ((data == null) ? 0 : data.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + ((deviceId == null) ? 0 : deviceId.hashCode());
-		result = prime * result + ((notificationId == null) ? 0 : notificationId.hashCode());
+		result = prime * result + (int) (deviceId ^ (deviceId >>> 32));
+		result = prime * result + (int) (notificationId ^ (notificationId >>> 32));
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
 	}
@@ -183,15 +183,9 @@ public class Notification {
 				return false;
 		} else if (!description.equals(other.description))
 			return false;
-		if (deviceId == null) {
-			if (other.deviceId != null)
-				return false;
-		} else if (!deviceId.equals(other.deviceId))
+		if (deviceId != other.deviceId)
 			return false;
-		if (notificationId == null) {
-			if (other.notificationId != null)
-				return false;
-		} else if (!notificationId.equals(other.notificationId))
+		if (notificationId != other.notificationId)
 			return false;
 		if (type == null) {
 			if (other.type != null)
