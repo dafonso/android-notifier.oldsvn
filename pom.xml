@@ -692,7 +692,7 @@
 		<profile>
 			<id>fedora-x86</id>
 			<properties>
-				<architecture>x86</architecture>
+				<architecture>i686</architecture>
 			</properties>
 			<build>
 				<plugins>
