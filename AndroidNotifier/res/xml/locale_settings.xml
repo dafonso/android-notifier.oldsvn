@@ -68,6 +68,11 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                     android:entryValues="@array/locale_on_off_keep_values"
                     android:persistent="false"
                     android:defaultValue="@string/locale_enabled_keep_value" />
+    <ListPreference android:key="@string/locale_bt_target_key"
+                    android:title="@string/target_bluetooth_device"
+                    android:summary="@string/target_bluetooth_device_summary"
+                    android:persistent="false"
+                    android:defaultValue="@string/locale_enabled_keep_value" />
   </PreferenceCategory>
 
 </PreferenceScreen>
