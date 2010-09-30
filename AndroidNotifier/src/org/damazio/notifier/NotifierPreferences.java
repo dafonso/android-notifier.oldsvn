@@ -208,6 +208,17 @@ public class NotifierPreferences {
   }
 
   /**
+   * Changes the bluetooth device to send notifications to.
+   *
+   * @param bluetoothTarget the MAC address of the device
+   */
+  public void setTargetBluetoothDevice(String bluetoothTarget) {
+    preferences.edit()
+        .putString(context.getString(R.string.bluetooth_device_key), bluetoothTarget)
+        .commit();
+  }
+
+  /**
    * @return whether notifications should be sent over bluetooth
    */
   public boolean isBluetoothMethodEnabled() {

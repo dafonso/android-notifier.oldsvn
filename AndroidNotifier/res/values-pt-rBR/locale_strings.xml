@@ -34,6 +34,8 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <string name="locale_bt_enabled">Enviar por Bluetooth</string>
   <string name="locale_bt_enabled_summary">Habilita ou desabilita o envio de notificações sobre Bluetooth</string>
 
+  <string name="locale_bt_target_blurb">Destino BT: %s</string>
+
   <string name="locale_target_ip_blurb">IP destino: %s</string>
 
   <string name="locale_custom_ip_summary">A lista de IPs customizados será substituída por esta se não for vazia.</string>

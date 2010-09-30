@@ -48,6 +48,7 @@ public class LocaleSettings {
   private OnOffKeep ipEnabledState = OnOffKeep.KEEP;
   private OnOffKeep bluetoothEnabledState = OnOffKeep.KEEP;
   private String targetIp = OnOffKeep.KEEP.name();
+  private String bluetoothTarget = OnOffKeep.KEEP.name();
   private String[] customIps = new String[0];
 
   public LocaleSettings(Context context, Bundle forwardedBundle) {
@@ -96,12 +97,21 @@ public class LocaleSettings {
     this.bluetoothEnabledState = bluetoothEnabledState;
   }
 
+  public String getBluetoothTarget() {
+    return bluetoothTarget;
+  }
+
+  public void setBluetoothTarget(String bluetoothTarget) {
+    this.bluetoothTarget = bluetoothTarget;
+  }
+
   public boolean hasChanges() {
     if (enabledState != OnOffKeep.KEEP) return true;
     if (ipEnabledState != OnOffKeep.KEEP) return true;
     if (bluetoothEnabledState != OnOffKeep.KEEP) return true;
     if (customIps.length > 0) return true;
-    if (!targetIp.equals(context.getString(R.string.locale_enabled_keep_value))) return true;
+    if (!targetIp.equals(OnOffKeep.KEEP.name())) return true;
+    if (!bluetoothTarget.equals(OnOffKeep.KEEP.name())) return true;
     return false;
   }
 
@@ -122,6 +132,9 @@ public class LocaleSettings {
 
     customIps = bundle.getStringArray(context.getString(R.string.locale_custom_ip_key));
     if (customIps == null) customIps = new String[0];
+
+    bluetoothTarget = bundle.getString(context.getString(R.string.locale_bt_target_key));
+    if (bluetoothTarget == null) bluetoothTarget = OnOffKeep.KEEP.name();
   }
 
   public Bundle toBundle() {
@@ -130,11 +143,14 @@ public class LocaleSettings {
     putOnOffKeep(context.getString(R.string.locale_ip_enabled_key), ipEnabledState, result);
     putOnOffKeep(context.getString(R.string.locale_bt_enabled_key), bluetoothEnabledState, result);
 
-    if (!context.getString(R.string.locale_enabled_keep_value).equals(targetIp)) {
+    if (!OnOffKeep.KEEP.name().equals(targetIp)) {
       result.putString(context.getString(R.string.locale_target_ip_key), targetIp);
     }
     if (customIps.length > 0) {
       result.putStringArray(context.getString(R.string.locale_custom_ip_key), customIps);
+    }
+    if (!OnOffKeep.KEEP.name().equals(bluetoothTarget)) {
+      result.putString(context.getString(R.string.locale_bt_target_key), bluetoothTarget);
     }
     return result;
   }
@@ -148,13 +164,18 @@ public class LocaleSettings {
     first = appendOnOffKeepBlurb(R.string.locale_ip_enabled_blurb, ipEnabledState, blurbBuilder, first);
     first = appendOnOffKeepBlurb(R.string.locale_bt_enabled_blurb, bluetoothEnabledState, blurbBuilder, first);
 
-    if (!context.getString(R.string.locale_enabled_keep_value).equals(targetIp)) {
+    if (!OnOffKeep.KEEP.name().equals(targetIp)) {
       first = appendBlurbDelimiter(blurbBuilder, first);
       blurbBuilder.append(context.getString(R.string.locale_target_ip_blurb, targetIp));
     }
     if (customIps.length > 0) {
       first = appendBlurbDelimiter(blurbBuilder, first);
       blurbBuilder.append(context.getString(R.string.locale_custom_ip_blurb, Arrays.toString(customIps)));
+    }
+    if (!OnOffKeep.KEEP.name().equals(bluetoothTarget)) {
+      first = appendBlurbDelimiter(blurbBuilder, first);
+      // TODO: Use bluetooth device name instead of MAC
+      blurbBuilder.append(context.getString(R.string.locale_bt_target_blurb, bluetoothTarget));
     }
     return blurbBuilder.toString();
   }

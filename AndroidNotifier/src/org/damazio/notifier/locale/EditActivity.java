@@ -24,10 +24,14 @@
  */
 package org.damazio.notifier.locale;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.damazio.notifier.EditableListPreference;
 import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.R;
 import org.damazio.notifier.locale.LocaleSettings.OnOffKeep;
+import org.damazio.notifier.notification.BluetoothDeviceUtils;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -64,19 +68,55 @@ public class EditActivity extends PreferenceActivity implements OnPreferenceChan
     // Populate settings
     populateListPreference(R.string.locale_change_enabled_key, settings.getEnabledState().name());
     populateListPreference(R.string.locale_ip_enabled_key, settings.getIpEnabledState().name());
-    populateListPreference(R.string.locale_bt_enabled_key, settings.getBluetoothEnabledState().name());
+    ListPreference bluetoothEnabledPreference =
+        populateListPreference(R.string.locale_bt_enabled_key, settings.getBluetoothEnabledState().name());
     populateListPreference(R.string.locale_target_ip_key, settings.getTargetIp());
 
     EditableListPreference customIpsPreference =
         (EditableListPreference) findPreference(getString(R.string.locale_custom_ip_key));
     customIpsPreference.setValues(settings.getCustomIps());
     customIpsPreference.setOnPreferenceChangeListener(this);
+
+    ListPreference bluetoothTargetPreference =
+        (ListPreference) findPreference(getString(R.string.locale_bt_target_key));
+    if (BluetoothDeviceUtils.isBluetoothMethodSupported()) {
+      populateBluetoothDeviceList(bluetoothTargetPreference);
+      bluetoothTargetPreference.setValue(settings.getBluetoothTarget());
+      bluetoothTargetPreference.setOnPreferenceChangeListener(this);
+    } else {
+      bluetoothEnabledPreference.setEnabled(false);
+      bluetoothEnabledPreference.setSummary(R.string.eclair_required);
+      bluetoothEnabledPreference.setValue(OnOffKeep.KEEP.name());
+    }
   }
 
-  private void populateListPreference(int preferenceKey, String initialValue) {
-    ListPreference enabledPreference = (ListPreference) findPreference(getString(preferenceKey));
-    enabledPreference.setValue(initialValue);
-    enabledPreference.setOnPreferenceChangeListener(this);
+  private void populateBluetoothDeviceList(ListPreference bluetoothTargetPreference) {
+    // Populate the list
+    List<String> targetEntries = new ArrayList<String>();
+    List<String> targetEntryValues = new ArrayList<String>();
+
+    // Special values are "keep", "any", then "all"
+    targetEntries.add(getString(R.string.locale_enabled_keep));
+    targetEntryValues.add(getString(R.string.locale_enabled_keep_value));
+    targetEntries.add(getString(R.string.bluetooth_device_any));
+    targetEntryValues.add(BluetoothDeviceUtils.ANY_DEVICE);
+    targetEntries.add(getString(R.string.bluetooth_device_all));
+    targetEntryValues.add(BluetoothDeviceUtils.ALL_DEVICES);
+
+    // Other values are actual devices
+    BluetoothDeviceUtils.getInstance().populateDeviceLists(targetEntries, targetEntryValues);
+
+    bluetoothTargetPreference.setEntryValues(
+        targetEntryValues.toArray(new CharSequence[targetEntryValues.size()]));
+    bluetoothTargetPreference.setEntries(
+        targetEntries.toArray(new CharSequence[targetEntries.size()]));
+  }
+
+  private ListPreference populateListPreference(int preferenceKey, String initialValue) {
+    ListPreference preference = (ListPreference) findPreference(getString(preferenceKey));
+    preference.setValue(initialValue);
+    preference.setOnPreferenceChangeListener(this);
+    return preference;
   }
 
   @Override
@@ -92,6 +132,8 @@ public class EditActivity extends PreferenceActivity implements OnPreferenceChan
       settings.setTargetIp((String) newValue);
     } else if (getString(R.string.locale_custom_ip_key).equals(key)) {
       settings.setCustomIps((String[]) newValue);
+    } else if (getString(R.string.locale_bt_target_key).equals(key)) {
+      settings.setBluetoothTarget((String) newValue);
     }
 
     updateLocaleResult();
