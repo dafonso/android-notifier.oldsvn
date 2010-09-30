@@ -153,6 +153,55 @@ public class Notification {
 	}
 
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((data == null) ? 0 : data.hashCode());
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((deviceId == null) ? 0 : deviceId.hashCode());
+		result = prime * result + ((notificationId == null) ? 0 : notificationId.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Notification other = (Notification) obj;
+		if (data == null) {
+			if (other.data != null)
+				return false;
+		} else if (!data.equals(other.data))
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (deviceId == null) {
+			if (other.deviceId != null)
+				return false;
+		} else if (!deviceId.equals(other.deviceId))
+			return false;
+		if (notificationId == null) {
+			if (other.notificationId != null)
+				return false;
+		} else if (!notificationId.equals(other.notificationId))
+			return false;
+		if (type == null) {
+			if (other.type != null)
+				return false;
+		} else if (!type.equals(other.type))
+			return false;
+		return true;
+	}
+
+	@Override
 	public String toString() {
 		return String.format("notificationId=%s, type=%s", notificationId, type);
 	}
