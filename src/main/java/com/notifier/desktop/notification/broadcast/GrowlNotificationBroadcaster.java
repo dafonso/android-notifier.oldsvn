@@ -97,7 +97,7 @@ public class GrowlNotificationBroadcaster extends AbstractLifecycle implements N
 			return;
 		}
 		if (OperatingSystems.CURRENT_FAMILY == OperatingSystems.Family.MAC) {
-			GrowlNotification n = new GrowlNotification(notification.getType().toString(), notification.getTitle(""), notification.getDescription(), Application.NAME, false,
+			GrowlNotification n = new GrowlNotification(notification.getType().toString(), notification.getTitle(), notification.getDescription(), Application.NAME, false,
 					GrowlNotification.NORMAL);
 			try {
 				macGrowl.sendNotification(n);
@@ -111,7 +111,7 @@ public class GrowlNotificationBroadcaster extends AbstractLifecycle implements N
 					String iconName = notification.getBatteryIconName();
 					try {
 						RenderedImage icon = getIcon(iconName);
-						gntpClient.notify(Gntp.notification(notificationInfos.get(Notification.Type.BATTERY), notification.getTitle(null)).text(notification.getDescription()).icon(icon).build(), NOTIFY_TIMEOUT, SECONDS);
+						gntpClient.notify(Gntp.notification(notificationInfos.get(Notification.Type.BATTERY), notification.getTitle()).text(notification.getDescription()).icon(icon).build(), NOTIFY_TIMEOUT, SECONDS);
 					} catch (IOException e) {
 						doNotify(notification);
 					}
@@ -144,7 +144,7 @@ public class GrowlNotificationBroadcaster extends AbstractLifecycle implements N
 	protected void doNotify(Notification notification) throws InterruptedException {
 		GntpNotificationInfo info = notificationInfos.get(notification.getType());
 		Preconditions.checkState(info != null, "Unknown notification type: %s", notification.getType());
-		gntpClient.notify(Gntp.notification(info, notification.getTitle(null)).text(notification.getDescription()).build(), NOTIFY_TIMEOUT, SECONDS);
+		gntpClient.notify(Gntp.notification(info, notification.getTitle()).text(notification.getDescription()).build(), NOTIFY_TIMEOUT, SECONDS);
 	}
 
 	protected RenderedImage getIcon(String name) throws IOException {

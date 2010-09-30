@@ -63,9 +63,9 @@ public class OperatingSystemProcessManagerImpl implements OperatingSystemProcess
 			c = c.replace(DEVICE_ID_PLACEHOLDER, Long.toString(notification.getDeviceId()));
 			c = c.replace(NOTIFICATION_ID_PLACEHOLDER, Long.toString(notification.getNotificationId()));
 			c = c.replace(NOTIFICATION_TYPE_PLACEHOLDER, notification.getType().name());
-			c = c.replace(NOTIFICATION_DATA_PLACEHOLDER, notification.getData());
+			c = c.replace(NOTIFICATION_DATA_PLACEHOLDER, "\"" + notification.getData() + "\"");
 			c = c.replace(NOTIFICATION_DESCRIPTION_PLACEHOLDER, "\"" + notification.getDescription() + "\"");
-			c = c.replace(NOTIFICATION_TITLE_PLACEHOLDER, notification.getTitle("\"\""));
+			c = c.replace(NOTIFICATION_TITLE_PLACEHOLDER, "\"" + notification.getTitle() + "\"");
 
 			final String commandToExecute = c;
 			if (OperatingSystems.CURRENT_FAMILY == OperatingSystems.Family.WINDOWS) {
