@@ -1,6 +1,5 @@
 #!/bin/sh
 
-# Migrate existing configuration to conform with XDG standard
 configDir=$XDG_CONFIG_HOME
 if [ -z $XDG_CONFIG_HOME ]; then
   configDir=$HOME/.config
@@ -8,6 +7,7 @@ else
   configDir=$XDG_CONFIG_HOME
 fi
 
+# Migrate existing configuration to conform with XDG standard
 mkdir -p $configDir/android-notifier-desktop/.java/.userPrefs/com/google/code/notifier/desktop
 if [ -d  ~/.java/.userPrefs/com/google/code/notifier ]; then
   mv -f ~/.java/.userPrefs/com/google/code/notifier/desktop/prefs.xml $configDir/android-notifier-desktop/.java/.userPrefs/com/google/code/notifier/desktop

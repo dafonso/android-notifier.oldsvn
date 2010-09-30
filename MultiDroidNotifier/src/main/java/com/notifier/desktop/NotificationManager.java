@@ -26,7 +26,7 @@ public interface NotificationManager {
 
 	void setReceptionFromAnyDevice(boolean enabled);
 
-	void setPairedDevices(String[] allowedDeviceIds);
+	void setPairedDevices(long[] allowedDeviceIds);
 
 	void setNotificationEnabled(Notification.Type type, boolean enabled);
 

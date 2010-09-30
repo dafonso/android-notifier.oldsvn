@@ -117,13 +117,12 @@ public class PreferencesDialog extends Dialog {
 
 			// General Group
 
-			//generalGroup = new Group(dialogShell, SWT.NONE);
 			generalGroup = createPGroup();
 			GridLayout generalGroupLayout = new GridLayout();
 			generalGroupLayout.makeColumnsEqualWidth = true;
 			generalGroup.setLayout(generalGroupLayout);
 			FormData generalGroupLData = new FormData();
-			generalGroupLData.top = new FormAttachment(0, 10);
+			generalGroupLData.top = new FormAttachment(0, 7);
 			generalGroupLData.left = new FormAttachment(0, 10);
 			generalGroupLData.right = new FormAttachment(100, -10);
 			generalGroup.setLayoutData(generalGroupLData);
@@ -170,13 +169,12 @@ public class PreferencesDialog extends Dialog {
 
 			// Notification Reception Group
 
-			//notificationReceptionMethodsGroup = new Group(dialogShell, SWT.NONE);
 			notificationReceptionMethodsGroup = createPGroup();
 			GridLayout notificationMethodsGroupLayout = new GridLayout();
 			notificationMethodsGroupLayout.numColumns = 2;
 			notificationReceptionMethodsGroup.setLayout(notificationMethodsGroupLayout);
 			FormData notificationMethodsGroupLData = new FormData();
-			notificationMethodsGroupLData.top = new FormAttachment(generalGroup, 5);
+			notificationMethodsGroupLData.top = new FormAttachment(generalGroup, 2);
 			notificationMethodsGroupLData.left = new FormAttachment(0, 10);
 			notificationMethodsGroupLData.right = new FormAttachment(100, -10);
 			notificationReceptionMethodsGroup.setLayoutData(notificationMethodsGroupLData);
@@ -423,13 +421,12 @@ public class PreferencesDialog extends Dialog {
 
 			// Notification Display Group
 
-			//notificationDisplayMethodsGroup = new Group(dialogShell, SWT.NONE);
 			notificationDisplayMethodsGroup = createPGroup();
 			GridLayout notificationDisplayMethodsGroupLayout = new GridLayout();
 			notificationDisplayMethodsGroupLayout.makeColumnsEqualWidth = true;
 			notificationDisplayMethodsGroup.setLayout(notificationDisplayMethodsGroupLayout);
 			FormData notificationDisplayMethodsGroupLData = new FormData();
-			notificationDisplayMethodsGroupLData.top = new FormAttachment(notificationReceptionMethodsGroup, 5);
+			notificationDisplayMethodsGroupLData.top = new FormAttachment(notificationReceptionMethodsGroup, 2);
 			notificationDisplayMethodsGroupLData.left = new FormAttachment(0, 10);
 			notificationDisplayMethodsGroupLData.right = new FormAttachment(100, -10);
 			notificationDisplayMethodsGroup.setLayoutData(notificationDisplayMethodsGroupLData);
@@ -536,13 +533,12 @@ public class PreferencesDialog extends Dialog {
 			notificationDisplayMethodsGroup.setExpanded(preferences.isGroupExpanded(ApplicationPreferences.Group.DISPLAY));
 
 			// Notification Actions Groups
-			//notificationActionsGroup = new Group(dialogShell, SWT.NONE);
 			notificationActionsGroup = createPGroup();
 			FillLayout notificationActionsGroupLayout = new FillLayout();
 			notificationActionsGroupLayout.marginHeight = 5;
 			notificationActionsGroup.setLayout(notificationActionsGroupLayout);
 			FormData notificationActionsGroupLData = new FormData();
-			notificationActionsGroupLData.top = new FormAttachment(notificationDisplayMethodsGroup, 5);
+			notificationActionsGroupLData.top = new FormAttachment(notificationDisplayMethodsGroup, 2);
 			notificationActionsGroupLData.left = new FormAttachment(0, 10);
 			notificationActionsGroupLData.right = new FormAttachment(100, -10);
 			notificationActionsGroup.setLayoutData(notificationActionsGroupLData);
@@ -558,13 +554,12 @@ public class PreferencesDialog extends Dialog {
 
 			// Devices Group
 
-			//devicesGroup = new Group(dialogShell, SWT.NONE);
 			devicesGroup = createPGroup();
 			GridLayout devicesGroupLayout = new GridLayout();
 			devicesGroupLayout.numColumns = 2;
 			devicesGroup.setLayout(devicesGroupLayout);
 			FormData devicesGroupLData = new FormData();
-			devicesGroupLData.top = new FormAttachment(notificationActionsGroup, 5);
+			devicesGroupLData.top = new FormAttachment(notificationActionsGroup, 2);
 			devicesGroupLData.left = new FormAttachment(0, 10);
 			devicesGroupLData.right = new FormAttachment(100, -10);
 			devicesGroup.setLayoutData(devicesGroupLData);
@@ -616,7 +611,7 @@ public class PreferencesDialog extends Dialog {
 			devicesList.setLayoutData(devicesListLData);
 			devicesList.setEnabled(!preferences.isReceptionFromAnyDevice());
 			for (Long deviceId : preferences.getAllowedDevicesIds()) {
-				devicesList.add(deviceId.toString());
+				devicesList.add(Long.toHexString(deviceId));
 			}
 
 			addDeviceButton = new Button(devicesGroup, SWT.PUSH | SWT.CENTER);
@@ -644,8 +639,8 @@ public class PreferencesDialog extends Dialog {
 								swtManager.update(new Runnable() {
 									@Override
 									public void run() {
-										devicesList.add(Long.toString(deviceId));
-										notificationManager.setPairedDevices(devicesList.getItems());
+										devicesList.add(Long.toHexString(deviceId));
+										notificationManager.setPairedDevices(getDeviceIds());
 										dialog.close();
 									}
 								});
@@ -670,9 +665,9 @@ public class PreferencesDialog extends Dialog {
 					String[] items = devicesList.getSelection();
 					if (items.length > 0) {
 						String deviceId = items[0];
-						preferences.removeAllowedDeviceId(Long.parseLong(deviceId));
+						preferences.removeAllowedDeviceId(Long.parseLong(deviceId, 16));
 						devicesList.remove(deviceId);
-						notificationManager.setPairedDevices(devicesList.getItems());
+						notificationManager.setPairedDevices(getDeviceIds());
 					}
 				}
 			});
@@ -684,9 +679,8 @@ public class PreferencesDialog extends Dialog {
 			FormData okButtonLData = new FormData();
 			okButtonLData.width = 70;
 			okButtonLData.height = 28;
-			okButtonLData.top = new FormAttachment(devicesGroup, 7);
+			okButtonLData.top = new FormAttachment(devicesGroup, 6);
 			okButtonLData.right = new FormAttachment(100, -10);
-			//okButtonLData.bottom = new FormAttachment(100, -10);
 			okButton.setLayoutData(okButtonLData);
 			okButton.setText("Save");
 			okButton.addListener(SWT.Selection, new Listener() {
@@ -879,6 +873,15 @@ public class PreferencesDialog extends Dialog {
 		byte[] key = password.length() == 0 ? new byte[0] : Encryption.passPhraseToKey(password);
 		notificationParser.setEncryption(true, key);
 		preferences.setCommunicationPassword(key);
+	}
+
+	protected long[] getDeviceIds() {
+		String[] items = devicesList.getItems();
+		long[] deviceIds = new long[items.length];
+		for (int i = 0; i < items.length; i++) {
+			deviceIds[i] = Long.parseLong(items[i], 16);
+		}
+		return deviceIds;
 	}
 
 	class GroupExpandListener implements ExpandListener {

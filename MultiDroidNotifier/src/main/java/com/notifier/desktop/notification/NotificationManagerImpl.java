@@ -113,10 +113,10 @@ public class NotificationManagerImpl implements NotificationManager {
 	}
 
 	@Override
-	public void setPairedDevices(String[] deviceIds) {
+	public void setPairedDevices(long[] deviceIds) {
 		this.allowedDevicesIds = Sets.newTreeSet();
-		for (String deviceId : deviceIds) {
-			this.allowedDevicesIds.add(Long.parseLong(deviceId));
+		for (long deviceId : deviceIds) {
+			this.allowedDevicesIds.add(deviceId);
 		}
 	}
 
