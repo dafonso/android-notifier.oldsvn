@@ -24,12 +24,6 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  -->
 <resources>
-  <string-array name="targetIps">
-    <item>Endereço global de broadcast</item>
-    <item>Endereço DHCP de broadcast</item>
-    <item>IP ou host customizado</item>
-  </string-array>
-
   <string-array name="wifiSleepPolicies">
     <item>Quando a tela desliga</item>
     <item>Nunca quando conectado</item>

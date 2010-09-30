@@ -52,6 +52,9 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <string name="method_ip_options_protocol">Protocol de notificação</string>
     <string name="method_ip_options_enabling">Habilitar Wifi</string>
     <string name="target_ip_address">Endereço IP de destino</string>
+    <string name="target_global_broadcast">Endereço global de broadcast</string>
+    <string name="target_dhcp_broadcast">Endereço DHCP de broadcast</string>
+    <string name="target_custom_ip">IP ou host customizado</string>
     <string name="custom_ip_title">Endereço IP customizado</string>
     <string name="add_custom_ip_title">Adicionar IP customizado</string>
     <string name="remove_custom_ip">Remover endereço</string>

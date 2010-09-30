@@ -34,7 +34,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                     android:entries="@array/locale_on_off_keep"
                     android:entryValues="@array/locale_on_off_keep_values"
                     android:persistent="false"
-                    android:defaultValue="@string/locale_enabled_keep" />
+                    android:defaultValue="@string/locale_enabled_keep_value" />
   </PreferenceCategory>
 
   <PreferenceCategory android:title="@string/methods_title">
@@ -44,14 +44,30 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                     android:entries="@array/locale_on_off_keep"
                     android:entryValues="@array/locale_on_off_keep_values"
                     android:persistent="false"
-                    android:defaultValue="@string/locale_enabled_keep" />
+                    android:defaultValue="@string/locale_enabled_keep_value" />
+    <ListPreference android:key="@string/locale_target_ip_key"
+                    android:title="@string/method_ip_options_target"
+                    android:entries="@array/locale_target_ips"
+                    android:entryValues="@array/locale_target_ip_values"
+                    android:persistent="false"
+                    android:defaultValue="@string/locale_enabled_keep_value" />
+    <org.damazio.notifier.EditableListPreference
+                    android:key="@string/locale_custom_ip_key"
+                    android:title="@string/custom_ip_title"
+                    android:summary="@string/locale_custom_ip_summary"
+                    app:editDialogTitle="@string/add_custom_ip_title"
+                    app:editDialogMessage="@string/enter_custom_ip"
+                    app:addButtonTitle="@string/add_custom_ip_title"
+                    app:removeButtonTitle="@string/remove_custom_ip"
+                    app:allowDuplicates="false" />
+
     <ListPreference android:key="@string/locale_bt_enabled_key"
                     android:title="@string/locale_bt_enabled"
                     android:summary="@string/locale_bt_enabled_summary"
                     android:entries="@array/locale_on_off_keep"
                     android:entryValues="@array/locale_on_off_keep_values"
                     android:persistent="false"
-                    android:defaultValue="@string/locale_enabled_keep" />
+                    android:defaultValue="@string/locale_enabled_keep_value" />
   </PreferenceCategory>
 
 </PreferenceScreen>

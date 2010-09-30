@@ -162,7 +162,11 @@ public class NotificationService extends Service {
       }
       hideLocalNotification();
 
-      unregisterReceiver(batteryReceiver);
+      try {
+        unregisterReceiver(batteryReceiver);
+      } catch (IllegalArgumentException e) {
+        Log.w(NotifierConstants.LOG_TAG, "Unable to unregister battery listener", e);
+      }
 
       final TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
       tm.listen(voicemailListener, PhoneStateListener.LISTEN_NONE);

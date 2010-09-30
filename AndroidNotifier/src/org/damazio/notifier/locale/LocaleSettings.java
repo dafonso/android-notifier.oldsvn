@@ -24,6 +24,8 @@
  */
 package org.damazio.notifier.locale;
 
+import java.util.Arrays;
+
 import org.damazio.notifier.R;
 
 import android.content.Context;
@@ -45,6 +47,8 @@ public class LocaleSettings {
   private OnOffKeep enabledState = OnOffKeep.KEEP;
   private OnOffKeep ipEnabledState = OnOffKeep.KEEP;
   private OnOffKeep bluetoothEnabledState = OnOffKeep.KEEP;
+  private String targetIp = OnOffKeep.KEEP.name();
+  private String[] customIps = new String[0];
 
   public LocaleSettings(Context context, Bundle forwardedBundle) {
     this.context = context;
@@ -68,6 +72,22 @@ public class LocaleSettings {
     this.ipEnabledState = ipEnabledState;
   }
 
+  public String getTargetIp() {
+    return targetIp;
+  }
+
+  public void setTargetIp(String targetIp) {
+    this.targetIp = targetIp;
+  }
+
+  public String[] getCustomIps() {
+    return customIps;
+  }
+
+  public void setCustomIps(String[] customIps) {
+    this.customIps = customIps;
+  }
+
   public OnOffKeep getBluetoothEnabledState() {
     return bluetoothEnabledState;
   }
@@ -80,6 +100,8 @@ public class LocaleSettings {
     if (enabledState != OnOffKeep.KEEP) return true;
     if (ipEnabledState != OnOffKeep.KEEP) return true;
     if (bluetoothEnabledState != OnOffKeep.KEEP) return true;
+    if (customIps.length > 0) return true;
+    if (!targetIp.equals(context.getString(R.string.locale_enabled_keep_value))) return true;
     return false;
   }
 
@@ -94,6 +116,12 @@ public class LocaleSettings {
         context.getString(R.string.locale_ip_enabled_key));
     bluetoothEnabledState = getOnOffKeep(bundle,
         context.getString(R.string.locale_bt_enabled_key));
+
+    targetIp = bundle.getString(context.getString(R.string.locale_target_ip_key));
+    if (targetIp == null) targetIp = OnOffKeep.KEEP.name();
+
+    customIps = bundle.getStringArray(context.getString(R.string.locale_custom_ip_key));
+    if (customIps == null) customIps = new String[0];
   }
 
   public Bundle toBundle() {
@@ -101,6 +129,13 @@ public class LocaleSettings {
     putOnOffKeep(context.getString(R.string.locale_change_enabled_key), enabledState, result);
     putOnOffKeep(context.getString(R.string.locale_ip_enabled_key), ipEnabledState, result);
     putOnOffKeep(context.getString(R.string.locale_bt_enabled_key), bluetoothEnabledState, result);
+
+    if (!context.getString(R.string.locale_enabled_keep_value).equals(targetIp)) {
+      result.putString(context.getString(R.string.locale_target_ip_key), targetIp);
+    }
+    if (customIps.length > 0) {
+      result.putStringArray(context.getString(R.string.locale_custom_ip_key), customIps);
+    }
     return result;
   }
 
@@ -108,37 +143,59 @@ public class LocaleSettings {
   public String toString() {
     // Output the blurb
     StringBuilder blurbBuilder = new StringBuilder();
-    appendOnOffKeepBlurb(R.string.locale_notifications_enabled_blurb, enabledState, blurbBuilder);
-    appendOnOffKeepBlurb(R.string.locale_ip_enabled_blurb, ipEnabledState, blurbBuilder);
-    appendOnOffKeepBlurb(R.string.locale_bt_enabled_blurb, bluetoothEnabledState, blurbBuilder);
+    boolean first = true;
+    first = appendOnOffKeepBlurb(R.string.locale_notifications_enabled_blurb, enabledState, blurbBuilder, first);
+    first = appendOnOffKeepBlurb(R.string.locale_ip_enabled_blurb, ipEnabledState, blurbBuilder, first);
+    first = appendOnOffKeepBlurb(R.string.locale_bt_enabled_blurb, bluetoothEnabledState, blurbBuilder, first);
+
+    if (!context.getString(R.string.locale_enabled_keep_value).equals(targetIp)) {
+      first = appendBlurbDelimiter(blurbBuilder, first);
+      blurbBuilder.append(context.getString(R.string.locale_target_ip_blurb, targetIp));
+    }
+    if (customIps.length > 0) {
+      first = appendBlurbDelimiter(blurbBuilder, first);
+      blurbBuilder.append(context.getString(R.string.locale_custom_ip_blurb, Arrays.toString(customIps)));
+    }
     return blurbBuilder.toString();
   }
 
   private OnOffKeep getOnOffKeep(Bundle fromBundle, String key) {
-    return OnOffKeep.valueOf(fromBundle.getString(key));
+    String valueStr = fromBundle.getString(key);
+    if (valueStr == null) return OnOffKeep.KEEP;
+    return OnOffKeep.valueOf(valueStr);
   }
 
   private void putOnOffKeep(String key, OnOffKeep value, Bundle toBundle) {
     toBundle.putString(key, value.name());
   }
 
-  private void appendOnOffKeepBlurb(int blurbRes, OnOffKeep value,
-      StringBuilder blurbBuilder) {
-    // TODO: Proper i18n here
+  private boolean appendOnOffKeepBlurb(int blurbRes, OnOffKeep value,
+      StringBuilder blurbBuilder, boolean first) {
     switch (value) {
       case ON:
+        first = appendBlurbDelimiter(blurbBuilder, first);
         blurbBuilder.append(
             context.getString(blurbRes, 
-                context.getString(R.string.locale_enabled_on)));
+                context.getString(R.string.locale_enabled_on_value)));
         break;
       case OFF:
+        first = appendBlurbDelimiter(blurbBuilder, first);
         blurbBuilder.append(
             context.getString(blurbRes, 
-                context.getString(R.string.locale_enabled_off)));
+                context.getString(R.string.locale_enabled_off_value)));
         break;
       default:
         // Don't output anything if there's no change in the setting
         break;
     }
+
+    return first;
+  }
+
+  private boolean appendBlurbDelimiter(StringBuilder blurbBuilder, boolean first) {
+    if (!first) {
+      blurbBuilder.append(", ");
+    }
+    return false;
   }
 }
