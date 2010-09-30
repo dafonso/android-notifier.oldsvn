@@ -21,12 +21,18 @@ import java.io.*;
 import java.util.*;
 import java.util.prefs.*;
 
+import org.slf4j.*;
+
 import com.google.common.base.*;
 import com.google.common.collect.*;
 
 public class ApplicationPreferences {
 
+	private static final Logger logger = LoggerFactory.getLogger(ApplicationPreferences.class);
+
 	private static final String START_AT_LOGIN = "startAtLogin";
+	private static final String PRIVATE_MODE = "privateMode";
+
 	private static final String RECEPTION_WITH_WIFI = "receptionWithWifi";
 	private static final String RECEPTION_WITH_UPNP = "receptionWithUpnp";
 	private static final String RECEPTION_WITH_BLUETOOTH = "receptionWithBluetooth";
@@ -80,7 +86,11 @@ public class ApplicationPreferences {
 	}
 
 	public void read() {
-		Preferences prefs = Preferences.userNodeForPackage(ApplicationPreferences.class);
+		migratePreferences();
+		doRead(getPreferences());
+	}
+
+	protected void doRead(Preferences prefs) {
 		startAtLogin = prefs.getBoolean(START_AT_LOGIN, false);
 		receptionWithWifi = prefs.getBoolean(RECEPTION_WITH_WIFI, true);
 		receptionWithUpnp = prefs.getBoolean(RECEPTION_WITH_UPNP, false);
@@ -94,12 +104,17 @@ public class ApplicationPreferences {
 		displayWithGrowl = prefs.getBoolean(DISPLAY_WITH_GROWL, false);
 		displayWithLibnotify = prefs.getBoolean(DISPLAY_WITH_LIBNOTIFY, false);
 		receptionFromAnyDevice = prefs.getBoolean(RECEPTION_FROM_ANY_DEVICE, true);
-		
+
 		Iterable<String> allowedIds = ALLOWED_DEVICES_IDS_SPLITTER.split(prefs.get(ALLOWED_DEVICES_IDS, ""));
 		Iterable<Long> allowedIdNumbers = Iterables.transform(allowedIds, new Function<String, Long>() {
 			@Override
 			public Long apply(String from) {
-				return Long.parseLong(from);
+				try {
+					return Long.parseLong(from);
+				} catch (NumberFormatException e) {
+					// If reading older preferences, ids will be in hex format
+					return Long.parseLong(from, 16);
+				}
 			}
 		});
 		allowedDevicesIds = Sets.newTreeSet(allowedIdNumbers);
@@ -224,6 +239,25 @@ public class ApplicationPreferences {
 
 	public void setGroupExpanded(Group group, boolean expanded) {
 		groupsExpansion.put(group, expanded);
+	}
+
+	protected Preferences getPreferences() {
+		return Preferences.userNodeForPackage(ApplicationPreferences.class);
+	}
+
+	protected void migratePreferences() {
+		try {
+			String oldNode = "com/google/code/notifier/desktop";
+			if (Preferences.userRoot().nodeExists(oldNode)) {
+				Preferences oldPrefs = Preferences.userRoot().node(oldNode);
+				doRead(oldPrefs);
+				write();
+				oldPrefs.removeNode();
+			}
+		} catch (Exception e) {
+			logger.warn("Could no migrate old preferences, will try reset");
+			doRead(getPreferences());
+		}
 	}
 
 	// Getters/Setters
