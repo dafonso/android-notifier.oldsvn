@@ -47,10 +47,17 @@ public class FireReceiver extends BroadcastReceiver {
     if (!com.twofortyfouram.Intent.ACTION_FIRE_SETTING.equals(intent.getAction())) {
       return;
     }
+    NotifierPreferences preferences = new NotifierPreferences(context);
 
     Bundle extras = intent.getExtras();
     setEnabledState(getOnOffKeep(extras, R.string.locale_change_enabled_key, context),
-        context);
+        context, preferences);
+    setIpEnabledState(
+        getOnOffKeep(extras, R.string.locale_ip_enabled_key, context),
+        preferences);
+    setBluetoothEnabledState(
+        getOnOffKeep(extras, R.string.locale_bt_enabled_key, context),
+        preferences);
   }
 
   private OnOffKeep getOnOffKeep(Bundle extras, int enabledRes, Context context) {
@@ -58,15 +65,28 @@ public class FireReceiver extends BroadcastReceiver {
         extras.getString(context.getString(enabledRes)));
   }
 
-  private void setEnabledState(OnOffKeep enabledState, Context context) {
+  private void setIpEnabledState(OnOffKeep state, NotifierPreferences preferences) {
+    if (state != OnOffKeep.KEEP) {
+      preferences.setIpMethodEnabled(state == OnOffKeep.ON);
+    }
+  }
+
+  private void setBluetoothEnabledState(OnOffKeep state, NotifierPreferences preferences) {
+    if (state != OnOffKeep.KEEP) {
+      preferences.setBluetoothMethodEnabled(state == OnOffKeep.ON);
+    }
+  }
+
+  private void setEnabledState(OnOffKeep enabledState, Context context,
+      NotifierPreferences preferences) {
     boolean running = NotificationService.isRunning(context);
     if (enabledState == OnOffKeep.ON && !running) {
       Log.d(NotifierConstants.LOG_TAG, "Locale starting service");
-      new NotifierPreferences(context).setNotificationsEnabled(true);
+      preferences.setNotificationsEnabled(true);
       NotificationService.start(context);
     } else if (enabledState == OnOffKeep.OFF && running) {
       Log.d(NotifierConstants.LOG_TAG, "Locale stopping service");
-      new NotifierPreferences(context).setNotificationsEnabled(false);
+      preferences.setNotificationsEnabled(false);
 
       // Changing the preference should be enough for the service to suicide,
       // but we kill it just in case.

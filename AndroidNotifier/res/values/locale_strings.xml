@@ -29,6 +29,16 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <string name="locale_notifications_enabled_summary">Enable or disable sending of notifications</string>
   <string name="locale_notifications_enabled_blurb">State: %s</string>
 
+  <string name="locale_ip_enabled_key">localeChangeIpEnabled</string>
+  <string name="locale_ip_enabled">Send over IP</string>
+  <string name="locale_ip_enabled_summary">Enable or disable sending of notifications using IP/Wifi</string>
+  <string name="locale_ip_enabled_blurb">IP: %s</string>
+
+  <string name="locale_bt_enabled_key">localeChangeBluetoothEnabled</string>
+  <string name="locale_bt_enabled">Send over Bluetooth</string>
+  <string name="locale_bt_enabled_summary">Enable or disable sending of notifications using Bluetooth</string>
+  <string name="locale_bt_enabled_blurb">BT: %s</string>
+
   <!-- These must match the OnOffKeep enum -->
   <string name="locale_enabled_on">ON</string>
   <string name="locale_enabled_off">OFF</string>

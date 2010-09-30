@@ -103,6 +103,15 @@ public class NotifierPreferences {
   }
 
   /**
+   * Sets whether notifications will be sent with the IP method.
+   */
+  public void setIpMethodEnabled(boolean ipEnabled) {
+    preferences.edit()
+        .putBoolean(context.getString(R.string.method_ip_key), ipEnabled)
+        .commit();
+  }
+
+  /**
    * @return returns the current target IP address setting, which is one of
    *         "global", "dhcp" or "custom"
    */
@@ -180,6 +189,15 @@ public class NotifierPreferences {
    */
   public boolean isBluetoothMethodEnabled() {
     return preferences.getBoolean(context.getString(R.string.method_bluetooth_key), true);
+  }
+
+  /**
+   * Sets whether notifications will be sent with the bluetooth method.
+   */
+  public void setBluetoothMethodEnabled(boolean btEnabled) {
+    preferences.edit()
+        .putBoolean(context.getString(R.string.method_bluetooth_key), btEnabled)
+        .commit();
   }
 
   /**

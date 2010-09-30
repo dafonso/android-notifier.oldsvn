@@ -70,6 +70,30 @@ public class EditActivity extends PreferenceActivity {
         return true;
       }
     });
+
+    ListPreference ipEnabledPreference =
+        (ListPreference) findPreference(getString(R.string.locale_ip_enabled_key));
+    ipEnabledPreference.setValue(settings.getIpEnabledState().name());
+    ipEnabledPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+      @Override
+      public boolean onPreferenceChange(Preference preference, Object newValue) {
+        settings.setIpEnabledState(OnOffKeep.valueOf((String) newValue));
+        updateLocaleResult();
+        return true;
+      }
+    });
+
+    ListPreference btEnabledPreference =
+        (ListPreference) findPreference(getString(R.string.locale_bt_enabled_key));
+    btEnabledPreference.setValue(settings.getBluetoothEnabledState().name());
+    btEnabledPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+      @Override
+      public boolean onPreferenceChange(Preference preference, Object newValue) {
+        settings.setBluetoothEnabledState(OnOffKeep.valueOf((String) newValue));
+        updateLocaleResult();
+        return true;
+      }
+    });
   }
 
   private void updateLocaleResult() {

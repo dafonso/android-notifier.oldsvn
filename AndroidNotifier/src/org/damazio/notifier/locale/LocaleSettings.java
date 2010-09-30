@@ -43,6 +43,8 @@ public class LocaleSettings {
 
   private final Context context;
   private OnOffKeep enabledState = OnOffKeep.KEEP;
+  private OnOffKeep ipEnabledState = OnOffKeep.KEEP;
+  private OnOffKeep bluetoothEnabledState = OnOffKeep.KEEP;
 
   public LocaleSettings(Context context, Bundle forwardedBundle) {
     this.context = context;
@@ -58,8 +60,26 @@ public class LocaleSettings {
     this.enabledState = enabledState;
   }
 
+  public OnOffKeep getIpEnabledState() {
+    return ipEnabledState;
+  }
+
+  public void setIpEnabledState(OnOffKeep ipEnabledState) {
+    this.ipEnabledState = ipEnabledState;
+  }
+
+  public OnOffKeep getBluetoothEnabledState() {
+    return bluetoothEnabledState;
+  }
+
+  public void setBluetoothEnabledState(OnOffKeep bluetoothEnabledState) {
+    this.bluetoothEnabledState = bluetoothEnabledState;
+  }
+
   public boolean hasChanges() {
     if (enabledState != OnOffKeep.KEEP) return true;
+    if (ipEnabledState != OnOffKeep.KEEP) return true;
+    if (bluetoothEnabledState != OnOffKeep.KEEP) return true;
     return false;
   }
 
@@ -70,11 +90,17 @@ public class LocaleSettings {
 
     enabledState = getOnOffKeep(bundle,
         context.getString(R.string.locale_change_enabled_key));
+    ipEnabledState = getOnOffKeep(bundle,
+        context.getString(R.string.locale_ip_enabled_key));
+    bluetoothEnabledState = getOnOffKeep(bundle,
+        context.getString(R.string.locale_bt_enabled_key));
   }
 
   public Bundle toBundle() {
     Bundle result = new Bundle();
     putOnOffKeep(context.getString(R.string.locale_change_enabled_key), enabledState, result);
+    putOnOffKeep(context.getString(R.string.locale_ip_enabled_key), ipEnabledState, result);
+    putOnOffKeep(context.getString(R.string.locale_bt_enabled_key), bluetoothEnabledState, result);
     return result;
   }
 
@@ -83,6 +109,8 @@ public class LocaleSettings {
     // Output the blurb
     StringBuilder blurbBuilder = new StringBuilder();
     appendOnOffKeepBlurb(R.string.locale_notifications_enabled_blurb, enabledState, blurbBuilder);
+    appendOnOffKeepBlurb(R.string.locale_ip_enabled_blurb, ipEnabledState, blurbBuilder);
+    appendOnOffKeepBlurb(R.string.locale_bt_enabled_blurb, bluetoothEnabledState, blurbBuilder);
     return blurbBuilder.toString();
   }
 
