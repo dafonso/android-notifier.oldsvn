@@ -5,13 +5,8 @@
     <string name="service_name">远程通告服务</string>
     <string name="settings_title">远程通告设置</string>
 
-    <!-- Service settings -->
-    <string name="service_title">通告服务</string>
-    <string name="service_status_running">服务正在运行</string>
-    <string name="service_status_stopped">服务已经停止</string>
-    <string name="start_service">启动服务</string>
+    <!-- Notification settings -->
     <string name="service_started">服务已启动</string>
-    <string name="stop_service">停止服务</string>
     <string name="service_stopped">服务已停止</string>
     <string name="start_at_boot">开机时启动服务</string>
     <string name="start_at_boot_on">开机的时候服务会启动</string>

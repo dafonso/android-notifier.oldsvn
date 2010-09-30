@@ -4,13 +4,8 @@
     <string name="service_name">Сервис удаленных уведомлений</string>
     <string name="settings_title">Настройки Remote Notifier</string>
 
-    <!-- Service settings -->
-    <string name="service_title">Сервис уведомлений</string>
-    <string name="service_status_running">Сервис запущен</string>
-    <string name="service_status_stopped">Сервис остановлен</string>
-    <string name="start_service">Запустить сервис</string>
+    <!-- Notification settings -->
     <string name="service_started">Сервис запущен</string>
-    <string name="stop_service">Остановить сервис</string>
     <string name="service_stopped">Сервис остановлен</string>
     <string name="start_at_boot">Автозапуск сервиса</string>
     <string name="start_at_boot_on">Сервис будет запущен автоматически после включения телефона</string>
