@@ -1,12 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- 
+Copyright 2010 Rodrigo Damazio <rodrigo@damazio.org>
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+
+1. Redistributions of source code must retain the above copyright
+   notice, this list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ -->
 <resources>
   <string name="locale_notifications_enabled">Notificações</string>
   <string name="locale_notifications_enabled_summary">Habilitar ou desabilitar o envio de notificações</string>
   <string name="locale_notifications_enabled_blurb">Estado: %s</string>
 
-  <string-array name="locale_on_off_keep">
-    <item>Habilitar</item>
-    <item>Desabilitar</item>
-    <item>Manter como está</item>
-  </string-array>
+  <string name="locale_ip_enabled">Enviar por IP</string>
+  <string name="locale_ip_enabled_summary">Habilita ou desabilita o envio de notificações sobre IP/Wifi</string>
+
+  <string name="locale_bt_enabled">Enviar por Bluetooth</string>
+  <string name="locale_bt_enabled_summary">Habilita ou desabilita o envio de notificações sobre Bluetooth</string>
+
+  <string name="locale_target_ip_blurb">IP destino: %s</string>
+
+  <string name="locale_custom_ip_summary">A lista de IPs customizados será substituída por esta se não for vazia.</string>
+  <string name="locale_custom_ip_blurb">IPs customizados: %s</string>
+
+  <string name="locale_enabled_keep">Manter como está</string>
+  <string name="locale_enabled_enable">Habilitar</string>
+  <string name="locale_enabled_disable">Desabilitar</string>
 </resources>

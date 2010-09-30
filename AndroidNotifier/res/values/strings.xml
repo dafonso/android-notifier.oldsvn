@@ -56,6 +56,12 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <string name="method_ip_options_protocol">Notification protocol</string>
     <string name="method_ip_options_enabling">Wifi enabling</string>
     <string name="target_ip_address">Target IP address</string>
+    <string name="target_global_broadcast">Global broadcast address</string>
+    <string name="target_dhcp_broadcast">DHCP broadcast address</string>
+    <string name="target_custom_ip">Custom IP or host</string>
+    <string name="target_ip_global_value">global</string>
+    <string name="target_ip_dhcp_value">dhcp</string>
+    <string name="target_ip_custom_value">custom</string>
     <string name="custom_ip_title">Custom IP address(es)</string>
     <string name="add_custom_ip_title">Add custom IP address</string>
     <string name="remove_custom_ip">Remove address</string>

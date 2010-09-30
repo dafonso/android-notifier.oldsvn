@@ -219,8 +219,7 @@ class IpNotificationMethod implements NotificationMethod {
     String addressStr = preferences.getTargetIpAddress();
     if (addressStr.equals("custom")) {
       // Get the custom IP address from the other preference key
-      String multipleAddressesStr = preferences.getCustomTargetIpAddresses();
-      String[] addresses = multipleAddressesStr.split(",");
+      String[] addresses = preferences.getCustomTargetIpAddresses();
       return Arrays.asList(addresses);
     }
 

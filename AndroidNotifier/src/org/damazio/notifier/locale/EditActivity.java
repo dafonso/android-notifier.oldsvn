@@ -24,6 +24,8 @@
  */
 package org.damazio.notifier.locale;
 
+import org.damazio.notifier.EditableListPreference;
+import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.R;
 import org.damazio.notifier.locale.LocaleSettings.OnOffKeep;
 
@@ -33,13 +35,14 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
+import android.util.Log;
 
 /**
  * Activity displayed when the user wants to edit the Locale plugin settings.
  *
  * @author rdamazio
  */
-public class EditActivity extends PreferenceActivity {
+public class EditActivity extends PreferenceActivity implements OnPreferenceChangeListener {
   private LocaleSettings settings;
 
   @Override
@@ -59,41 +62,40 @@ public class EditActivity extends PreferenceActivity {
     settings = new LocaleSettings(this, forwardedBundle);
 
     // Populate settings
-    ListPreference enabledPreference =
-        (ListPreference) findPreference(getString(R.string.locale_change_enabled_key));
-    enabledPreference.setValue(settings.getEnabledState().name());
-    enabledPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-      @Override
-      public boolean onPreferenceChange(Preference preference, Object newValue) {
-        settings.setEnabledState(OnOffKeep.valueOf((String) newValue));
-        updateLocaleResult();
-        return true;
-      }
-    });
+    populateListPreference(R.string.locale_change_enabled_key, settings.getEnabledState().name());
+    populateListPreference(R.string.locale_ip_enabled_key, settings.getIpEnabledState().name());
+    populateListPreference(R.string.locale_bt_enabled_key, settings.getBluetoothEnabledState().name());
+    populateListPreference(R.string.locale_target_ip_key, settings.getTargetIp());
 
-    ListPreference ipEnabledPreference =
-        (ListPreference) findPreference(getString(R.string.locale_ip_enabled_key));
-    ipEnabledPreference.setValue(settings.getIpEnabledState().name());
-    ipEnabledPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-      @Override
-      public boolean onPreferenceChange(Preference preference, Object newValue) {
-        settings.setIpEnabledState(OnOffKeep.valueOf((String) newValue));
-        updateLocaleResult();
-        return true;
-      }
-    });
+    EditableListPreference customIpsPreference =
+        (EditableListPreference) findPreference(getString(R.string.locale_custom_ip_key));
+    customIpsPreference.setValues(settings.getCustomIps());
+    customIpsPreference.setOnPreferenceChangeListener(this);
+  }
 
-    ListPreference btEnabledPreference =
-        (ListPreference) findPreference(getString(R.string.locale_bt_enabled_key));
-    btEnabledPreference.setValue(settings.getBluetoothEnabledState().name());
-    btEnabledPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-      @Override
-      public boolean onPreferenceChange(Preference preference, Object newValue) {
-        settings.setBluetoothEnabledState(OnOffKeep.valueOf((String) newValue));
-        updateLocaleResult();
-        return true;
-      }
-    });
+  private void populateListPreference(int preferenceKey, String initialValue) {
+    ListPreference enabledPreference = (ListPreference) findPreference(getString(preferenceKey));
+    enabledPreference.setValue(initialValue);
+    enabledPreference.setOnPreferenceChangeListener(this);
+  }
+
+  @Override
+  public boolean onPreferenceChange(Preference preference, Object newValue) {
+    String key = preference.getKey();
+    if (getString(R.string.locale_change_enabled_key).equals(key)) {
+      settings.setEnabledState(OnOffKeep.valueOf((String) newValue));
+    } else if (getString(R.string.locale_ip_enabled_key).equals(key)) {
+      settings.setIpEnabledState(OnOffKeep.valueOf((String) newValue));
+    } else if (getString(R.string.locale_bt_enabled_key).equals(key)) {
+      settings.setBluetoothEnabledState(OnOffKeep.valueOf((String) newValue));
+    } else if (getString(R.string.locale_target_ip_key).equals(key)) {
+      settings.setTargetIp((String) newValue);
+    } else if (getString(R.string.locale_custom_ip_key).equals(key)) {
+      settings.setCustomIps((String[]) newValue);
+    }
+
+    updateLocaleResult();
+    return true;
   }
 
   private void updateLocaleResult() {
@@ -104,6 +106,7 @@ public class EditActivity extends PreferenceActivity {
 
     Bundle settingsBundle = settings.toBundle();
     String blurb = settings.toString();
+    Log.d(NotifierConstants.LOG_TAG, "New locale plugin settings: " + blurb);
     if (blurb.length() > com.twofortyfouram.Intent.MAXIMUM_BLURB_LENGTH) {
       blurb = blurb.substring(0, com.twofortyfouram.Intent.MAXIMUM_BLURB_LENGTH - 3) + "...";
     }

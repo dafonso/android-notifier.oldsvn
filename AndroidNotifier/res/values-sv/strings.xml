@@ -25,6 +25,9 @@
     <string name="method_bluetooth_summary_on">Notifikationer sänds över Bluetooth. Se inställningar längre ner för att välja målenhet.</string>
     <string name="ip_options">IP/Wifi Inställningar</string>
     <string name="target_ip_address">Mål IP address</string>
+    <string name="target_global_broadcast">Global Nätmask</string>
+    <string name="target_dhcp_broadcast">DHCP Adress</string>
+    <string name="target_custom_ip">Egen IP</string>
     <string name="custom_ip_title">Egen IP address(er)</string>
     <string name="custom_ip">Skriva flera adresser efter varandra separerade med : För att skicka notifieringar till:</string>
     <string name="invalid_custom_ip">Felaktig IP address</string>

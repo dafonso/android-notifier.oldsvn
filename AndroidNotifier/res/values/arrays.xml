@@ -25,16 +25,16 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  -->
 <resources>
   <string-array name="targetIps">
-    <item>Global broadcast address</item>
-    <item>DHCP broadcast address</item>
-    <item>Custom IP or host</item>
+    <item>@string/target_global_broadcast</item>
+    <item>@string/target_dhcp_broadcast</item>
+    <item>@string/target_custom_ip</item>
   </string-array>
 
   <!-- Not user-visible, do not translate -->
   <string-array name="targetIpValues">
-    <item>global</item>
-    <item>dhcp</item>
-    <item>custom</item>
+    <item>@string/target_ip_global_value</item>
+    <item>@string/target_ip_dhcp_value</item>
+    <item>@string/target_ip_custom_value</item>
   </string-array>
 
   <string-array name="wifiSleepPolicies">

@@ -304,19 +304,23 @@ public class EditableListPreference extends Preference implements AdapterView.On
     }
   }
 
+  public String[] getValues() {
+    return contents.toArray(new String[contents.size()]);
+  }
+
   private boolean persistList() {
-    if (!callChangeListener(contents)) {
+    String[] contentsArray;
+    synchronized (adapter) {
+      contentsArray = contents.toArray(new String[contents.size()]);
+    }
+    if (!callChangeListener(contentsArray)) {
       return false;
     }
 
     StringBuilder builder = new StringBuilder();
-    synchronized (adapter) {
-      int count = contents.size();
-      for (int i = 0; i < count; i++) {
-        if (i > 0)
-          builder.append(listDelimiter);
-        builder.append(contents.get(i));
-      }
+    for (int i = 0; i < contentsArray.length; i++) {
+      if (i > 0) builder.append(listDelimiter);
+      builder.append(contentsArray[i]);
     }
 
     String newValue = builder.toString();

@@ -119,12 +119,35 @@ public class NotifierPreferences {
     return preferences.getString(context.getString(R.string.target_ip_address_key), "global");
   }
 
+  public void setTargetIpAddress(String targetIp) {
+    preferences.edit()
+        .putString(context.getString(R.string.target_ip_address_key), targetIp)
+        .commit();
+  }
+
   /**
-   * @return the custom IP address to be used if "custom" was returned by
+   * @return the custom IP addresses to be used if "custom" was returned by
    *         {@link #getTargetIpAddress}
    */
-  public String getCustomTargetIpAddresses() {
-    return preferences.getString(context.getString(R.string.target_custom_ips_key), "");
+  public String[] getCustomTargetIpAddresses() {
+    return preferences.getString(context.getString(R.string.target_custom_ips_key), "").split(",");
+  }
+
+  /**
+   * Sets the custom IP addresses to be used if "custom" is the target type
+   */
+  public void setCustomTargetIpAddresses(String[] targetIps) {
+    StringBuilder builder = new StringBuilder();
+    for (int i = 0; i < targetIps.length; i++) {
+      String targetIp = targetIps[i];
+
+      if (i > 0) builder.append(',');
+      builder.append(targetIp);
+    }
+
+    preferences.edit()
+        .putString(context.getString(R.string.target_custom_ips_key), builder.toString())
+        .commit();
   }
 
   /**

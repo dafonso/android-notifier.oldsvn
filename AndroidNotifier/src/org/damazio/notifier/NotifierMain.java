@@ -195,8 +195,7 @@ public class NotifierMain extends PreferenceActivity {
     customIpsPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
       @Override
       public boolean onPreferenceChange(Preference preference, Object newValue) {
-        @SuppressWarnings("unchecked")
-        List<String> contents = (List<String>) newValue;
+        String[] contents = (String[]) newValue;
 
         for (String address : contents) {
           if (!isValidCustomAddress(address)) {

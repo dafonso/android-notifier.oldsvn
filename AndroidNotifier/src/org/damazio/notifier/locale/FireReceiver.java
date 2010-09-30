@@ -26,7 +26,6 @@ package org.damazio.notifier.locale;
 
 import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.NotifierPreferences;
-import org.damazio.notifier.R;
 import org.damazio.notifier.locale.LocaleSettings.OnOffKeep;
 import org.damazio.notifier.service.NotificationService;
 
@@ -50,47 +49,63 @@ public class FireReceiver extends BroadcastReceiver {
     NotifierPreferences preferences = new NotifierPreferences(context);
 
     Bundle extras = intent.getExtras();
-    setEnabledState(getOnOffKeep(extras, R.string.locale_change_enabled_key, context),
-        context, preferences);
-    setIpEnabledState(
-        getOnOffKeep(extras, R.string.locale_ip_enabled_key, context),
-        preferences);
-    setBluetoothEnabledState(
-        getOnOffKeep(extras, R.string.locale_bt_enabled_key, context),
-        preferences);
+    LocaleSettings settings = new LocaleSettings(context, extras);
+    Log.d(NotifierConstants.LOG_TAG, "Applying locale settings: " + settings);
+
+    setEnabledState(settings, preferences, context);
+    setIpEnabledState(settings, preferences);
+    setBluetoothEnabledState(settings, preferences);
+    setTargetIp(settings, preferences);
+    setCustomIps(settings, preferences);
   }
 
-  private OnOffKeep getOnOffKeep(Bundle extras, int enabledRes, Context context) {
-    return OnOffKeep.valueOf(
-        extras.getString(context.getString(enabledRes)));
+  private void setEnabledState(LocaleSettings settings, NotifierPreferences preferences, Context context) {
+    OnOffKeep enabledState = settings.getEnabledState();
+    boolean running = NotificationService.isRunning(context);
+    switch (enabledState) {
+      case ON:
+        preferences.setNotificationsEnabled(true);
+        if (!running) {
+          NotificationService.start(context);
+        }
+        break;
+      case OFF:
+        preferences.setNotificationsEnabled(false);
+
+        // Changing the preference should be enough for the service to suicide,
+        // but we kill it just in case.
+        NotificationService.stop(context);
+        break;
+      default:
+        return;
+    }
   }
 
-  private void setIpEnabledState(OnOffKeep state, NotifierPreferences preferences) {
+  private void setIpEnabledState(LocaleSettings settings, NotifierPreferences preferences) {
+    OnOffKeep state = settings.getIpEnabledState();
     if (state != OnOffKeep.KEEP) {
       preferences.setIpMethodEnabled(state == OnOffKeep.ON);
     }
   }
 
-  private void setBluetoothEnabledState(OnOffKeep state, NotifierPreferences preferences) {
+  private void setBluetoothEnabledState(LocaleSettings settings, NotifierPreferences preferences) {
+    OnOffKeep state = settings.getBluetoothEnabledState();
     if (state != OnOffKeep.KEEP) {
       preferences.setBluetoothMethodEnabled(state == OnOffKeep.ON);
     }
   }
 
-  private void setEnabledState(OnOffKeep enabledState, Context context,
-      NotifierPreferences preferences) {
-    boolean running = NotificationService.isRunning(context);
-    if (enabledState == OnOffKeep.ON && !running) {
-      Log.d(NotifierConstants.LOG_TAG, "Locale starting service");
-      preferences.setNotificationsEnabled(true);
-      NotificationService.start(context);
-    } else if (enabledState == OnOffKeep.OFF && running) {
-      Log.d(NotifierConstants.LOG_TAG, "Locale stopping service");
-      preferences.setNotificationsEnabled(false);
+  private void setTargetIp(LocaleSettings settings, NotifierPreferences preferences) {
+    String targetIp = settings.getTargetIp();
+    if (!OnOffKeep.KEEP.name().equals(targetIp)) {
+      preferences.setTargetIpAddress(targetIp);
+    }
+  }
 
-      // Changing the preference should be enough for the service to suicide,
-      // but we kill it just in case.
-      NotificationService.stop(context);
+  private void setCustomIps(LocaleSettings settings, NotifierPreferences preferences) {
+    String[] customIps = settings.getCustomIps();
+    if (customIps.length > 0) {
+      preferences.setCustomTargetIpAddresses(customIps);
     }
   }
 }

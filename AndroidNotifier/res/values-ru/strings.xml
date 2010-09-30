@@ -21,6 +21,9 @@
     <!-- Wifi method -->
     <string name="ip_options">Настройки IP/Wifi</string>
     <string name="target_ip_address">IP адрес получателя</string>
+    <string name="target_global_broadcast">Глобальный широковещательный адрес</string>
+    <string name="target_dhcp_broadcast">Широковещательный адрес от DHCP сервера</string>
+    <string name="target_custom_ip">Пользовательский IP адрес или имя хоста</string>
     <string name="custom_ip_title">Пользовательский IP адрес</string>
     <string name="custom_ip">Пожалуйста, введите адрес или имя хоста получателя уведомлений:</string>
     <string name="wifi_sleep_policy">Правила перехода Wi-Fi в спящий режим</string>
