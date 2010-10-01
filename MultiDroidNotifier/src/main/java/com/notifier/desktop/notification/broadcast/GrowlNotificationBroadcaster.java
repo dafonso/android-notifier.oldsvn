@@ -92,12 +92,12 @@ public class GrowlNotificationBroadcaster extends AbstractLifecycle implements N
 	}
 
 	@Override
-	public void broadcast(Notification notification, boolean privateMode) {
+	public void broadcast(Notification notification, String deviceName, boolean privateMode) {
 		if (!isRunning()) {
 			return;
 		}
 		if (OperatingSystems.CURRENT_FAMILY == OperatingSystems.Family.MAC) {
-			GrowlNotification n = new GrowlNotification(notification.getType().toString(), notification.getTitle(), notification.getDescription(privateMode), Application.NAME, false,
+			GrowlNotification n = new GrowlNotification(notification.getType().toString(), notification.getTitle(deviceName), notification.getDescription(privateMode), Application.NAME, false,
 					GrowlNotification.NORMAL);
 			try {
 				macGrowl.sendNotification(n);
@@ -111,12 +111,12 @@ public class GrowlNotificationBroadcaster extends AbstractLifecycle implements N
 					String iconName = notification.getBatteryIconName();
 					try {
 						RenderedImage icon = getIcon(iconName);
-						gntpClient.notify(Gntp.notification(notificationInfos.get(Notification.Type.BATTERY), notification.getTitle()).text(notification.getDescription(privateMode)).icon(icon).build(), NOTIFY_TIMEOUT, SECONDS);
+						gntpClient.notify(Gntp.notification(notificationInfos.get(Notification.Type.BATTERY), notification.getTitle(deviceName)).text(notification.getDescription(privateMode)).icon(icon).build(), NOTIFY_TIMEOUT, SECONDS);
 					} catch (IOException e) {
-						doNotify(notification, privateMode);
+						doNotify(notification, deviceName, privateMode);
 					}
 				} else {
-					doNotify(notification, privateMode);
+					doNotify(notification, deviceName, privateMode);
 				}
 			} catch (InterruptedException e) {
 				logger.debug("Interrupted sending GNTP notification");
@@ -141,10 +141,10 @@ public class GrowlNotificationBroadcaster extends AbstractLifecycle implements N
 		return Gntp.notificationInfo(appInfo, type.name()).displayName(type.getTitle()).icon(getIcon(type.getIconName())).build();
 	}
 
-	protected void doNotify(Notification notification, boolean privateMode) throws InterruptedException {
+	protected void doNotify(Notification notification, String deviceName, boolean privateMode) throws InterruptedException {
 		GntpNotificationInfo info = notificationInfos.get(notification.getType());
 		Preconditions.checkState(info != null, "Unknown notification type: %s", notification.getType());
-		gntpClient.notify(Gntp.notification(info, notification.getTitle()).text(notification.getDescription(privateMode)).build(), NOTIFY_TIMEOUT, SECONDS);
+		gntpClient.notify(Gntp.notification(info, notification.getTitle(deviceName)).text(notification.getDescription(privateMode)).build(), NOTIFY_TIMEOUT, SECONDS);
 	}
 
 	protected RenderedImage getIcon(String name) throws IOException {

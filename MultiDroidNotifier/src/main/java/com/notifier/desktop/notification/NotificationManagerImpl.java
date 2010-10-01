@@ -43,7 +43,7 @@ public class NotificationManagerImpl implements NotificationManager {
 	private final ConcurrentMap<Long, Notification> lastNotifications;
 	private boolean privateMode;
 	private boolean receptionFromAnyDevice;
-	private Set<Long> allowedDevicesIds;
+	private Map<Long, String> allowedDevices;
 	private final Map<Notification.Type, NotificationConfiguration> notificationConfigurations;
 
 	private AtomicBoolean waitingForPairing;
@@ -64,7 +64,7 @@ public class NotificationManagerImpl implements NotificationManager {
 		ApplicationPreferences prefs = preferencesProvider.get();
 		this.privateMode = prefs.isPrivateMode();
 		this.receptionFromAnyDevice = prefs.isReceptionFromAnyDevice();
-		this.allowedDevicesIds = Sets.newTreeSet(prefs.getAllowedDevicesIds());
+		this.allowedDevices = prefs.getAllowedDevices();
 		this.waitingForPairing = new AtomicBoolean();
 		this.notificationConfigurations = Maps.newEnumMap(Notification.Type.class);
 		for (Notification.Type type : Notification.Type.values()) {
@@ -83,11 +83,7 @@ public class NotificationManagerImpl implements NotificationManager {
 			logger.info("Notification received: " + notification);
 			if (notification.getType() == Notification.Type.PING &&
 				waitingForPairing.get()) {
-				if (pairingListener.onPairingSuccessful(notification.getDeviceId())) {
-					waitingForPairing.set(false);
-					pairingListener = null;
-					logger.info("Paired with device [{}]", notification.getDeviceId());
-				}
+				pairingListener.onPairingSuccessful(notification.getDeviceId());
 			} else {
 				handleNotification(notification);
 			}
@@ -104,7 +100,7 @@ public class NotificationManagerImpl implements NotificationManager {
 
 	@Override
 	public void cancelWaitForPairing() {
-		logger.info("Pairing canceled");
+		logger.info("Pairing stopped");
 		waitingForPairing.set(false);
 		pairingListener = null;
 	}
@@ -120,11 +116,8 @@ public class NotificationManagerImpl implements NotificationManager {
 	}
 
 	@Override
-	public void setPairedDevices(long[] deviceIds) {
-		this.allowedDevicesIds = Sets.newTreeSet();
-		for (long deviceId : deviceIds) {
-			this.allowedDevicesIds.add(deviceId);
-		}
+	public void setPairedDevices(Map<Long, String> devices) {
+		this.allowedDevices = devices;
 	}
 
 	@Override
@@ -154,23 +147,24 @@ public class NotificationManagerImpl implements NotificationManager {
 		}
 
 		if (config.isEnabled()) {
-			doBroadcast(notification);
+			String deviceName = receptionFromAnyDevice ? null : allowedDevices.get(notification.getDeviceId());
+			doBroadcast(notification, deviceName);
 			if (config.isSendToClipboard()) {
 				sendNotificationToClipboard(notification);
 			}
 			if (config.isExecuteCommand()) {
-				executeNotificationCommand(notification, config.getCommand());
+				executeNotificationCommand(notification, deviceName, config.getCommand());
 			}
 		} else {
 			logger.debug("Notification type [{}] is not enabled, ignoring", notification.getType());
 		}
 	}
 
-	protected void doBroadcast(Notification notification) {
-		if (receptionFromAnyDevice || allowedDevicesIds.contains(notification.getDeviceId())) {
+	protected void doBroadcast(Notification notification, String deviceName) {
+		if (receptionFromAnyDevice || allowedDevices.containsKey(notification.getDeviceId())) {
 			for (NotificationBroadcaster broadcaster : broadcasters) {
 				try {
-					broadcaster.broadcast(notification, privateMode);
+					broadcaster.broadcast(notification, deviceName, privateMode);
 				} catch (Throwable t) {
 					logger.error("Error broadcasting using [" + broadcaster.getName() + "]", t);
 				}
@@ -185,8 +179,8 @@ public class NotificationManagerImpl implements NotificationManager {
 		}
 	}
 
-	protected void executeNotificationCommand(Notification notification, String command) {
-		processManager.executeCommand(notification, command, privateMode);
+	protected void executeNotificationCommand(Notification notification, String deviceName, String command) {
+		processManager.executeCommand(notification, deviceName, command, privateMode);
 	}
 
 	protected NotificationConfiguration getConfiguration(Notification.Type type) {

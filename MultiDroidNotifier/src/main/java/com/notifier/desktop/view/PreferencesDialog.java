@@ -24,9 +24,11 @@ import org.eclipse.swt.*;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.widgets.List;
 import org.slf4j.*;
 
 import com.google.common.base.*;
+import com.google.common.collect.*;
 import com.notifier.desktop.*;
 import com.notifier.desktop.ApplicationPreferences.Group;
 import com.notifier.desktop.app.*;
@@ -81,6 +83,8 @@ public class PreferencesDialog extends Dialog {
 
 	private Button okButton;
 
+	private BiMap<Long, String> pairedDevices;
+
 	public PreferencesDialog(Application application, NotificationManager notificationManager, NotificationParser<?> notificationParser, SwtManager swtManager) {
 		super(swtManager.getShell(), SWT.NULL);
 		this.application = application;
@@ -88,6 +92,7 @@ public class PreferencesDialog extends Dialog {
 		this.notificationParser = notificationParser;
 		this.swtManager = swtManager;
 		preferences = new ApplicationPreferences();
+		pairedDevices = HashBiMap.create();
 	}
 
 	public void open() {
@@ -627,8 +632,9 @@ public class PreferencesDialog extends Dialog {
 			devicesList = new List(devicesGroup, SWT.SINGLE | SWT.BORDER);
 			devicesList.setLayoutData(devicesListLData);
 			devicesList.setEnabled(!preferences.isReceptionFromAnyDevice());
-			for (Long deviceId : preferences.getAllowedDevicesIds()) {
-				devicesList.add(Long.toHexString(deviceId));
+			pairedDevices.putAll(preferences.getAllowedDevices());
+			for (String name : pairedDevices.values()) {
+				devicesList.add(name);
 			}
 
 			addDeviceButton = new Button(devicesGroup, SWT.PUSH | SWT.CENTER);
@@ -651,19 +657,31 @@ public class PreferencesDialog extends Dialog {
 					});
 					notificationManager.waitForPairing(new NotificationManager.PairingListener() {
 						@Override
-						public boolean onPairingSuccessful(final long deviceId) {
-							if (preferences.addAllowedDeviceId(deviceId)) {
+						public void onPairingSuccessful(final long deviceId) {
+							if (!preferences.getAllowedDevicesIds().contains(deviceId)) {
+								notificationManager.cancelWaitForPairing();
 								swtManager.update(new Runnable() {
 									@Override
 									public void run() {
-										devicesList.add(Long.toHexString(deviceId));
-										notificationManager.setPairedDevices(getDeviceIds());
 										dialog.close();
+										final DeviceEditorDialog deviceDialog = new DeviceEditorDialog(swtManager, deviceId, "My Android");
+										deviceDialog.open(new DeviceEditorDialog.SubmitListener() {
+											@Override
+											public boolean onDeviceName(String name) {
+												if (preferences.getAllowedDevicesNames().contains(name)) {
+													return false;
+												}
+												preferences.addAllowedDeviceId(deviceId, name);
+												pairedDevices.put(deviceId, name);
+												devicesList.add(name);
+												notificationManager.setPairedDevices(preferences.getAllowedDevices());
+												deviceDialog.close();
+												return true;
+											}
+										});
 									}
 								});
-								return true;
 							}
-							return false;
 						}
 					});
 				}
@@ -681,10 +699,11 @@ public class PreferencesDialog extends Dialog {
 				public void handleEvent(Event event) {
 					String[] items = devicesList.getSelection();
 					if (items.length > 0) {
-						String deviceId = items[0];
-						preferences.removeAllowedDeviceId(Long.parseLong(deviceId, 16));
-						devicesList.remove(deviceId);
-						notificationManager.setPairedDevices(getDeviceIds());
+						String deviceName = items[0];
+						long deviceId = pairedDevices.inverse().get(deviceName);
+						preferences.removeAllowedDeviceId(deviceId, deviceName);
+						devicesList.remove(deviceName);
+						notificationManager.setPairedDevices(preferences.getAllowedDevices());
 					}
 				}
 			});
@@ -890,15 +909,6 @@ public class PreferencesDialog extends Dialog {
 		byte[] key = password.length() == 0 ? new byte[0] : Encryption.passPhraseToKey(password);
 		notificationParser.setEncryption(true, key);
 		preferences.setCommunicationPassword(key);
-	}
-
-	protected long[] getDeviceIds() {
-		String[] items = devicesList.getItems();
-		long[] deviceIds = new long[items.length];
-		for (int i = 0; i < items.length; i++) {
-			deviceIds[i] = Long.parseLong(items[i], 16);
-		}
-		return deviceIds;
 	}
 
 	class GroupExpandListener implements ExpandListener {
