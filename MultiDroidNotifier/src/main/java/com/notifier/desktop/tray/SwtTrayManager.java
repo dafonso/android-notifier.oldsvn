@@ -25,6 +25,7 @@ import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.program.*;
 import org.eclipse.swt.widgets.*;
 
+import com.google.common.io.*;
 import com.google.inject.*;
 import com.notifier.desktop.*;
 import com.notifier.desktop.app.*;
@@ -46,18 +47,20 @@ public class SwtTrayManager implements TrayManager {
 			return false;
 		}
 
-		if (OperatingSystems.CURRENT_FAMILY == OperatingSystems.Family.MAC) {
-			trayImage = new Image(swtManager.getDisplay(), Application.class.getResourceAsStream(Application.ICON_NAME_MAC));
-		} else {
-			trayImage = new Image(swtManager.getDisplay(), Application.class.getResourceAsStream(Application.ICON_NAME));
+		InputStream iconStream = getIconStream();
+		try {
+			trayImage = new Image(swtManager.getDisplay(), iconStream);
+		} finally {
+			Closeables.closeQuietly(iconStream);
 		}
+
 		Tray tray = swtManager.getDisplay().getSystemTray();
 		trayItem = new TrayItem(tray, SWT.NONE);
 		trayItem.setToolTipText(Application.NAME);
 		trayItem.setImage(trayImage);
 
 		final Menu menu = new Menu(swtManager.getShell(), SWT.POP_UP);
-		
+
 		MenuItem preferencesItem = new MenuItem(menu, SWT.PUSH);
 		preferencesItem.setText("Preferences...");
 		preferencesItem.addListener(SWT.Selection, new Listener() {
@@ -174,4 +177,20 @@ public class SwtTrayManager implements TrayManager {
 		}
 	}
 
+	protected InputStream getIconStream() throws IOException {
+		switch (OperatingSystems.CURRENT_FAMILY) {
+			case WINDOWS:
+				return Application.class.getResourceAsStream(Application.ICON_NAME);
+			case MAC:
+				return Application.class.getResourceAsStream(Application.ICON_NAME_MAC);
+			case LINUX:
+				File iconFile = new File(OperatingSystems.LINUX_ICONS_DIR + "/" + Application.ARTIFACT_ID + ".png");
+				if (iconFile.exists()) {
+					return new FileInputStream(iconFile);
+				}
+				return Application.class.getResourceAsStream(Application.ICON_NAME);
+			default:
+				throw new IllegalStateException("Unknown operating system type: " + OperatingSystems.CURRENT_FAMILY);
+		}
+	}
 }

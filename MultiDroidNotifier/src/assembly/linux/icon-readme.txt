@@ -1,1 +1,2 @@
-These icons must be in /usr/share/icons/android-notifier-desktop so libnotify can find and show them.
+- These icons must be in /usr/share/icons/android-notifier-desktop so libnotify can find and show them.
+- android-notifier-desktop.png should be in /usr/share/icons
