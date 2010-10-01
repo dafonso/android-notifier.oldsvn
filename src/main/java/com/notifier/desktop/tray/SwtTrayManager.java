@@ -143,13 +143,13 @@ public class SwtTrayManager implements TrayManager {
 	}
 
 	@Override
-	public void showNotification(final Notification notification, final boolean privateMode) {
+	public void showNotification(final Notification notification, final String deviceName, final boolean privateMode) {
 		swtManager.update(new Runnable() {
 			@Override
 			public void run() {
 				if (!swtManager.getShell().isDisposed()) {
 					ToolTip tip = new ToolTip(swtManager.getShell(), SWT.BALLOON | SWT.ICON_INFORMATION);
-					tip.setText(notification.getTitle());
+					tip.setText(notification.getTitle(deviceName));
 					if (privateMode) {
 						tip.setMessage(" ");
 					} else {
