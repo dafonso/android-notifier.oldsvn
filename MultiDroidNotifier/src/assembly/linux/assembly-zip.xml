@@ -25,7 +25,7 @@
 	</files>
 	<fileSets>
 		<fileSet>
-			<directory>src/main/resources/com/notifier/desktop</directory>
+			<directory>src/assembly/linux</directory>
 			<outputDirectory>icons</outputDirectory>
 			<includes>
 				<include>*.png</include>
