@@ -622,6 +622,7 @@
 				<assembly.file>src/assembly/linux/assembly.xml</assembly.file>
 				<architecture>i386</architecture>
 				<protobuf.executable>protoc</protobuf.executable>
+				<assembly.jar.path>/usr/share/android-notifier-desktop/android-notifier-desktop.jar</assembly.jar.path>
 			</properties>
 			<build>
 				<plugins>
@@ -662,6 +663,7 @@
 				<assembly.file>src/assembly/linux/assembly.xml</assembly.file>
 				<architecture>amd64</architecture>
 				<protobuf.executable>protoc</protobuf.executable>
+				<assembly.jar.path>/usr/share/android-notifier-desktop/android-notifier-desktop.jar</assembly.jar.path>
 			</properties>
 			<build>
 				<plugins>
@@ -738,6 +740,7 @@
 				<assembly.file>src/assembly/linux/assembly-zip.xml</assembly.file>
 				<architecture>i386</architecture>
 				<protobuf.executable>protoc</protobuf.executable>
+				<assembly.jar.path>android-notifier-desktop.jar</assembly.jar.path>
 			</properties>
 			<build>
 				<plugins>
@@ -772,6 +775,7 @@
 				<assembly.file>src/assembly/linux/assembly-zip.xml</assembly.file>
 				<architecture>amd64</architecture>
 				<protobuf.executable>protoc</protobuf.executable>
+				<assembly.jar.path>android-notifier-desktop.jar</assembly.jar.path>
 			</properties>
 			<build>
 				<plugins>
