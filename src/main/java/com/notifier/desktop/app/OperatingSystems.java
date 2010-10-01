@@ -28,6 +28,7 @@ import com.notifier.desktop.app.windows.*;
 public class OperatingSystems {
 
 	public static Family CURRENT_FAMILY = getFamily();
+	public static final String LINUX_ICONS_DIR = "/usr/share/icons";
 
 	private static final String WINDOWS_EXE = System.getProperty("launch4j.exefile", Application.ARTIFACT_ID + ".exe");
 	private static final String WINDOWS_SHORTCUT = Application.ARTIFACT_ID + ".lnk";
