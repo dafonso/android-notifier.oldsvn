@@ -32,11 +32,11 @@ public class TrayNotificationBroadcaster extends AbstractLifecycle implements No
 	}
 
 	@Override
-	public void broadcast(Notification notification) {
+	public void broadcast(Notification notification, boolean privateMode) {
 		if (!isRunning()) {
 			return;
 		}
 
-		trayManager.showNotification(notification);
+		trayManager.showNotification(notification, privateMode);
 	}
 }

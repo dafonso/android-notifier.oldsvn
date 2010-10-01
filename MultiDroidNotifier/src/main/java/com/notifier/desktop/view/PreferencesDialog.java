@@ -52,6 +52,7 @@ public class PreferencesDialog extends Dialog {
 
 	private PGroup generalGroup;
 	private Button startAtLoginCheckbox;
+	private Button privateModeCheckbox;
 
 	private PGroup notificationReceptionMethodsGroup;
 	private Button wifiCheckbox;
@@ -163,6 +164,22 @@ public class PreferencesDialog extends Dialog {
 							}
 						}, PREF_CHANGE_THREAD_NAME).start();
 					}
+				}
+			});
+
+			privateModeCheckbox = new Button(generalGroup, SWT.CHECK | SWT.LEFT);
+			GridData privateModeCheckboxLData = new GridData();
+			privateModeCheckboxLData.horizontalIndent = 5;
+			privateModeCheckbox.setLayoutData(privateModeCheckboxLData);
+			privateModeCheckbox.setText("Private mode");
+			privateModeCheckbox.setToolTipText("Notifications will not show contact details");
+			privateModeCheckbox.setSelection(preferences.isPrivateMode());
+			privateModeCheckbox.addListener(SWT.Selection, new Listener() {
+				@Override
+				public void handleEvent(Event event) {
+					boolean enabled = privateModeCheckbox.getSelection();
+					notificationManager.setPrivateMode(enabled);
+					preferences.setPrivateMode(enabled);
 				}
 			});
 			generalGroup.setExpanded(preferences.isGroupExpanded(ApplicationPreferences.Group.GENERAL));
