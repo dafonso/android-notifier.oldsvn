@@ -46,15 +46,16 @@ public class ApplicationPreferences {
 	private static final String DISPLAY_WITH_LIBNOTIFY = "displayWithLibnotify";
 	private static final String RECEPTION_FROM_ANY_DEVICE = "receptionFromAnyDevice";
 	private static final String ALLOWED_DEVICES_IDS = "allowedDevicesIds";
+	private static final String ALLOWED_DEVICES_NAMES = "allowedDevicesNames";
 
 	private static final String NOTIFICATION_ENABLED = "_enabled";
 	private static final String NOTIFICATION_CLIPBOARD = "_clipboard";
 	private static final String NOTIFICATION_EXECUTE_COMMAND = "_executeCommand";
 	private static final String NOTIFICATION_COMMAND = "_command";
 
-	private static final char ALLOWED_DEVICES_IDS_SEPARATOR = '|';
-	private static final Splitter ALLOWED_DEVICES_IDS_SPLITTER = Splitter.on(ALLOWED_DEVICES_IDS_SEPARATOR).omitEmptyStrings();
-	private static final Joiner ALLOWED_DEVICES_IDS_JOINER = Joiner.on(ALLOWED_DEVICES_IDS_SEPARATOR);
+	private static final char ALLOWED_DEVICES_SEPARATOR = '|';
+	private static final Splitter ALLOWED_DEVICES_SPLITTER = Splitter.on(ALLOWED_DEVICES_SEPARATOR).omitEmptyStrings();
+	private static final Joiner ALLOWED_DEVICES_JOINER = Joiner.on(ALLOWED_DEVICES_SEPARATOR);
 
 	private static final String EXPAND_PREFERENCE_GROUP = "_expand";
 
@@ -75,6 +76,7 @@ public class ApplicationPreferences {
 
 	private boolean receptionFromAnyDevice;
 	private Set<Long> allowedDevicesIds;
+	private List<String> allowedDevicesNames;
 
 	private Map<String, Object> notificationsSettings;
 
@@ -82,6 +84,7 @@ public class ApplicationPreferences {
 
 	public ApplicationPreferences() {
 		allowedDevicesIds = Sets.newTreeSet();
+		allowedDevicesNames = Lists.newArrayList();
 		notificationsSettings = Maps.newHashMap();
 		groupsExpansion = Maps.newEnumMap(Group.class);
 	}
@@ -108,7 +111,7 @@ public class ApplicationPreferences {
 		displayWithLibnotify = prefs.getBoolean(DISPLAY_WITH_LIBNOTIFY, false);
 		receptionFromAnyDevice = prefs.getBoolean(RECEPTION_FROM_ANY_DEVICE, true);
 
-		Iterable<String> allowedIds = ALLOWED_DEVICES_IDS_SPLITTER.split(prefs.get(ALLOWED_DEVICES_IDS, ""));
+		Iterable<String> allowedIds = ALLOWED_DEVICES_SPLITTER.split(prefs.get(ALLOWED_DEVICES_IDS, ""));
 		Iterable<Long> allowedIdNumbers = Iterables.transform(allowedIds, new Function<String, Long>() {
 			@Override
 			public Long apply(String from) {
@@ -121,6 +124,14 @@ public class ApplicationPreferences {
 			}
 		});
 		allowedDevicesIds = Sets.newTreeSet(allowedIdNumbers);
+
+		allowedDevicesNames = Lists.newArrayList(ALLOWED_DEVICES_SPLITTER.split(prefs.get(ALLOWED_DEVICES_NAMES, "")));
+		if (allowedDevicesNames.size() != allowedDevicesIds.size()) { // Can happen if updating from older versions
+			allowedDevicesNames.clear();
+			for (Long deviceId : allowedDevicesIds) {
+				allowedDevicesNames.add(Long.toHexString(deviceId));
+			}
+		}
 
 		for (Notification.Type type : Notification.Type.values()) {
 			String enabledName = type.name() + NOTIFICATION_ENABLED;
@@ -162,7 +173,8 @@ public class ApplicationPreferences {
 		prefs.putBoolean(DISPLAY_WITH_GROWL, displayWithGrowl);
 		prefs.putBoolean(DISPLAY_WITH_LIBNOTIFY, displayWithLibnotify);
 		prefs.putBoolean(RECEPTION_FROM_ANY_DEVICE, receptionFromAnyDevice);
-		prefs.put(ALLOWED_DEVICES_IDS, ALLOWED_DEVICES_IDS_JOINER.join(allowedDevicesIds));
+		prefs.put(ALLOWED_DEVICES_IDS, ALLOWED_DEVICES_JOINER.join(allowedDevicesIds));
+		prefs.put(ALLOWED_DEVICES_NAMES, ALLOWED_DEVICES_JOINER.join(allowedDevicesNames));
 
 		for (Notification.Type type : Notification.Type.values()) {
 			String enabledName = type.name() + NOTIFICATION_ENABLED;
@@ -190,12 +202,27 @@ public class ApplicationPreferences {
 		}
 	}
 
-	public boolean addAllowedDeviceId(Long deviceId) {
-		return allowedDevicesIds.add(deviceId);
+	public boolean addAllowedDeviceId(Long deviceId, String name) {
+		boolean added = allowedDevicesIds.add(deviceId);
+		if (added) {
+			allowedDevicesNames.add(name);
+		}
+		return added;
 	}
 
-	public void removeAllowedDeviceId(Long deviceId) {
+	public void removeAllowedDeviceId(Long deviceId, String name) {
 		allowedDevicesIds.remove(deviceId);
+		allowedDevicesNames.remove(name);
+	}
+
+	public Map<Long, String> getAllowedDevices() {
+		Map<Long, String> devices = Maps.newHashMap();
+		Iterator<Long> ids = allowedDevicesIds.iterator();
+		Iterator<String> names = allowedDevicesNames.iterator();
+		while (ids.hasNext()) {
+			devices.put(ids.next(), names.next());
+		}
+		return devices;
 	}
 
 	public void setNotificationEnabled(Notification.Type type, boolean enabled) {
@@ -364,11 +391,11 @@ public class ApplicationPreferences {
 	}
 
 	public Set<Long> getAllowedDevicesIds() {
-		return allowedDevicesIds;
+		return ImmutableSet.copyOf(allowedDevicesIds);
 	}
 
-	public void setAllowedDevicesIds(Set<Long> allowedDevicesIds) {
-		this.allowedDevicesIds = allowedDevicesIds;
+	public List<String> getAllowedDevicesNames() {
+		return ImmutableList.copyOf(allowedDevicesNames);
 	}
 
 	@Override
@@ -400,6 +427,8 @@ public class ApplicationPreferences {
 		builder.append(receptionFromAnyDevice);
 		builder.append(", allowedDevicesIds=");
 		builder.append(allowedDevicesIds);
+		builder.append(", allowedDevicesNames=");
+		builder.append(allowedDevicesNames);
 
 		for (Notification.Type type : Notification.Type.values()) {
 			builder.append(", ");

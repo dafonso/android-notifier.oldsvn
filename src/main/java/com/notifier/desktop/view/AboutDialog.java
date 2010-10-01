@@ -62,7 +62,7 @@ public class AboutDialog extends org.eclipse.swt.widgets.Dialog {
 			dialogShell.layout();
 			dialogShell.pack();
 			dialogShell.setSize(400, 180);
-			dialogShell.setText("About");
+			dialogShell.setText("About " + Application.NAME);
 			dialogShell.addDisposeListener(new DisposeListener() {
 				@Override
 				public void widgetDisposed(DisposeEvent e) {
