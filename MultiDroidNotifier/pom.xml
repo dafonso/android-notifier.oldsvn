@@ -621,7 +621,7 @@
 				<swt.artifactId>swt-gtk-linux-x86</swt.artifactId>
 				<assembly.file>src/assembly/linux/assembly.xml</assembly.file>
 				<architecture>i386</architecture>
-				<protobuf.executable>${protobuf.dir}/protoc-linux</protobuf.executable>
+				<protobuf.executable>protoc</protobuf.executable>
 			</properties>
 			<build>
 				<plugins>
@@ -661,7 +661,7 @@
 				<swt.artifactId>swt-gtk-linux-x86_64</swt.artifactId>
 				<assembly.file>src/assembly/linux/assembly.xml</assembly.file>
 				<architecture>amd64</architecture>
-				<protobuf.executable>${protobuf.dir}/protoc-linux</protobuf.executable>
+				<protobuf.executable>protoc</protobuf.executable>
 			</properties>
 			<build>
 				<plugins>
@@ -737,6 +737,7 @@
 				<swt.artifactId>swt-gtk-linux-x86</swt.artifactId>
 				<assembly.file>src/assembly/linux/assembly-zip.xml</assembly.file>
 				<architecture>i386</architecture>
+				<protobuf.executable>protoc</protobuf.executable>
 			</properties>
 			<build>
 				<plugins>
@@ -770,6 +771,7 @@
 				<swt.artifactId>swt-gtk-linux-x86_64</swt.artifactId>
 				<assembly.file>src/assembly/linux/assembly-zip.xml</assembly.file>
 				<architecture>amd64</architecture>
+				<protobuf.executable>protoc</protobuf.executable>
 			</properties>
 			<build>
 				<plugins>

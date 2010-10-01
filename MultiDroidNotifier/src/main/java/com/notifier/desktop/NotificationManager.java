@@ -24,6 +24,8 @@ public interface NotificationManager {
 
 	void cancelWaitForPairing();
 
+	void setPrivateMode(boolean enabled);
+
 	void setReceptionFromAnyDevice(boolean enabled);
 
 	void setPairedDevices(long[] allowedDeviceIds);
