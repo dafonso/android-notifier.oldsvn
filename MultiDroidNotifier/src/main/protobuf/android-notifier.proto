@@ -8,8 +8,8 @@ message Notification {
     required fixed64 device_id = 1;
     required fixed64 id = 2;
     required Type type = 3;
-    required string description = 4;
 
+    optional string description = 4;
     optional string title = 5;
     optional bytes icon = 6;
 
