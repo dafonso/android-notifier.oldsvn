@@ -15,6 +15,7 @@
 			<source>src/assembly/linux/run.sh</source>
 			<outputDirectory>../../</outputDirectory>
 			<lineEnding>unix</lineEnding>
+			<filtered>true</filtered>
 		</file>
 	</files>
 	<dependencySets>

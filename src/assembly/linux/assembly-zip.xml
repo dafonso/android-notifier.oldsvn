@@ -15,6 +15,7 @@
 			<source>src/assembly/linux/run.sh</source>
 			<fileMode>0755</fileMode>
 			<lineEnding>unix</lineEnding>
+			<filtered>true</filtered>
 		</file>
 		<file>
 			<source>src/assembly/linux/icon-readme.txt</source>
