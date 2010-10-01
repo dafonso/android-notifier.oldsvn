@@ -42,6 +42,7 @@ public class PairingDialog extends Dialog {
 			dialogShell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 			dialogShell.setText("Pairing");
 			dialogShell.setLayout(new FormLayout());
+			dialogShell.addListener(SWT.Dispose, cancelListener);
 
 			textLabel = new Label(dialogShell, SWT.NONE);
 			FormData textLabelLData = new FormData();

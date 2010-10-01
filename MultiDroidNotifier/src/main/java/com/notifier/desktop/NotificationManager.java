@@ -17,6 +17,8 @@
  */
 package com.notifier.desktop;
 
+import java.util.*;
+
 public interface NotificationManager {
 	void notificationReceived(Notification notification);
 
@@ -28,7 +30,7 @@ public interface NotificationManager {
 
 	void setReceptionFromAnyDevice(boolean enabled);
 
-	void setPairedDevices(long[] allowedDeviceIds);
+	void setPairedDevices(Map<Long, String> allowedDevice);
 
 	void setNotificationEnabled(Notification.Type type, boolean enabled);
 
@@ -39,6 +41,6 @@ public interface NotificationManager {
 	void setNotificationCommand(Notification.Type type, String command);
 
 	interface PairingListener {
-		boolean onPairingSuccessful(long deviceId);
+		void onPairingSuccessful(long deviceId);
 	}
 }

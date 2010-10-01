@@ -23,7 +23,7 @@ public interface TrayManager {
 
 	boolean start() throws IOException;
 
-	void showNotification(Notification notification, boolean privateMode);
+	void showNotification(Notification notification, String deviceName, boolean privateMode);
 
 	void stop();
 

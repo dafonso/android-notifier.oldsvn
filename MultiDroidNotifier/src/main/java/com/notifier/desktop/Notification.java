@@ -25,6 +25,7 @@ public class Notification {
 	public static final String BATTERY_ICON_SUFFIX = ".png";
 	public static final String DEFAULT_TITLE = Application.NAME;
 	public static final String DEFAULT_DESCRIPTION = "No description";
+	public static final String DEFAULT_TITLE_PREFIX = "Phone";
 
 	private final long deviceId;
 	private final long notificationId;
@@ -33,37 +34,37 @@ public class Notification {
 	private final String description;
 
 	public static enum Type {
-		RING("Phone is ringing", "ring.png") {
+		RING("is ringing", "ring.png") {
 			@Override
 			public String toString() {
 				return "Ring";
 			}
 		},
-		SMS("Phone received an SMS", "sms.png") {
+		SMS("received an SMS", "sms.png") {
 			@Override
 			public String toString() {
 				return "SMS";
 			}
 		},
-		MMS("Phone received an MMS", "mms.png") {
+		MMS("received an MMS", "mms.png") {
 			@Override
 			public String toString() {
 				return "MMS";
 			}
 		},
-		BATTERY("Android battery state", "battery100.png") {
+		BATTERY("battery state", "battery100.png") {
 			@Override
 			public String toString() {
 				return "Battery";
 			}
 		},
-		VOICEMAIL("New voicemail", "voicemail.png") {
+		VOICEMAIL("received a voicemail", "voicemail.png") {
 			@Override
 			public String toString() {
 				return "Voicemail";
 			}
 		},
-		PING("Phone sent a ping", "app-icon.png") {
+		PING("sent a ping", "app-icon.png") {
 			@Override
 			public String toString() {
 				return "Ping";
@@ -102,11 +103,12 @@ public class Notification {
 		this.description = description;
 	}
 
-	public String getTitle() {
+	public String getTitle(String deviceName) {
 		if (Notification.Type.USER == type) {
 			return Strings.isNullOrEmpty(data) ? DEFAULT_TITLE : data;
 		} else {
-			return type.getTitle();
+			String prefix = deviceName == null ? DEFAULT_TITLE_PREFIX : deviceName;
+			return prefix + " " + type.getTitle();
 		}
 	}
 
