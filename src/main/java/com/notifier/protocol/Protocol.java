@@ -112,7 +112,7 @@ public final class Protocol {
     public boolean hasType() { return hasType; }
     public com.notifier.protocol.Protocol.Notification.Type getType() { return type_; }
     
-    // required string description = 4;
+    // optional string description = 4;
     public static final int DESCRIPTION_FIELD_NUMBER = 4;
     private boolean hasDescription;
     private java.lang.String description_ = "";
@@ -161,7 +161,6 @@ public final class Protocol {
       if (!hasDeviceId) return false;
       if (!hasId) return false;
       if (!hasType) return false;
-      if (!hasDescription) return false;
       return true;
     }
     
@@ -530,7 +529,7 @@ public final class Protocol {
         return this;
       }
       
-      // required string description = 4;
+      // optional string description = 4;
       public boolean hasDescription() {
         return result.hasDescription();
       }
