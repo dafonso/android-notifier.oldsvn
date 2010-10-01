@@ -47,14 +47,14 @@ public class LibnotifyNotificationBroadcaster extends AbstractLifecycle implemen
 	}
 
 	@Override
-	public void broadcast(Notification notification) {
+	public void broadcast(Notification notification, boolean privateMode) {
 		if (!isRunning()) {
 			return;
 		}
 
 		String iconName = notification.getType() == Notification.Type.BATTERY ? notification.getBatteryIconName() : notification.getType().getIconName();
 		String title = notification.getTitle();
-		String description = notification.getDescription();
+		String description = notification.getDescription(privateMode);
 
 		ProcessBuilder builder = new ProcessBuilder(LIB_NOTIFY_COMMAND, "-i", ICON_DIRECTORY + iconName, "-c", notification.getType().name(), title, description);
 		try {

@@ -52,7 +52,7 @@ public class OperatingSystemProcessManagerImpl implements OperatingSystemProcess
 	}
 
 	@Override
-	public void executeCommand(Notification notification, String command) {
+	public void executeCommand(Notification notification, String command, boolean privateMode) {
 		ProcessBuilder processBuilder = new ProcessBuilder();
 		processBuilder.redirectErrorStream(true);
 		processBuilder.directory(new File(System.getProperty("user.dir")));
@@ -64,7 +64,7 @@ public class OperatingSystemProcessManagerImpl implements OperatingSystemProcess
 			c = c.replace(NOTIFICATION_ID_PLACEHOLDER, Long.toString(notification.getNotificationId()));
 			c = c.replace(NOTIFICATION_TYPE_PLACEHOLDER, notification.getType().name());
 			c = c.replace(NOTIFICATION_DATA_PLACEHOLDER, "\"" + notification.getData() + "\"");
-			c = c.replace(NOTIFICATION_DESCRIPTION_PLACEHOLDER, "\"" + notification.getDescription() + "\"");
+			c = c.replace(NOTIFICATION_DESCRIPTION_PLACEHOLDER, "\"" + notification.getDescription(privateMode) + "\"");
 			c = c.replace(NOTIFICATION_TITLE_PLACEHOLDER, "\"" + notification.getTitle() + "\"");
 
 			final String commandToExecute = c;
