@@ -19,6 +19,6 @@ package com.notifier.desktop;
 
 public interface OperatingSystemProcessManager {
 
-	void executeCommand(Notification notification, String command);
+	void executeCommand(Notification notification, String command, boolean privateMode);
 
 }

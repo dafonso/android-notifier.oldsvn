@@ -18,5 +18,5 @@
 package com.notifier.desktop;
 
 public interface NotificationBroadcaster extends Lifecycle, Named {
-	void broadcast(Notification notification);
+	void broadcast(Notification notification, boolean privateMode);
 }

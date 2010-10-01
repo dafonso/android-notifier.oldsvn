@@ -59,6 +59,7 @@ public class ApplicationPreferences {
 	private static final String EXPAND_PREFERENCE_GROUP = "_expand";
 
 	private boolean startAtLogin;
+	private boolean privateMode;
 
 	private boolean receptionWithWifi;
 	private boolean receptionWithUpnp;
@@ -92,6 +93,8 @@ public class ApplicationPreferences {
 
 	protected void doRead(Preferences prefs) {
 		startAtLogin = prefs.getBoolean(START_AT_LOGIN, false);
+		privateMode = prefs.getBoolean(PRIVATE_MODE, false);
+
 		receptionWithWifi = prefs.getBoolean(RECEPTION_WITH_WIFI, true);
 		receptionWithUpnp = prefs.getBoolean(RECEPTION_WITH_UPNP, false);
 		receptionWithBluetooth = prefs.getBoolean(RECEPTION_WITH_BLUETOOTH, false);
@@ -143,8 +146,10 @@ public class ApplicationPreferences {
 	}
 
 	public void write() throws IOException {
-		Preferences prefs = Preferences.userNodeForPackage(ApplicationPreferences.class);
+		Preferences prefs = getPreferences();
 		prefs.putBoolean(START_AT_LOGIN, startAtLogin);
+		prefs.putBoolean(PRIVATE_MODE, privateMode);
+
 		prefs.putBoolean(RECEPTION_WITH_WIFI, receptionWithWifi);
 		prefs.putBoolean(RECEPTION_WITH_UPNP, receptionWithUpnp);
 		prefs.putBoolean(RECEPTION_WITH_BLUETOOTH, receptionWithBluetooth);
@@ -270,6 +275,14 @@ public class ApplicationPreferences {
 		this.startAtLogin = startAtLogin;
 	}
 
+	public boolean isPrivateMode() {
+		return privateMode;
+	}
+
+	public void setPrivateMode(boolean privateMode) {
+		this.privateMode = privateMode;
+	}
+
 	public boolean isReceptionWithWifi() {
 		return receptionWithWifi;
 	}
@@ -363,6 +376,8 @@ public class ApplicationPreferences {
 		StringBuilder builder = new StringBuilder();
 		builder.append("startAtLogin=");
 		builder.append(startAtLogin);
+		builder.append("privateMode=");
+		builder.append(privateMode);
 		builder.append(", receptionWithWifi=");
 		builder.append(receptionWithWifi);
 		builder.append(", receptionWithUpnp=");

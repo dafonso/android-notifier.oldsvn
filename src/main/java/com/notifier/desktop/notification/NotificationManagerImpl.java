@@ -41,6 +41,7 @@ public class NotificationManagerImpl implements NotificationManager {
 	private final ImmutableList<NotificationBroadcaster> broadcasters;
 
 	private final ConcurrentMap<Long, Notification> lastNotifications;
+	private boolean privateMode;
 	private boolean receptionFromAnyDevice;
 	private Set<Long> allowedDevicesIds;
 	private final Map<Notification.Type, NotificationConfiguration> notificationConfigurations;
@@ -61,6 +62,7 @@ public class NotificationManagerImpl implements NotificationManager {
 		this.lastNotifications = new MapMaker().initialCapacity(50).expiration(60, SECONDS).makeMap();
 
 		ApplicationPreferences prefs = preferencesProvider.get();
+		this.privateMode = prefs.isPrivateMode();
 		this.receptionFromAnyDevice = prefs.isReceptionFromAnyDevice();
 		this.allowedDevicesIds = Sets.newTreeSet(prefs.getAllowedDevicesIds());
 		this.waitingForPairing = new AtomicBoolean();
@@ -105,6 +107,11 @@ public class NotificationManagerImpl implements NotificationManager {
 		logger.info("Pairing canceled");
 		waitingForPairing.set(false);
 		pairingListener = null;
+	}
+
+	@Override
+	public void setPrivateMode(boolean enabled) {
+		this.privateMode = enabled;
 	}
 
 	@Override
@@ -163,7 +170,7 @@ public class NotificationManagerImpl implements NotificationManager {
 		if (receptionFromAnyDevice || allowedDevicesIds.contains(notification.getDeviceId())) {
 			for (NotificationBroadcaster broadcaster : broadcasters) {
 				try {
-					broadcaster.broadcast(notification);
+					broadcaster.broadcast(notification, privateMode);
 				} catch (Throwable t) {
 					logger.error("Error broadcasting using [" + broadcaster.getName() + "]", t);
 				}
@@ -172,11 +179,14 @@ public class NotificationManagerImpl implements NotificationManager {
 	}
 
 	protected void sendNotificationToClipboard(Notification notification) {
-		swtManager.sendTextToClipboard(notification.getDescription());
+		String description = notification.getDescription(privateMode);
+		if (!Strings.isNullOrEmpty(description)) {
+			swtManager.sendTextToClipboard(description);
+		}
 	}
 
 	protected void executeNotificationCommand(Notification notification, String command) {
-		processManager.executeCommand(notification, command);
+		processManager.executeCommand(notification, command, privateMode);
 	}
 
 	protected NotificationConfiguration getConfiguration(Notification.Type type) {

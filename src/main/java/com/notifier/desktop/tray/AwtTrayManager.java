@@ -50,8 +50,8 @@ public class AwtTrayManager implements TrayManager {
 	}
 
 	@Override
-	public void showNotification(Notification notification) {
-		trayIcon.displayMessage("Android Notify", notification.getDescription(), TrayIcon.MessageType.INFO);
+	public void showNotification(Notification notification, boolean privateMode) {
+		trayIcon.displayMessage("Android Notify", notification.getDescription(privateMode), TrayIcon.MessageType.INFO);
 	}
 
 	@Override

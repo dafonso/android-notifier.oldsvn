@@ -150,7 +150,10 @@ public class Notification {
 		return data;
 	}
 
-	public String getDescription() {
+	public String getDescription(boolean privateMode) {
+		if (privateMode && (type == Type.MMS || type == Type.RING || type == Type.SMS || type == Type.VOICEMAIL)) {
+			return "";
+		}
 		return Strings.isNullOrEmpty(description) ? DEFAULT_DESCRIPTION : description;
 	}
 
