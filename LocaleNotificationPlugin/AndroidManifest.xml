@@ -35,8 +35,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               android:icon="@drawable/plugin">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
-        <category android:name="android.intent.category.LAUNCHER" />
-        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.INFO" />
       </intent-filter>
     </activity>
 

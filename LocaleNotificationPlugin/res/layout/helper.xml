@@ -39,7 +39,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               android:text="@string/helper_info_deps" />
     <TextView android:layout_width="fill_parent"
               android:layout_height="wrap_content"
-              android:text="@string/empty_fields_hint" 
+              android:text="@string/helper_info_deps_notifier" 
               android:paddingTop="6dip"
               android:paddingBottom="6dip" />
     <Button android:id="@+id/button_get_notifier"

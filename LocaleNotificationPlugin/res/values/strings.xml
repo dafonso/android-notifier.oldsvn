@@ -40,5 +40,4 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <string name="get_notifier">Get Remote Notifier</string>
   <string name="get_tasker">Get \"Tasker\"</string>
   <string name="get_locale">Get \"Locale\"</string>
-    
 </resources>
