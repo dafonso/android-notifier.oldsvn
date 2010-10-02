@@ -168,7 +168,15 @@ public class EditableListPreference extends Preference implements AdapterView.On
 
     alert.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
       public void onClick(DialogInterface dialog, int whichButton) {
+        if (entryDialog == null) {
+          return;
+        }
+
         EditText entryEditText = (EditText) entryDialog.findViewById(R.id.entry_dialog_text);
+        if (entryEditText == null) {
+          return;
+        }
+
         Editable entryText = entryEditText.getText();
         String value = entryText.toString();
         if (isNew) {
