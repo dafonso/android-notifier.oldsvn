@@ -29,13 +29,15 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <string name="plugin_name">Remote Notification</string>
 
   <!-- Settings screen -->
-  <string name="title">Notitication title:</string>
-  <string name="description">Notitication description:</string>
+  <string name="title">Notification title:</string>
+  <string name="description">Notification description:</string>
+  <string name="empty_fields_hint">Hint: Some desktop-side applications require both fields, although most are happy with just one.</string>
 
   <!-- Helper activity -->
-  <string name="plugin_dialog_title"><i>Locale</i> and <i>Android Notifier</i> Required</string>
-  <string name="plugin_dialog_install">Install Locale</string>
-  <string name="plugin_dialog_need_locale_message"><i>Locale</i> and <i>Android Notifier</i> are required to use this plug-in.  Would you like to install <i>Locale</i>?</string>
-  <string name="plugin_dialog_need_locale_informative">Tap \"Install\" to find <i>Locale</i> on the Android Market.</string>
-  <string name="plugin_dialog_market_not_available">Application is not installed on your phone.</string>
+  <string name="helper_info_deps">This plugin is ready to use, but uou will need the following for it to work:</string>
+  <string name="helper_info_deps_notifier">1. The \"Remote Notifier\" app from Android Market, which shows the notifications:</string>
+  <string name="helper_info_deps_locale">2. Either the \"Tasker\" or \"Locale\" app, which are available from the Market too.</string>
+  <string name="get_notifier">Get Remote Notifier</string>
+  <string name="get_tasker">Get \"Tasker\"</string>
+  <string name="get_locale">Get \"Locale\"</string>
 </resources>
