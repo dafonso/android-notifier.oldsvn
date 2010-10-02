@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- 
-Copyright 2010 Rodrigo Damazio <rodrigo@damazio.org>
+Copyright 2010 Peter Vegh <peter.vegh@gmail.com>
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions
@@ -24,9 +24,9 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent">
   <LinearLayout android:orientation="vertical"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
@@ -35,47 +35,38 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 android:padding="5dip">
     <TextView android:layout_width="fill_parent"
               android:layout_height="wrap_content"
-              android:text="@string/title" />
-    <EditText android:id="@+id/title_text"
-              android:layout_width="fill_parent" 
-              android:layout_height="wrap_content" />
+              android:gravity="center_horizontal"
+              android:text="@string/helper_info_deps" />
     <TextView android:layout_width="fill_parent"
               android:layout_height="wrap_content"
-              android:text="@string/description"
-              android:paddingTop="6dip" />
-    <EditText android:id="@+id/description_text"
-              android:layout_width="fill_parent" 
-              android:layout_height="wrap_content" />
+              android:text="@string/empty_fields_hint" 
+              android:paddingTop="6dip"
+              android:paddingBottom="6dip" />
+    <Button android:id="@+id/button_get_notifier"
+            android:text="@string/get_notifier"
+            android:layout_width="wrap_content"
+            android:layout_height="48dip"
+            android:layout_gravity="center"
+            android:textSize="14dip"
+            android:paddingTop="6dip" />
     <TextView android:layout_width="fill_parent"
               android:layout_height="wrap_content"
-              android:text="@string/empty_fields_hint"
-              android:paddingTop="6dip" />
+              android:text="@string/helper_info_deps_locale" 
+              android:paddingTop="6dip"
+              android:paddingBottom="6dip" />
+    <Button android:id="@+id/button_get_tasker"
+            android:text="@string/get_tasker"
+            android:layout_width="wrap_content"
+            android:layout_height="48dip"
+            android:layout_gravity="center"
+            android:textSize="14dip" />
+    <Button android:id="@+id/button_get_locale"
+            android:text="@string/get_locale"
+            android:layout_width="wrap_content"
+            android:layout_height="48dip"
+            android:layout_gravity="center"
+            android:textSize="14dip" />
+   
   </LinearLayout>
 
-  <LinearLayout android:orientation="horizontal"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:background="@drawable/list_bar"
-                android:layout_weight="0"
-                android:padding="5dip">
-    <TextView android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_weight="1"/>
-    <Button android:id="@+id/save_button"
-            android:text="@android:string/ok"
-            android:layout_width="wrap_content"
-            android:layout_height="48dip"
-            android:layout_gravity="center"
-            android:textSize="14dip"/>
-    <Button android:id="@+id/cancel_button"
-            android:text="@android:string/cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="48dip"
-            android:layout_gravity="center"
-            android:textSize="14dip"/>
-    <TextView android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_weight="1"/>
-  </LinearLayout>
 </LinearLayout>
