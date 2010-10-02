@@ -7,12 +7,12 @@
 	<version>0.5-SNAPSHOT</version>
 
 	<name>Android Notifier Desktop</name>
-	<url>http://code.google.com/p/android-notifier-desktop</url>
+	<url>http://code.google.com/p/android-notifier</url>
 	<description>Android Notifier desktop client</description>
 
 	<organization>
 		<name>lehphyro</name>
-		<url>http://code.google.com/p/android-notifier-desktop</url>
+		<url>http://code.google.com/p/android-notifier</url>
 	</organization>
 
 	<prerequisites>
@@ -329,7 +329,7 @@
 					<outfile>${project.build.directory}/${project.artifactId}-${project.version}-windows/${project.artifactId}/${project.artifactId}.exe</outfile>
 					<errTitle>Android Notifier Desktop</errTitle>
 					<downloadUrl>http://java.com/download</downloadUrl>
-					<supportUrl>http://code.google.com/p/android-notifier-desktop/</supportUrl>
+					<supportUrl>http://code.google.com/p/android-notifier/</supportUrl>
 					<customProcName>true</customProcName>
 					<stayAlive>false</stayAlive>
 					<icon>src/assembly/windows/icon.ico</icon>
@@ -843,7 +843,7 @@
 
 	<issueManagement>
 		<system>googlecode</system>
-		<url>http://code.google.com/p/android-notifier-desktop/issues/list</url>
+		<url>http://code.google.com/p/android-notifier/issues/list</url>
 	</issueManagement>
 
 	<scm>
@@ -855,12 +855,12 @@
 	<distributionManagement>
 		<repository>
 			<id>android-notifier-desktop-repo-releases</id>
-			<url>svn:https://android-notifier.googlecode.com/svn/maven-repo/releases</url>
+			<url>svn:https://android-notifier.googlecode.com/svn/repos/maven-repo/releases</url>
 			<uniqueVersion>false</uniqueVersion>
 		</repository>
 		<snapshotRepository>
 			<id>android-notifier-desktop-repo-snapshots</id>
-			<url>svn:https://android-notifier.googlecode.com/svn/maven-repo/snapshots</url>
+			<url>svn:https://android-notifier.googlecode.com/svn/repos/maven-repo/snapshots</url>
 			<uniqueVersion>false</uniqueVersion>
 		</snapshotRepository>
 	</distributionManagement>
