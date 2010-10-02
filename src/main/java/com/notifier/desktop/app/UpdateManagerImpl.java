@@ -31,7 +31,7 @@ import com.notifier.desktop.*;
 
 public class UpdateManagerImpl implements UpdateManager {
 
-	private static final String POM_PROPERTIES_NAME = "/META-INF/maven/com.google.code.android-notifier-desktop/android-notifier-desktop/pom.properties";
+	private static final String POM_PROPERTIES_NAME = "/META-INF/maven/com.notifier.android-notifier-desktop/android-notifier-desktop/pom.properties";
 	private static final String POM_VERSION_PROPERTY = "version";
 	private static final URI TAGS_URI = URI.create("http://android-notifier.googlecode.com/svn/branches/");
 
