@@ -4,7 +4,7 @@
 	<groupId>com.notifier.android-notifier-desktop</groupId>
 	<artifactId>android-notifier-desktop</artifactId>
 	<packaging>jar</packaging>
-	<version>0.5-SNAPSHOT</version>
+	<version>0.5</version>
 
 	<name>Android Notifier Desktop</name>
 	<url>http://code.google.com/p/android-notifier</url>
