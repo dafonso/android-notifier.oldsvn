@@ -403,6 +403,7 @@
 							<maintainer name="Leandro Aparecido" email="lehphyro@gmail.com" />
 							<description synopsis="${project.description}">
 								Get popups about phone calls, sms and more right on your desktop!
+								Attention: the deb repository was migrated to android-notifier project, please update your software sources, more information here:http://code.google.com/p/android-notifier/wiki/LinuxInstalation
 							</description>
 							<tarfileset dir="${project.build.directory}/${project.artifactId}-${project.version}-linux/${project.artifactId}" prefix="usr/share/${project.artifactId}" />
 							<tarfileset file="${project.build.directory}/${project.artifactId}-${project.version}-linux/run.sh" prefix="usr/share/${project.artifactId}" filemode="755" />
