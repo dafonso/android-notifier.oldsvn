@@ -49,7 +49,7 @@ public class EditActivity extends Activity implements View.OnClickListener {
 
     isCancelled = false;
 
-    setContentView(R.layout.main);
+    setContentView(R.layout.edit);
 
     // Create the UI
     String breadcrumbString = getIntent().getStringExtra(com.twofortyfouram.Intent.EXTRA_STRING_BREADCRUMB);

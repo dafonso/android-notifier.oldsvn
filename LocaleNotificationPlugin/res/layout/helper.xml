@@ -66,7 +66,5 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             android:layout_height="48dip"
             android:layout_gravity="center"
             android:textSize="14dip" />
-   
   </LinearLayout>
-
 </LinearLayout>
