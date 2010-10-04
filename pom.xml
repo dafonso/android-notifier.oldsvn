@@ -4,7 +4,7 @@
 	<groupId>com.notifier.android-notifier-desktop</groupId>
 	<artifactId>android-notifier-desktop</artifactId>
 	<packaging>jar</packaging>
-	<version>0.5</version>
+	<version>0.6-SNAPSHOT</version>
 
 	<name>Android Notifier Desktop</name>
 	<url>http://code.google.com/p/android-notifier</url>
@@ -847,9 +847,9 @@
 	</issueManagement>
 
 	<scm>
-		<connection>scm:svn:https://android-notifier.googlecode.com/svn/branches/android-notifier-desktop-0.5</connection>
-		<developerConnection>scm:svn:https://android-notifier.googlecode.com/svn/branches/android-notifier-desktop-0.5</developerConnection>
-		<url>http://code.google.com/p/android-notifier/source/browse/#svn/branches/android-notifier-desktop-0.5</url>
+		<connection>scm:svn:https://android-notifier.googlecode.com/svn/trunk/MultiDroidNotifier</connection>
+		<developerConnection>scm:svn:https://android-notifier.googlecode.com/svn/trunk/MultiDroidNotifier</developerConnection>
+		<url>http://code.google.com/p/android-notifier/source/browse/#svn/trunk/MultiDroidNotifier</url>
 	</scm>
 
 	<distributionManagement>
