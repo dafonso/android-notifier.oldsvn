@@ -1,13 +1,38 @@
-Windows goals:
-clean assembly:assembly build-helper:parse-version com.akathist.maven.plugins.launch4j:launch4j-maven-plugin:launch4j nsis:generate-project nsis:compile -Pwindows-x86,!windows-x86_64
+* Windows x86:
+mvn clean assembly:assembly build-helper:parse-version com.akathist.maven.plugins.launch4j:launch4j-maven-plugin:launch4j nsis:generate-project nsis:compile -Pwindows-x86,!windows-x86_64
 
-MacOSX:
-clean package assembly:assembly osxappbundle:bundle -Pmac-x86,!mac-x86_64
+* Windows x86_64:
+mvn clean assembly:assembly build-helper:parse-version com.akathist.maven.plugins.launch4j:launch4j-maven-plugin:launch4j nsis:generate-project nsis:compile -P!windows-x86,windows-x86_64
 
-Linux:
-clean assembly:assembly build-helper:parse-version antrun:run rpm:rpm -Plinux-gtk-x86,!linux-gtk-x86_64,fedora-x86,!fedora-x86_64,!linux-zip-x86,!linux-zip-x86_64
+* MacOSX x86:
+mvn clean package assembly:assembly osxappbundle:bundle -Pmac-x86,!mac-x86_64
 
-- fedora profile is only necessary if generating RPMs for Fedora Linux)
-- linux-zip profiles builds should not execute antrun plugin 
+* MacOSX x86_64:
+mvn clean package assembly:assembly osxappbundle:bundle -P!mac-x86,mac-x86_64
 
-* Packages.gz generation: dpkg-scanpackages binary-i386 /dev/null | gzip -9c >> Packages.gz
+* Linux deb x86:
+mvn clean assembly:assembly build-helper:parse-version antrun:run -Plinux-gtk-x86,!linux-gtk-x86_64
+
+* Linux deb x86_64:
+mvn clean assembly:assembly build-helper:parse-version antrun:run -P!linux-gtk-x86,linux-gtk-x86_64
+
+* Linux rpm x86:
+mvn clean assembly:assembly rpm:rpm -Plinux-gtk-x86,!linux-gtk-x86_64
+
+* Linux rpm x86_64:
+mvn clean assembly:assembly rpm:rpm -P!linux-gtk-x86,linux-gtk-x86_64
+
+* Linux rpm fedora x86:
+mvn clean assembly:assembly rpm:rpm -Plinux-gtk-x86,!linux-gtk-x86_64,fedora-x86
+
+* Linux rpm fedora x86_64:
+mvn clean assembly:assembly rpm:rpm -Plinux-gtk-x86,!linux-gtk-x86_64,fedora-x86_64
+
+* Linux zip x86:
+mvn clean assembly:assembly -Plinux-zip-x86
+
+* Linux zip x86_64:
+mvn clean assembly:assembly -Plinux-zip-x86_64
+
+* Packages.gz generation:
+dpkg-scanpackages binary-i386 /dev/null | gzip -9c >> Packages.gz
