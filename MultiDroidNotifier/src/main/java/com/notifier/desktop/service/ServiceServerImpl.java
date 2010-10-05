@@ -58,7 +58,9 @@ public class ServiceServerImpl implements ServiceServer {
 	public void stop() {
 		logger.debug("Stopping service server");
 		try {
-			serverSocket.close();
+			if (serverSocket != null) {
+				serverSocket.close();
+			}
 		} catch (IOException e) {
 			logger.warn("Error closing service socket", e);
 		}
