@@ -18,6 +18,7 @@
 package com.notifier.desktop;
 
 import java.io.*;
+import java.math.*;
 import java.util.*;
 import java.util.prefs.*;
 
@@ -119,7 +120,7 @@ public class ApplicationPreferences {
 					return Long.parseLong(from);
 				} catch (NumberFormatException e) {
 					// If reading older preferences, ids will be in hex format
-					return Long.parseLong(from, 16);
+					return new BigInteger(from, 16).longValue();
 				}
 			}
 		});
