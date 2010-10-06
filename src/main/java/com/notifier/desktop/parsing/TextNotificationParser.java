@@ -17,6 +17,7 @@
  */
 package com.notifier.desktop.parsing;
 
+import java.math.*;
 import java.nio.charset.*;
 import java.util.*;
 
@@ -62,8 +63,8 @@ public class TextNotificationParser extends EncryptedNotificationParser {
 			throw new ParseException("Protocol version [" + version + "] is not supported");
 		}
 
-		long deviceId = Long.parseLong(iterator.next(), 16);
-		long notificationId = Long.parseLong(iterator.next(), 16);
+		long deviceId = new BigInteger(iterator.next(), 16).longValue();
+		long notificationId = new BigInteger(iterator.next(), 16).longValue();
 		Notification.Type type = Notification.Type.valueOf(iterator.next());
 		String data = iterator.next();
 		StringBuilder contents = new StringBuilder();
