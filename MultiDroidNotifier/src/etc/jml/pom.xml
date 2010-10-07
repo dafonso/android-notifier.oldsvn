@@ -1,0 +1,144 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+  http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>net.sourceforge.java-jml</groupId>
+	<artifactId>jml</artifactId>
+	<version>1.0b5</version>
+
+	<name>Java MSN Library</name>
+	<description>Library to connect to MSN IM.</description>
+
+	<url>https://sourceforge.net/projects/java-jml</url>
+
+	<issueManagement>
+		<url>https://sourceforge.net/tracker/?group_id=118829</url>
+		<system>SourceForge.net</system>
+	</issueManagement>
+
+	<scm>
+		<connection>scm:svn:https://java-jml.svn.sourceforge.net/svnroot/java-jml</connection>
+		<url>http://java-jml.svn.sourceforge.net/viewvc/java-jml/</url>
+	</scm>
+
+	<licenses>
+		<license>
+			<name>Apache 2</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+			<comments>A business-friendly OSS license</comments>
+		</license>
+	</licenses>
+
+	<distributionManagement>
+		<repository>
+			<id>local-legacy</id>
+			<name>Local Legacy Maven 1 repository</name>
+			<url>file:///${user.home}/.maven/repository</url>
+			<layout>legacy</layout>
+		</repository>
+	</distributionManagement>
+
+	<developers>
+		<developer>
+			<id>jadestorm</id>
+			<name>Daniel Henninger</name>
+			<email>jadestorm@users.sourceforge.net</email>
+			<roles>
+				<role>admin</role>
+				<role>architect</role>
+				<role>developer</role>
+				<role>owner</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<dependencies>
+		<!-- Compilation and runtime dependencies. -->
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging-api</artifactId>
+			<version>1.1</version>
+			<type>jar</type>
+			<!--
+     - We are library.
+     - Publish dependency, expect supplement.
+     - There are multiple alternatives supplying this.
+     -->
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>4.0</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- Dependencies not to be exported! -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.4</version>
+			<type>jar</type>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.15</version>
+			<type>jar</type>
+			<scope>test</scope>
+
+			<!-- Log4j has tons of generally unneeded dependencies. -->
+			<exclusions>
+				<exclusion>
+					<groupId>javax.activation</groupId>
+					<artifactId>activation</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>javax.jms</groupId>
+					<artifactId>jms</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>javax.mail</groupId>
+					<artifactId>mail</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.sun.jdmk</groupId>
+					<artifactId>jmxtools</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.sun.jmx</groupId>
+					<artifactId>jmxri</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<resources>
+			<resource>
+				<directory>resource</directory>
+			</resource>
+		</resources>
+
+		<testSourceDirectory>test</testSourceDirectory>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

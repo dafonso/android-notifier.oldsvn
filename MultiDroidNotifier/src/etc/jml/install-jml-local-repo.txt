@@ -1,0 +1,2 @@
+mvn install:install-file -DpomFile=pom.xml -Dfile=jml-1.0b5.jar
+mvn install:install-file -DpomFile=pom.xml -Dfile=jml-1.0b5-sources.jar -Dclassifier=sources

@@ -33,6 +33,7 @@ import com.notifier.desktop.app.*;
 import com.notifier.desktop.notification.*;
 import com.notifier.desktop.notification.bluetooth.*;
 import com.notifier.desktop.notification.broadcast.*;
+import com.notifier.desktop.notification.broadcast.msn.*;
 import com.notifier.desktop.notification.upnp.*;
 import com.notifier.desktop.notification.wifi.*;
 import com.notifier.desktop.parsing.*;
@@ -120,6 +121,7 @@ public class Main {
 			bind(NotificationBroadcaster.class).annotatedWith(Tray.class).to(TrayNotificationBroadcaster.class).in(Singleton.class);
 			bind(NotificationBroadcaster.class).annotatedWith(Growl.class).to(GrowlNotificationBroadcaster.class).in(Singleton.class);
 			bind(NotificationBroadcaster.class).annotatedWith(Libnotify.class).to(LibnotifyNotificationBroadcaster.class).in(Singleton.class);
+			bind(NotificationBroadcaster.class).annotatedWith(Msn.class).to(MsnNotificationBroadcaster.class).in(Singleton.class);
 
 			bind(NotificationReceiver.class).annotatedWith(Tcp.class).to(TcpNotificationReceiver.class).in(Singleton.class);
 			bind(NotificationReceiver.class).annotatedWith(Udp.class).to(UdpNotificationReceiver.class).in(Singleton.class);

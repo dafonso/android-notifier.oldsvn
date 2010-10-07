@@ -50,6 +50,7 @@ public class ApplicationImpl implements Application {
 	private @Inject @Tray NotificationBroadcaster trayBroadcaster;
 	private @Inject @Growl NotificationBroadcaster growlBroadcaster;
 	private @Inject @Libnotify NotificationBroadcaster libnotifyBroadcaster;
+	private @Inject @Msn NotificationBroadcaster msnBroadcaster;
 
 	private @Inject @Tcp NotificationReceiver tcpReceiver;
 	private @Inject @Udp NotificationReceiver udpReceiver;
@@ -273,7 +274,7 @@ public class ApplicationImpl implements Application {
 		}
 		return success;
 	}
-	
+
 	protected <T extends Lifecycle & Named> boolean stopLifecycle(T lifecycle, String category) {
 		logger.info("Stopping [{}] {}", lifecycle.getName(), category);
 		try {
@@ -320,7 +321,8 @@ public class ApplicationImpl implements Application {
 	protected Map<NotificationBroadcaster, Boolean> getBroadcasters(ApplicationPreferences preferences) {
 		return ImmutableMap.of(trayBroadcaster, preferences.isDisplayWithSystemDefault(),
 							   growlBroadcaster, preferences.isDisplayWithGrowl(),
-							   libnotifyBroadcaster, preferences.isDisplayWithLibnotify());
+							   libnotifyBroadcaster, preferences.isDisplayWithLibnotify(),
+							   msnBroadcaster, true);
 	}
 	
 	protected Map<NotificationReceiver, Boolean> getReceivers(ApplicationPreferences preferences) {

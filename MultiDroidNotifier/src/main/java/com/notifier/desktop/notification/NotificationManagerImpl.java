@@ -55,8 +55,9 @@ public class NotificationManagerImpl implements NotificationManager {
 	                               OperatingSystemProcessManager processManager,
 								   @Tray NotificationBroadcaster trayBroadcaster,
 	                               @Growl NotificationBroadcaster growlBroadcaster,
-	                               @Libnotify NotificationBroadcaster libnotifyBroadcaster) {
-		this.broadcasters = ImmutableList.of(trayBroadcaster, growlBroadcaster, libnotifyBroadcaster);
+	                               @Libnotify NotificationBroadcaster libnotifyBroadcaster,
+	                               @Msn NotificationBroadcaster msnBroadcaster) {
+		this.broadcasters = ImmutableList.of(trayBroadcaster, growlBroadcaster, libnotifyBroadcaster, msnBroadcaster);
 		this.swtManager = swtManager;
 		this.processManager = processManager;
 		this.lastNotifications = new MapMaker().initialCapacity(50).expiration(60, SECONDS).makeMap();

@@ -4,7 +4,7 @@
 	<groupId>com.notifier.android-notifier-desktop</groupId>
 	<artifactId>android-notifier-desktop</artifactId>
 	<packaging>jar</packaging>
-	<version>0.5.1</version>
+	<version>0.6-SNAPSHOT</version>
 
 	<name>Android Notifier Desktop</name>
 	<url>http://code.google.com/p/android-notifier</url>
@@ -117,7 +117,7 @@
 			<version>1.2</version>
 		</dependency>
 
-		<!-- UPNP description -->
+		<!-- UPNP -->
 		<dependency>
 			<groupId>net.sbbi.upnp</groupId>
 			<artifactId>upnplib</artifactId>
@@ -161,6 +161,13 @@
 					<artifactId>xml-apis</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+
+        <!-- MSN -->
+		<dependency>
+			<groupId>net.sourceforge.java-jml</groupId>
+			<artifactId>jml</artifactId>
+			<version>1.0b5</version>
 		</dependency>
 
 		<!-- Tests -->
@@ -847,9 +854,9 @@
 	</issueManagement>
 
 	<scm>
-		<connection>scm:svn:https://android-notifier.googlecode.com/svn/branches/android-notifier-desktop-0.5.1</connection>
-		<developerConnection>scm:svn:https://android-notifier.googlecode.com/svn/branches/android-notifier-desktop-0.5.1</developerConnection>
-		<url>http://code.google.com/p/android-notifier/source/browse/#svn/branches/android-notifier-desktop-0.5.1</url>
+		<connection>scm:svn:https://android-notifier.googlecode.com/svn/trunk/MultiDroidNotifier</connection>
+		<developerConnection>scm:svn:https://android-notifier.googlecode.com/svn/trunk/MultiDroidNotifier</developerConnection>
+		<url>http://code.google.com/p/android-notifier/source/browse/#svn/trunk/MultiDroidNotifier</url>
 	</scm>
 
 	<distributionManagement>
@@ -984,6 +991,10 @@
 		<repository>
 			<id>akathist-repository</id>
 			<url>http://www.9stmaryrd.com/maven</url>
+		</repository>
+		<repository>
+			<id>java-jml-maven-repository</id>
+			<url>http://java-jml.sourceforge.net/maven</url>
 		</repository>
 	</repositories>
 
