@@ -43,7 +43,7 @@ public class MultiNotificationParser implements NotificationParser<byte[]> {
 			if (length == data.length) {
 				try {
 					return protobufParser.parse(data);
-				} catch (ParseException e) {
+				} catch (Exception e) {
 					// Could not read protobuf message, must be text protocol
 					return textParser.parse(data);
 				}
