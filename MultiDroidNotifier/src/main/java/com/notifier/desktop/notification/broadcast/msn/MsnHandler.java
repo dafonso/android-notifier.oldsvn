@@ -38,26 +38,21 @@ public class MsnHandler extends MsnAdapter {
 	private String targetUsername;
 	private Email targetEmail;
 	private MsnMessenger msnMessenger;
-	private CountDownLatch loginLatch;
+	private MsnSwitchboard currentSwitchboard;
+	private SwitchboardState switchboardState;
+	private Queue<NotificationItem> notificationsToSend = new ConcurrentLinkedQueue<NotificationItem>();
 
 	public MsnHandler(MsnMessenger msnMessenger, String username, String targetUsername) {
 		this.msnMessenger = msnMessenger;
 		this.username = username;
 		this.targetUsername = targetUsername;
 		this.targetEmail = Email.parseStr(targetUsername);
-		this.loginLatch = new CountDownLatch(1);
+		this.switchboardState = SwitchboardState.CREATING;
 	}
-
-	private MsnSwitchboard currentSwitchboard;
-	private Queue<NotificationItem> notificationsToSend = new ConcurrentLinkedQueue<NotificationItem>();
 
 	public void send(Notification notification, String deviceName, boolean privateMode) {
 		notificationsToSend.add(new NotificationItem(notification, deviceName, privateMode));
-		if (currentSwitchboard == null) {
-			msnMessenger.newSwitchboard(Application.ARTIFACT_ID);
-		} else {
-			sendToSwitchboard();
-		}
+		sendToSwitchboard();
 	}
 
 	@Override
@@ -75,21 +70,34 @@ public class MsnHandler extends MsnAdapter {
 	@Override
 	public void contactListInitCompleted(MsnMessenger messenger) {
 		logger.debug("Logged into msn successfully");
-		loginLatch.countDown();
+		createSwitchboard();
+	}
+
+	@Override
+	public void contactAddedMe(MsnMessenger messenger, MsnContact contact) {
+		logger.debug("Contact added me [{}]", contact.getEmail());
+		msnMessenger.addFriend(contact.getEmail(), contact.getFriendlyName());
+		if (targetEmail.equals(contact.getEmail())) {
+			inviteToSwitchboard();
+		}
+	}
+
+	@Override
+	public void contactStatusChanged(MsnMessenger messenger, MsnContact contact) {
+		if (targetEmail.equals(contact.getEmail()) && currentSwitchboard != null) {
+			if (contact.getStatus() == MsnUserStatus.ONLINE) {
+				logger.debug("Target contact is online, inviting");
+				inviteToSwitchboard();
+			}
+		}
 	}
 
 	@Override
 	public void switchboardStarted(MsnSwitchboard switchboard) {
-		if (currentSwitchboard == null && Application.ARTIFACT_ID.equals(switchboard.getAttachment())) {
+		if (Application.ARTIFACT_ID.equals(switchboard.getAttachment())) {
 			logger.debug("Switchboard started");
 			currentSwitchboard = switchboard;
-			if (isContactOnline()) {
-				if (currentSwitchboard.containContact(targetEmail)) {
-					sendToSwitchboard();
-				} else {
-					currentSwitchboard.inviteContact(targetEmail);
-				}
-			}
+			inviteToSwitchboard();
 		}
 	}
 
@@ -97,7 +105,15 @@ public class MsnHandler extends MsnAdapter {
 	public void contactJoinSwitchboard(MsnSwitchboard switchboard, MsnContact contact) {
 		if (Application.ARTIFACT_ID.equals(switchboard.getAttachment())) {
 			logger.debug("Target contact joined switchboard");
+			switchboardState = SwitchboardState.INVITED;
 			sendToSwitchboard();
+		}
+	}
+
+	@Override
+	public void contactLeaveSwitchboard(MsnSwitchboard switchboard, MsnContact contact) {
+		if (Application.ARTIFACT_ID.equals(switchboard.getAttachment())) {
+			inviteToSwitchboard();
 		}
 	}
 
@@ -106,6 +122,7 @@ public class MsnHandler extends MsnAdapter {
 		if (Application.ARTIFACT_ID.equals(switchboard.getAttachment())) {
 			logger.debug("Current switchboard has been closed");
 			currentSwitchboard = null;
+			createSwitchboard();
 		}
 	}
 
@@ -120,12 +137,35 @@ public class MsnHandler extends MsnAdapter {
 	}
 
 	protected void sendToSwitchboard() {
-		try {
-			loginLatch.await();
-		} catch (InterruptedException e) {
-			return;
+		switch (switchboardState) {
+			case CREATING:
+			case INVITING:
+				// After invite, sendToSwitchboard will be called again
+				break;
+			case INVITED:
+				sendToSwitchboardInternal();
+				break;
+			default:
+				throw new IllegalStateException("Unknown switchboard state: " + switchboardState);
 		}
+	}
 
+	protected void createSwitchboard() {
+		msnMessenger.newSwitchboard(Application.ARTIFACT_ID);
+		switchboardState = SwitchboardState.CREATING;
+	}
+
+	protected void inviteToSwitchboard() {
+		if (switchboardState == null) {
+			createSwitchboard();
+		} else if (!currentSwitchboard.containContact(targetEmail) &&
+					containsTargetContact() && isTargetOnline()) {
+			switchboardState = SwitchboardState.INVITING;
+			currentSwitchboard.inviteContact(targetEmail);
+		}
+	}
+
+	protected void sendToSwitchboardInternal() {
 		NotificationItem item;
 		while ((item = notificationsToSend.poll()) != null) {
 			boolean sentIcon = false;
@@ -133,17 +173,17 @@ public class MsnHandler extends MsnAdapter {
 				String iconName = item.notification.getType() == Notification.Type.BATTERY ? item.notification.getBatteryIconName() : item.notification.getType().getIconName();
 				MsnObject emoticon = loadMsnIcon(username, iconName, MsnObject.TYPE_CUSTOM_EMOTICON);
 				MsnEmoticonMessage emoticonMsg = new MsnEmoticonMessage();
-				emoticonMsg.putEmoticon(":" + item.notification.getType().name() + ":", emoticon, msnMessenger.getDisplayPictureDuelManager());
+				emoticonMsg.putEmoticon(getEmoticonName(item.notification.getType()), emoticon, msnMessenger.getDisplayPictureDuelManager());
 				currentSwitchboard.sendMessage(emoticonMsg, true);
 				sentIcon = true;
 			} catch (Exception e) {
 				logger.warn("Error sending emoticon to switchboard", e);
 				sentIcon = false;
 			}
-
+	
 			StringBuilder sb = new StringBuilder();
 			if (sentIcon) {
-				sb.append(":" + item.notification.getType().name() + ": ");
+				sb.append(getEmoticonName(item.notification.getType()));
 			}
 			sb.append(item.notification.getTitle(item.deviceName));
 			if (!item.privateMode) {
@@ -161,8 +201,9 @@ public class MsnHandler extends MsnAdapter {
 		return msnMessenger.getContactList().getContactByEmail(targetEmail) != null;
 	}
 
-	protected boolean isContactOnline() {
-		return msnMessenger.getContactList().getContactByEmail(targetEmail).getStatus() != MsnUserStatus.OFFLINE;
+	protected boolean isTargetOnline() {
+		MsnContact contact = msnMessenger.getContactList().getContactByEmail(targetEmail);
+		return contact != null && contact.getStatus() != MsnUserStatus.OFFLINE;
 	}
 
 	protected MsnObject loadMsnIcon(String creator, String name, int type) throws IOException {
@@ -175,6 +216,14 @@ public class MsnHandler extends MsnAdapter {
 		} finally {
 			Closeables.closeQuietly(is);
 		}
+	}
+
+	protected String getEmoticonName(Notification.Type type) {
+		return ":" + "emoticon_" + type.name() + ":";
+	}
+
+	private static enum SwitchboardState {
+		CREATING, INVITING, INVITED
 	}
 
 	private static class NotificationItem {
