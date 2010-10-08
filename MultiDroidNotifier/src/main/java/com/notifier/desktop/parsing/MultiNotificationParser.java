@@ -19,12 +19,16 @@ package com.notifier.desktop.parsing;
 
 import java.io.*;
 
+import org.slf4j.*;
+
 import com.google.inject.*;
 import com.google.protobuf.*;
 import com.notifier.desktop.*;
 import com.notifier.desktop.exception.*;
 
 public class MultiNotificationParser implements NotificationParser<byte[]> {
+
+	private static final Logger logger = LoggerFactory.getLogger(MultiNotificationParser.class);
 
 	private final TextNotificationParser textParser;
 	private final ProtobufNotificationParser protobufParser;
@@ -37,6 +41,9 @@ public class MultiNotificationParser implements NotificationParser<byte[]> {
 
 	@Override
 	public Notification parse(byte[] data) throws ParseException {
+		if (data.length == 0) {
+			logger.warn("Got an empty notification, it may be a bluetooth issue, discarding");
+		}
 		try {
 			CodedInputStream codedInputStream = CodedInputStream.newInstance(data);
 			int length = codedInputStream.readRawVarint32();
@@ -50,7 +57,7 @@ public class MultiNotificationParser implements NotificationParser<byte[]> {
 			}
 			return textParser.parse(data);
 		} catch (IOException e) {
-			throw new ParseException(e);
+			return textParser.parse(data);
 		}
 	}
 
