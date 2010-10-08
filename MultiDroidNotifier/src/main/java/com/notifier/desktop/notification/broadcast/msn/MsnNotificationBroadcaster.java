@@ -42,7 +42,8 @@ public class MsnNotificationBroadcaster extends AbstractLifecycle implements Not
 	public MsnNotificationBroadcaster() {
 		username = "ninguem_faz@hotmail.com";
 		password = "testtest";
-		targetUsername = "lehphyro@gmail.com";
+		//targetUsername = "lehphyro@gmail.com";
+		targetUsername = "ninguem_quer@hotmail.com";
 	}
 
 	@Override

@@ -52,7 +52,17 @@ public class MsnHandler extends MsnAdapter {
 
 	public void send(Notification notification, String deviceName, boolean privateMode) {
 		notificationsToSend.add(new NotificationItem(notification, deviceName, privateMode));
-		sendToSwitchboard();
+		switch (switchboardState) {
+			case CREATING:
+			case INVITING:
+				// After invite, queued notifications will be sent
+				break;
+			case INVITED:
+				sendToSwitchboardInternal();
+				break;
+			default:
+				throw new IllegalStateException("Unknown switchboard state: " + switchboardState);
+		}
 	}
 
 	@Override
@@ -106,7 +116,7 @@ public class MsnHandler extends MsnAdapter {
 		if (Application.ARTIFACT_ID.equals(switchboard.getAttachment())) {
 			logger.debug("Target contact joined switchboard");
 			switchboardState = SwitchboardState.INVITED;
-			sendToSwitchboard();
+			sendToSwitchboardInternal();
 		}
 	}
 
@@ -136,23 +146,11 @@ public class MsnHandler extends MsnAdapter {
 		logger.debug("Logged out of msn");
 	}
 
-	protected void sendToSwitchboard() {
-		switch (switchboardState) {
-			case CREATING:
-			case INVITING:
-				// After invite, sendToSwitchboard will be called again
-				break;
-			case INVITED:
-				sendToSwitchboardInternal();
-				break;
-			default:
-				throw new IllegalStateException("Unknown switchboard state: " + switchboardState);
-		}
-	}
-
 	protected void createSwitchboard() {
-		msnMessenger.newSwitchboard(Application.ARTIFACT_ID);
-		switchboardState = SwitchboardState.CREATING;
+		if (currentSwitchboard == null) {
+			msnMessenger.newSwitchboard(Application.ARTIFACT_ID);
+			switchboardState = SwitchboardState.CREATING;
+		}
 	}
 
 	protected void inviteToSwitchboard() {
@@ -167,34 +165,44 @@ public class MsnHandler extends MsnAdapter {
 
 	protected void sendToSwitchboardInternal() {
 		NotificationItem item;
-		while ((item = notificationsToSend.poll()) != null) {
-			boolean sentIcon = false;
+		while ((item = notificationsToSend.peek()) != null) {
+			boolean sentEmoticon = false;
 			try {
 				String iconName = item.notification.getType() == Notification.Type.BATTERY ? item.notification.getBatteryIconName() : item.notification.getType().getIconName();
 				MsnObject emoticon = loadMsnIcon(username, iconName, MsnObject.TYPE_CUSTOM_EMOTICON);
 				MsnEmoticonMessage emoticonMsg = new MsnEmoticonMessage();
 				emoticonMsg.putEmoticon(getEmoticonName(item.notification.getType()), emoticon, msnMessenger.getDisplayPictureDuelManager());
+				if (currentSwitchboard == null) {
+					return;
+				}
 				currentSwitchboard.sendMessage(emoticonMsg, true);
-				sentIcon = true;
+				sentEmoticon = true;
 			} catch (Exception e) {
 				logger.warn("Error sending emoticon to switchboard", e);
-				sentIcon = false;
+				sentEmoticon = false;
 			}
-	
-			StringBuilder sb = new StringBuilder();
-			if (sentIcon) {
-				sb.append(getEmoticonName(item.notification.getType()));
-			}
-			sb.append(item.notification.getTitle(item.deviceName));
-			if (!item.privateMode) {
-				sb.append(":\n");
-				String description = item.notification.getDescription(item.privateMode);
-				sb.append(description.substring(0, description.length() - 1));
-			}
+
 			MsnInstantMessage msg = new MsnInstantMessage();
-			msg.setContent(sb.toString());
-			currentSwitchboard.sendMessage(msg);
+			msg.setContent(getNotificationMessage(item.notification, item.deviceName, item.privateMode, sentEmoticon));
+			if (currentSwitchboard != null) {
+				currentSwitchboard.sendMessage(msg);
+				notificationsToSend.remove();
+			}
 		}
+	}
+
+	protected String getNotificationMessage(Notification notification, String deviceName, boolean privateMode, boolean emoticon) {
+		StringBuilder sb = new StringBuilder();
+		if (emoticon) {
+			sb.append(getEmoticonName(notification.getType()));
+		}
+		sb.append(notification.getTitle(deviceName));
+		if (!privateMode) {
+			sb.append(":\n");
+			String description = notification.getDescription(privateMode);
+			sb.append(description.substring(0, description.length() - 1));
+		}
+		return sb.toString();
 	}
 
 	protected boolean containsTargetContact() {
