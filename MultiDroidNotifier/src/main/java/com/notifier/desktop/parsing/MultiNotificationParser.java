@@ -25,16 +25,19 @@ import com.google.inject.*;
 import com.google.protobuf.*;
 import com.notifier.desktop.*;
 import com.notifier.desktop.exception.*;
+import com.notifier.desktop.view.*;
 
 public class MultiNotificationParser implements NotificationParser<byte[]> {
 
 	private static final Logger logger = LoggerFactory.getLogger(MultiNotificationParser.class);
 
+	private final SwtManager swtManager;
 	private final TextNotificationParser textParser;
 	private final ProtobufNotificationParser protobufParser;
 
 	@Inject
-	public MultiNotificationParser(TextNotificationParser textParser, ProtobufNotificationParser protobufParser) {
+	public MultiNotificationParser(SwtManager swtManager, TextNotificationParser textParser, ProtobufNotificationParser protobufParser) {
+		this.swtManager = swtManager;
 		this.textParser = textParser;
 		this.protobufParser = protobufParser;
 	}
@@ -43,6 +46,8 @@ public class MultiNotificationParser implements NotificationParser<byte[]> {
 	public Notification parse(byte[] data) throws ParseException {
 		if (data.length == 0) {
 			logger.warn("Got an empty notification, it may be a bluetooth issue, discarding");
+			Dialogs.showError(swtManager, "Empty notification received", "Android Notifier sent an empty notification, this may be caused by a known issue in bluetooth communication.\nMore info: http://code.google.com/p/android-notifier/issues/detail?id=3", true);
+			return null;
 		}
 		try {
 			CodedInputStream codedInputStream = CodedInputStream.newInstance(data);

@@ -29,7 +29,7 @@ public class MultiNotificationParserTest extends AbstractNotificationParserTest 
 	public void selectText() throws Exception {
 		TextNotificationParser textParser = new TextNotificationParser(getPreferencesProvider());
 		ProtobufNotificationParser protobufParser = new ProtobufNotificationParser(getPreferencesProvider());
-		MultiNotificationParser parser = new MultiNotificationParser(textParser, protobufParser);
+		MultiNotificationParser parser = new MultiNotificationParser(null, textParser, protobufParser);
 		
 		Notification notification = parser.parse(createTextNotification().getBytes(TextNotificationParser.CHARSET));
 		Notification expectedNotification = createNotification();
