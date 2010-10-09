@@ -247,7 +247,9 @@ public class OperatingSystems {
 		String configDir = System.getProperty("configDir");
 		File startupDir = new File(configDir, "autostart");
 		if (!startupDir.isDirectory()) {
-			throw new IOException("Could not find autostart directory");
+			if (!startupDir.mkdirs()) {
+				throw new IOException("Could not find or create autostart directory");
+			}
 		}
 		return startupDir;
 	}
