@@ -26,8 +26,7 @@ import com.google.common.base.*;
 
 public class InetAddresses {
 
-	private static final String VMWARE_ADAPTER_NAME = "vmware";
-	private static final String VIRTUALBOX_ADAPTER_NAME = "virtualbox";
+	private static final String[] VIRTUAL_ADAPTER_NAMES = { "vmware", "vmnet", "virtualbox" };
 
 	private static final Logger logger = LoggerFactory.getLogger(InetAddresses.class);
 
@@ -67,11 +66,7 @@ public class InetAddresses {
 					NetworkInterface networkInterface = null;
 					while (networkInterfaces.hasMoreElements()) {
 						NetworkInterface ni = networkInterfaces.nextElement();
-						String name = Strings.nullToEmpty(ni.getDisplayName()).toLowerCase();
-						if (!ni.isLoopback() &&
-							ni.isUp() &&
-							!name.contains(VMWARE_ADAPTER_NAME) &&
-							!name.contains(VIRTUALBOX_ADAPTER_NAME)) {
+						if (!ni.isLoopback() && ni.isUp() && !isVirtual(ni)) {
 							networkInterface = ni;
 							break;
 						}
@@ -95,5 +90,15 @@ public class InetAddresses {
 				}
 			}
 		}, "local-address").start();
+	}
+
+	private static boolean isVirtual(NetworkInterface networkInterface) {
+		String name = Strings.nullToEmpty(networkInterface.getDisplayName()).toLowerCase();
+		for (String virtualName : VIRTUAL_ADAPTER_NAMES) {
+			if (name.contains(virtualName)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
