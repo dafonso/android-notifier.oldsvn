@@ -24,7 +24,6 @@ import org.eclipse.swt.*;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
-import org.eclipse.swt.widgets.List;
 import org.slf4j.*;
 
 import com.google.common.base.*;
@@ -70,6 +69,8 @@ public class PreferencesDialog extends Dialog {
 	private Button systemDefaultCheckbox;
 	private Button growlCheckbox;
 	private Button libnotifyCheckbox;
+	private Button msnCheckbox;
+	private Button msnDetailsCheckbox;
 
 	private PGroup devicesGroup;
 	private Button anyDeviceRadioButton;
@@ -445,7 +446,7 @@ public class PreferencesDialog extends Dialog {
 
 			notificationDisplayMethodsGroup = createPGroup();
 			GridLayout notificationDisplayMethodsGroupLayout = new GridLayout();
-			notificationDisplayMethodsGroupLayout.makeColumnsEqualWidth = true;
+			notificationDisplayMethodsGroupLayout.numColumns = 2;
 			notificationDisplayMethodsGroup.setLayout(notificationDisplayMethodsGroupLayout);
 			FormData notificationDisplayMethodsGroupLData = new FormData();
 			notificationDisplayMethodsGroupLData.top = new FormAttachment(notificationReceptionMethodsGroup, 2);
@@ -458,6 +459,7 @@ public class PreferencesDialog extends Dialog {
 			systemDefaultCheckbox = new Button(notificationDisplayMethodsGroup, SWT.CHECK | SWT.LEFT);
 			GridData systemDefaultCheckboxLData = new GridData();
 			systemDefaultCheckboxLData.horizontalIndent = 5;
+			systemDefaultCheckboxLData.horizontalSpan = 2;
 			systemDefaultCheckbox.setLayoutData(systemDefaultCheckboxLData);
 			systemDefaultCheckbox.setText("System default");
 			systemDefaultCheckbox.setToolTipText("Use system default mechanism to show notifications");
@@ -490,6 +492,7 @@ public class PreferencesDialog extends Dialog {
 			growlCheckbox = new Button(notificationDisplayMethodsGroup, SWT.CHECK | SWT.LEFT);
 			GridData growlCheckboxLData = new GridData();
 			growlCheckboxLData.horizontalIndent = 5;
+			growlCheckboxLData.horizontalSpan = 2;
 			growlCheckbox.setLayoutData(growlCheckboxLData);
 			growlCheckbox.setText("Growl Notification Transport Protocol");
 			growlCheckbox.setSelection(preferences.isDisplayWithGrowl());
@@ -523,6 +526,7 @@ public class PreferencesDialog extends Dialog {
 				libnotifyCheckbox = new Button(notificationDisplayMethodsGroup, SWT.CHECK | SWT.LEFT);
 				GridData libnotifyCheckboxLData = new GridData();
 				libnotifyCheckboxLData.horizontalIndent = 5;
+				libnotifyCheckboxLData.horizontalSpan = 2;
 				libnotifyCheckbox.setLayoutData(libnotifyCheckboxLData);
 				libnotifyCheckbox.setText("Libnotify");
 				libnotifyCheckbox.setToolTipText("Use notify-send command to show notifications");
@@ -552,6 +556,45 @@ public class PreferencesDialog extends Dialog {
 					}
 				});
 			}
+
+			msnCheckbox = new Button(notificationDisplayMethodsGroup, SWT.CHECK | SWT.LEFT);
+			GridData msnCheckboxLData = new GridData();
+			msnCheckboxLData.horizontalIndent = 5;
+			msnCheckbox.setLayoutData(msnCheckboxLData);
+			msnCheckbox.setText("Windows Live Messenger IM");
+			msnCheckbox.setSelection(preferences.isDisplayWithMsn());
+			msnCheckbox.setToolTipText("Send notifications over Windows Live instant messaging");
+			msnCheckbox.addListener(SWT.Selection, new Listener() {
+				@Override
+				public void handleEvent(Event event) {
+					// TODO
+				}
+			});
+
+			Button msnDetailButton = new Button(notificationDisplayMethodsGroup, SWT.PUSH | SWT.CENTER);
+			GridData msnDetailButtonLData = new GridData();
+			msnDetailButton.setLayoutData(msnDetailButtonLData);
+			msnDetailButton.setText("Details...");
+			msnDetailButton.addListener(SWT.Selection, new Listener() {
+				@Override
+				public void handleEvent(Event event) {
+					InstantMessagingDetailDialog dialog = new InstantMessagingDetailDialog(swtManager, preferences.getMsnUsername(), preferences.getMsnPassword(), preferences.getMsnTarget());
+					dialog.open(new InstantMessagingDetailDialog.SubmitListener() {
+						@Override
+						public void onTest(String username, String password, String target) {
+							// TODO
+						}
+
+						@Override
+						public void onSubmit(String username, String password, String target) {
+							preferences.setMsnUsername(username);
+							preferences.setMsnPassword(password);
+							preferences.setMsnTarget(target);
+						}
+					});
+				}
+			});
+			
 			notificationDisplayMethodsGroup.setExpanded(preferences.isGroupExpanded(ApplicationPreferences.Group.DISPLAY));
 
 			// Notification Actions Groups

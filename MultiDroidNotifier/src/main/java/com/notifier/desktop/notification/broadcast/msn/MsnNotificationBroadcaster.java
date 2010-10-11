@@ -28,7 +28,7 @@ import com.google.common.base.*;
 import com.notifier.desktop.*;
 import com.notifier.desktop.app.*;
 
-public class MsnNotificationBroadcaster extends AbstractLifecycle implements NotificationBroadcaster {
+public class MsnNotificationBroadcaster extends AbstractLifecycle implements InstantMessagingNotificationBroadcaster {
 
 	private static final Logger logger = LoggerFactory.getLogger(MsnNotificationBroadcaster.class);
 
@@ -90,8 +90,6 @@ public class MsnNotificationBroadcaster extends AbstractLifecycle implements Not
 			}
 		}
 	}
-
-// Setters
 
 	public void setUsername(String username) {
 		this.username = username;
