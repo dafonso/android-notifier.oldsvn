@@ -17,6 +17,8 @@
  */
 package com.notifier.desktop;
 
-public interface NotificationBroadcaster extends Lifecycle, Named {
+import com.google.common.base.*;
+
+public interface NotificationBroadcaster extends Service, Named {
 	void broadcast(Notification notification, String deviceName, boolean privateMode);
 }

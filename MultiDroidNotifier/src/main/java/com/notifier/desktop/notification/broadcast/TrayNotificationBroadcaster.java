@@ -19,9 +19,8 @@ package com.notifier.desktop.notification.broadcast;
 
 import com.google.inject.*;
 import com.notifier.desktop.*;
-import com.notifier.desktop.app.*;
 
-public class TrayNotificationBroadcaster extends AbstractLifecycle implements NotificationBroadcaster {
+public class TrayNotificationBroadcaster extends RestartableService implements NotificationBroadcaster {
 
 	@Inject
 	private TrayManager trayManager;
@@ -39,4 +38,5 @@ public class TrayNotificationBroadcaster extends AbstractLifecycle implements No
 
 		trayManager.showNotification(notification, deviceName, privateMode);
 	}
+
 }

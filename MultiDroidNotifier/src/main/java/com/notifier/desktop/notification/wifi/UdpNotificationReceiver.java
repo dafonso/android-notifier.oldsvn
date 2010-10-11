@@ -25,11 +25,15 @@ import org.jboss.netty.channel.*;
 import org.jboss.netty.channel.group.*;
 import org.jboss.netty.channel.socket.oio.*;
 
+import com.google.inject.*;
+import com.notifier.desktop.*;
 import com.notifier.desktop.notification.*;
 
 public class UdpNotificationReceiver extends AbstractNotificationReceiver {
 
 	public static final String NAME = "UDP";
+
+	private @Inject Application application;
 
 	private ChannelGroup allChannels;
 	private ConnectionlessBootstrap bootstrap;
@@ -48,7 +52,7 @@ public class UdpNotificationReceiver extends AbstractNotificationReceiver {
 	public void doStart() {
 		factory = new OioDatagramChannelFactory(Executors.newCachedThreadPool());
 		bootstrap = new ConnectionlessBootstrap(factory);
-		bootstrap.setPipelineFactory(new NotificationPipelineFactory(allChannels, getApplication(), getNotificationManager(), getNotificationParser(), false, false));
+		bootstrap.setPipelineFactory(new NotificationPipelineFactory(allChannels, application, getNotificationManager(), getNotificationParser(), false, false));
 		bootstrap.bind(new InetSocketAddress(PORT));
 	}
 

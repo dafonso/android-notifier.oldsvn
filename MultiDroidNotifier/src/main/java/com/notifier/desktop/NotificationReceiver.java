@@ -17,5 +17,7 @@
  */
 package com.notifier.desktop;
 
-public interface NotificationReceiver extends Lifecycle, Named {
+import com.google.common.base.*;
+
+public interface NotificationReceiver extends Service, Named {
 }

@@ -17,7 +17,9 @@
  */
 package com.notifier.desktop;
 
-public interface ServiceServer extends Lifecycle {
+import com.google.common.base.*;
+
+public interface ServiceServer extends Service {
 
 	public enum Command {
 		STOP, PING

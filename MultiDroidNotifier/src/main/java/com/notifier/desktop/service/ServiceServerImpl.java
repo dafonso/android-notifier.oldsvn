@@ -28,7 +28,7 @@ import com.google.common.io.*;
 import com.google.inject.*;
 import com.notifier.desktop.*;
 
-public class ServiceServerImpl implements ServiceServer {
+public class ServiceServerImpl extends RestartableService implements ServiceServer {
 
 	public static final int PORT = 10700;
 	public static final Charset CHARSET = Charsets.UTF_8;
@@ -42,20 +42,19 @@ public class ServiceServerImpl implements ServiceServer {
 	private Thread serverThread;
 
 	@Override
-	public void start() throws Exception {
+	public void doStart() {
 		logger.debug("Starting service server on port [{}]", PORT);
-		serverSocket = new ServerSocket(PORT, 0, InetAddress.getByName(null));
-		serverThread = new Thread(new ServerRunnable(), "service-server");
-		serverThread.start();
+		try {
+			serverSocket = new ServerSocket(PORT, 0, InetAddress.getByName(null));
+			serverThread = new Thread(new ServerRunnable(), "service-server");
+			serverThread.start();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
-	public boolean isRunning() {
-		return serverThread != null;
-	}
-
-	@Override
-	public void stop() {
+	public void doStop() {
 		logger.debug("Stopping service server");
 		try {
 			if (serverSocket != null) {

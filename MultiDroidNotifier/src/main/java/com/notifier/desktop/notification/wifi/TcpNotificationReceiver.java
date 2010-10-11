@@ -26,6 +26,8 @@ import org.jboss.netty.channel.group.*;
 import org.jboss.netty.channel.socket.nio.*;
 import org.slf4j.*;
 
+import com.google.inject.*;
+import com.notifier.desktop.*;
 import com.notifier.desktop.notification.*;
 
 public class TcpNotificationReceiver extends AbstractNotificationReceiver {
@@ -33,6 +35,8 @@ public class TcpNotificationReceiver extends AbstractNotificationReceiver {
 	public static final String NAME = "TCP";
 
 	private static final Logger logger = LoggerFactory.getLogger(TcpNotificationReceiver.class);
+
+	private @Inject Application application;
 
 	private ChannelGroup allChannels;
 	private ChannelFactory factory;
@@ -51,7 +55,7 @@ public class TcpNotificationReceiver extends AbstractNotificationReceiver {
 	public void doStart() {
 		factory = new NioServerSocketChannelFactory(Executors.newCachedThreadPool(), Executors.newCachedThreadPool());
 		bootstrap = new ServerBootstrap(factory);
-		bootstrap.setPipelineFactory(new NotificationPipelineFactory(allChannels, getApplication(), getNotificationManager(), getNotificationParser(), true, true));
+		bootstrap.setPipelineFactory(new NotificationPipelineFactory(allChannels, application, getNotificationManager(), getNotificationParser(), true, true));
 
 		bootstrap.setOption("child.tcpNoDelay", true);
 		bootstrap.setOption("child.keepAlive", true);

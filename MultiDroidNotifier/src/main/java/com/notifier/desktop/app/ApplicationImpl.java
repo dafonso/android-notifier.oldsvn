@@ -18,11 +18,13 @@
 package com.notifier.desktop.app;
 
 import java.util.*;
+import java.util.concurrent.*;
 
 import javax.swing.*;
 
 import org.slf4j.*;
 
+import com.google.common.base.*;
 import com.google.common.collect.*;
 import com.google.inject.*;
 import com.notifier.desktop.*;
@@ -40,6 +42,7 @@ public class ApplicationImpl implements Application {
 	
 	private static final String BROADCASTER = "broadcaster";
 	private static final String RECEIVER = "receiver";
+	private static final int SHUTDOWN_TIMEOUT = 3 * 1000;
 
 	private static final Logger logger = LoggerFactory.getLogger(ApplicationImpl.class);
 
@@ -61,6 +64,7 @@ public class ApplicationImpl implements Application {
 	private @Inject NotificationParser<byte[]> notificationParser; 
 	private @Inject UpdateManager updateManager;
 	private @Inject ServiceServer serviceServer;
+	private @Inject ExecutorService executorService;
 
 	private boolean showingTrayIcon;
 
@@ -92,12 +96,12 @@ public class ApplicationImpl implements Application {
 		InetAddresses.startFindLocalAddress();
 
 		ApplicationPreferences preferences = preferencesProvider.get();
-		boolean startedAtLeastOne = startLifecycles(getBroadcasters(preferences), BROADCASTER);
+		boolean startedAtLeastOne = startServices(getBroadcasters(preferences), BROADCASTER);
 		if (!startedAtLeastOne) {
 			notifyBroadcasterNotLoaded();
 		}
 
-		startedAtLeastOne = startLifecycles(getReceivers(preferences), RECEIVER);
+		startedAtLeastOne = startServices(getReceivers(preferences), RECEIVER);
 		if (!startedAtLeastOne) {
 			notifyReceiverNotLoaded();
 		}
@@ -128,35 +132,35 @@ public class ApplicationImpl implements Application {
 	@Override
 	public boolean adjustWifiReceiver(boolean enabled) {
 		boolean ok;
-		ok = adjustLifecycle(tcpReceiver, enabled, RECEIVER);
-		ok |= adjustLifecycle(udpReceiver, enabled, RECEIVER);
+		ok = adjustService(tcpReceiver, enabled, RECEIVER);
+		ok |= adjustService(udpReceiver, enabled, RECEIVER);
 
 		return ok;
 	}
 
 	@Override
 	public boolean adjustUpnpReceiver(boolean enabled) {
-		return adjustLifecycle(upnpReceiver, enabled, RECEIVER);
+		return adjustService(upnpReceiver, enabled, RECEIVER);
 	}
 
 	@Override
 	public boolean adjustBluetoothReceiver(boolean enabled) {
-		return adjustLifecycle(bluetoothReceiver, enabled, RECEIVER);
+		return adjustService(bluetoothReceiver, enabled, RECEIVER);
 	}
 
 	@Override
 	public boolean adjustSystemDefaultBroadcaster(boolean enabled) {
-		return adjustLifecycle(trayBroadcaster, enabled, BROADCASTER);
+		return adjustService(trayBroadcaster, enabled, BROADCASTER);
 	}
 
 	@Override
 	public boolean adjustGrowlBroadcaster(boolean enabled) {
-		return adjustLifecycle(growlBroadcaster, enabled, BROADCASTER);
+		return adjustService(growlBroadcaster, enabled, BROADCASTER);
 	}
 
 	@Override
 	public boolean adjustLibnotifyBroadcaster(boolean enabled) {
-		return adjustLifecycle(libnotifyBroadcaster, enabled, BROADCASTER);
+		return adjustService(libnotifyBroadcaster, enabled, BROADCASTER);
 	}
 
 	@Override
@@ -180,10 +184,10 @@ public class ApplicationImpl implements Application {
 		serviceServer.stop();
 
 		ApplicationPreferences preferences = preferencesProvider.get();
-		if (!stopLifecycles(getReceivers(preferences), RECEIVER)) {
+		if (!stopServices(getReceivers(preferences), RECEIVER)) {
 			exitCode += RECEIVER_ERROR_EXIT_CODE;
 		}
-		if (!stopLifecycles(getBroadcasters(preferences), BROADCASTER)) {
+		if (!stopServices(getBroadcasters(preferences), BROADCASTER)) {
 			exitCode += BROADCASTER_ERROR_EXIT_CODE;
 		}
 
@@ -193,6 +197,14 @@ public class ApplicationImpl implements Application {
 		} catch (Throwable t) {
 			logger.error("Error stopping SWT", t);
 			exitCode += SWT_ERROR_EXIT_CODE;
+		}
+		executorService.shutdown();
+		try {
+			if (!executorService.awaitTermination(SHUTDOWN_TIMEOUT, TimeUnit.MILLISECONDS)) {
+				executorService.shutdownNow();
+			}
+		} catch (InterruptedException e) {
+			// Shutting down already
 		}
 
 		System.exit(exitCode);
@@ -239,11 +251,11 @@ public class ApplicationImpl implements Application {
 		}
 	}
 
-	protected <T extends Lifecycle & Named> boolean startLifecycles(Map<T, Boolean> lifecycles, String category) {
+	protected <T extends Service & Named> boolean startServices(Map<T, Boolean> services, String category) {
 		boolean startedAtLeastOne = false;
-		for (Map.Entry<T, Boolean> entry : lifecycles.entrySet()) {
+		for (Map.Entry<T, Boolean> entry : services.entrySet()) {
 			if (Boolean.TRUE.equals(entry.getValue())) {
-				if (startLifecycle(entry.getKey(), category)) {
+				if (startService(entry.getKey(), category)) {
 					startedAtLeastOne = true;
 				}
 			}
@@ -251,23 +263,26 @@ public class ApplicationImpl implements Application {
 		return startedAtLeastOne;
 	}
 
-	protected <T extends Lifecycle & Named> boolean startLifecycle(T lifecycle, String category) {
-		logger.info("Starting [{}] {}", lifecycle.getName(), category);
+	protected <T extends Service & Named> boolean startService(T service, String category) {
+		logger.info("Starting [{}] {}", service.getName(), category);
 		try {
-			lifecycle.start();
+			service.start().get();
 			return true;
-		} catch (Throwable t) {
-			logger.error("Error starting [" + lifecycle.getName() + "] " + category, t);
-			notifyStartupError(t);
+		} catch (ExecutionException e) {
+			logger.error("Error starting [" + service.getName() + "] " + category, e.getCause());
+			notifyStartupError(e.getCause());
+			return false;
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
 			return false;
 		}
 	}
 
-	protected <T extends Lifecycle & Named> boolean stopLifecycles(Map<T, Boolean> lifecycles, String category) {
+	protected <T extends Service & Named> boolean stopServices(Map<T, Boolean> services, String category) {
 		boolean success = true;
-		for (Map.Entry<T, Boolean> entry : lifecycles.entrySet()) {
+		for (Map.Entry<T, Boolean> entry : services.entrySet()) {
 			if (Boolean.TRUE.equals(entry.getValue())) {
-				if (!stopLifecycle(entry.getKey(), category)) {
+				if (!stopService(entry.getKey(), category)) {
 					success = false;
 				}
 			}
@@ -275,13 +290,16 @@ public class ApplicationImpl implements Application {
 		return success;
 	}
 
-	protected <T extends Lifecycle & Named> boolean stopLifecycle(T lifecycle, String category) {
-		logger.info("Stopping [{}] {}", lifecycle.getName(), category);
+	protected <T extends Service & Named> boolean stopService(T service, String category) {
+		logger.info("Stopping [{}] {}", service.getName(), category);
 		try {
-			lifecycle.stop();
+			service.stop().get();
 			return true;
-		} catch (Throwable t) {
-			logger.error("Error stopping [" + lifecycle.getName() + "] " + category, t);
+		} catch (ExecutionException e) {
+			logger.error("Error stopping [" + service.getName() + "] " + category, e.getCause());
+			return false;
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
 			return false;
 		}
 	}
@@ -305,14 +323,14 @@ public class ApplicationImpl implements Application {
 		}
 	}
 	
-	protected <T extends Lifecycle & Named> boolean adjustLifecycle(T lifecycle, boolean enabled, String category) {
+	protected <T extends Service & Named> boolean adjustService(T service, boolean enabled, String category) {
 		if (enabled) {
-			if (!lifecycle.isRunning()) {
-				return startLifecycle(lifecycle, category);
+			if (!service.isRunning()) {
+				return startService(service, category);
 			}
 		} else {
-			if (lifecycle.isRunning()) {
-				return stopLifecycle(lifecycle, category);
+			if (service.isRunning()) {
+				return stopService(service, category);
 			}
 		}
 		return true;
@@ -321,8 +339,7 @@ public class ApplicationImpl implements Application {
 	protected Map<NotificationBroadcaster, Boolean> getBroadcasters(ApplicationPreferences preferences) {
 		return ImmutableMap.of(trayBroadcaster, preferences.isDisplayWithSystemDefault(),
 							   growlBroadcaster, preferences.isDisplayWithGrowl(),
-							   libnotifyBroadcaster, preferences.isDisplayWithLibnotify(),
-							   msnBroadcaster, true);
+							   libnotifyBroadcaster, preferences.isDisplayWithLibnotify());
 	}
 	
 	protected Map<NotificationReceiver, Boolean> getReceivers(ApplicationPreferences preferences) {
@@ -347,7 +364,7 @@ public class ApplicationImpl implements Application {
 	protected void notifyReceiverNotLoaded() {
 		Dialogs.showError(swtManager, "Receiver Error", "Could not start at least one notification receiver. You will not be able to get notifications.", true);
 	}
-	
+
 	protected void notifyStartupError(Throwable t) {
 		Dialogs.showError(swtManager, "Error", t.getMessage(), true);
 	}

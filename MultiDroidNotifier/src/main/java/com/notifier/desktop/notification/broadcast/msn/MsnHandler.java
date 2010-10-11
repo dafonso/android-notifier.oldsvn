@@ -34,15 +34,18 @@ public class MsnHandler extends MsnAdapter {
 
 	private static final Logger logger = LoggerFactory.getLogger(MsnNotificationBroadcaster.class);
 
+	private MsnNotificationBroadcaster broadcaster;
+	private MsnMessenger msnMessenger;
 	private String username;
 	private String targetUsername;
 	private Email targetEmail;
-	private MsnMessenger msnMessenger;
+
 	private MsnSwitchboard currentSwitchboard;
 	private SwitchboardState switchboardState;
 	private Queue<NotificationItem> notificationsToSend = new ConcurrentLinkedQueue<NotificationItem>();
 
-	public MsnHandler(MsnMessenger msnMessenger, String username, String targetUsername) {
+	public MsnHandler(MsnNotificationBroadcaster broadcaster, MsnMessenger msnMessenger, String username, String targetUsername) {
+		this.broadcaster = broadcaster;
 		this.msnMessenger = msnMessenger;
 		this.username = username;
 		this.targetUsername = targetUsername;
@@ -80,6 +83,7 @@ public class MsnHandler extends MsnAdapter {
 	@Override
 	public void contactListInitCompleted(MsnMessenger messenger) {
 		logger.debug("Logged into msn successfully");
+		broadcaster.notifyStarted();
 		createSwitchboard();
 	}
 
