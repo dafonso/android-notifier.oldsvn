@@ -21,15 +21,17 @@ import java.io.*;
 
 import org.slf4j.*;
 
+import com.google.inject.*;
 import com.notifier.desktop.*;
-import com.notifier.desktop.app.*;
 
-public class LibnotifyNotificationBroadcaster extends AbstractLifecycle implements NotificationBroadcaster {
+public class LibnotifyNotificationBroadcaster extends RestartableService implements NotificationBroadcaster {
 
 	public static final String LIB_NOTIFY_COMMAND = "notify-send";
 	private static final String ICON_DIRECTORY = "/usr/share/icons/" + Application.ARTIFACT_ID + "/";
 
 	private static final Logger logger = LoggerFactory.getLogger(LibnotifyNotificationBroadcaster.class);
+
+	private @Inject Application application;
 
 	@Override
 	public String getName() {
@@ -61,7 +63,7 @@ public class LibnotifyNotificationBroadcaster extends AbstractLifecycle implemen
 			builder.start();
 		} catch (IOException e) {
 			logger.error("Error sending notification [" + notification + "] to libnotify", e);
-			getApplication().showError(Application.NAME + " Libnotify Error", "An error while sending notification to libnotify.");
+			application.showError(Application.NAME + " Libnotify Error", "An error while sending notification to libnotify.");
 		}
 	}
 

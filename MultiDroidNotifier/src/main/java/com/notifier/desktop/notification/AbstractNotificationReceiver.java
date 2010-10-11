@@ -19,9 +19,8 @@ package com.notifier.desktop.notification;
 
 import com.google.inject.*;
 import com.notifier.desktop.*;
-import com.notifier.desktop.app.*;
 
-public abstract class AbstractNotificationReceiver extends AbstractLifecycle implements NotificationReceiver {
+public abstract class AbstractNotificationReceiver extends RestartableService implements NotificationReceiver {
 
 	public static final int PORT = 10600;
 	public static final int SHUTDOWN_TIMEOUT = 10000;

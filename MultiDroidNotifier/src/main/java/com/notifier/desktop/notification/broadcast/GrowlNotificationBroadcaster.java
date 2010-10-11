@@ -33,10 +33,11 @@ import com.google.code.jgntp.*;
 import com.google.common.base.*;
 import com.google.common.collect.*;
 import com.google.common.io.*;
+import com.google.inject.*;
 import com.notifier.desktop.*;
 import com.notifier.desktop.app.*;
 
-public class GrowlNotificationBroadcaster extends AbstractLifecycle implements NotificationBroadcaster {
+public class GrowlNotificationBroadcaster extends RestartableService implements NotificationBroadcaster {
 
 	public static final String APPLICATION_ICON = "app-icon.png";
 
@@ -47,6 +48,8 @@ public class GrowlNotificationBroadcaster extends AbstractLifecycle implements N
 	private String NOTIFICATION_ERROR_TITLE = Application.NAME + " Growl Notification Error";
 
 	private static final Logger logger = LoggerFactory.getLogger(GrowlNotificationBroadcaster.class);
+
+	private @Inject Application application;
 
 	private GntpClient gntpClient;
 	private EnumMap<Notification.Type, GntpNotificationInfo> notificationInfos;
@@ -103,7 +106,7 @@ public class GrowlNotificationBroadcaster extends AbstractLifecycle implements N
 				macGrowl.sendNotification(n);
 			} catch (GrowlException e) {
 				logger.error("Error sending notification using jgrowl", e);
-				getApplication().showError(NOTIFICATION_ERROR_TITLE, "Error sending notification to Growl.");
+				application.showError(NOTIFICATION_ERROR_TITLE, "Error sending notification to Growl.");
 			}
 		} else {
 			try {
@@ -180,7 +183,7 @@ public class GrowlNotificationBroadcaster extends AbstractLifecycle implements N
 				case NOT_AUTHORIZED:
 					if (!notifiedGrowlAuthenticationError) {
 						notifiedGrowlAuthenticationError = true;
-						getApplication().showError(REGISTRATION_ERROR_TITLE, "Growl denied registration, did you set it to require password for LAN apps?");
+						application.showError(REGISTRATION_ERROR_TITLE, "Growl denied registration, did you set it to require password for LAN apps?");
 					}
 					break;
 				case INVALID_REQUEST:
@@ -189,7 +192,7 @@ public class GrowlNotificationBroadcaster extends AbstractLifecycle implements N
 				case UNKNOWN_PROTOCOL_VERSION:
 					if (!notifiedInvalidRegistration) {
 						notifiedInvalidRegistration = true;
-						getApplication().showError(REGISTRATION_ERROR_TITLE, "Growl said I sent an invalid registration request, I may need updating.");
+						application.showError(REGISTRATION_ERROR_TITLE, "Growl said I sent an invalid registration request, I may need updating.");
 					}
 					break;
 				case INTERNAL_SERVER_ERROR:
@@ -200,7 +203,7 @@ public class GrowlNotificationBroadcaster extends AbstractLifecycle implements N
 				case RESERVED:
 					if (!notifiedGrowlInternalError) {
 						notifiedGrowlInternalError = true;
-						getApplication().showError(REGISTRATION_ERROR_TITLE, "Growl had trouble handling registration request. It may need restart or updating.");
+						application.showError(REGISTRATION_ERROR_TITLE, "Growl had trouble handling registration request. It may need restart or updating.");
 					}
 					break;
 			}
@@ -235,20 +238,20 @@ public class GrowlNotificationBroadcaster extends AbstractLifecycle implements N
 				case NOT_AUTHORIZED:
 					if (!notifiedGrowlAuthenticationError) {
 						notifiedGrowlAuthenticationError = true;
-						getApplication().showError(NOTIFICATION_ERROR_TITLE, "Growl denied notification, did you set it to require password for LAN apps?");
+						application.showError(NOTIFICATION_ERROR_TITLE, "Growl denied notification, did you set it to require password for LAN apps?");
 					}
 					break;
 				case UNKNOWN_APPLICATION:
 				case UNKNOWN_NOTIFICATION:
 					if (!notifiedNotRegistered) {
 						notifiedNotRegistered = true;
-						getApplication().showError(NOTIFICATION_ERROR_TITLE, "Growl said I am not registered, trying registration again (this notification has been lost).");
+						application.showError(NOTIFICATION_ERROR_TITLE, "Growl said I am not registered, trying registration again (this notification has been lost).");
 					}
 					break;
 				default:
 					if (!notifiedGrowlInternalError) {
 						notifiedGrowlInternalError = true;
-						getApplication().showError(NOTIFICATION_ERROR_TITLE, "Growl had trouble handling notification. It may need restart or updating.");
+						application.showError(NOTIFICATION_ERROR_TITLE, "Growl had trouble handling notification. It may need restart or updating.");
 					}
 					break;
 			}
@@ -261,7 +264,7 @@ public class GrowlNotificationBroadcaster extends AbstractLifecycle implements N
 				growlConnectionRetries > 3 &&
 				!notifiedGrowlNotRunning) {
 				notifiedGrowlNotRunning = true;
-				getApplication().showError(NOTIFICATION_ERROR_TITLE, "Growl is not running.");
+				application.showError(NOTIFICATION_ERROR_TITLE, "Growl is not running.");
 			}
 			growlConnectionRetries++;
 		}

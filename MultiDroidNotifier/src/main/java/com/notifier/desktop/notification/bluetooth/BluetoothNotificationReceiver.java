@@ -26,6 +26,7 @@ import org.slf4j.*;
 
 import com.google.common.base.*;
 import com.google.common.io.*;
+import com.google.inject.*;
 import com.notifier.desktop.*;
 import com.notifier.desktop.app.*;
 import com.notifier.desktop.notification.*;
@@ -39,6 +40,8 @@ public class BluetoothNotificationReceiver extends AbstractNotificationReceiver 
 
 	private static final Logger logger = LoggerFactory.getLogger(BluetoothNotificationReceiver.class);
 
+	private @Inject Application application;
+
 	private volatile boolean enabled;
 	private Thread acceptorThread;
 
@@ -48,7 +51,7 @@ public class BluetoothNotificationReceiver extends AbstractNotificationReceiver 
 	}
 
 	@Override
-	public void doStart() throws IOException {
+	public void doStart() {
 		LocalDevice localDevice = null;
 		try {
 			localDevice = LocalDevice.getLocalDevice();
@@ -59,7 +62,7 @@ public class BluetoothNotificationReceiver extends AbstractNotificationReceiver 
 			} else if (message.contains("libbluetooth.so")) {
 				throw new IllegalStateException("You have to install the package libbluetooth-dev on Ubuntu or bluez-libs-devel on Fedora or bluez-devel on openSUSE to be able to receive bluetooth notifications.");
 			} else {
-				throw e;
+				throw new RuntimeException(e);
 			}
 		}
 		enabled = true;
@@ -96,7 +99,7 @@ public class BluetoothNotificationReceiver extends AbstractNotificationReceiver 
 									break;
 								} else {
 									logger.error("Error handling bluetooth notification", e);
-									getApplication().showError(Application.NAME + " Bluetooth Error", "An error ocurred while receiving bluetooth notification.");
+									application.showError(Application.NAME + " Bluetooth Error", "An error ocurred while receiving bluetooth notification.");
 								}
 							} finally {
 								Closeables.closeQuietly(inputStream);
@@ -111,7 +114,7 @@ public class BluetoothNotificationReceiver extends AbstractNotificationReceiver 
 						}
 					} catch (Exception e) {
 						logger.error("Error setting up bluetooth", e);
-						getApplication().showError("Error setting up Bluetooth", "An error occurred while setting up bluetooth to receive connections.");
+						application.showError("Error setting up Bluetooth", "An error occurred while setting up bluetooth to receive connections.");
 					} finally {
 						if (notifier != null) {
 							try {

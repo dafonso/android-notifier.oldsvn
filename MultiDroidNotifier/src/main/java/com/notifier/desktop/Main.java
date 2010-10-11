@@ -22,11 +22,13 @@ import static java.util.concurrent.TimeUnit.*;
 import java.io.*;
 import java.nio.channels.*;
 import java.util.*;
+import java.util.concurrent.*;
 
 import org.apache.commons.cli.*;
 import org.slf4j.*;
 
 import com.google.common.io.*;
+import com.google.common.util.concurrent.*;
 import com.google.inject.*;
 import com.notifier.desktop.annotation.*;
 import com.notifier.desktop.app.*;
@@ -134,6 +136,16 @@ public class Main {
 			bind(OperatingSystemProcessManager.class).to(OperatingSystemProcessManagerImpl.class).in(Singleton.class);
 			bind(UpdateManager.class).to(UpdateManagerImpl.class).in(Singleton.class);
 			bind(ServiceServer.class).to(ServiceServerImpl.class).in(Singleton.class);
+
+			ThreadFactoryBuilder threadFactoryBuilder = new ThreadFactoryBuilder();
+			threadFactoryBuilder.setNameFormat("task-%s");
+			threadFactoryBuilder.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+				@Override
+				public void uncaughtException(Thread t, Throwable e) {
+					logger.error("Uncaught exception", e);
+				}
+			});
+			bind(ExecutorService.class).toInstance(Executors.newCachedThreadPool(threadFactoryBuilder.build()));
 		}
 
 		@Provides
