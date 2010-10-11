@@ -68,7 +68,6 @@ public class DeviceEditorDialog extends Dialog {
 			deviceNameTextLData.grabExcessHorizontalSpace = true;
 			deviceNameTextLData.horizontalAlignment = GridData.FILL;
 			deviceNameText.setLayoutData(deviceNameTextLData);
-			deviceNameText.setText("HTC Nexus One");
 			deviceNameText.addListener(SWT.DefaultSelection, dialogListener);
 			// Set text in different thread so the dialog will not depend on the size of the text
 			swtManager.update(new Runnable() {

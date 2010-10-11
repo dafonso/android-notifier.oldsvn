@@ -45,6 +45,12 @@ public class ApplicationPreferences {
 	private static final String DISPLAY_WITH_SYSTEM_DEFAULT = "displayWithSystemDefault";
 	private static final String DISPLAY_WITH_GROWL = "displayWithGrowl";
 	private static final String DISPLAY_WITH_LIBNOTIFY = "displayWithLibnotify";
+	private static final String DISPLAY_WITH_MSN = "displayWithMsn";
+
+	private static final String MSN_USERNAME = "msnUsername";
+	private static final String MSN_PASSWORD = "msnPassword";
+	private static final String MSN_TARGET = "msnTarget";
+
 	private static final String RECEPTION_FROM_ANY_DEVICE = "receptionFromAnyDevice";
 	private static final String ALLOWED_DEVICES_IDS = "allowedDevicesIds";
 	private static final String ALLOWED_DEVICES_NAMES = "allowedDevicesNames";
@@ -74,14 +80,18 @@ public class ApplicationPreferences {
 	private boolean displayWithSystemDefault;
 	private boolean displayWithGrowl;
 	private boolean displayWithLibnotify;
+	private boolean displayWithMsn;
 
 	private boolean receptionFromAnyDevice;
 	private Set<Long> allowedDevicesIds;
 	private List<String> allowedDevicesNames;
 
 	private Map<String, Object> notificationsSettings;
-
 	private Map<Group, Boolean> groupsExpansion;
+
+	private String msnUsername;
+	private String msnPassword;
+	private String msnTarget;
 
 	public ApplicationPreferences() {
 		allowedDevicesIds = Sets.newTreeSet();
@@ -110,8 +120,9 @@ public class ApplicationPreferences {
 		displayWithSystemDefault = prefs.getBoolean(DISPLAY_WITH_SYSTEM_DEFAULT, true);
 		displayWithGrowl = prefs.getBoolean(DISPLAY_WITH_GROWL, false);
 		displayWithLibnotify = prefs.getBoolean(DISPLAY_WITH_LIBNOTIFY, false);
-		receptionFromAnyDevice = prefs.getBoolean(RECEPTION_FROM_ANY_DEVICE, true);
+		displayWithMsn = prefs.getBoolean(DISPLAY_WITH_MSN, false);
 
+		receptionFromAnyDevice = prefs.getBoolean(RECEPTION_FROM_ANY_DEVICE, true);
 		Iterable<String> allowedIds = ALLOWED_DEVICES_SPLITTER.split(prefs.get(ALLOWED_DEVICES_IDS, ""));
 		Iterable<Long> allowedIdNumbers = Iterables.transform(allowedIds, new Function<String, Long>() {
 			@Override
@@ -155,6 +166,10 @@ public class ApplicationPreferences {
 		for (Group group : Group.values()) {
 			groupsExpansion.put(group, prefs.getBoolean(group.name() + EXPAND_PREFERENCE_GROUP, true));
 		}
+
+		msnUsername = prefs.get(MSN_USERNAME, "");
+		msnPassword = prefs.get(MSN_PASSWORD, "");
+		msnTarget = prefs.get(MSN_TARGET, "");
 	}
 
 	public void write() throws IOException {
@@ -173,6 +188,8 @@ public class ApplicationPreferences {
 		prefs.putBoolean(DISPLAY_WITH_SYSTEM_DEFAULT, displayWithSystemDefault);
 		prefs.putBoolean(DISPLAY_WITH_GROWL, displayWithGrowl);
 		prefs.putBoolean(DISPLAY_WITH_LIBNOTIFY, displayWithLibnotify);
+		prefs.putBoolean(DISPLAY_WITH_MSN, displayWithMsn);
+
 		prefs.putBoolean(RECEPTION_FROM_ANY_DEVICE, receptionFromAnyDevice);
 		prefs.put(ALLOWED_DEVICES_IDS, ALLOWED_DEVICES_JOINER.join(allowedDevicesIds));
 		prefs.put(ALLOWED_DEVICES_NAMES, ALLOWED_DEVICES_JOINER.join(allowedDevicesNames));
@@ -195,6 +212,10 @@ public class ApplicationPreferences {
 			boolean expand = groupsExpansion.get(group);
 			prefs.putBoolean(group.name() + EXPAND_PREFERENCE_GROUP, expand);
 		}
+
+		prefs.put(MSN_USERNAME, msnUsername);
+		prefs.put(MSN_PASSWORD, msnPassword);
+		prefs.put(MSN_TARGET, msnTarget);
 
 		try {
 			prefs.flush();
@@ -383,6 +404,14 @@ public class ApplicationPreferences {
 		this.displayWithLibnotify = displayWithLibnotify;
 	}
 
+	public boolean isDisplayWithMsn() {
+		return displayWithMsn;
+	}
+
+	public void setDisplayWithMsn(boolean displayWithMsn) {
+		this.displayWithMsn = displayWithMsn;
+	}
+
 	public boolean isReceptionFromAnyDevice() {
 		return receptionFromAnyDevice;
 	}
@@ -399,61 +428,28 @@ public class ApplicationPreferences {
 		return ImmutableList.copyOf(allowedDevicesNames);
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("startAtLogin=");
-		builder.append(startAtLogin);
-		builder.append("privateMode=");
-		builder.append(privateMode);
-		builder.append(", receptionWithWifi=");
-		builder.append(receptionWithWifi);
-		builder.append(", receptionWithUpnp=");
-		builder.append(receptionWithUpnp);
-		builder.append(", receptionWithBluetooth=");
-		builder.append(receptionWithBluetooth);
-		builder.append(", receptionWithUsb=");
-		builder.append(receptionWithUsb);
-		builder.append(", encryptCommunication=");
-		builder.append(encryptCommunication);
-		builder.append(", communicationPassword=");
-		builder.append(communicationPassword);
-		builder.append(", displayWithSystemDefault=");
-		builder.append(displayWithSystemDefault);
-		builder.append(", displayWithGrowl=");
-		builder.append(displayWithGrowl);
-		builder.append(", displayWithLibnotify=");
-		builder.append(displayWithLibnotify);
-		builder.append(", receptionFromAnyDevice=");
-		builder.append(receptionFromAnyDevice);
-		builder.append(", allowedDevicesIds=");
-		builder.append(allowedDevicesIds);
-		builder.append(", allowedDevicesNames=");
-		builder.append(allowedDevicesNames);
+	public String getMsnUsername() {
+		return msnUsername;
+	}
 
-		for (Notification.Type type : Notification.Type.values()) {
-			builder.append(", ");
-			builder.append(type.name() + NOTIFICATION_ENABLED);
-			builder.append('=');
-			builder.append(isNotificationEnabled(type));
+	public void setMsnUsername(String msnUsername) {
+		this.msnUsername = msnUsername;
+	}
 
-			builder.append(", ");
-			builder.append(type.name() + NOTIFICATION_CLIPBOARD);
-			builder.append('=');
-			builder.append(isNotificationClipboard(type));
+	public String getMsnPassword() {
+		return msnPassword;
+	}
 
-			builder.append(", ");
-			builder.append(type.name() + NOTIFICATION_EXECUTE_COMMAND);
-			builder.append('=');
-			builder.append(isNotificationExecuteCommand(type));
+	public void setMsnPassword(String msnPassword) {
+		this.msnPassword = msnPassword;
+	}
 
-			builder.append(", ");
-			builder.append(type.name() + NOTIFICATION_COMMAND);
-			builder.append('=');
-			builder.append(getNotificationCommand(type));
-		}
+	public String getMsnTarget() {
+		return msnTarget;
+	}
 
-		return builder.toString();
+	public void setMsnTarget(String msnTarget) {
+		this.msnTarget = msnTarget;
 	}
 
 	public static enum Group {
