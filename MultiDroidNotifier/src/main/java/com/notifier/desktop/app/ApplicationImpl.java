@@ -93,7 +93,7 @@ public class ApplicationImpl implements Application {
 			}
 		}
 		startService(serviceServer, null);
-		InetAddresses.startFindLocalAddress();
+		InetAddresses.startFindLocalAddress(executorService);
 
 		ApplicationPreferences preferences = preferencesProvider.get();
 		startServices(getBroadcasters(preferences), BROADCASTER, "Broadcaster Error", "Could not start at least one notification broadcaster. You will not be able to get notifications.");

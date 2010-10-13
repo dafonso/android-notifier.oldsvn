@@ -180,7 +180,7 @@ public class PreferencesDialog extends Dialog {
 			privateModeCheckboxLData.horizontalIndent = 5;
 			privateModeCheckbox.setLayoutData(privateModeCheckboxLData);
 			privateModeCheckbox.setText("Private mode");
-			privateModeCheckbox.setToolTipText("Notifications will not show contact details");
+			privateModeCheckbox.setToolTipText("Notifications will not show contact details, for example, names and phone numbers");
 			privateModeCheckbox.setSelection(preferences.isPrivateMode());
 			privateModeCheckbox.addListener(SWT.Selection, new Listener() {
 				@Override

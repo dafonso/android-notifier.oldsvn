@@ -19,6 +19,7 @@ package com.notifier.desktop.util;
 
 import java.net.*;
 import java.util.Enumeration;
+import java.util.concurrent.*;
 
 import org.slf4j.*;
 
@@ -50,8 +51,8 @@ public class InetAddresses {
 		return localAddress.getHostAddress();
 	}
 
-	public static void startFindLocalAddress() {
-		new Thread(new Runnable() {
+	public static void startFindLocalAddress(ExecutorService executorService) {
+		executorService.execute(new Runnable() {
 			@Override
 			public void run() {
 				logger.debug("Looking for local address");
@@ -89,7 +90,7 @@ public class InetAddresses {
 					logger.warn("Error looking for local address", e);
 				}
 			}
-		}, "local-address").start();
+		});
 	}
 
 	private static boolean isVirtual(NetworkInterface networkInterface) {

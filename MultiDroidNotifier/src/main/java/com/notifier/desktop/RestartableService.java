@@ -30,11 +30,11 @@ public abstract class RestartableService implements Service {
 	}
 
 	protected void doStart() throws Exception {
-		// Default behaviour is do nothing
+		// Default behaviour is to do nothing
 	}
 
 	protected void doStop() throws Exception {
-		// Default behaviour is do nothing
+		// Default behaviour is to do nothing
 	}
 
 	public Future<State> start() {

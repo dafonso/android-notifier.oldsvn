@@ -18,7 +18,7 @@
 package com.notifier.desktop.app;
 
 import java.io.*;
-import java.util.concurrent.atomic.*;
+import java.util.concurrent.*;
 
 import org.slf4j.*;
 
@@ -43,12 +43,12 @@ public class OperatingSystemProcessManagerImpl implements OperatingSystemProcess
 	private static final Logger logger = LoggerFactory.getLogger(OperatingSystemProcessManagerImpl.class);
 
 	private final Application application;
-	private final AtomicLong threadCounter;
+	private final ExecutorService executorService;
 
 	@Inject
-	public OperatingSystemProcessManagerImpl(Application application) {
+	public OperatingSystemProcessManagerImpl(Application application, ExecutorService executorService) {
 		this.application = application;
-		this.threadCounter = new AtomicLong();
+		this.executorService = executorService;
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class OperatingSystemProcessManagerImpl implements OperatingSystemProcess
 			}
 			try {
 				final Process process = processBuilder.start();
-				new Thread(new Runnable() {
+				executorService.execute(new Runnable() {
 					@Override
 					public void run() {
 						try {
@@ -97,7 +97,7 @@ public class OperatingSystemProcessManagerImpl implements OperatingSystemProcess
 							// Will exit
 						}
 					}
-				}, "notification-command-" + threadCounter.getAndIncrement()).start();
+				});
 			} catch (Exception e) {
 				logger.error("Error executing notification command: " + c, e);
 				if (!notifiedError) {
