@@ -75,7 +75,7 @@ public class TextNotificationParser extends EncryptedNotificationParser {
 			}
 		}
 
-		return new Notification(deviceId, notificationId, type, data, contents.toString());
+		return new Notification(deviceId, notificationId, type, data, contents.substring(0, contents.length() - 1));
 	}
 
 }

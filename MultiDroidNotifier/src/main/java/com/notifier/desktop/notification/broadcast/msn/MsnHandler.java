@@ -203,8 +203,7 @@ public class MsnHandler extends MsnAdapter {
 		sb.append(notification.getTitle(deviceName));
 		if (!privateMode) {
 			sb.append(":\n");
-			String description = notification.getDescription(privateMode);
-			sb.append(description.substring(0, description.length() - 1));
+			sb.append(notification.getDescription(privateMode));
 		}
 		return sb.toString();
 	}
