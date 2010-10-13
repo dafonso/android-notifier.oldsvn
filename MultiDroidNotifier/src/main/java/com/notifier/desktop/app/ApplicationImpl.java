@@ -53,7 +53,7 @@ public class ApplicationImpl implements Application {
 	private @Inject @Tray NotificationBroadcaster trayBroadcaster;
 	private @Inject @Growl NotificationBroadcaster growlBroadcaster;
 	private @Inject @Libnotify NotificationBroadcaster libnotifyBroadcaster;
-	private @Inject @Msn NotificationBroadcaster msnBroadcaster;
+	private @Inject @Msn InstantMessagingNotificationBroadcaster msnBroadcaster;
 
 	private @Inject @Tcp NotificationReceiver tcpReceiver;
 	private @Inject @Udp NotificationReceiver udpReceiver;
@@ -65,6 +65,8 @@ public class ApplicationImpl implements Application {
 	private @Inject UpdateManager updateManager;
 	private @Inject ServiceServer serviceServer;
 	private @Inject ExecutorService executorService;
+
+	private @Inject Provider<PreferencesDialog> preferencesDialogProvider;
 
 	private boolean showingTrayIcon;
 
@@ -111,7 +113,7 @@ public class ApplicationImpl implements Application {
 		swtManager.update(new Runnable() {
 			@Override
 			public void run() {
-				PreferencesDialog preferencesDialog = new PreferencesDialog(ApplicationImpl.this, notificationManager, notificationParser, swtManager, executorService);
+				PreferencesDialog preferencesDialog = preferencesDialogProvider.get();
 				preferencesDialog.open();
 			}
 		});

@@ -34,7 +34,7 @@ public class MsnNotificationBroadcaster extends RestartableService implements In
 
 	private static final Logger logger = LoggerFactory.getLogger(MsnNotificationBroadcaster.class);
 
-	private @Inject ExecutorService executorService;
+	private final ExecutorService executorService;
 
 	private String username;
 	private String password;
@@ -43,12 +43,14 @@ public class MsnNotificationBroadcaster extends RestartableService implements In
 	private MsnMessenger messenger;
 	private MsnHandler msnHandler;
 
-	public MsnNotificationBroadcaster() {
+	@Inject
+	public MsnNotificationBroadcaster(Provider<ApplicationPreferences> preferencesProvider, ExecutorService executorService) {
 		super(false);
-		username = "ninguem_faz@hotmail.com";
-		password = "testtest";
-		//targetUsername = "lehphyro@gmail.com";
-		targetUsername = "ninguem_quer@hotmail.com";
+		ApplicationPreferences preferences = preferencesProvider.get();
+		this.username = preferences.getMsnUsername();
+		this.password = preferences.getMsnPassword();
+		this.targetUsername = preferences.getMsnTarget();
+		this.executorService = executorService;
 	}
 
 	@Override
@@ -111,14 +113,37 @@ public class MsnNotificationBroadcaster extends RestartableService implements In
 		super.notifyStarted();
 	}
 
+	@Override
+	protected void notifyFailed(Throwable cause) { // Make it visible to MsnHandler
+		super.notifyFailed(cause);
+	}
+
+	@Override
+	public String getUsername() {
+		return username;
+	}
+
+	@Override
 	public void setUsername(String username) {
 		this.username = username;
 	}
 
+	@Override
+	public String getPassword() {
+		return password;
+	}
+
+	@Override
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
+	@Override
+	public String getTargetUsername() {
+		return targetUsername;
+	}
+
+	@Override
 	public void setTargetUsername(String targetUsername) {
 		this.targetUsername = targetUsername;
 	}

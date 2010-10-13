@@ -56,7 +56,7 @@ public class NotificationManagerImpl implements NotificationManager {
 								   @Tray NotificationBroadcaster trayBroadcaster,
 	                               @Growl NotificationBroadcaster growlBroadcaster,
 	                               @Libnotify NotificationBroadcaster libnotifyBroadcaster,
-	                               @Msn NotificationBroadcaster msnBroadcaster) {
+	                               @Msn InstantMessagingNotificationBroadcaster msnBroadcaster) {
 		this.broadcasters = ImmutableList.of(trayBroadcaster, growlBroadcaster, libnotifyBroadcaster, msnBroadcaster);
 		this.swtManager = swtManager;
 		this.processManager = processManager;
