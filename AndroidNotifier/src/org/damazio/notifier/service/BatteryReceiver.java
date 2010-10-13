@@ -57,6 +57,11 @@ class BatteryReceiver extends BroadcastReceiver {
           "Wrong intent received by battery receiver - " + intent.getAction());
       return;
     }
+    NotifierPreferences preferences = new NotifierPreferences(context);
+    if (!preferences.isBatteryEventEnabled()) {
+      Log.d(NotifierConstants.LOG_TAG, "Ignoring battery event, disabled.");
+      return;
+    }
 
     int level = -1;
     int maxLevel = -1;
@@ -109,7 +114,6 @@ class BatteryReceiver extends BroadcastReceiver {
       return;
     }
 
-    NotifierPreferences preferences = new NotifierPreferences(context);
     synchronized (this) {
       int batteryLevelChange = Math.abs(lastBatteryLevelPercentage - batteryLevelPercentage);
       Log.d(NotifierConstants.LOG_TAG, "Battery level change: " + batteryLevelChange);
