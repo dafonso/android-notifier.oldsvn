@@ -268,7 +268,7 @@ public class ApplicationImpl implements Application {
 	}
 
 	protected <T extends Service & Named> Future<State> startService(final T service, final String category) {
-		logger.info("Starting [{}] {}", service.getName(), category);
+		logger.info("Starting [{}] {}", service.getName(), category == null ? "" : category);
 		final Future<Service.State> future = service.start();
 		ListenableFuture<State> listenableFuture = Futures.makeListenable(future);
 		listenableFuture.addListener(new Runnable() {
@@ -296,7 +296,7 @@ public class ApplicationImpl implements Application {
 	}
 
 	protected <T extends Service & Named> Future<State> stopService(final T service, final String category) {
-		logger.info("Stopping [{}] {}", service.getName(), category);
+		logger.info("Stopping [{}] {}", service.getName(), category == null ? "" : category);
 		final Future<State> future = service.stop();
 		ListenableFuture<State> listenableFuture = Futures.makeListenable(future);
 		listenableFuture.addListener(new Runnable() {

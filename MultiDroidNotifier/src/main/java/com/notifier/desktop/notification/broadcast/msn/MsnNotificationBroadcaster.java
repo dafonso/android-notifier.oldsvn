@@ -19,6 +19,7 @@ package com.notifier.desktop.notification.broadcast.msn;
 
 import java.io.*;
 import java.net.*;
+import java.util.concurrent.*;
 
 import org.slf4j.*;
 
@@ -26,11 +27,14 @@ import net.sf.jml.*;
 import net.sf.jml.impl.*;
 
 import com.google.common.base.*;
+import com.google.inject.*;
 import com.notifier.desktop.*;
 
 public class MsnNotificationBroadcaster extends RestartableService implements InstantMessagingNotificationBroadcaster {
 
 	private static final Logger logger = LoggerFactory.getLogger(MsnNotificationBroadcaster.class);
+
+	private @Inject ExecutorService executorService;
 
 	private String username;
 	private String password;
@@ -54,26 +58,31 @@ public class MsnNotificationBroadcaster extends RestartableService implements In
 
 	@Override
 	protected void doStart() {
-		Preconditions.checkNotNull(username, "MSN username must not be null");
-		Preconditions.checkNotNull(password, "MSN password must not be null");
-		Preconditions.checkNotNull(targetUsername, "MSN target username must not be null");
+		executorService.execute(new Runnable() {
+			@Override
+			public void run() {
+				Preconditions.checkNotNull(username, "MSN username must not be null");
+				Preconditions.checkNotNull(password, "MSN password must not be null");
+				Preconditions.checkNotNull(targetUsername, "MSN target username must not be null");
 
-		logger.info("Logging into msn");
-		messenger = MsnMessengerFactory.createMsnMessenger(username, password);
-		msnHandler = new MsnHandler(this, messenger, username, targetUsername);
+				logger.info("Logging into msn");
+				messenger = MsnMessengerFactory.createMsnMessenger(username, password);
+				msnHandler = new MsnHandler(MsnNotificationBroadcaster.this, messenger, username, targetUsername);
 
-		messenger.setSupportedProtocol(new MsnProtocol[] { MsnProtocol.MSNP15 });
-		messenger.getOwner().setInitStatus(MsnUserStatus.ONLINE);
-		messenger.getOwner().setInitDisplayName(Application.NAME);
-		try {
-			MsnObject icon = msnHandler.loadMsnIcon(username, Application.ICON_NAME, MsnObject.TYPE_DISPLAY_PICTURE);
-			messenger.getOwner().setInitDisplayPicture(icon);
-			messenger.getOwner().setDisplayPicture(icon);
-		} catch (IOException e) {
-			logger.warn("Could not load avatar icon", e);
-		}
-		messenger.addListener(msnHandler);
-		messenger.login();
+				messenger.setSupportedProtocol(new MsnProtocol[] { MsnProtocol.MSNP15 });
+				messenger.getOwner().setInitStatus(MsnUserStatus.ONLINE);
+				messenger.getOwner().setInitDisplayName(Application.NAME);
+				try {
+					MsnObject icon = msnHandler.loadMsnIcon(username, Application.ICON_NAME, MsnObject.TYPE_DISPLAY_PICTURE);
+					messenger.getOwner().setInitDisplayPicture(icon);
+					messenger.getOwner().setDisplayPicture(icon);
+				} catch (IOException e) {
+					logger.warn("Could not load avatar icon", e);
+				}
+				messenger.addListener(msnHandler);
+				messenger.login();
+			}
+		});
 	}
 
 	@Override

@@ -34,14 +34,12 @@ public class ServiceServerImpl extends RestartableService implements ServiceServ
 	public static final int PORT = 10700;
 	public static final Charset CHARSET = Charsets.UTF_8;
 
-	private static final long SHUTDOWN_TIMEOUT = 5 * 1000;
-
 	private static final Logger logger = LoggerFactory.getLogger(ServiceServerImpl.class);
 
 	private @Inject Application application;
 	private @Inject ExecutorService executorService;
 	private ServerSocket serverSocket;
-	private Thread serverThread;
+	private boolean stopped;
 
 	@Override
 	public String getName() {
@@ -53,6 +51,7 @@ public class ServiceServerImpl extends RestartableService implements ServiceServ
 		logger.debug("Starting service server on port [{}]", PORT);
 		try {
 			serverSocket = new ServerSocket(PORT, 0, InetAddress.getByName(null));
+			stopped = false;
 			executorService.execute(new ServerRunnable());
 		} catch (Exception e) {
 			throw new RuntimeException("Error starting service server, you will not be able to stop it via command line", e);
@@ -63,20 +62,13 @@ public class ServiceServerImpl extends RestartableService implements ServiceServ
 	public void doStop() {
 		logger.debug("Stopping service server");
 		try {
+			stopped = true;
 			if (serverSocket != null) {
 				serverSocket.close();
 			}
 		} catch (IOException e) {
 			logger.warn("Error closing service socket", e);
 		}
-
-		serverThread.interrupt();
-		try {
-			serverThread.join(SHUTDOWN_TIMEOUT);
-		} catch (InterruptedException e) {
-			// We are closing already
-		}
-		serverThread = null;
 	}
 
 	protected void commandReceived(final Command command) {
@@ -114,7 +106,10 @@ public class ServiceServerImpl extends RestartableService implements ServiceServ
 						socket.close();
 					}
 				} catch (SocketException e) {
-					// stop() has been called
+					if (stopped) {
+						break;
+					}
+					logger.error("Error on server socket", e);
 				} catch (IOException e) {
 					logger.error("Error handling service request", e);
 				}
