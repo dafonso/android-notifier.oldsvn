@@ -123,6 +123,7 @@ public class BugReporter {
       prefStrBuilder.append(key);
       prefStrBuilder.append(": ");
       prefStrBuilder.append(entry.getValue());
+      prefStrBuilder.append('\n');
     }
 
     return prefStrBuilder.toString();
