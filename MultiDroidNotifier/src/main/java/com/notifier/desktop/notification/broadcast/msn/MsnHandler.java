@@ -35,6 +35,7 @@ public class MsnHandler extends MsnAdapter {
 
 	private static final Logger logger = LoggerFactory.getLogger(MsnHandler.class);
 
+	private Application application;
 	private MsnNotificationBroadcaster broadcaster;
 	private MsnMessenger msnMessenger;
 	private String username;
@@ -45,7 +46,8 @@ public class MsnHandler extends MsnAdapter {
 	private SwitchboardState switchboardState;
 	private Queue<NotificationItem> notificationsToSend = new ConcurrentLinkedQueue<NotificationItem>();
 
-	public MsnHandler(MsnNotificationBroadcaster broadcaster, MsnMessenger msnMessenger, String username, String targetUsername) {
+	public MsnHandler(Application application, MsnNotificationBroadcaster broadcaster, MsnMessenger msnMessenger, String username, String targetUsername) {
+		this.application = application;
 		this.broadcaster = broadcaster;
 		this.msnMessenger = msnMessenger;
 		this.username = username;
@@ -87,7 +89,9 @@ public class MsnHandler extends MsnAdapter {
 	@Override
 	public void contactListSyncCompleted(MsnMessenger messenger) {
 		if (!containsTargetContact()) {
-			logger.info("Target contact is not among my friends, unable to send messages to him");
+			String msg = "Target contact is not among my friends, unable to send messages to him.";
+			logger.info(msg);
+			application.showError(Application.NAME + " Windows Live Messaging Error", msg);
 		}
 	}
 
