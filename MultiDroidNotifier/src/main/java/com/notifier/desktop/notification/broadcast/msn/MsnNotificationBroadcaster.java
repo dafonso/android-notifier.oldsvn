@@ -36,6 +36,8 @@ public class MsnNotificationBroadcaster extends RestartableService implements In
 
 	private final ExecutorService executorService;
 
+	private Application application;
+
 	private String username;
 	private String password;
 	private String targetUsername;
@@ -44,8 +46,9 @@ public class MsnNotificationBroadcaster extends RestartableService implements In
 	private MsnHandler msnHandler;
 
 	@Inject
-	public MsnNotificationBroadcaster(Provider<ApplicationPreferences> preferencesProvider, ExecutorService executorService) {
+	public MsnNotificationBroadcaster(Application application, Provider<ApplicationPreferences> preferencesProvider, ExecutorService executorService) {
 		super(false);
+		this.application = application;
 		ApplicationPreferences preferences = preferencesProvider.get();
 		this.username = preferences.getMsnUsername();
 		this.password = preferences.getMsnPassword();
@@ -69,7 +72,7 @@ public class MsnNotificationBroadcaster extends RestartableService implements In
 
 				logger.info("Logging into msn");
 				messenger = MsnMessengerFactory.createMsnMessenger(username, password);
-				msnHandler = new MsnHandler(MsnNotificationBroadcaster.this, messenger, username, targetUsername);
+				msnHandler = new MsnHandler(application, MsnNotificationBroadcaster.this, messenger, username, targetUsername);
 
 				messenger.setSupportedProtocol(new MsnProtocol[] { MsnProtocol.MSNP15 });
 				messenger.getOwner().setInitStatus(MsnUserStatus.ONLINE);
