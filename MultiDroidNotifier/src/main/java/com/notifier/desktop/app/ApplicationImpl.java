@@ -25,7 +25,9 @@ import javax.swing.*;
 import org.slf4j.*;
 
 import com.google.common.base.*;
+import com.google.common.base.Service.State;
 import com.google.common.collect.*;
+import com.google.common.util.concurrent.*;
 import com.google.inject.*;
 import com.notifier.desktop.*;
 import com.notifier.desktop.annotation.*;
@@ -36,8 +38,6 @@ public class ApplicationImpl implements Application {
 
 	public static final int OK_EXIT_CODE = 0;
 	public static final int TRAY_ERROR_EXIT_CODE = 1;
-	public static final int BROADCASTER_ERROR_EXIT_CODE = 2;
-	public static final int RECEIVER_ERROR_EXIT_CODE = 4;
 	public static final int SWT_ERROR_EXIT_CODE = 8;
 	
 	private static final String BROADCASTER = "broadcaster";
@@ -92,19 +92,12 @@ public class ApplicationImpl implements Application {
 				System.exit(TRAY_ERROR_EXIT_CODE);
 			}
 		}
-		startServiceServer();
+		startService(serviceServer, null);
 		InetAddresses.startFindLocalAddress();
 
 		ApplicationPreferences preferences = preferencesProvider.get();
-		boolean startedAtLeastOne = startServices(getBroadcasters(preferences), BROADCASTER);
-		if (!startedAtLeastOne) {
-			notifyBroadcasterNotLoaded();
-		}
-
-		startedAtLeastOne = startServices(getReceivers(preferences), RECEIVER);
-		if (!startedAtLeastOne) {
-			notifyReceiverNotLoaded();
-		}
+		startServices(getBroadcasters(preferences), BROADCASTER, "Broadcaster Error", "Could not start at least one notification broadcaster. You will not be able to get notifications.");
+		startServices(getReceivers(preferences), RECEIVER, "Receiver Error", "Could not start at least one notification receiver. You will not be able to get notifications.");
 
 		adjustStartAtLogin(preferences.isStartAtLogin(), true);
 		if (showPreferencesWindow) {
@@ -118,7 +111,7 @@ public class ApplicationImpl implements Application {
 		swtManager.update(new Runnable() {
 			@Override
 			public void run() {
-				PreferencesDialog preferencesDialog = new PreferencesDialog(ApplicationImpl.this, notificationManager, notificationParser, swtManager);
+				PreferencesDialog preferencesDialog = new PreferencesDialog(ApplicationImpl.this, notificationManager, notificationParser, swtManager, executorService);
 				preferencesDialog.open();
 			}
 		});
@@ -130,37 +123,43 @@ public class ApplicationImpl implements Application {
 	}
 
 	@Override
-	public boolean adjustWifiReceiver(boolean enabled) {
-		boolean ok;
-		ok = adjustService(tcpReceiver, enabled, RECEIVER);
-		ok |= adjustService(udpReceiver, enabled, RECEIVER);
-
-		return ok;
+	public Future<State> adjustWifiReceiver(boolean enabled) {
+		Future<State> tcpFuture = adjustService(tcpReceiver, enabled, RECEIVER);
+		Future<State> udpFuture = adjustService(udpReceiver, enabled, RECEIVER);
+		if (tcpFuture == null || udpFuture == null) {
+			return null;
+		}
+		return MoreFutures.combine(tcpFuture, udpFuture);
 	}
 
 	@Override
-	public boolean adjustUpnpReceiver(boolean enabled) {
+	public Future<State> adjustUpnpReceiver(boolean enabled) {
 		return adjustService(upnpReceiver, enabled, RECEIVER);
 	}
 
 	@Override
-	public boolean adjustBluetoothReceiver(boolean enabled) {
+	public Future<State> adjustBluetoothReceiver(boolean enabled) {
 		return adjustService(bluetoothReceiver, enabled, RECEIVER);
 	}
 
 	@Override
-	public boolean adjustSystemDefaultBroadcaster(boolean enabled) {
+	public Future<State> adjustSystemDefaultBroadcaster(boolean enabled) {
 		return adjustService(trayBroadcaster, enabled, BROADCASTER);
 	}
 
 	@Override
-	public boolean adjustGrowlBroadcaster(boolean enabled) {
+	public Future<State> adjustLibnotifyBroadcaster(boolean enabled) {
+		return adjustService(libnotifyBroadcaster, enabled, BROADCASTER);
+	}
+
+	@Override
+	public Future<State> adjustGrowlBroadcaster(boolean enabled) {
 		return adjustService(growlBroadcaster, enabled, BROADCASTER);
 	}
 
 	@Override
-	public boolean adjustLibnotifyBroadcaster(boolean enabled) {
-		return adjustService(libnotifyBroadcaster, enabled, BROADCASTER);
+	public Future<State> adjustMsnBroadcaster(boolean enabled) {
+		return adjustService(msnBroadcaster, enabled, BROADCASTER);
 	}
 
 	@Override
@@ -181,15 +180,11 @@ public class ApplicationImpl implements Application {
 				exitCode += TRAY_ERROR_EXIT_CODE;
 			}
 		}
-		serviceServer.stop();
+		stopService(serviceServer, null);
 
 		ApplicationPreferences preferences = preferencesProvider.get();
-		if (!stopServices(getReceivers(preferences), RECEIVER)) {
-			exitCode += RECEIVER_ERROR_EXIT_CODE;
-		}
-		if (!stopServices(getBroadcasters(preferences), BROADCASTER)) {
-			exitCode += BROADCASTER_ERROR_EXIT_CODE;
-		}
+		stopServices(getReceivers(preferences), RECEIVER);
+		stopServices(getBroadcasters(preferences), BROADCASTER);
 
 		try {
 			logger.info("Stopping SWT");
@@ -223,7 +218,7 @@ public class ApplicationImpl implements Application {
 
 	@Override
 	public void checkForUpdates() {
-		new Thread(new Runnable() {
+		executorService.execute(new Runnable() {
 			@Override
 			public void run() {
 				try {
@@ -240,68 +235,83 @@ public class ApplicationImpl implements Application {
 					showError(Application.NAME + " Error Checking for Updates", "An error ocurred while checking for updates. Please, try again.");
 				}
 			}
-		}, "check-for-updates").start();
+		});
 	}
 
-	protected void startServiceServer() {
-		try {
-			serviceServer.start();
-		} catch (Exception e) {
-			logger.warn("Error starting service server, you will not be able to stop it via command line", e);
-		}
-	}
-
-	protected <T extends Service & Named> boolean startServices(Map<T, Boolean> services, String category) {
-		boolean startedAtLeastOne = false;
+	protected <T extends Service & Named> void startServices(Map<T, Boolean> services, String category, final String errorTitle, final String errorMessage) {
+		final List<Future<State>> futures = Lists.newArrayListWithCapacity(services.size());
 		for (Map.Entry<T, Boolean> entry : services.entrySet()) {
 			if (Boolean.TRUE.equals(entry.getValue())) {
-				if (startService(entry.getKey(), category)) {
-					startedAtLeastOne = true;
-				}
+				futures.add(startService(entry.getKey(), category));
 			}
 		}
-		return startedAtLeastOne;
+		executorService.execute(new Runnable() {
+			@Override
+			public void run() {
+				boolean startedAtLeastOne = false;
+				for (Future<State> future : futures) {
+					try {
+						future.get();
+						startedAtLeastOne = true;
+						break;
+					} catch (InterruptedException e) {
+						return;
+					} catch (ExecutionException e) {
+						// Handled by startService
+					}
+				}
+				if (!startedAtLeastOne) {
+					showError(errorTitle, errorMessage);
+				}
+			}
+		});
 	}
 
-	protected <T extends Service & Named> boolean startService(T service, String category) {
+	protected <T extends Service & Named> Future<State> startService(final T service, final String category) {
 		logger.info("Starting [{}] {}", service.getName(), category);
-		try {
-			service.start().get();
-			return true;
-		} catch (ExecutionException e) {
-			logger.error("Error starting [" + service.getName() + "] " + category, e.getCause());
-			notifyStartupError(e.getCause());
-			return false;
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
-			return false;
-		}
-	}
-
-	protected <T extends Service & Named> boolean stopServices(Map<T, Boolean> services, String category) {
-		boolean success = true;
-		for (Map.Entry<T, Boolean> entry : services.entrySet()) {
-			if (Boolean.TRUE.equals(entry.getValue())) {
-				if (!stopService(entry.getKey(), category)) {
-					success = false;
+		final Future<Service.State> future = service.start();
+		ListenableFuture<State> listenableFuture = Futures.makeListenable(future);
+		listenableFuture.addListener(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					future.get();
+				} catch (InterruptedException e) {
+					return;
+				} catch (ExecutionException e) {
+					logger.error("Error starting [" + service.getName() + "]" + (category == null ? "" : " " + category), e.getCause());
+					notifyStartupError(e.getCause());
 				}
 			}
-		}
-		return success;
+		}, executorService);
+		return future;
 	}
 
-	protected <T extends Service & Named> boolean stopService(T service, String category) {
-		logger.info("Stopping [{}] {}", service.getName(), category);
-		try {
-			service.stop().get();
-			return true;
-		} catch (ExecutionException e) {
-			logger.error("Error stopping [" + service.getName() + "] " + category, e.getCause());
-			return false;
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
-			return false;
+	protected <T extends Service & Named> void stopServices(Map<T, Boolean> services, String category) {
+		for (Map.Entry<T, Boolean> entry : services.entrySet()) {
+			if (Boolean.TRUE.equals(entry.getValue())) {
+				stopService(entry.getKey(), category);
+			}
 		}
+	}
+
+	protected <T extends Service & Named> Future<State> stopService(final T service, final String category) {
+		logger.info("Stopping [{}] {}", service.getName(), category);
+		final Future<State> future = service.stop();
+		ListenableFuture<State> listenableFuture = Futures.makeListenable(future);
+		listenableFuture.addListener(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					future.get();
+				} catch (InterruptedException e) {
+					return;
+				} catch (ExecutionException e) {
+					logger.error("Error stopping [" + service.getName() + "]" + (category == null ? "" : " " + category), e.getCause());
+				}
+			}
+		}, executorService);
+		return future;
 	}
 	
 	protected boolean adjustStartup(boolean startAtLogin, boolean silent) {
@@ -322,26 +332,22 @@ public class ApplicationImpl implements Application {
 			return false;
 		}
 	}
-	
-	protected <T extends Service & Named> boolean adjustService(T service, boolean enabled, String category) {
+
+	protected <T extends Service & Named> Future<State> adjustService(T service, boolean enabled, String category) {
 		if (enabled) {
-			if (!service.isRunning()) {
-				return startService(service, category);
-			}
+			return startService(service, category);
 		} else {
-			if (service.isRunning()) {
-				return stopService(service, category);
-			}
+			return stopService(service, category);
 		}
-		return true;
 	}
 
 	protected Map<NotificationBroadcaster, Boolean> getBroadcasters(ApplicationPreferences preferences) {
 		return ImmutableMap.of(trayBroadcaster, preferences.isDisplayWithSystemDefault(),
 							   growlBroadcaster, preferences.isDisplayWithGrowl(),
-							   libnotifyBroadcaster, preferences.isDisplayWithLibnotify());
+							   libnotifyBroadcaster, preferences.isDisplayWithLibnotify(),
+							   msnBroadcaster, preferences.isDisplayWithMsn());
 	}
-	
+
 	protected Map<NotificationReceiver, Boolean> getReceivers(ApplicationPreferences preferences) {
 		return ImmutableMap.of(tcpReceiver, preferences.isReceptionWithWifi(),
 							   udpReceiver, preferences.isReceptionWithWifi(),
@@ -354,22 +360,14 @@ public class ApplicationImpl implements Application {
 	}
 
 	protected void notifyTrayIconNotSupported() {
-		Dialogs.showError(swtManager, "Tray Icon Not Supported", "System tray icon is not supported or the tray is gone.", true);
-	}
-
-	protected void notifyBroadcasterNotLoaded() {
-		Dialogs.showError(swtManager, "Broadcaster Error", "Could not start at least one notification broadcaster(s). You will not be able to get notifications.", true);
-	}
-
-	protected void notifyReceiverNotLoaded() {
-		Dialogs.showError(swtManager, "Receiver Error", "Could not start at least one notification receiver. You will not be able to get notifications.", true);
+		showError("Tray Icon Not Supported", "System tray icon is not supported or the tray is gone.");
 	}
 
 	protected void notifyStartupError(Throwable t) {
-		Dialogs.showError(swtManager, "Error", t.getMessage(), true);
+		showError(Application.NAME + " Error", t.getMessage());
 	}
 
 	protected void notifyErrorSavingPreferences() {
-		Dialogs.showError(swtManager, "Error saving preferences", "Error saving preferences, please try again", true);
+		showError("Error saving preferences", "Error saving preferences, please try again");
 	}
 }

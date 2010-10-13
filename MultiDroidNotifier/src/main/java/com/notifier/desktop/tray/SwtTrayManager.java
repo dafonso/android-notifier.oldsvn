@@ -18,6 +18,7 @@
 package com.notifier.desktop.tray;
 
 import java.io.*;
+import java.util.concurrent.*;
 
 import org.eclipse.swt.*;
 import org.eclipse.swt.events.*;
@@ -37,6 +38,7 @@ public class SwtTrayManager implements TrayManager {
 	private @Inject NotificationManager notificationManager;
 	private @Inject NotificationParser<byte[]> notificationParser;
 	private @Inject SwtManager swtManager;
+	private @Inject ExecutorService executorService;
 	
 	private Image trayImage;
 	private TrayItem trayItem;
@@ -67,7 +69,7 @@ public class SwtTrayManager implements TrayManager {
 			@Override
 			public void handleEvent(Event event) {
 				if (!swtManager.isShowingPreferencesDialog()) {
-					PreferencesDialog preferencesDialog = new PreferencesDialog(application, notificationManager, notificationParser, swtManager);
+					PreferencesDialog preferencesDialog = new PreferencesDialog(application, notificationManager, notificationParser, swtManager, executorService);
 					preferencesDialog.open();
 				}
 			}
@@ -132,7 +134,7 @@ public class SwtTrayManager implements TrayManager {
 				public void widgetDefaultSelected(SelectionEvent e) {
 					if (!swtManager.isShowingPreferencesDialog() &&
 						OperatingSystems.CURRENT_FAMILY != OperatingSystems.Family.MAC) {
-						PreferencesDialog preferencesDialog = new PreferencesDialog(application, notificationManager, notificationParser, swtManager);
+						PreferencesDialog preferencesDialog = new PreferencesDialog(application, notificationManager, notificationParser, swtManager, executorService);
 						preferencesDialog.open();
 					}
 				}

@@ -34,18 +34,18 @@ public class ApplicationPreferences {
 	private static final String START_AT_LOGIN = "startAtLogin";
 	private static final String PRIVATE_MODE = "privateMode";
 
-	private static final String RECEPTION_WITH_WIFI = "receptionWithWifi";
-	private static final String RECEPTION_WITH_UPNP = "receptionWithUpnp";
-	private static final String RECEPTION_WITH_BLUETOOTH = "receptionWithBluetooth";
-	private static final String RECEPTION_WITH_USB = "receptionWithUsb";
+	public static final String RECEPTION_WITH_WIFI = "receptionWithWifi";
+	public static final String RECEPTION_WITH_UPNP = "receptionWithUpnp";
+	public static final String RECEPTION_WITH_BLUETOOTH = "receptionWithBluetooth";
+	public static final String RECEPTION_WITH_USB = "receptionWithUsb";
 
 	private static final String ENCRYPT_COMMUNICATION = "encryptCommunication";
 	private static final String COMMUNICATION_PASSWORD = "communicationPassword";
 
-	private static final String DISPLAY_WITH_SYSTEM_DEFAULT = "displayWithSystemDefault";
-	private static final String DISPLAY_WITH_GROWL = "displayWithGrowl";
-	private static final String DISPLAY_WITH_LIBNOTIFY = "displayWithLibnotify";
-	private static final String DISPLAY_WITH_MSN = "displayWithMsn";
+	public static final String DISPLAY_WITH_SYSTEM_DEFAULT = "displayWithSystemDefault";
+	public static final String DISPLAY_WITH_GROWL = "displayWithGrowl";
+	public static final String DISPLAY_WITH_LIBNOTIFY = "displayWithLibnotify";
+	public static final String DISPLAY_WITH_MSN = "displayWithMsn";
 
 	private static final String MSN_USERNAME = "msnUsername";
 	private static final String MSN_PASSWORD = "msnPassword";
