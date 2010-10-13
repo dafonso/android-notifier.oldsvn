@@ -69,6 +69,7 @@ public abstract class RestartableService implements Service {
 				startup.transitionSucceeded(State.STOPPING);
 			} else if (state == State.RUNNING) {
 				state = State.STOPPING;
+				shutdownWhenStartupFinishes = false;
 				doStop();
 				if (autoAcknowledgeStateTransitions) {
 					notifyStopped();
