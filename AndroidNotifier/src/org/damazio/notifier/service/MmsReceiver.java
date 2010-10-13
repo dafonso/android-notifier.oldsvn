@@ -25,6 +25,7 @@
 package org.damazio.notifier.service;
 
 import org.damazio.notifier.NotifierConstants;
+import org.damazio.notifier.NotifierPreferences;
 import org.damazio.notifier.R;
 import org.damazio.notifier.mms.EncodedStringValue;
 import org.damazio.notifier.mms.PduHeaders;
@@ -60,6 +61,11 @@ public class MmsReceiver extends BroadcastReceiver {
         !DATA_TYPE.equals(intent.getType())) {
       Log.e(NotifierConstants.LOG_TAG,
           "Wrong intent received by MMS receiver - " + intent.getAction());
+      return;
+    }
+    NotifierPreferences preferences = new NotifierPreferences(context);
+    if (!preferences.isMmsEventEnabled()) {
+      Log.d(NotifierConstants.LOG_TAG, "Ignoring MMS event, disabled.");
       return;
     }
 

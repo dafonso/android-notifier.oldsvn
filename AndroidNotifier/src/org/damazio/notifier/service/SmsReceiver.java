@@ -25,6 +25,7 @@
 package org.damazio.notifier.service;
 
 import org.damazio.notifier.NotifierConstants;
+import org.damazio.notifier.NotifierPreferences;
 import org.damazio.notifier.notification.Notification;
 import org.damazio.notifier.notification.NotificationType;
 
@@ -47,6 +48,11 @@ public class SmsReceiver extends BroadcastReceiver {
     if (!intent.getAction().equals(ACTION)) {
       Log.e(NotifierConstants.LOG_TAG,
           "Wrong intent received by SMS receiver - " + intent.getAction());
+      return;
+    }
+    NotifierPreferences preferences = new NotifierPreferences(context);
+    if (!preferences.isSmsEventEnabled()) {
+      Log.d(NotifierConstants.LOG_TAG, "Ignoring SMS event, disabled.");
       return;
     }
 
