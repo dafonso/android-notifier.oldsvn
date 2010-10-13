@@ -27,6 +27,13 @@ public abstract class AbstractNotificationReceiver extends RestartableService im
 
 	private @Inject NotificationManager notificationManager;
 	private @Inject NotificationParser<byte[]> notificationParser;
+
+	public AbstractNotificationReceiver() {
+	}
+
+	public AbstractNotificationReceiver(boolean autoAcknowledgeStateTransitions) {
+		super(autoAcknowledgeStateTransitions);
+	}
 	
 	public NotificationManager getNotificationManager() {
 		return notificationManager;

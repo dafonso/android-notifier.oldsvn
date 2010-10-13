@@ -108,6 +108,11 @@ public class NotificationManagerImpl implements NotificationManager {
 
 	@Override
 	public void setPrivateMode(boolean enabled) {
+		if (enabled) {
+			logger.info("Enabling private mode");
+		} else {
+			logger.info("Disabling private mode");
+		}
 		this.privateMode = enabled;
 	}
 

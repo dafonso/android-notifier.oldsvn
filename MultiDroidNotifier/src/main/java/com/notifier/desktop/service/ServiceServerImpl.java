@@ -20,6 +20,7 @@ package com.notifier.desktop.service;
 import java.io.*;
 import java.net.*;
 import java.nio.charset.*;
+import java.util.concurrent.*;
 
 import org.slf4j.*;
 
@@ -38,6 +39,7 @@ public class ServiceServerImpl extends RestartableService implements ServiceServ
 	private static final Logger logger = LoggerFactory.getLogger(ServiceServerImpl.class);
 
 	private @Inject Application application;
+	private @Inject ExecutorService executorService;
 	private ServerSocket serverSocket;
 	private Thread serverThread;
 
@@ -51,8 +53,7 @@ public class ServiceServerImpl extends RestartableService implements ServiceServ
 		logger.debug("Starting service server on port [{}]", PORT);
 		try {
 			serverSocket = new ServerSocket(PORT, 0, InetAddress.getByName(null));
-			serverThread = new Thread(new ServerRunnable(), "service-server");
-			serverThread.start();
+			executorService.execute(new ServerRunnable());
 		} catch (Exception e) {
 			throw new RuntimeException("Error starting service server, you will not be able to stop it via command line", e);
 		}
@@ -79,12 +80,12 @@ public class ServiceServerImpl extends RestartableService implements ServiceServ
 	}
 
 	protected void commandReceived(final Command command) {
-		new Thread(new Runnable() {
+		executorService.execute(new Runnable() {
 			@Override
 			public void run() {
 				application.shutdown();
 			}
-		}).start();
+		});
 	}
 
 	private class ServerRunnable implements Runnable {

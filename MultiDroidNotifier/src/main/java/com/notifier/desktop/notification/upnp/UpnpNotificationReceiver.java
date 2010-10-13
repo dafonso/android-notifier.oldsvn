@@ -20,12 +20,14 @@ package com.notifier.desktop.notification.upnp;
 import static java.util.concurrent.TimeUnit.*;
 
 import java.io.*;
+import java.util.concurrent.*;
 
 import org.slf4j.*;
 
 import net.sbbi.upnp.impls.*;
 import net.sbbi.upnp.messages.*;
 
+import com.google.inject.*;
 import com.notifier.desktop.*;
 import com.notifier.desktop.notification.*;
 import com.notifier.desktop.util.*;
@@ -38,7 +40,13 @@ public class UpnpNotificationReceiver extends AbstractNotificationReceiver {
 	private static final int DISCOVERY_TIMEOUT = 3 * 1000;
 	private static final int MAX_WAITS_FOR_LOCAL_ADDRESS = 5;
 
+	private @Inject ExecutorService executorService;
+
 	private InternetGatewayDevice internetDevice;
+
+	public UpnpNotificationReceiver() {
+		super(false);
+	}
 
 	@Override
 	public String getName() {
@@ -47,7 +55,7 @@ public class UpnpNotificationReceiver extends AbstractNotificationReceiver {
 
 	@Override
 	protected void doStart() {
-		new Thread(new Runnable() {
+		executorService.execute(new Runnable() {
 			@Override
 			public void run() {
 				try {
@@ -83,9 +91,11 @@ public class UpnpNotificationReceiver extends AbstractNotificationReceiver {
 					logger.error("Error communicating with upnp internet devices", e);
 				} catch (UPNPResponseException e) {
 					logger.error("UPNP internet device refused registration", e);
+				} finally {
+					notifyStarted();
 				}
 			}
-		}, NAME).start();
+		});
 	}
 
 	@Override
@@ -95,6 +105,7 @@ public class UpnpNotificationReceiver extends AbstractNotificationReceiver {
 			deletePortMapping("UDP");
 			logger.info("Removed UPNP mappings to port [{}]", PORT);
 		}
+		notifyStopped();
 	}
 
 	protected void deletePortMapping(String protocol) {
