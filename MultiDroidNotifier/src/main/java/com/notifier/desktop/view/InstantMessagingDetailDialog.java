@@ -28,6 +28,7 @@ public class InstantMessagingDetailDialog extends Dialog {
 	private Text targetText;
 	private Button testButton;
 	private Button okButton;
+	private Button cancelButton;
 
 	public InstantMessagingDetailDialog(SwtManager swtManager, String username, String password, String target) {
 		super(swtManager.getShell(), SWT.APPLICATION_MODAL);
@@ -44,6 +45,7 @@ public class InstantMessagingDetailDialog extends Dialog {
 			Shell parent = getParent();
 			dialogShell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 			dialogShell.setText("Instant Messaging Details");
+			dialogShell.addListener(SWT.Close, dialogListener);
 
 			GridLayout layout = new GridLayout();
 			layout.numColumns = 2;
@@ -119,27 +121,17 @@ public class InstantMessagingDetailDialog extends Dialog {
 				okButton.setText("OK");
 				okButton.addListener(SWT.Selection, dialogListener);
 	
-				Button cancelButton = new Button(buttonsComposite, SWT.PUSH | SWT.CENTER);
+				cancelButton = new Button(buttonsComposite, SWT.PUSH | SWT.CENTER);
 				RowData cancelButtonLData = new RowData(70, 25);
 				cancelButton.setLayoutData(cancelButtonLData);
 				cancelButton.setText("Cancel");
-				cancelButton.addListener(SWT.Selection, new Listener() {
-					@Override
-					public void handleEvent(Event event) {
-						close();
-					}
-				});
+				cancelButton.addListener(SWT.Selection, dialogListener);
 			} else {
-				Button cancelButton = new Button(buttonsComposite, SWT.PUSH | SWT.CENTER);
+				cancelButton = new Button(buttonsComposite, SWT.PUSH | SWT.CENTER);
 				RowData cancelButtonLData = new RowData(70, 25);
 				cancelButton.setLayoutData(cancelButtonLData);
 				cancelButton.setText("Cancel");
-				cancelButton.addListener(SWT.Selection, new Listener() {
-					@Override
-					public void handleEvent(Event event) {
-						close();
-					}
-				});
+				cancelButton.addListener(SWT.Selection, dialogListener);
 
 				okButton = new Button(buttonsComposite, SWT.PUSH | SWT.CENTER);
 				RowData okButtonLData = new RowData(70, 25);
@@ -161,6 +153,34 @@ public class InstantMessagingDetailDialog extends Dialog {
 
 	public void close() {
 		dialogShell.close();
+	}
+
+	public void testSuccessful() {
+		testFinished();
+		Dialogs.showInfo(swtManager, "Live Messenger Test", "Logged into Windows Live Messaging successfully.", false);
+	}
+
+	public void testFailed() {
+		testFinished();
+		Dialogs.showInfo(swtManager, "Live Messenger Test", "Could not log into Windows Live Messaging, please check username and password.", false);
+	}
+
+	protected void prepareForTesting() {
+		usernameText.setEditable(false);
+		passwordText.setEditable(false);
+		targetText.setEditable(false);
+		testButton.setText("Testing");
+		testButton.setEnabled(false);
+		okButton.setEnabled(false);
+	}
+
+	protected void testFinished() {
+		usernameText.setEditable(true);
+		passwordText.setEditable(true);
+		targetText.setEditable(true);
+		testButton.setText("Test");
+		testButton.setEnabled(true);
+		okButton.setEnabled(true);
 	}
 
 	protected boolean validate() {
@@ -193,10 +213,12 @@ public class InstantMessagingDetailDialog extends Dialog {
 	public interface SubmitListener {
 		void onTest(String username, String password, String target);
 		void onSubmit(String username, String password, String target);
+		void onCancel();
 	}
 
 	class DialogListener implements Listener {
 		private final SubmitListener listener;
+		private boolean requestedClose;
 
 		public DialogListener(SubmitListener listener) {
 			this.listener = listener;
@@ -204,12 +226,22 @@ public class InstantMessagingDetailDialog extends Dialog {
 
 		@Override
 		public void handleEvent(Event event) {
-			if (validate()) {
+			if (event.widget == cancelButton || event.widget == dialogShell) {
+				if (!requestedClose) {
+					requestedClose = true;
+					try {
+						listener.onCancel();
+					} finally {
+						close();
+					}
+				}
+			} else if (validate()) {
 				String usernameValue = usernameText.getText();
 				String passwordValue = passwordText.getText();
 				String targetValue = targetText.getText();
 
 				if (event.widget == testButton) {
+					prepareForTesting();
 					listener.onTest(usernameValue, passwordValue, targetValue);
 				} else {
 					try {

@@ -28,11 +28,12 @@ import com.notifier.desktop.*;
 
 import net.sf.jml.*;
 import net.sf.jml.event.*;
+import net.sf.jml.exception.*;
 import net.sf.jml.message.*;
 
 public class MsnHandler extends MsnAdapter {
 
-	private static final Logger logger = LoggerFactory.getLogger(MsnNotificationBroadcaster.class);
+	private static final Logger logger = LoggerFactory.getLogger(MsnHandler.class);
 
 	private MsnNotificationBroadcaster broadcaster;
 	private MsnMessenger msnMessenger;
@@ -70,7 +71,17 @@ public class MsnHandler extends MsnAdapter {
 
 	@Override
 	public void exceptionCaught(MsnMessenger messenger, Throwable throwable) {
-		logger.error("Exception on msn client", throwable);
+		if (throwable instanceof LoginException) {
+			logger.warn("Could not log into msn");
+			broadcaster.notifyFailed(new Exception("Could not log into Windows Live Messaging, invalid username or password.", throwable));
+		} else {
+			logger.error("Exception on msn client", throwable);
+		}
+	}
+
+	@Override
+	public void datacastMessageReceived(MsnSwitchboard switchboard, MsnDatacastMessage message, MsnContact contact) {
+		logger.info("Datacast received: " + message);
 	}
 
 	@Override

@@ -30,8 +30,10 @@ import org.slf4j.*;
 import com.google.common.base.*;
 import com.google.common.collect.*;
 import com.google.common.util.concurrent.*;
+import com.google.inject.*;
 import com.notifier.desktop.*;
 import com.notifier.desktop.ApplicationPreferences.Group;
+import com.notifier.desktop.annotation.*;
 import com.notifier.desktop.app.*;
 import com.notifier.desktop.app.OperatingSystems.*;
 import com.notifier.desktop.util.*;
@@ -47,6 +49,7 @@ public class PreferencesDialog extends Dialog {
 	private final ApplicationPreferences preferences;
 	private final NotificationManager notificationManager;
 	private final NotificationParser<?> notificationParser;
+	private final InstantMessagingNotificationBroadcaster msnBroadcaster;
 	private final SwtManager swtManager;
 	private final ExecutorService executorService;
 
@@ -71,7 +74,7 @@ public class PreferencesDialog extends Dialog {
 	private Button growlCheckbox;
 	private Button libnotifyCheckbox;
 	private Button msnCheckbox;
-	private Button msnDetailsCheckbox;
+	private Button msnDetailButton;
 
 	private PGroup devicesGroup;
 	private Button anyDeviceRadioButton;
@@ -87,11 +90,18 @@ public class PreferencesDialog extends Dialog {
 
 	private BiMap<Long, String> pairedDevices;
 
-	public PreferencesDialog(Application application, NotificationManager notificationManager, NotificationParser<?> notificationParser, SwtManager swtManager, ExecutorService executorService) {
+	@Inject
+	public PreferencesDialog(Application application,
+	                         NotificationManager notificationManager,
+	                         NotificationParser<byte[]> notificationParser,
+	                         @Msn InstantMessagingNotificationBroadcaster msnBroadcaster,
+	                         SwtManager swtManager,
+	                         ExecutorService executorService) {
 		super(swtManager.getShell(), SWT.NULL);
 		this.application = application;
 		this.notificationManager = notificationManager;
 		this.notificationParser = notificationParser;
+		this.msnBroadcaster = msnBroadcaster;
 		this.swtManager = swtManager;
 		this.executorService = executorService;
 		preferences = new ApplicationPreferences();
@@ -536,42 +546,40 @@ public class PreferencesDialog extends Dialog {
 				@Override
 				public void handleEvent(Event event) {
 					final boolean enabled = msnCheckbox.getSelection();
-					Future<Service.State> future = application.adjustMsnBroadcaster(enabled);
-					new ServiceAdjustListener(future, msnCheckbox, new PreferenceSetter() {
-						@Override
-						public void onSuccess() {
-							preferences.setDisplayWithMsn(enabled);
-						}
-
-						@Override
-						public void onError() {
-							preferences.setDisplayWithMsn(false);
-						}
-					}).start();
+					if (Strings.isNullOrEmpty(preferences.getMsnUsername())) {
+						showMsnDetailDialog();
+					} else {
+						Future<Service.State> future = application.adjustMsnBroadcaster(enabled);
+						new ServiceAdjustListener(future, msnCheckbox, new PreferenceSetter() {
+							@Override
+							public void onSuccess() {
+								preferences.setDisplayWithMsn(enabled);
+							}
+	
+							@Override
+							public void onError() {
+								preferences.setDisplayWithMsn(false);
+							}
+						}).start();
+					}
 				}
 			});
 
-			Button msnDetailButton = new Button(notificationDisplayMethodsGroup, SWT.PUSH | SWT.CENTER);
+			msnDetailButton = new Button(notificationDisplayMethodsGroup, SWT.PUSH | SWT.CENTER);
 			GridData msnDetailButtonLData = new GridData();
 			msnDetailButton.setLayoutData(msnDetailButtonLData);
 			msnDetailButton.setText("Details...");
+			msnDetailButton.setEnabled(msnCheckbox.getSelection());
 			msnDetailButton.addListener(SWT.Selection, new Listener() {
 				@Override
 				public void handleEvent(Event event) {
-					InstantMessagingDetailDialog dialog = new InstantMessagingDetailDialog(swtManager, preferences.getMsnUsername(), preferences.getMsnPassword(), preferences.getMsnTarget());
-					dialog.open(new InstantMessagingDetailDialog.SubmitListener() {
-						@Override
-						public void onTest(String username, String password, String target) {
-							// TODO
-						}
-
-						@Override
-						public void onSubmit(String username, String password, String target) {
-							preferences.setMsnUsername(username);
-							preferences.setMsnPassword(password);
-							preferences.setMsnTarget(target);
-						}
-					});
+					showMsnDetailDialog();
+				}
+			});
+			msnCheckbox.addListener(SWT.Selection, new Listener() {
+				@Override
+				public void handleEvent(Event event) {
+					msnDetailButton.setEnabled(msnCheckbox.getSelection());
 				}
 			});
 			
@@ -918,6 +926,101 @@ public class PreferencesDialog extends Dialog {
 		item.setControl(composite);
 
 		return item;
+	}
+
+	protected void showMsnDetailDialog() {
+		final InstantMessagingDetailDialog dialog = new InstantMessagingDetailDialog(swtManager, preferences.getMsnUsername(), preferences.getMsnPassword(), preferences.getMsnTarget());
+		dialog.open(new InstantMessagingDetailDialog.SubmitListener() {
+			private boolean testing;
+
+			@Override
+			public void onTest(final String username, final String password, final String target) {
+				testing = true;
+				final Future<Service.State> stopFuture = msnBroadcaster.stop();
+				Futures.makeListenable(stopFuture).addListener(new Runnable() {
+					public void run() {
+						configureMsnBroadcaster(username, password, target);
+						final Future<Service.State> startFuture = msnBroadcaster.start();
+						Futures.makeListenable(startFuture).addListener(new Runnable() {
+							@Override
+							public void run() {
+								try {
+									startFuture.get();
+									swtManager.update(new Runnable() {
+										@Override
+										public void run() {
+											testing = false;
+											dialog.testSuccessful();
+										}
+									});
+								} catch (InterruptedException e) {
+									return;
+								} catch (ExecutionException e) {
+									testing = false;
+									swtManager.update(new Runnable() {
+										@Override
+										public void run() {
+											dialog.testFailed();
+										}
+									});
+								}
+							}
+						}, executorService);
+					}
+				}, executorService);
+			}
+
+			@Override
+			public void onSubmit(String username, String password, String target) {
+				preferences.setMsnUsername(username);
+				preferences.setMsnPassword(password);
+				preferences.setMsnTarget(target);
+				if (configureMsnBroadcaster(username, password, target)) {
+					Future<Service.State> future = msnBroadcaster.stop();
+					Futures.makeListenable(future).addListener(new Runnable() {
+						public void run() {
+							application.adjustMsnBroadcaster(true);
+						}
+					}, executorService);
+				}
+			}
+
+			@Override
+			public void onCancel() {
+				if (Strings.isNullOrEmpty(preferences.getMsnUsername())) {
+					msnCheckbox.setSelection(false);
+					msnDetailButton.setEnabled(false);
+				}
+				if (testing) {
+					msnBroadcaster.stop();
+				}
+			}
+
+			public boolean configureMsnBroadcaster(String username, String password, String target) {
+				boolean changed = false;
+
+				String oldUsername = msnBroadcaster.getUsername();
+				if (!Strings.nullToEmpty(oldUsername).equals(username)) {
+					changed = true;
+				}
+
+				String oldPassword = msnBroadcaster.getPassword();
+				if (!Strings.nullToEmpty(oldPassword).equals(password)) {
+					changed = true;
+				}
+
+				String oldTarget = msnBroadcaster.getTargetUsername();
+				if (!Strings.nullToEmpty(oldTarget).equals(target)) {
+					changed = true;
+				}
+
+				msnBroadcaster.setUsername(username);
+				msnBroadcaster.setPassword(password);
+				msnBroadcaster.setTargetUsername(target);
+
+				return changed;
+			}
+		});
 	}
 
 	protected PGroup createPGroup() {

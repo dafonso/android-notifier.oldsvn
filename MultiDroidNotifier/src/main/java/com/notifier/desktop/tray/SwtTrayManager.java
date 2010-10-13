@@ -39,6 +39,8 @@ public class SwtTrayManager implements TrayManager {
 	private @Inject NotificationParser<byte[]> notificationParser;
 	private @Inject SwtManager swtManager;
 	private @Inject ExecutorService executorService;
+
+	private @Inject Provider<PreferencesDialog> preferencesDialogProvider;
 	
 	private Image trayImage;
 	private TrayItem trayItem;
@@ -69,7 +71,7 @@ public class SwtTrayManager implements TrayManager {
 			@Override
 			public void handleEvent(Event event) {
 				if (!swtManager.isShowingPreferencesDialog()) {
-					PreferencesDialog preferencesDialog = new PreferencesDialog(application, notificationManager, notificationParser, swtManager, executorService);
+					PreferencesDialog preferencesDialog = preferencesDialogProvider.get();
 					preferencesDialog.open();
 				}
 			}
@@ -134,7 +136,7 @@ public class SwtTrayManager implements TrayManager {
 				public void widgetDefaultSelected(SelectionEvent e) {
 					if (!swtManager.isShowingPreferencesDialog() &&
 						OperatingSystems.CURRENT_FAMILY != OperatingSystems.Family.MAC) {
-						PreferencesDialog preferencesDialog = new PreferencesDialog(application, notificationManager, notificationParser, swtManager, executorService);
+						PreferencesDialog preferencesDialog = preferencesDialogProvider.get();
 						preferencesDialog.open();
 					}
 				}

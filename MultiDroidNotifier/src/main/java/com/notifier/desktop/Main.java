@@ -123,13 +123,14 @@ public class Main {
 			bind(NotificationBroadcaster.class).annotatedWith(Tray.class).to(TrayNotificationBroadcaster.class).in(Singleton.class);
 			bind(NotificationBroadcaster.class).annotatedWith(Growl.class).to(GrowlNotificationBroadcaster.class).in(Singleton.class);
 			bind(NotificationBroadcaster.class).annotatedWith(Libnotify.class).to(LibnotifyNotificationBroadcaster.class).in(Singleton.class);
-			bind(NotificationBroadcaster.class).annotatedWith(Msn.class).to(MsnNotificationBroadcaster.class).in(Singleton.class);
+			bind(InstantMessagingNotificationBroadcaster.class).annotatedWith(Msn.class).to(MsnNotificationBroadcaster.class).in(Singleton.class);
 
 			bind(NotificationReceiver.class).annotatedWith(Tcp.class).to(TcpNotificationReceiver.class).in(Singleton.class);
 			bind(NotificationReceiver.class).annotatedWith(Udp.class).to(UdpNotificationReceiver.class).in(Singleton.class);
 			bind(NotificationReceiver.class).annotatedWith(Upnp.class).to(UpnpNotificationReceiver.class).in(Singleton.class);
 			bind(NotificationReceiver.class).annotatedWith(Bluetooth.class).to(BluetoothNotificationReceiver.class).in(Singleton.class);
 
+			bind(PreferencesDialog.class);
 			bind(TrayManager.class).to(SwtTrayManager.class).in(Singleton.class);
 			bind(SwtManager.class).to(SwtManagerImpl.class).in(Singleton.class);
 

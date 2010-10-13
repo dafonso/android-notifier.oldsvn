@@ -14,11 +14,12 @@ public abstract class RestartableService implements Service {
 
 	private final ReentrantLock lock = new ReentrantLock();
 
-	private final Transition startup = new Transition();
-	private final Transition shutdown = new Transition();
+	private Transition startup = new Transition();
+	private Transition shutdown = new Transition();
 
 	private State state = State.NEW;
 	private boolean shutdownWhenStartupFinishes = false;
+	private boolean startupWhenShutdownFinishes = false;
 	private boolean autoAcknowledgeStateTransitions;
 
 	public RestartableService() {
@@ -42,10 +43,15 @@ public abstract class RestartableService implements Service {
 		try {
 			if (state == State.NEW || state == State.FAILED || state == State.TERMINATED) {
 				state = State.STARTING;
+				startup = new Transition();
+				shutdown = new Transition();
+				startupWhenShutdownFinishes = false;
 				doStart();
 				if (autoAcknowledgeStateTransitions) {
 					notifyStarted();
 				}
+			} else if (state == State.STOPPING) {
+				startupWhenShutdownFinishes = true;
 			}
 		} catch (Throwable startupFailure) {
 			// put the exception in the future, the user can get it via Future.get()
@@ -138,6 +144,9 @@ public abstract class RestartableService implements Service {
 
 			state = State.TERMINATED;
 			shutdown.transitionSucceeded(State.TERMINATED);
+			if (startupWhenShutdownFinishes) {
+				start();
+			}
 		} finally {
 			lock.unlock();
 		}
