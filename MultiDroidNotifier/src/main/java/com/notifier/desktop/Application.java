@@ -17,6 +17,10 @@
  */
 package com.notifier.desktop;
 
+import java.util.concurrent.*;
+
+import com.google.common.base.*;
+
 public interface Application {
 
 	String NAME = "Android Notifier";
@@ -31,17 +35,19 @@ public interface Application {
 
 	boolean adjustStartAtLogin(boolean enabled, boolean silent);
 
-	boolean adjustWifiReceiver(boolean enabled);
+	Future<Service.State> adjustWifiReceiver(boolean enabled);
 
-	boolean adjustUpnpReceiver(boolean enabled);
+	Future<Service.State> adjustUpnpReceiver(boolean enabled);
 
-	boolean adjustBluetoothReceiver(boolean enabled);
+	Future<Service.State> adjustBluetoothReceiver(boolean enabled);
 
-	boolean adjustSystemDefaultBroadcaster(boolean enabled);
+	Future<Service.State> adjustSystemDefaultBroadcaster(boolean enabled);
 
-	boolean adjustLibnotifyBroadcaster(boolean enabled);
+	Future<Service.State> adjustLibnotifyBroadcaster(boolean enabled);
 
-	boolean adjustGrowlBroadcaster(boolean enabled);
+	Future<Service.State> adjustGrowlBroadcaster(boolean enabled);
+
+	Future<Service.State> adjustMsnBroadcaster(boolean enabled);
 
 	void showError(String title, String message);
 

@@ -19,7 +19,7 @@ package com.notifier.desktop;
 
 import com.google.common.base.*;
 
-public interface ServiceServer extends Service {
+public interface ServiceServer extends Service, Named {
 
 	public enum Command {
 		STOP, PING

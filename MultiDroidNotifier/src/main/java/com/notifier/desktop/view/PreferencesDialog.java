@@ -18,6 +18,7 @@
 package com.notifier.desktop.view;
 
 import java.io.*;
+import java.util.concurrent.*;
 
 import org.eclipse.nebula.widgets.pgroup.*;
 import org.eclipse.swt.*;
@@ -28,6 +29,7 @@ import org.slf4j.*;
 
 import com.google.common.base.*;
 import com.google.common.collect.*;
+import com.google.common.util.concurrent.*;
 import com.notifier.desktop.*;
 import com.notifier.desktop.ApplicationPreferences.Group;
 import com.notifier.desktop.app.*;
@@ -38,8 +40,6 @@ public class PreferencesDialog extends Dialog {
 
 	private static final Logger logger = LoggerFactory.getLogger(PreferencesDialog.class);
 
-	private static final String PREF_CHANGE_THREAD_NAME = "preferences";
-
 	private static final String PASSWORD_SET_MESSAGE = "Passphrase is set, click here to change it";
 	private static final String PASSWORD_NOT_SET_MESSAGE = "Passphrase is not set, click here to set one";
 
@@ -48,6 +48,7 @@ public class PreferencesDialog extends Dialog {
 	private final NotificationManager notificationManager;
 	private final NotificationParser<?> notificationParser;
 	private final SwtManager swtManager;
+	private final ExecutorService executorService;
 
 	private Shell dialogShell;
 
@@ -86,12 +87,13 @@ public class PreferencesDialog extends Dialog {
 
 	private BiMap<Long, String> pairedDevices;
 
-	public PreferencesDialog(Application application, NotificationManager notificationManager, NotificationParser<?> notificationParser, SwtManager swtManager) {
+	public PreferencesDialog(Application application, NotificationManager notificationManager, NotificationParser<?> notificationParser, SwtManager swtManager, ExecutorService executorService) {
 		super(swtManager.getShell(), SWT.NULL);
 		this.application = application;
 		this.notificationManager = notificationManager;
 		this.notificationParser = notificationParser;
 		this.swtManager = swtManager;
+		this.executorService = executorService;
 		preferences = new ApplicationPreferences();
 		pairedDevices = HashBiMap.create();
 	}
@@ -151,7 +153,7 @@ public class PreferencesDialog extends Dialog {
 						startAtLoginCheckbox.setSelection(false);
 					} else {
 						final boolean enabled = startAtLoginCheckbox.getSelection();
-						new Thread(new Runnable() {
+						executorService.execute(new Runnable() {
 							@Override
 							public void run() {
 								if (application.adjustStartAtLogin(enabled, false)) {
@@ -168,7 +170,7 @@ public class PreferencesDialog extends Dialog {
 									});
 								}
 							}
-						}, PREF_CHANGE_THREAD_NAME).start();
+						});
 					}
 				}
 			});
@@ -188,6 +190,8 @@ public class PreferencesDialog extends Dialog {
 					preferences.setPrivateMode(enabled);
 				}
 			});
+			// group.setExpanded() must be called after initialization of the group contents
+			// so nested widgets are correctly hidden if group is not expanded
 			generalGroup.setExpanded(preferences.isGroupExpanded(ApplicationPreferences.Group.GENERAL));
 
 			// Notification Reception Group
@@ -230,36 +234,30 @@ public class PreferencesDialog extends Dialog {
 				@Override
 				public void handleEvent(Event event) {
 					final boolean enabled = wifiCheckbox.getSelection();
-					new Thread(new Runnable() {
+					if (!enabled && preferences.isReceptionWithUpnp()) {
+						application.adjustUpnpReceiver(false);
+						preferences.setReceptionWithUpnp(false);
+						swtManager.update(new Runnable() {
+							@Override
+							public void run() {
+								if (!internetCheckbox.isDisposed()) {
+									internetCheckbox.setSelection(false);
+								}
+							}
+						});
+					}
+					Future<Service.State> future = application.adjustWifiReceiver(enabled);
+					new ServiceAdjustListener(future, wifiCheckbox, new PreferenceSetter() {
 						@Override
-						public void run() {
-							if (!enabled && preferences.isReceptionWithUpnp()) {
-								application.adjustUpnpReceiver(false);
-								preferences.setReceptionWithUpnp(false);
-								swtManager.update(new Runnable() {
-									@Override
-									public void run() {
-										if (!internetCheckbox.isDisposed()) {
-											internetCheckbox.setSelection(false);
-										}
-									}
-								});
-							}
-							if (application.adjustWifiReceiver(enabled)) {
-								preferences.setReceptionWithWifi(enabled);
-							} else {
-								preferences.setReceptionWithWifi(!enabled);
-								swtManager.update(new Runnable() {
-									@Override
-									public void run() {
-										if (!wifiCheckbox.isDisposed()) {
-											wifiCheckbox.setSelection(!enabled);
-										}
-									}
-								});
-							}
+						public void onSuccess() {
+							preferences.setReceptionWithWifi(enabled);
 						}
-					}, PREF_CHANGE_THREAD_NAME).start();
+
+						@Override
+						public void onError() {
+							preferences.setReceptionWithWifi(false);
+						}
+					}).start();
 				}
 			});
 
@@ -276,24 +274,18 @@ public class PreferencesDialog extends Dialog {
 				@Override
 				public void handleEvent(Event event) {
 					final boolean enabled = internetCheckbox.getSelection();
-					new Thread(new Runnable() {
+					Future<Service.State> future = application.adjustUpnpReceiver(enabled);
+					new ServiceAdjustListener(future, internetCheckbox, new PreferenceSetter() {
 						@Override
-						public void run() {
-							if (application.adjustUpnpReceiver(enabled)) {
-								preferences.setReceptionWithUpnp(enabled);
-							} else {
-								preferences.setReceptionWithUpnp(!enabled);
-								swtManager.update(new Runnable() {
-									@Override
-									public void run() {
-										if (!internetCheckbox.isDisposed()) {
-											internetCheckbox.setSelection(!enabled);
-										}
-									}
-								});
-							}
+						public void onSuccess() {
+							preferences.setReceptionWithUpnp(enabled);
 						}
-					}, PREF_CHANGE_THREAD_NAME).start();
+
+						@Override
+						public void onError() {
+							preferences.setReceptionWithUpnp(false);
+						}
+					}).start();
 				}
 			});
 			wifiCheckbox.addListener(SWT.Selection, new Listener() {
@@ -315,24 +307,18 @@ public class PreferencesDialog extends Dialog {
 				@Override
 				public void handleEvent(Event event) {
 					final boolean enabled = bluetoothCheckbox.getSelection();
-					new Thread(new Runnable() {
+					Future<Service.State> future = application.adjustBluetoothReceiver(enabled);
+					new ServiceAdjustListener(future, bluetoothCheckbox, new PreferenceSetter() {
 						@Override
-						public void run() {
-							if (application.adjustBluetoothReceiver(enabled)) {
-								preferences.setReceptionWithBluetooth(enabled);
-							} else {
-								preferences.setReceptionWithBluetooth(!enabled);
-								swtManager.update(new Runnable() {
-									@Override
-									public void run() {
-										if (!bluetoothCheckbox.isDisposed()) {
-											bluetoothCheckbox.setSelection(!enabled);
-										}
-									}
-								});
-							}
+						public void onSuccess() {
+							preferences.setReceptionWithBluetooth(enabled);
 						}
-					}, PREF_CHANGE_THREAD_NAME).start();
+
+						@Override
+						public void onError() {
+							preferences.setReceptionWithBluetooth(false);
+						}
+					}).start();
 				}
 			});
 
@@ -468,24 +454,18 @@ public class PreferencesDialog extends Dialog {
 				@Override
 				public void handleEvent(Event event) {
 					final boolean enabled = systemDefaultCheckbox.getSelection();
-					new Thread(new Runnable() {
+					Future<Service.State> future = application.adjustSystemDefaultBroadcaster(enabled);
+					new ServiceAdjustListener(future, systemDefaultCheckbox, new PreferenceSetter() {
 						@Override
-						public void run() {
-							if (application.adjustSystemDefaultBroadcaster(enabled)) {
-								preferences.setDisplayWithSystemDefault(enabled);
-							} else {
-								preferences.setDisplayWithSystemDefault(!enabled);
-								swtManager.update(new Runnable() {
-									@Override
-									public void run() {
-										if (!systemDefaultCheckbox.isDisposed()) {
-											systemDefaultCheckbox.setSelection(!enabled);
-										}
-									}
-								});
-							}
+						public void onSuccess() {
+							preferences.setDisplayWithSystemDefault(enabled);
 						}
-					}, PREF_CHANGE_THREAD_NAME).start();
+
+						@Override
+						public void onError() {
+							preferences.setDisplayWithSystemDefault(false);
+						}
+					}).start();
 				}
 			});
 
@@ -501,24 +481,18 @@ public class PreferencesDialog extends Dialog {
 				@Override
 				public void handleEvent(Event event) {
 					final boolean enabled = growlCheckbox.getSelection();
-					new Thread(new Runnable() {
+					Future<Service.State> future = application.adjustGrowlBroadcaster(enabled);
+					new ServiceAdjustListener(future, growlCheckbox, new PreferenceSetter() {
 						@Override
-						public void run() {
-							if (application.adjustGrowlBroadcaster(enabled)) {
-								preferences.setDisplayWithGrowl(enabled);
-							} else {
-								preferences.setDisplayWithGrowl(!enabled);
-								swtManager.update(new Runnable() {
-									@Override
-									public void run() {
-										if (!growlCheckbox.isDisposed()) {
-											growlCheckbox.setSelection(!enabled);
-										}
-									}
-								});
-							}
+						public void onSuccess() {
+							preferences.setDisplayWithGrowl(enabled);
 						}
-					}, PREF_CHANGE_THREAD_NAME).start();
+
+						@Override
+						public void onError() {
+							preferences.setDisplayWithGrowl(false);
+						}
+					}).start();
 				}
 			});
 
@@ -535,24 +509,18 @@ public class PreferencesDialog extends Dialog {
 					@Override
 					public void handleEvent(Event event) {
 						final boolean enabled = libnotifyCheckbox.getSelection();
-						new Thread(new Runnable() {
+						Future<Service.State> future = application.adjustLibnotifyBroadcaster(enabled);
+						new ServiceAdjustListener(future, libnotifyCheckbox, new PreferenceSetter() {
 							@Override
-							public void run() {
-								if (application.adjustLibnotifyBroadcaster(enabled)) {
-									preferences.setDisplayWithLibnotify(enabled);
-								} else {
-									preferences.setDisplayWithLibnotify(!enabled);
-									swtManager.update(new Runnable() {
-										@Override
-										public void run() {
-											if (!libnotifyCheckbox.isDisposed()) {
-												libnotifyCheckbox.setSelection(!enabled);
-											}
-										}
-									});
-								}
+							public void onSuccess() {
+								preferences.setDisplayWithLibnotify(enabled);
 							}
-						}, PREF_CHANGE_THREAD_NAME).start();
+
+							@Override
+							public void onError() {
+								preferences.setDisplayWithLibnotify(false);
+							}
+						}).start();
 					}
 				});
 			}
@@ -567,7 +535,19 @@ public class PreferencesDialog extends Dialog {
 			msnCheckbox.addListener(SWT.Selection, new Listener() {
 				@Override
 				public void handleEvent(Event event) {
-					// TODO
+					final boolean enabled = msnCheckbox.getSelection();
+					Future<Service.State> future = application.adjustMsnBroadcaster(enabled);
+					new ServiceAdjustListener(future, msnCheckbox, new PreferenceSetter() {
+						@Override
+						public void onSuccess() {
+							preferences.setDisplayWithMsn(enabled);
+						}
+
+						@Override
+						public void onError() {
+							preferences.setDisplayWithMsn(false);
+						}
+					}).start();
 				}
 			});
 
@@ -952,6 +932,48 @@ public class PreferencesDialog extends Dialog {
 		byte[] key = password.length() == 0 ? new byte[0] : Encryption.passPhraseToKey(password);
 		notificationParser.setEncryption(true, key);
 		preferences.setCommunicationPassword(key);
+	}
+
+	class ServiceAdjustListener implements Runnable {
+		private final Future<Service.State> future;
+		private final Button checkbox;
+		private final PreferenceSetter setter;
+
+		public ServiceAdjustListener(Future<Service.State> future, Button checkbox, PreferenceSetter setter) {
+			this.future = future;
+			this.checkbox = checkbox;
+			this.setter = setter;
+		}
+
+		public void start() {
+			if (future != null) {
+				Futures.makeListenable(future).addListener(this, executorService);
+			}
+		}
+
+		@Override
+		public void run() {
+			try {
+				future.get();
+				setter.onSuccess();
+			} catch (InterruptedException e) {
+			} catch (ExecutionException e) {
+				swtManager.update(new Runnable() {
+					@Override
+					public void run() {
+						if (!checkbox.isDisposed()) {
+							checkbox.setSelection(false);
+						}
+					}
+				});
+				setter.onError();
+			}
+		}
+	}
+
+	interface PreferenceSetter {
+		void onSuccess();
+		void onError();
 	}
 
 	class GroupExpandListener implements ExpandListener {

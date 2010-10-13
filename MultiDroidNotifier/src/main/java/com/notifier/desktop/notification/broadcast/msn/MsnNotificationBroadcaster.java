@@ -58,6 +58,7 @@ public class MsnNotificationBroadcaster extends RestartableService implements In
 		Preconditions.checkNotNull(password, "MSN password must not be null");
 		Preconditions.checkNotNull(targetUsername, "MSN target username must not be null");
 
+		logger.info("Logging into msn");
 		messenger = MsnMessengerFactory.createMsnMessenger(username, password);
 		msnHandler = new MsnHandler(this, messenger, username, targetUsername);
 

@@ -42,6 +42,11 @@ public class ServiceServerImpl extends RestartableService implements ServiceServ
 	private Thread serverThread;
 
 	@Override
+	public String getName() {
+		return "service server";
+	}
+
+	@Override
 	public void doStart() {
 		logger.debug("Starting service server on port [{}]", PORT);
 		try {
@@ -49,7 +54,7 @@ public class ServiceServerImpl extends RestartableService implements ServiceServ
 			serverThread = new Thread(new ServerRunnable(), "service-server");
 			serverThread.start();
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException("Error starting service server, you will not be able to stop it via command line", e);
 		}
 	}
 
