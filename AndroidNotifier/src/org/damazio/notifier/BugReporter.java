@@ -27,13 +27,19 @@ package org.damazio.notifier;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.net.Uri.Builder;
+import android.preference.PreferenceManager;
 import android.text.ClipboardManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -58,6 +64,15 @@ public class BugReporter {
       SYSTEM_TAG, BLUETOOTH_TAG_REGEX, WIFI_TAG_REGEX, CALL_TAG_REGEX, PHONE_TAG_REGEX,
       NotifierConstants.LOG_TAG };
 
+  // Preferences to skip from reporting
+  // These are usually of little use and may contain PII.
+  private static final int[] EXCLUDE_PREFS = {
+    R.string.encryption_pass_key,
+    R.string.target_custom_ips_key,
+    R.string.bluetooth_device_key,
+    R.string.bluetooth_source_key,
+  };
+
   // URL for reporting the issue
   // TODO(rdamazio): Use the project hosting GData api instead (how to get login?)
   private static final String ISSUE_URI_SCHEME = "http";
@@ -70,11 +85,13 @@ public class BugReporter {
     try {
       // Copy the log to the clipboard - it's likely too large to put in the URL
       String log = readLog(FILTER_TAGS);
+      String preferences = readAllPreferences(context);
+      String report = log + "\n\n" + preferences;
       Log.d(NotifierConstants.LOG_TAG, "Read log");
 
       ClipboardManager clipboard =
           (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-      clipboard.setText(log);
+      clipboard.setText(report);
 
       Toast.makeText(context, R.string.report_bug_toast, Toast.LENGTH_LONG).show();
     } catch (IOException e) {
@@ -88,6 +105,27 @@ public class BugReporter {
     uriBuilder.path(ISSUE_URI_PATH);
     uriBuilder.appendQueryParameter(ISSUE_URI_TEMPLATE_PARAM, ISSUE_PHONE_TEMPLATE);
     context.startActivity(new Intent(Intent.ACTION_VIEW, uriBuilder.build()));
+  }
+
+  private static String readAllPreferences(Context context) {
+    Set<String> excludedKeys = new HashSet<String>(EXCLUDE_PREFS.length);
+    for (int excludedKeyId : EXCLUDE_PREFS) {
+      excludedKeys.add(context.getString(excludedKeyId));
+    }
+
+    StringBuilder prefStrBuilder = new StringBuilder("Preferences:\n");
+    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+    Map<String, ?> allPrefs = prefs.getAll();
+    for (Entry<String, ?> entry : allPrefs.entrySet()) {
+      String key = entry.getKey();
+      if (excludedKeys.contains(key)) continue;
+
+      prefStrBuilder.append(key);
+      prefStrBuilder.append(": ");
+      prefStrBuilder.append(entry.getValue());
+    }
+
+    return prefStrBuilder.toString();
   }
 
   private static String readLog(String... tags) throws IOException {
