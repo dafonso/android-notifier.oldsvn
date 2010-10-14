@@ -94,6 +94,9 @@ public class MsnHandler extends MsnAdapter {
 	@Override
 	public void contactListInitCompleted(MsnMessenger messenger) {
 		logger.debug("Logged into msn successfully");
+		if (broadcaster.getListener() != null) {
+			broadcaster.getListener().loggedIn();
+		}
 		if (broadcaster.state() != State.RUNNING) { // We can login again if someone used our account while we were logged in
 			broadcaster.notifyStarted();
 		}
@@ -160,6 +163,9 @@ public class MsnHandler extends MsnAdapter {
 
 	@Override
 	public void logout(MsnMessenger messenger) {
+		if (broadcaster.getListener() != null) {
+			broadcaster.getListener().loggedOut();
+		}
 		if (broadcaster.state() == State.STOPPING) {
 			logger.debug("Logged out of msn");
 		} else {

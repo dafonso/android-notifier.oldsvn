@@ -28,4 +28,12 @@ public interface InstantMessagingNotificationBroadcaster extends NotificationBro
 	String getTargetUsername();
 	void setTargetUsername(String targetUsername);
 
+	void setListener(Listener listener);
+
+	interface Listener {
+		void loggingIn();
+		void loggedIn();
+		void loggingOut();
+		void loggedOut();
+	}
 }

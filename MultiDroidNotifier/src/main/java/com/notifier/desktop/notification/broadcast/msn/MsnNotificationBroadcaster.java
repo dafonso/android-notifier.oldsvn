@@ -44,6 +44,7 @@ public class MsnNotificationBroadcaster extends RestartableService implements In
 
 	private MsnMessenger messenger;
 	private MsnHandler msnHandler;
+	private Listener listener;
 
 	@Inject
 	public MsnNotificationBroadcaster(Application application, Provider<ApplicationPreferences> preferencesProvider, ExecutorService executorService) {
@@ -71,6 +72,9 @@ public class MsnNotificationBroadcaster extends RestartableService implements In
 				Preconditions.checkNotNull(targetUsername, "MSN target username must not be null");
 
 				logger.info("Logging into msn");
+				if (listener != null) {
+					listener.loggingIn();
+				}
 				messenger = MsnMessengerFactory.createMsnMessenger(username, password);
 				msnHandler = new MsnHandler(application, MsnNotificationBroadcaster.this, messenger, username, targetUsername);
 
@@ -112,6 +116,11 @@ public class MsnNotificationBroadcaster extends RestartableService implements In
 		}
 	}
 
+	@Override
+	public void setListener(Listener listener) {
+		this.listener = listener;
+	}
+
 	protected void notifyStarted() { // Make it visible to MsnHandler
 		super.notifyStarted();
 	}
@@ -119,6 +128,10 @@ public class MsnNotificationBroadcaster extends RestartableService implements In
 	@Override
 	protected void notifyFailed(Throwable cause) { // Make it visible to MsnHandler
 		super.notifyFailed(cause);
+	}
+
+	protected Listener getListener() {
+		return listener;
 	}
 
 	@Override
