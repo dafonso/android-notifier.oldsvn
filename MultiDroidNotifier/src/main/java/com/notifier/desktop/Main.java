@@ -37,6 +37,7 @@ import com.notifier.desktop.notification.bluetooth.*;
 import com.notifier.desktop.notification.broadcast.*;
 import com.notifier.desktop.notification.broadcast.msn.*;
 import com.notifier.desktop.notification.upnp.*;
+import com.notifier.desktop.notification.usb.*;
 import com.notifier.desktop.notification.wifi.*;
 import com.notifier.desktop.parsing.*;
 import com.notifier.desktop.service.*;
@@ -129,6 +130,9 @@ public class Main {
 			bind(NotificationReceiver.class).annotatedWith(Udp.class).to(UdpNotificationReceiver.class).in(Singleton.class);
 			bind(NotificationReceiver.class).annotatedWith(Upnp.class).to(UpnpNotificationReceiver.class).in(Singleton.class);
 			bind(NotificationReceiver.class).annotatedWith(Bluetooth.class).to(BluetoothNotificationReceiver.class).in(Singleton.class);
+			bind(NotificationReceiver.class).annotatedWith(Usb.class).to(UsbNotificationReceiver.class).in(Singleton.class);
+			bind(UsbPortForwarder.class);
+			bind(UsbPortClient.class);
 
 			bind(PreferencesDialog.class);
 			bind(TrayManager.class).to(SwtTrayManager.class).in(Singleton.class);

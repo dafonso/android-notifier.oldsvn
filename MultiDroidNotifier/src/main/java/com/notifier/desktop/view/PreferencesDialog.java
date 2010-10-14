@@ -68,7 +68,7 @@ public class PreferencesDialog extends Dialog {
 	private Button wifiCheckbox;
 	private Button internetCheckbox;
 	private Button bluetoothCheckbox;
-	// private Button usbCheckbox; USB notifications are not yet supported by the android app
+	private Button usbCheckbox;
 
 	private Button encryptCommunicationCheckbox;
 	private Text communicationPasswordText;
@@ -338,22 +338,32 @@ public class PreferencesDialog extends Dialog {
 				}
 			});
 
-			/*
-			 * usbCheckbox = new Button(notificationReceptionMethodsGroup, SWT.CHECK | SWT.LEFT);
-			 * GridData usbCheckboxLData = new GridData();
-			 * usbCheckboxLData.horizontalIndent = 5;
-			 * usbCheckbox.setLayoutData(usbCheckboxLData);
-			 * usbCheckbox.setText("USB");
-			 * usbCheckbox.setSelection(preferences.isReceptionWithUsb());
-			 * usbCheckbox.setEnabled(false);
-			 * usbCheckbox.addListener(SWT.Selection, new Listener() {
-			 * 
-			 * @Override
-			 * public void handleEvent(Event event) {
-			 * preferences.setReceptionWithUsb(usbCheckbox.getSelection());
-			 * }
-			 * });
-			 */
+			usbCheckbox = new Button(notificationReceptionMethodsGroup, SWT.CHECK | SWT.LEFT);
+			GridData usbCheckboxLData = new GridData();
+			usbCheckboxLData.horizontalIndent = 5;
+			usbCheckboxLData.horizontalSpan = 2;
+			usbCheckbox.setLayoutData(usbCheckboxLData);
+			usbCheckbox.setText("USB");
+			usbCheckbox.setSelection(preferences.isReceptionWithUsb());
+			usbCheckbox.setToolTipText("Receive notifications over USB");
+			usbCheckbox.addListener(SWT.Selection, new Listener() {
+				@Override
+				public void handleEvent(Event event) {
+					final boolean enabled = usbCheckbox.getSelection();
+					Future<Service.State> future = application.adjustUsbReceiver(enabled);
+					new ServiceAdjustListener(future, usbCheckbox, new PreferenceSetter() {
+						@Override
+						public void onSuccess() {
+							preferences.setReceptionWithUsb(enabled);
+						}
+
+						@Override
+						public void onError() {
+							preferences.setReceptionWithUsb(false);
+						}
+					}).start();
+				}
+			});
 
 			encryptCommunicationCheckbox = new Button(notificationReceptionMethodsGroup, SWT.CHECK | SWT.LEFT);
 			GridData encryptCommunicationCheckboxLData = new GridData();

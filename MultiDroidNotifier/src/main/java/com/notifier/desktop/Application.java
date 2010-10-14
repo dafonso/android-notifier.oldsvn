@@ -41,6 +41,8 @@ public interface Application {
 
 	Future<Service.State> adjustBluetoothReceiver(boolean enabled);
 
+	Future<Service.State> adjustUsbReceiver(boolean enabled);
+
 	Future<Service.State> adjustSystemDefaultBroadcaster(boolean enabled);
 
 	Future<Service.State> adjustLibnotifyBroadcaster(boolean enabled);
