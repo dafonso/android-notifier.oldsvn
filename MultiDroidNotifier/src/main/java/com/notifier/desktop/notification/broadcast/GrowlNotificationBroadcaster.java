@@ -261,7 +261,7 @@ public class GrowlNotificationBroadcaster extends RestartableService implements 
 		public void onCommunicationError(Throwable t) {
 			logger.error("Error communicating with GNTP server", t);
 			if (t instanceof ConnectException &&
-				growlConnectionRetries > 3 &&
+				growlConnectionRetries > 7 &&
 				!notifiedGrowlNotRunning) {
 				notifiedGrowlNotRunning = true;
 				application.showError(NOTIFICATION_ERROR_TITLE, "Growl is not running.");
