@@ -23,6 +23,7 @@ import java.util.concurrent.*;
 
 import org.slf4j.*;
 
+import com.google.common.base.Service.*;
 import com.google.common.io.*;
 import com.notifier.desktop.*;
 
@@ -82,11 +83,6 @@ public class MsnHandler extends MsnAdapter {
 	}
 
 	@Override
-	public void datacastMessageReceived(MsnSwitchboard switchboard, MsnDatacastMessage message, MsnContact contact) {
-		logger.info("Datacast received: " + message);
-	}
-
-	@Override
 	public void contactListSyncCompleted(MsnMessenger messenger) {
 		if (!containsTargetContact()) {
 			String msg = "Target contact is not among my friends, unable to send messages to him.";
@@ -98,7 +94,9 @@ public class MsnHandler extends MsnAdapter {
 	@Override
 	public void contactListInitCompleted(MsnMessenger messenger) {
 		logger.debug("Logged into msn successfully");
-		broadcaster.notifyStarted();
+		if (broadcaster.state() != State.RUNNING) { // We can login again if someone used our account while we were logged in
+			broadcaster.notifyStarted();
+		}
 		createSwitchboard();
 	}
 
@@ -162,7 +160,12 @@ public class MsnHandler extends MsnAdapter {
 
 	@Override
 	public void logout(MsnMessenger messenger) {
-		logger.debug("Logged out of msn");
+		if (broadcaster.state() == State.STOPPING) {
+			logger.debug("Logged out of msn");
+		} else {
+			logger.info("Someone logged into Windows Live messaging with my account, trying to login again");
+			broadcaster.doStart();
+		}
 	}
 
 	protected void createSwitchboard() {
