@@ -45,6 +45,11 @@ public class PreferencesDialog extends Dialog {
 	private static final String PASSWORD_SET_MESSAGE = "Passphrase is set, click here to change it";
 	private static final String PASSWORD_NOT_SET_MESSAGE = "Passphrase is not set, click here to set one";
 
+	private static final String MSN_OFFLINE_LABEL = "Windows Live Messenger IM (Offline)\t";
+	private static final String MSN_ONLINE_LABEL = "Windows Live Messenger IM (Online)\t";
+	private static final String MSN_LOGGING_IN_LABEL = "Windows Live Messenger IM (Logging in)";
+	private static final String MSN_LOGGING_OUT_LABEL = "Windows Live Messenger IM (Logging out)";
+
 	private final Application application;
 	private final ApplicationPreferences preferences;
 	private final NotificationManager notificationManager;
@@ -130,6 +135,7 @@ public class PreferencesDialog extends Dialog {
 						Dialogs.showError(swtManager, "Error saving preferences", "An error ocurred while saving preferences. Please, try again.", false);
 					} finally {
 						swtManager.setShowingPreferencesDialog(false);
+						msnBroadcaster.setListener(null);
 					}
 				}
 			});
@@ -539,7 +545,24 @@ public class PreferencesDialog extends Dialog {
 			GridData msnCheckboxLData = new GridData();
 			msnCheckboxLData.horizontalIndent = 5;
 			msnCheckbox.setLayoutData(msnCheckboxLData);
-			msnCheckbox.setText("Windows Live Messenger IM");
+			switch (msnBroadcaster.state()) {
+				case NEW:
+				case FAILED:
+				case TERMINATED:
+					msnCheckbox.setText(MSN_OFFLINE_LABEL);
+					break;
+				case STARTING:
+					msnCheckbox.setText(MSN_LOGGING_IN_LABEL);
+					break;
+				case RUNNING:
+					msnCheckbox.setText(MSN_ONLINE_LABEL);
+					break;
+				case STOPPING:
+					msnCheckbox.setText(MSN_LOGGING_OUT_LABEL);
+					break;
+				default:
+					throw new IllegalStateException("Unknown msn broadcaster state: " + msnBroadcaster.state());
+			}
 			msnCheckbox.setSelection(preferences.isDisplayWithMsn());
 			msnCheckbox.setToolTipText("Send notifications over Windows Live instant messaging");
 			msnCheckbox.addListener(SWT.Selection, new Listener() {
@@ -564,6 +587,55 @@ public class PreferencesDialog extends Dialog {
 					}
 				}
 			});
+			msnBroadcaster.setListener(new InstantMessagingNotificationBroadcaster.Listener() {
+				@Override
+				public void loggingIn() {
+					swtManager.update(new Runnable() {
+						@Override
+						public void run() {
+							if (!msnCheckbox.isDisposed()) {
+								msnCheckbox.setText(MSN_LOGGING_IN_LABEL);
+							}
+						}
+					});
+				}
+
+				@Override
+				public void loggedIn() {
+					swtManager.update(new Runnable() {
+						@Override
+						public void run() {
+							if (!msnCheckbox.isDisposed()) {
+								msnCheckbox.setText(MSN_ONLINE_LABEL);
+							}
+						}
+					});
+				}
+
+				@Override
+				public void loggingOut() {
+					swtManager.update(new Runnable() {
+						@Override
+						public void run() {
+							if (!msnCheckbox.isDisposed()) {
+								msnCheckbox.setText(MSN_LOGGING_OUT_LABEL);
+							}
+						}
+					});
+				}
+
+				@Override
+				public void loggedOut() {
+					swtManager.update(new Runnable() {
+						@Override
+						public void run() {
+							if (!msnCheckbox.isDisposed()) {
+								msnCheckbox.setText(MSN_OFFLINE_LABEL);
+							}
+						}
+					});
+				}
+			});
 
 			msnDetailButton = new Button(notificationDisplayMethodsGroup, SWT.PUSH | SWT.CENTER);
 			GridData msnDetailButtonLData = new GridData();
@@ -582,7 +654,7 @@ public class PreferencesDialog extends Dialog {
 					msnDetailButton.setEnabled(msnCheckbox.getSelection());
 				}
 			});
-			
+
 			notificationDisplayMethodsGroup.setExpanded(preferences.isGroupExpanded(ApplicationPreferences.Group.DISPLAY));
 
 			// Notification Actions Groups
