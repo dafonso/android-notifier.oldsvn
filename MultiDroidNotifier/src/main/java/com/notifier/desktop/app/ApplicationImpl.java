@@ -42,7 +42,7 @@ public class ApplicationImpl implements Application {
 	
 	private static final String BROADCASTER = "broadcaster";
 	private static final String RECEIVER = "receiver";
-	private static final int SHUTDOWN_TIMEOUT = 3 * 1000;
+	private static final int SHUTDOWN_TIMEOUT = 5 * 1000;
 
 	private static final Logger logger = LoggerFactory.getLogger(ApplicationImpl.class);
 
