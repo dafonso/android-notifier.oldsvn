@@ -38,6 +38,7 @@ public class NotificationPipelineFactory implements ChannelPipelineFactory {
 	private final NotificationParser<byte[]> notificationParser;
 	private final boolean hasTimeout;
 	private final boolean useDelimiter;
+	private final ChannelHandler handler;
 
 	public NotificationPipelineFactory(ChannelGroup channelGroup, Application application, NotificationManager notificationManager, NotificationParser<byte[]> notificationParser, boolean hasTimeout, boolean useDelimiter) {
 		this.channelGroup = channelGroup;
@@ -46,6 +47,17 @@ public class NotificationPipelineFactory implements ChannelPipelineFactory {
 		this.notificationParser = notificationParser;
 		this.hasTimeout = hasTimeout;
 		this.useDelimiter = useDelimiter;
+		this.handler = null;
+	}
+
+	public NotificationPipelineFactory(NotificationParser<byte[]> notificationParser, boolean hasTimeout, boolean useDelimiter, ChannelHandler handler) {
+		this.channelGroup = null;
+		this.application = null;
+		this.notificationManager = null;
+		this.notificationParser = notificationParser;
+		this.hasTimeout = hasTimeout;
+		this.useDelimiter = useDelimiter;
+		this.handler = handler;
 	}
 
 	@Override
@@ -60,7 +72,11 @@ public class NotificationPipelineFactory implements ChannelPipelineFactory {
 			pipeline.addLast("read-timeout", new ReadTimeoutHandler(timer, READ_TIMEOUT));
 		}
 		pipeline.addLast("decoder", new NotificationDecoder(notificationParser));
-		pipeline.addLast("handler", new NotificationChannelHandler(channelGroup, application, notificationManager));
+		if (handler == null) {
+			pipeline.addLast("handler", new NotificationChannelHandler(channelGroup, application, notificationManager));
+		} else {
+			pipeline.addLast("handler", handler);
+		}
 
 		return pipeline;
 	}

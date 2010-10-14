@@ -59,6 +59,7 @@ public class ApplicationImpl implements Application {
 	private @Inject @Udp NotificationReceiver udpReceiver;
 	private @Inject @Upnp NotificationReceiver upnpReceiver;
 	private @Inject @Bluetooth NotificationReceiver bluetoothReceiver;
+	private @Inject @Usb NotificationReceiver usbReceiver;
 
 	private @Inject NotificationManager notificationManager;
 	private @Inject NotificationParser<byte[]> notificationParser; 
@@ -142,6 +143,11 @@ public class ApplicationImpl implements Application {
 	@Override
 	public Future<State> adjustBluetoothReceiver(boolean enabled) {
 		return adjustService(bluetoothReceiver, enabled, RECEIVER);
+	}
+
+	@Override
+	public Future<State> adjustUsbReceiver(boolean enabled) {
+		return adjustService(usbReceiver, enabled, RECEIVER);
 	}
 
 	@Override
@@ -354,7 +360,8 @@ public class ApplicationImpl implements Application {
 		return ImmutableMap.of(tcpReceiver, preferences.isReceptionWithWifi(),
 							   udpReceiver, preferences.isReceptionWithWifi(),
 							   upnpReceiver, preferences.isReceptionWithUpnp(),
-							   bluetoothReceiver, preferences.isReceptionWithBluetooth());
+							   bluetoothReceiver, preferences.isReceptionWithBluetooth(),
+							   usbReceiver, preferences.isReceptionWithUsb());
 	}
 
 	protected void notifyUiNotLoaded() {

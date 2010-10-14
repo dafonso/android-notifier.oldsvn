@@ -1,3 +1,20 @@
+/*
+ * Android Notifier Desktop is a multiplatform remote notification client for Android devices.
+ *
+ * Copyright (C) 2010  Leandro Aparecido
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation version 3 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.notifier.desktop.notification.usb;
 
 import java.io.*;
@@ -10,13 +27,11 @@ public class UsbNotificationReceiver extends RestartableService implements Notif
 
 	private ExecutorService executorService;
 	private UsbPortForwarder portForwarder;
-	private UsbPortListener portListener;
 
 	@Inject
-	public UsbNotificationReceiver(Provider<ApplicationPreferences> preferencesProvider, ExecutorService executorService) {
+	public UsbNotificationReceiver(ExecutorService executorService, UsbPortForwarder portForwarder) {
 		this.executorService = executorService;
-		this.portForwarder = new UsbPortForwarder();
-		this.portListener = new UsbPortListener();
+		this.portForwarder = portForwarder;
 	}
 
 	@Override
@@ -30,16 +45,12 @@ public class UsbNotificationReceiver extends RestartableService implements Notif
 			throw new IllegalStateException("Android SDK home has not been set");
 		}
 		portForwarder.prepare();
-		portListener.prepare();
-
 		executorService.execute(portForwarder);
-		executorService.execute(portListener);
 	}
 
 	@Override
 	protected void doStop() throws Exception {
 		portForwarder.stop();
-		portListener.stop();
 	}
 
 	public void setSdkHome(String sdkHome) {
