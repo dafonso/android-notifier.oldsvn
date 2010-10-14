@@ -17,8 +17,6 @@
  */
 package com.notifier.desktop.notification.upnp;
 
-import static java.util.concurrent.TimeUnit.*;
-
 import java.io.*;
 import java.util.concurrent.*;
 
@@ -38,7 +36,7 @@ public class UpnpNotificationReceiver extends AbstractNotificationReceiver {
 
 	private static final String NAME = "UPNP";
 	private static final int DISCOVERY_TIMEOUT = 3 * 1000;
-	private static final int MAX_WAITS_FOR_LOCAL_ADDRESS = 5;
+	private static final int LOCAL_ADDRESS_TIMEOUT = 5;
 
 	private @Inject ExecutorService executorService;
 
@@ -64,18 +62,16 @@ public class UpnpNotificationReceiver extends AbstractNotificationReceiver {
 						internetDevice = internetDevices[0];
 						logger.debug("Found upnp internet device [{}]", internetDevice.getIGDRootDevice().getModelName());
 
-						String localAddress = null;
-						for (int i = 0; i < MAX_WAITS_FOR_LOCAL_ADDRESS && localAddress == null; i++) {
-							localAddress = InetAddresses.getLocalHostAddress();
-							if (localAddress == null) {
-								try {
-									MILLISECONDS.sleep(500);
-								} catch (InterruptedException e) {
-									Thread.currentThread().interrupt();
-									return;
-								}
+						try {
+							if (!InetAddresses.waitForLocalAddress(LOCAL_ADDRESS_TIMEOUT, TimeUnit.SECONDS)) {
+								logger.error("Timed out waiting for local address, cannot map port");
+								return;
 							}
+						} catch (InterruptedException e) {
+							logger.warn("Interrupted while waiting for local address to map port");
+							return;
 						}
+						String localAddress = InetAddresses.getLocalHostAddress();
 
 						boolean added = internetDevice.addPortMapping(Application.NAME, null, PORT, PORT, localAddress, 0, "TCP");
 						added &= internetDevice.addPortMapping(Application.NAME, null, PORT, PORT, localAddress, 0, "UDP");

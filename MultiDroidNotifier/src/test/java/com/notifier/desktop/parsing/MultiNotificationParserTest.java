@@ -17,6 +17,8 @@
  */
 package com.notifier.desktop.parsing;
 
+import java.util.*;
+
 import org.junit.*;
 
 import com.notifier.desktop.*;
@@ -31,7 +33,10 @@ public class MultiNotificationParserTest extends AbstractNotificationParserTest 
 		ProtobufNotificationParser protobufParser = new ProtobufNotificationParser(getPreferencesProvider());
 		MultiNotificationParser parser = new MultiNotificationParser(null, textParser, protobufParser);
 		
-		Notification notification = parser.parse(createTextNotification().getBytes(TextNotificationParser.CHARSET));
+		byte[] data = createTextNotification().getBytes(TextNotificationParser.CHARSET);
+		byte[] result = Arrays.copyOf(data, data.length + 1);
+		result[data.length] = 0;
+		Notification notification = parser.parse(result);
 		Notification expectedNotification = createNotification();
 
 		assertEquals(expectedNotification, notification);

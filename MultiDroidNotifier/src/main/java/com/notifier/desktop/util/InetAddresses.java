@@ -33,6 +33,7 @@ public class InetAddresses {
 
 	private static InetAddress localHostAddress;
 	private static InetAddress localAddress;
+	private static final CountDownLatch localAddressLatch = new CountDownLatch(1);
 
 	private InetAddresses() {
 	}
@@ -49,6 +50,10 @@ public class InetAddresses {
 			return null;
 		}
 		return localAddress.getHostAddress();
+	}
+
+	public static boolean waitForLocalAddress(long timeout, TimeUnit unit) throws InterruptedException {
+		return localAddressLatch.await(timeout, unit);
 	}
 
 	public static void startFindLocalAddress(ExecutorService executorService) {
@@ -86,6 +91,7 @@ public class InetAddresses {
 					}
 					localAddress = inetAddress;
 					logger.debug("Local address found");
+					localAddressLatch.countDown();
 				} catch (Exception e) {
 					logger.warn("Error looking for local address", e);
 				}
