@@ -31,7 +31,6 @@ import com.google.inject.*;
 import com.notifier.desktop.*;
 import com.notifier.desktop.notification.*;
 import com.notifier.desktop.notification.wifi.*;
-import com.notifier.desktop.util.*;
 
 public class UsbPortClient implements Runnable {
 
@@ -71,18 +70,27 @@ public class UsbPortClient implements Runnable {
 
 	protected void tryToConnect() {
 		if (!stopRequested) {
-			bootstrap.connect(new InetSocketAddress(InetAddresses.getLocalHostName(), port)).addListener(new ChannelFutureListener() {
-				@Override
-				public void operationComplete(ChannelFuture future) throws Exception {
-					if (future.isSuccess()) {
-						channel = future.getChannel();
+			try {
+				bootstrap.connect(new InetSocketAddress(InetAddress.getByName(null), port)).addListener(new ChannelFutureListener() {
+					@Override
+					public void operationComplete(ChannelFuture future) throws Exception {
+						if (future.isSuccess()) {
+							channel = future.getChannel();
+						}
 					}
-				}
-			});
+				});
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
 	class UsbPortChannelHandler extends SimpleChannelHandler {
+		@Override
+		public void channelConnected(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
+			logger.debug("Connected to device [{}] over usb successfully", device);
+		}
+
 		@Override
 		public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
 			Notification notification = (Notification) e.getMessage();

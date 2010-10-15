@@ -35,7 +35,7 @@ public class UsbPortForwarder implements Runnable {
 	private static final Logger logger = LoggerFactory.getLogger(UsbPortForwarder.class);
 
 	private static final int LOCAL_PORT = 10602;
-	private static final int ANDROID_PORT = 10601;
+	private static final String ANDROID_SOCKET_NAME = "androidnotifier";
 	private static final int SLEEP_TIME = 5;
 
 	private ExecutorService executorService;
@@ -97,7 +97,7 @@ public class UsbPortForwarder implements Runnable {
 			if (!devicesAndListeners.containsKey(device)) {
 				int port = localPortCounter++;
 				logger.debug("Forwarding port [{}] for device [{}]", port, device);
-				adb.forward(device, port, ANDROID_PORT);
+				adb.forward(device, port, ANDROID_SOCKET_NAME);
 				logger.debug("Forwarded successfully, starting client");
 				UsbPortClient client = portClientProvider.get();
 				client.setDevice(device);
