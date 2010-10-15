@@ -50,8 +50,8 @@ public class Adb {
 		return devices;
 	}
 
-	public void forward(Device device, int hostPort, int devicePort) throws IOException, InterruptedException {
-		runAdb("-s", device.getSerialNumber(), "forward", "tcp:" + hostPort, "tcp:" + devicePort);
+	public void forward(Device device, int hostPort, String unixSocketName) throws IOException, InterruptedException {
+		runAdb("-s", device.getSerialNumber(), "forward", "tcp:" + hostPort, "localabstract:" + unixSocketName);
 	}
 
 	public File getSdkHome() {
