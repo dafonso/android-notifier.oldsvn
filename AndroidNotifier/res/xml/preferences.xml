@@ -136,8 +136,8 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <CheckBoxPreference android:key="@string/method_usb_key"
                         android:title="@string/method_usb"
                         android:defaultValue="false"
-                        android:summary="@string/not_yet_implemented"
-                        android:enabled="false" />
+                        android:summaryOn="@string/enable_usb_summary_on"
+                        android:summaryOff="@string/enable_usb_summary_off" />
   </PreferenceScreen>
 
   <!-- Events -->

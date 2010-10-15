@@ -95,6 +95,14 @@ public class Notifier {
     }
   }
 
+  public void usbState(boolean plugged) {
+    for (NotificationMethod method : allMethods) {
+      if (method instanceof UsbNotificationMethod) {
+        ((UsbNotificationMethod)method).setPlugged(plugged);
+      }
+    }
+  }
+
   /**
    * Serializes the notification into a byte array, applying all necessary transformations.
    *
