@@ -53,7 +53,7 @@ class NotificationMethods {
 
     // Methods supported in all versions
     methods.add(new IpNotificationMethod(context, preferences));
-    methods.add(new UsbNotificationMethod());
+    methods.add(new UsbNotificationMethod(preferences));
 
     // Methods supported only in 2.0 and above
     if (BluetoothDeviceUtils.isBluetoothMethodSupported()) {

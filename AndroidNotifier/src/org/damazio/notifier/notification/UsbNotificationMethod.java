@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.damazio.notifier.NotifierConstants;
+import org.damazio.notifier.NotifierPreferences;
 
 import android.net.LocalServerSocket;
 import android.net.LocalSocket;
@@ -47,30 +48,32 @@ class UsbNotificationMethod implements NotificationMethod {
   private static final String SOCKET_NAME = "androidnotifier";
   private static final int SHUTDOWN_TIMEOUT = 5 * 1000;
 
+  private final NotifierPreferences preferences;
   private LocalServerSocket serverSocket;
   private Thread serverThread;
   private boolean stopRequested;
   private List<LocalSocket> openSockets;
 
+  public UsbNotificationMethod(NotifierPreferences preferences) {
+    this.preferences = preferences;
+    startServer();
+  }
+
   public void sendNotification(byte[] payload, Object target, NotificationCallback callback,
       boolean isForeground) {
     Throwable failure = null;
-    for (Iterator<LocalSocket> iterator = openSockets.iterator(); iterator.hasNext(); iterator.next()) {
+    for (Iterator<LocalSocket> iterator = openSockets.iterator(); iterator.hasNext(); ) {
       LocalSocket socket = iterator.next();
       try {
+        socket.setSendBufferSize(payload.length * 2);
         OutputStream stream = socket.getOutputStream();
         stream.write(payload);
         stream.flush();
       } catch (IOException e) {
         failure = e;
         Log.e(NotifierConstants.LOG_TAG, "Could not send notification over usb socket", e);
-        try {
-          socket.close();
-        } catch (IOException e1) {
-          Log.e(NotifierConstants.LOG_TAG, "Error closing dirty usb socket", e);
-        } finally {
-          iterator.remove();
-        }
+        close(socket);
+        iterator.remove();
       }
     }
     callback.notificationDone(target, failure);
@@ -81,20 +84,12 @@ class UsbNotificationMethod implements NotificationMethod {
   }
 
   public boolean isEnabled() {
-    return false;
+    return preferences.isUsbMethodEnabled();
   }
 
   @Override
   public Iterable<String> getTargets() {
     return Collections.singletonList("usb");
-  }
-
-  public void setPlugged(boolean plugged) {
-    if (plugged) {
-      startServer();
-    } else {
-      stopServer();
-    }
   }
 
   protected void startServer() {
@@ -116,18 +111,12 @@ class UsbNotificationMethod implements NotificationMethod {
               }
             }
             for (LocalSocket socket : openSockets) {
-              if (socket.isConnected()) {
-                try {
-                  socket.shutdownOutput();
-                } catch (IOException e) {
-                  Log.w(NotifierConstants.LOG_TAG, "Error shutting down usb socket", e);
-                } finally {
-                  try {
-                    socket.close();
-                  } catch (IOException e) {
-                    Log.w(NotifierConstants.LOG_TAG, "Error closing usb socket", e);
-                  }
-                }
+              try {
+                socket.shutdownOutput();
+              } catch (IOException e) {
+                Log.w(NotifierConstants.LOG_TAG, "Error shutting down usb socket", e);
+              } finally {
+                close(socket);
               }
             }
           }
@@ -158,6 +147,14 @@ class UsbNotificationMethod implements NotificationMethod {
           serverSocket = null;
         }
       }
+    }
+  }
+
+  protected void close(LocalSocket socket) {
+    try {
+      socket.close();
+    } catch (IOException ce) {
+      Log.e(NotifierConstants.LOG_TAG, "Error closing usb socket", ce);
     }
   }
 }

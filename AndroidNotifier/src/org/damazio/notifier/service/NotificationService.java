@@ -65,8 +65,6 @@ public class NotificationService extends Service {
    */
   private static final String EXTRA_NOTIFICATION = "org.damazio.notifier.service.EXTRA_NOTIFICATION";
 
-  private static final String EXTRA_USB_PLUGGED = "org.damazio.notifier.service.EXTRA_USB_PLUGGED";
-
   private NotifierPreferences preferences;
   private ServicePreferencesListener preferenceListener;
   private Notifier notifier;
@@ -125,7 +123,6 @@ public class NotificationService extends Service {
         return;
       }
 
-      boolean usbPlugged = intent.getBooleanExtra(EXTRA_USB_PLUGGED, false);
       if (started) {
         Log.d(NotifierConstants.LOG_TAG, "Not starting service again");
       } else {
@@ -148,7 +145,6 @@ public class NotificationService extends Service {
         preferenceListener = new ServicePreferencesListener();
         preferences.registerOnSharedPreferenceChangeListener(preferenceListener);
       }
-      notifier.usbState(usbPlugged);
     }
 
     sendIntentNotification(intent);
@@ -244,13 +240,8 @@ public class NotificationService extends Service {
   }
 
   public static void startAndSend(Context context, Notification notification) {
-    startAndSend(context, notification, false);
-  }
-
-  public static void startAndSend(Context context, Notification notification, boolean usbPlugged) {
     Intent intent = new Intent(context, NotificationService.class);
     intent.putExtra(EXTRA_NOTIFICATION, notification);
-    intent.putExtra(EXTRA_USB_PLUGGED, usbPlugged);
     context.startService(intent);
   }
 
