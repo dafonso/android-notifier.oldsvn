@@ -81,7 +81,7 @@ public class Adb {
 		}
 
 		public static enum Type {
-			DEVICE("device"), EMULATOR("emulator");
+			DEVICE("device"), EMULATOR("emulator"), UNKNOWN("");
 			
 			private String name;
 
@@ -95,7 +95,7 @@ public class Adb {
 						return t;
 					}
 				}
-				return null;
+				return UNKNOWN;
 			}
 		}
 
