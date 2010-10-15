@@ -20,17 +20,23 @@ package com.notifier.desktop.notification.usb;
 import java.io.*;
 import java.util.*;
 
+import org.slf4j.*;
+
 import com.google.common.base.*;
 import com.google.common.collect.*;
 import com.google.common.io.*;
 
 public class Adb {
 
-	private static final String ADB_PATH = "/tools/adb";
+	private static final Logger logger = LoggerFactory.getLogger(Adb.class);
+
+	private static final String TOOLS_PATH = "/tools";
+	private static final String ADB_PATH = TOOLS_PATH + "/adb";
 
 	private File sdkHome;
 
 	public List<Device> devices() throws IOException, InterruptedException {
+		Preconditions.checkNotNull(sdkHome, "Android SDK home has not been set");
 		String output = runAdb("devices");
 		Iterator<String> lines = Splitter.on('\n').trimResults().split(output).iterator();
 		for (;lines.next().startsWith("*");) {
@@ -51,6 +57,7 @@ public class Adb {
 	}
 
 	public void forward(Device device, int hostPort, String unixSocketName) throws IOException, InterruptedException {
+		Preconditions.checkNotNull(sdkHome, "Android SDK home has not been set");
 		runAdb("-s", device.getSerialNumber(), "forward", "tcp:" + hostPort, "localabstract:" + unixSocketName);
 	}
 
@@ -60,6 +67,7 @@ public class Adb {
 
 	public void setSdkHome(File sdkHome) {
 		Preconditions.checkArgument(sdkHome.isDirectory(), "Android SDK home does not exist or is not a directory.");
+		Preconditions.checkArgument(new File(sdkHome, TOOLS_PATH).isDirectory(), "The directory is not Android SDK home, it must contain a \"tools\" sub-directory.");
 		this.sdkHome = sdkHome;
 	}
 
@@ -159,6 +167,7 @@ public class Adb {
 				return new BufferedReader(new InputStreamReader(process.getInputStream()));
 			}
 		});
+		logger.trace("adb output:\n{}", output);
 		int exitCode = process.waitFor();
 		if (exitCode != 0) {
 			throw new IOException("adb returned error code: " + exitCode);
