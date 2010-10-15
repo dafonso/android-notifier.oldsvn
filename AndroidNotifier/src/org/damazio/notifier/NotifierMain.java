@@ -421,7 +421,7 @@ public class NotifierMain extends PreferenceActivity {
     // TODO: Warn if none of the selected methods are available
     //       (e.g. bluetooth and/or IP turned off)
     if (notifier == null) {
-      notifier = new Notifier(this, preferences);
+//      notifier = new Notifier(this, preferences);
     }
 
     String contents = getString(R.string.ping_contents);
