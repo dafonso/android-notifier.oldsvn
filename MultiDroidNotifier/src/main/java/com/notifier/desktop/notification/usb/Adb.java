@@ -144,7 +144,7 @@ public class Adb {
 
 		@Override
 		public String toString() {
-			return serialNumber;
+			return serialNumber.substring(0, serialNumber.length() / 2) + Strings.repeat("X", 6);
 		}
 	}
 
