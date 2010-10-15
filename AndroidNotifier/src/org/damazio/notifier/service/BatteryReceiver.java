@@ -58,8 +58,10 @@ class BatteryReceiver extends BroadcastReceiver {
       return;
     }
     NotifierPreferences preferences = new NotifierPreferences(context);
+    boolean usbPlugged = preferences.isUsbMethodEnabled() && intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0) == BatteryManager.BATTERY_PLUGGED_USB;
     if (!preferences.isBatteryEventEnabled()) {
       Log.d(NotifierConstants.LOG_TAG, "Ignoring battery event, disabled.");
+      NotificationService.startAndSend(context, null, usbPlugged); // Send usb plugged extra anyway
       return;
     }
 
@@ -111,6 +113,7 @@ class BatteryReceiver extends BroadcastReceiver {
       }
     } else {
       Log.w(NotifierConstants.LOG_TAG, "Unknown battery status");
+      NotificationService.startAndSend(context, null, usbPlugged); // Send usb plugged extra anyway
       return;
     }
 
@@ -131,7 +134,7 @@ class BatteryReceiver extends BroadcastReceiver {
         String data = Integer.toString(batteryLevelPercentage);
         Notification notification =
             new Notification(context, NotificationType.BATTERY, data, contents);
-        NotificationService.startAndSend(context, notification);
+        NotificationService.startAndSend(context, notification, usbPlugged);
   
         lastBatteryStatus = status;
         lastBatteryLevelPercentage = batteryLevelPercentage;

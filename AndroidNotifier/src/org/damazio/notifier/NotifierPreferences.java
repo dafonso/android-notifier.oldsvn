@@ -264,6 +264,14 @@ public class NotifierPreferences {
   }
 
   /**
+   * Sets whether notifications will be sent with the usb method.
+   */
+  public void setUsbMethodEnabled(boolean enabled) {
+    preferences.edit()
+        .putBoolean(context.getString(R.string.method_usb_key), enabled)
+        .commit();
+  }
+  /**
    * @return whether to send notifications when the phone rings
    */
   public boolean isRingEventEnabled() {

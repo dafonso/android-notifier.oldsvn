@@ -65,6 +65,8 @@ public class NotificationService extends Service {
    */
   private static final String EXTRA_NOTIFICATION = "org.damazio.notifier.service.EXTRA_NOTIFICATION";
 
+  private static final String EXTRA_USB_PLUGGED = "org.damazio.notifier.service.EXTRA_USB_PLUGGED";
+
   private NotifierPreferences preferences;
   private ServicePreferencesListener preferenceListener;
   private Notifier notifier;
@@ -123,30 +125,30 @@ public class NotificationService extends Service {
         return;
       }
 
+      boolean usbPlugged = intent.getBooleanExtra(EXTRA_USB_PLUGGED, false);
       if (started) {
         Log.d(NotifierConstants.LOG_TAG, "Not starting service again");
-        sendIntentNotification(intent);
-        return;
+      } else {
+        Log.i(NotifierConstants.LOG_TAG, "Starting notification service");
+        started = true;
+        instanceHandler = new Handler();
+  
+        notifier = new Notifier(this, preferences);
+  
+        // Register the voicemail receiver
+        final TelephonyManager tm = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+        tm.listen(voicemailListener, PhoneStateListener.LISTEN_MESSAGE_WAITING_INDICATOR);
+  
+        // Register the battery receiver
+        // (can't be registered in the manifest for some reason)
+        registerReceiver(batteryReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+
+        showOrHideLocalNotification();
+  
+        preferenceListener = new ServicePreferencesListener();
+        preferences.registerOnSharedPreferenceChangeListener(preferenceListener);
       }
-
-      Log.i(NotifierConstants.LOG_TAG, "Starting notification service");
-      started = true;
-      instanceHandler = new Handler();
-
-      notifier = new Notifier(this, preferences);
-
-      // Register the voicemail receiver
-      final TelephonyManager tm = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-      tm.listen(voicemailListener, PhoneStateListener.LISTEN_MESSAGE_WAITING_INDICATOR);
-
-      // Register the battery receiver
-      // (can't be registered in the manifest for some reason)
-      registerReceiver(batteryReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-
-      showOrHideLocalNotification();
-
-      preferenceListener = new ServicePreferencesListener();
-      preferences.registerOnSharedPreferenceChangeListener(preferenceListener);
+      notifier.usbState(usbPlugged);
     }
 
     sendIntentNotification(intent);
@@ -242,8 +244,13 @@ public class NotificationService extends Service {
   }
 
   public static void startAndSend(Context context, Notification notification) {
+    startAndSend(context, notification, false);
+  }
+
+  public static void startAndSend(Context context, Notification notification, boolean usbPlugged) {
     Intent intent = new Intent(context, NotificationService.class);
     intent.putExtra(EXTRA_NOTIFICATION, notification);
+    intent.putExtra(EXTRA_USB_PLUGGED, usbPlugged);
     context.startService(intent);
   }
 
