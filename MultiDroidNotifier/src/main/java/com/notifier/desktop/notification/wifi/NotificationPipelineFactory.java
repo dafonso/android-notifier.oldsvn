@@ -64,7 +64,7 @@ public class NotificationPipelineFactory implements ChannelPipelineFactory {
 	public ChannelPipeline getPipeline() throws Exception {
 		ChannelPipeline pipeline = Channels.pipeline();
 		if (useDelimiter) {
-			pipeline.addLast("delimiter", new DelimiterBasedFrameDecoder(MAX_MESSAGE_LENGTH, MESSAGE_DELIMITER));
+			pipeline.addLast("delimiter", new DelimiterBasedFrameDecoder(MAX_MESSAGE_LENGTH, false, MESSAGE_DELIMITER));
 		}
 
 		if (hasTimeout) {

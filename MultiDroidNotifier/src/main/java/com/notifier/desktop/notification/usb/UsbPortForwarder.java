@@ -36,7 +36,7 @@ public class UsbPortForwarder implements Runnable {
 
 	private static final int LOCAL_PORT = 10602;
 	private static final String ANDROID_SOCKET_NAME = "androidnotifier";
-	private static final int SLEEP_TIME = 5;
+	private static final int SLEEP_TIME = 3;
 
 	private ExecutorService executorService;
 	private Provider<UsbPortClient> portClientProvider;
@@ -50,20 +50,36 @@ public class UsbPortForwarder implements Runnable {
 	@Inject
 	public UsbPortForwarder(Provider<ApplicationPreferences> preferencesProvider, Provider<UsbPortClient> portClientProvider, ExecutorService executorService) {
 		this.adb = new Adb();
-		this.adb.setSdkHome(new File("C:/Development/java/android-sdk-windows"));
+		this.adb.setSdkHome(new File("C:/java/android-sdk-windows"));
 		this.executorService = executorService;
 		this.portClientProvider = portClientProvider;
+	}
+
+	public void prepare() {
+		stopRequested = false;
+		localPortCounter = LOCAL_PORT;
+		devicesAndListeners = Maps.newHashMap();
+	}
+
+	public void stop() {
+		stopRequested = true;
 	}
 
 	@Override
 	public void run() {
 		Preconditions.checkState(localPortCounter == LOCAL_PORT, "prepare() has not been called");
 		while (!Thread.currentThread().isInterrupted() && !stopRequested) {
-			logger.debug("Listing adb devices");
+			logger.trace("Listing adb devices");
 			Collection<Adb.Device> actualDevices = Collections.emptyList();
 			try {
 				List<Adb.Device> devices = adb.devices();
-				actualDevices = Collections2.filter(devices, new Adb.Device.TypePredicate(Adb.Device.Type.DEVICE)); 
+				purgeDisconnectedDevices(devices);
+				actualDevices = Collections2.filter(devices, new Adb.Device.TypePredicate(Adb.Device.Type.DEVICE));
+				actualDevices = Collections2.filter(actualDevices, new Predicate<Adb.Device>() {
+					public boolean apply(Adb.Device input) {
+						return !devicesAndListeners.keySet().contains(input);
+					}
+				});
 			} catch (IOException e) {
 				logger.error("Error running adb", e);
 			} catch (InterruptedException e) {
@@ -71,13 +87,15 @@ public class UsbPortForwarder implements Runnable {
 			} catch (Exception e) {
 				logger.error("Error running adb", e);
 			}
-			logger.debug("Found [{}] devices", actualDevices.size());
+			if (!actualDevices.isEmpty()) {
+				logger.debug("Found [{}] new devices", actualDevices.size());
 
-			for (Adb.Device device : actualDevices) {
-				try {
-					forwardAndListen(device);
-				} catch (InterruptedException e) {
-					return;
+				for (Adb.Device device : actualDevices) {
+					try {
+						forwardAndListen(device);
+					} catch (InterruptedException e) {
+						return;
+					}
 				}
 			}
 
@@ -110,14 +128,15 @@ public class UsbPortForwarder implements Runnable {
 		}
 	}
 
-	public void prepare() {
-		stopRequested = false;
-		localPortCounter = LOCAL_PORT;
-		devicesAndListeners = Maps.newHashMap();
-	}
-
-	public void stop() {
-		stopRequested = true;
+	protected void purgeDisconnectedDevices(List<Adb.Device> devices) {
+		for (Iterator<Map.Entry<Adb.Device, UsbPortClient>> iterator = devicesAndListeners.entrySet().iterator(); iterator.hasNext();) {
+			Map.Entry<Adb.Device, UsbPortClient> entry = iterator.next();
+			if (!devices.contains(entry.getKey())) {
+				logger.debug("Device [{}] has been disconnected from usb", entry.getKey());
+				entry.getValue().stop();
+				iterator.remove();
+			}
+		}
 	}
 
 	public File getSdkHome() {

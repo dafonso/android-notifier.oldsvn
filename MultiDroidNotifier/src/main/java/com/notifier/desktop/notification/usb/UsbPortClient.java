@@ -57,7 +57,7 @@ public class UsbPortClient implements Runnable {
 		bootstrap.setPipelineFactory(new NotificationPipelineFactory(notificationParser, false, true, new UsbPortChannelHandler()));
 		bootstrap.setOption("tcpNoDelay", true);
 		bootstrap.setOption("keepAlive", true);
-		tryToConnect();
+		tryToConnect(false);
 	}
 
 	public void stop() {
@@ -68,7 +68,18 @@ public class UsbPortClient implements Runnable {
 		factory.releaseExternalResources();
 	}
 
-	protected void tryToConnect() {
+	protected void tryToConnect(boolean sleep) {
+		if (stopRequested) {
+			return;
+		}
+		if (sleep) {
+			logger.debug("Could not connect to device [{}] over usb, will try again in [{}] seconds", device, RECONNECT_INTERVAL);
+			try {
+				SECONDS.sleep(RECONNECT_INTERVAL);
+			} catch (InterruptedException ie) {
+				return;
+			}
+		}
 		if (!stopRequested) {
 			try {
 				bootstrap.connect(new InetSocketAddress(InetAddress.getByName(null), port)).addListener(new ChannelFutureListener() {
@@ -87,8 +98,8 @@ public class UsbPortClient implements Runnable {
 
 	class UsbPortChannelHandler extends SimpleChannelHandler {
 		@Override
-		public void channelConnected(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
-			logger.debug("Connected to device [{}] over usb successfully", device);
+		public void channelDisconnected(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
+			tryToConnect(true);
 		}
 
 		@Override
@@ -102,15 +113,7 @@ public class UsbPortClient implements Runnable {
 		@Override
 		public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e) throws Exception {
 			if (e.getCause() instanceof ConnectException) {
-				if (!stopRequested) {
-					logger.debug("Could not connect to device [{}] over usb, will try again in [{}] seconds", device, RECONNECT_INTERVAL);
-					try {
-						SECONDS.sleep(RECONNECT_INTERVAL);
-					} catch (InterruptedException ie) {
-						return;
-					}
-					tryToConnect();
-				}
+				tryToConnect(true);
 			} else if (e.getCause() instanceof java.nio.channels.ClosedByInterruptException) {
 				// We've been interrupted, nothing to do
 			} else {
