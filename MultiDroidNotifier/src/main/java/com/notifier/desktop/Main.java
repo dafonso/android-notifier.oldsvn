@@ -130,7 +130,7 @@ public class Main {
 			bind(NotificationReceiver.class).annotatedWith(Udp.class).to(UdpNotificationReceiver.class).in(Singleton.class);
 			bind(NotificationReceiver.class).annotatedWith(Upnp.class).to(UpnpNotificationReceiver.class).in(Singleton.class);
 			bind(NotificationReceiver.class).annotatedWith(Bluetooth.class).to(BluetoothNotificationReceiver.class).in(Singleton.class);
-			bind(NotificationReceiver.class).annotatedWith(Usb.class).to(UsbNotificationReceiver.class).in(Singleton.class);
+			bind(UsbNotificationReceiver.class).to(UsbNotificationReceiverImpl.class).in(Singleton.class);
 			bind(UsbPortForwarder.class);
 			bind(UsbPortClient.class);
 

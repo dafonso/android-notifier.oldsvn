@@ -50,14 +50,15 @@ public class PreferencesDialog extends Dialog {
 	private static final String MSN_LOGGING_IN_LABEL = "Windows Live Messenger IM (Logging in)";
 	private static final String MSN_LOGGING_OUT_LABEL = "Windows Live Messenger IM (Logging out)";
 
-	private final Application application;
-	private final ApplicationPreferences preferences;
-	private final NotificationManager notificationManager;
-	private final NotificationParser<?> notificationParser;
-	private final InstantMessagingNotificationBroadcaster msnBroadcaster;
-	private final SwtManager swtManager;
-	private final ExecutorService executorService;
+	private @Inject Application application;
+	private @Inject ApplicationPreferences preferences;
+	private @Inject NotificationManager notificationManager;
+	private @Inject NotificationParser<byte[]> notificationParser;
+	private @Inject @Msn InstantMessagingNotificationBroadcaster msnBroadcaster;
+	private @Inject UsbNotificationReceiver usbReceiverConfiguration;
+	private @Inject ExecutorService executorService;
 
+	private SwtManager swtManager;
 	private Shell dialogShell;
 
 	private PGroup generalGroup;
@@ -96,19 +97,9 @@ public class PreferencesDialog extends Dialog {
 	private BiMap<Long, String> pairedDevices;
 
 	@Inject
-	public PreferencesDialog(Application application,
-	                         NotificationManager notificationManager,
-	                         NotificationParser<byte[]> notificationParser,
-	                         @Msn InstantMessagingNotificationBroadcaster msnBroadcaster,
-	                         SwtManager swtManager,
-	                         ExecutorService executorService) {
+	public PreferencesDialog(SwtManager swtManager) {
 		super(swtManager.getShell(), SWT.NULL);
-		this.application = application;
-		this.notificationManager = notificationManager;
-		this.notificationParser = notificationParser;
-		this.msnBroadcaster = msnBroadcaster;
 		this.swtManager = swtManager;
-		this.executorService = executorService;
 		preferences = new ApplicationPreferences();
 		pairedDevices = HashBiMap.create();
 	}
@@ -341,7 +332,6 @@ public class PreferencesDialog extends Dialog {
 			usbCheckbox = new Button(notificationReceptionMethodsGroup, SWT.CHECK | SWT.LEFT);
 			GridData usbCheckboxLData = new GridData();
 			usbCheckboxLData.horizontalIndent = 5;
-			usbCheckboxLData.horizontalSpan = 2;
 			usbCheckbox.setLayoutData(usbCheckboxLData);
 			usbCheckbox.setText("USB");
 			usbCheckbox.setSelection(preferences.isReceptionWithUsb());
@@ -350,6 +340,13 @@ public class PreferencesDialog extends Dialog {
 				@Override
 				public void handleEvent(Event event) {
 					final boolean enabled = usbCheckbox.getSelection();
+					if (enabled && preferences.getAndroidSdkHome().isEmpty()) {
+						selectAndroidSdkHome();
+						if (preferences.getAndroidSdkHome().isEmpty()) {
+							usbCheckbox.setSelection(false);
+							return;
+						}
+					}
 					Future<Service.State> future = application.adjustUsbReceiver(enabled);
 					new ServiceAdjustListener(future, usbCheckbox, new PreferenceSetter() {
 						@Override
@@ -365,6 +362,24 @@ public class PreferencesDialog extends Dialog {
 				}
 			});
 
+			final Button sdkHomeButton = new Button(notificationReceptionMethodsGroup, SWT.PUSH | SWT.CENTER);
+			GridData sdkHomeButtonLData = new GridData();
+			sdkHomeButton.setLayoutData(sdkHomeButtonLData);
+			sdkHomeButton.setText("Select Android SDK directory...");
+			sdkHomeButton.setEnabled(preferences.isReceptionWithUsb());
+			sdkHomeButton.addListener(SWT.Selection, new Listener() {
+				@Override
+				public void handleEvent(Event event) {
+					selectAndroidSdkHome();
+				}
+			});
+			usbCheckbox.addListener(SWT.Selection, new Listener() {
+				@Override
+				public void handleEvent(Event event) {
+					sdkHomeButton.setEnabled(usbCheckbox.getSelection());
+				}
+			});
+
 			encryptCommunicationCheckbox = new Button(notificationReceptionMethodsGroup, SWT.CHECK | SWT.LEFT);
 			GridData encryptCommunicationCheckboxLData = new GridData();
 			encryptCommunicationCheckboxLData.horizontalIndent = 5;
@@ -372,7 +387,7 @@ public class PreferencesDialog extends Dialog {
 			encryptCommunicationCheckbox.setLayoutData(encryptCommunicationCheckboxLData);
 			encryptCommunicationCheckbox.setText("Decrypt notifications");
 			encryptCommunicationCheckbox.setSelection(preferences.isEncryptCommunication());
-			encryptCommunicationCheckbox.setToolTipText("'Encrypt notifications' must be enabled in android app");
+			encryptCommunicationCheckbox.setToolTipText("\"Encrypt notifications\" must be enabled in android app");
 			encryptCommunicationCheckbox.addListener(SWT.Selection, new Listener() {
 				@Override
 				public void handleEvent(Event event) {
@@ -1008,6 +1023,26 @@ public class PreferencesDialog extends Dialog {
 		item.setControl(composite);
 
 		return item;
+	}
+
+	protected void selectAndroidSdkHome() {
+		DirectoryDialog dialog = new DirectoryDialog(dialogShell);
+		dialog.setText("Select Android SDK home");
+		dialog.setMessage("Please, select Android SDK home");
+		if (preferences.getAndroidSdkHome().isEmpty()) {
+			dialog.setFilterPath(OperatingSystems.getApplicationsRoot());
+		} else {
+			dialog.setFilterPath(preferences.getAndroidSdkHome());
+		}
+		String path = dialog.open();
+		if (path != null) {
+			try {
+				usbReceiverConfiguration.setSdkHome(path);
+				preferences.setAndroidSdkHome(path);
+			} catch (Exception e) {
+				application.showError("Android SDK Error", e.getMessage());
+			}
+		}
 	}
 
 	protected void showMsnDetailDialog() {

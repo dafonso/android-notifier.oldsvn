@@ -23,13 +23,13 @@ import java.util.concurrent.*;
 import com.google.inject.*;
 import com.notifier.desktop.*;
 
-public class UsbNotificationReceiver extends RestartableService implements NotificationReceiver {
+public class UsbNotificationReceiverImpl extends RestartableService implements NotificationReceiver, UsbNotificationReceiver {
 
 	private ExecutorService executorService;
 	private UsbPortForwarder portForwarder;
 
 	@Inject
-	public UsbNotificationReceiver(ExecutorService executorService, UsbPortForwarder portForwarder) {
+	public UsbNotificationReceiverImpl(ExecutorService executorService, UsbPortForwarder portForwarder) {
 		this.executorService = executorService;
 		this.portForwarder = portForwarder;
 	}

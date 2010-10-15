@@ -34,18 +34,20 @@ public class ApplicationPreferences {
 	private static final String START_AT_LOGIN = "startAtLogin";
 	private static final String PRIVATE_MODE = "privateMode";
 
-	public static final String RECEPTION_WITH_WIFI = "receptionWithWifi";
-	public static final String RECEPTION_WITH_UPNP = "receptionWithUpnp";
-	public static final String RECEPTION_WITH_BLUETOOTH = "receptionWithBluetooth";
-	public static final String RECEPTION_WITH_USB = "receptionWithUsb";
+	private static final String RECEPTION_WITH_WIFI = "receptionWithWifi";
+	private static final String RECEPTION_WITH_UPNP = "receptionWithUpnp";
+	private static final String RECEPTION_WITH_BLUETOOTH = "receptionWithBluetooth";
+	private static final String RECEPTION_WITH_USB = "receptionWithUsb";
+
+	private static final String ANDROID_SDK_HOME = "androidSdkHome";
 
 	private static final String ENCRYPT_COMMUNICATION = "encryptCommunication";
 	private static final String COMMUNICATION_PASSWORD = "communicationPassword";
 
-	public static final String DISPLAY_WITH_SYSTEM_DEFAULT = "displayWithSystemDefault";
-	public static final String DISPLAY_WITH_GROWL = "displayWithGrowl";
-	public static final String DISPLAY_WITH_LIBNOTIFY = "displayWithLibnotify";
-	public static final String DISPLAY_WITH_MSN = "displayWithMsn";
+	private static final String DISPLAY_WITH_SYSTEM_DEFAULT = "displayWithSystemDefault";
+	private static final String DISPLAY_WITH_GROWL = "displayWithGrowl";
+	private static final String DISPLAY_WITH_LIBNOTIFY = "displayWithLibnotify";
+	private static final String DISPLAY_WITH_MSN = "displayWithMsn";
 
 	private static final String MSN_USERNAME = "msnUsername";
 	private static final String MSN_PASSWORD = "msnPassword";
@@ -73,6 +75,8 @@ public class ApplicationPreferences {
 	private boolean receptionWithUpnp;
 	private boolean receptionWithBluetooth;
 	private boolean receptionWithUsb;
+
+	private String androidSdkHome;
 
 	private boolean encryptCommunication;
 	private byte[] communicationPassword;
@@ -113,6 +117,8 @@ public class ApplicationPreferences {
 		receptionWithUpnp = prefs.getBoolean(RECEPTION_WITH_UPNP, false);
 		receptionWithBluetooth = prefs.getBoolean(RECEPTION_WITH_BLUETOOTH, false);
 		receptionWithUsb = prefs.getBoolean(RECEPTION_WITH_USB, false);
+
+		androidSdkHome = prefs.get(ANDROID_SDK_HOME, "");
 
 		encryptCommunication = prefs.getBoolean(ENCRYPT_COMMUNICATION, false);
 		communicationPassword = prefs.getByteArray(COMMUNICATION_PASSWORD, new byte[0]);
@@ -181,6 +187,8 @@ public class ApplicationPreferences {
 		prefs.putBoolean(RECEPTION_WITH_UPNP, receptionWithUpnp);
 		prefs.putBoolean(RECEPTION_WITH_BLUETOOTH, receptionWithBluetooth);
 		prefs.putBoolean(RECEPTION_WITH_USB, receptionWithUsb);
+
+		prefs.put(ANDROID_SDK_HOME, androidSdkHome);
 
 		prefs.putBoolean(ENCRYPT_COMMUNICATION, encryptCommunication);
 		prefs.putByteArray(COMMUNICATION_PASSWORD, communicationPassword);
@@ -362,6 +370,14 @@ public class ApplicationPreferences {
 
 	public void setReceptionWithUsb(boolean receptionWithUsb) {
 		this.receptionWithUsb = receptionWithUsb;
+	}
+
+	public String getAndroidSdkHome() {
+		return androidSdkHome;
+	}
+
+	public void setAndroidSdkHome(String androidSdkHome) {
+		this.androidSdkHome = androidSdkHome;
 	}
 
 	public boolean isEncryptCommunication() {

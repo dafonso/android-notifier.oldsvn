@@ -59,7 +59,7 @@ public class ApplicationImpl implements Application {
 	private @Inject @Udp NotificationReceiver udpReceiver;
 	private @Inject @Upnp NotificationReceiver upnpReceiver;
 	private @Inject @Bluetooth NotificationReceiver bluetoothReceiver;
-	private @Inject @Usb NotificationReceiver usbReceiver;
+	private @Inject UsbNotificationReceiver usbReceiver;
 
 	private @Inject NotificationManager notificationManager;
 	private @Inject NotificationParser<byte[]> notificationParser; 

@@ -60,7 +60,6 @@ public class ServiceServerImpl extends RestartableService implements ServiceServ
 
 	@Override
 	public void doStop() {
-		logger.debug("Stopping service server");
 		try {
 			stopped = true;
 			if (serverSocket != null) {
