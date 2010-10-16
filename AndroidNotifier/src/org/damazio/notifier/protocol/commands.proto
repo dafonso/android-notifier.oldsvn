@@ -1,0 +1,72 @@
+
+package AndroidNotifier;
+
+// TODO: Merge with proto in MultiDroidNotifier
+
+option java_package = "org.damazio.notifier.protocol";
+option java_outer_classname = "CommandProtocol";
+option optimize_for = LITE_RUNTIME;
+
+message Contact {
+  enum Type {
+    HOME = 0;
+    MOBILE = 1;
+    WORK = 2;
+    OTHER = 3;
+  }
+
+  required string name = 1;
+  required string number = 2;
+  required Type type = 3;
+  optional string other_type = 4;
+  // TODO: Figure this one out
+  // optional bytes picture = 5;
+}
+
+message CommandRequest {
+  required fixed64 device_id = 1;
+  required fixed64 command_id = 2;
+
+  enum CommandType {
+    CALL = 1;
+    ANSWER = 2;
+    HANG_UP = 3;
+    SEND_SMS = 4;
+    SEND_MMS = 5;
+    QUERY = 6;
+  }
+  required CommandType command_type = 3;
+
+  message CallOptions {
+    required string phone_number = 1;
+  };
+
+  message SmsOptions {
+    required string phone_number = 1;
+    required string sms_message = 2;
+  };
+
+  message QueryOptions {
+    required string query = 1;
+  };
+
+  optional CallOptions call_options = 10;
+  optional SmsOptions sms_options = 11;
+  optional QueryOptions query_options = 12;
+}
+
+message CommandResponse {
+  // Id of the device responding
+  required fixed64 device_id = 1;
+
+  // Id of the command being responded to
+  required fixed64 command_id = 2;
+
+  optional bool success = 3 [default = false];
+  optional string errorMessage = 4;
+
+  message SearchResults {
+    repeated Contact contacts = 1;
+  }
+  optional SearchResults search_results = 10;
+}

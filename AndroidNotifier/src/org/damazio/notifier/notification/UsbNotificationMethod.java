@@ -40,8 +40,11 @@ import android.util.Log;
 
 /**
  * Notification method for sending notifications over USB.
+ * 
+ * TODO: Stop server when not connected to USB
+ * TODO: Proper thread synchronization
  *
- * @author rdamazio
+ * @author Leandro Oliveira
  */
 class UsbNotificationMethod implements NotificationMethod {
 
@@ -59,6 +62,7 @@ class UsbNotificationMethod implements NotificationMethod {
     startServer();
   }
 
+  @Override
   public void sendNotification(byte[] payload, Object target, NotificationCallback callback,
       boolean isForeground) {
     Throwable failure = null;
@@ -89,10 +93,11 @@ class UsbNotificationMethod implements NotificationMethod {
 
   @Override
   public Iterable<String> getTargets() {
+    // TODO: Return a usb socket aliases for each socket
     return Collections.singletonList("usb");
   }
 
-  protected void startServer() {
+  private void startServer() {
     if (serverSocket == null) {
       Log.d(NotifierConstants.LOG_TAG, "Starting usb SocketServer");
       stopRequested = false;
@@ -129,7 +134,7 @@ class UsbNotificationMethod implements NotificationMethod {
     }
   }
 
-  protected void stopServer() {
+  private void stopServer() {
     if (serverSocket != null) {
       Log.d(NotifierConstants.LOG_TAG, "Starting usb SocketServer");
       stopRequested = true;

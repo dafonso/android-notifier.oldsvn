@@ -24,15 +24,20 @@
  */
 package org.damazio.notifier.command;
 
-import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 
 import org.damazio.notifier.NotifierConstants;
+import org.damazio.notifier.NotifierPreferences;
+import org.damazio.notifier.notification.DeviceIdProvider;
+import org.damazio.notifier.protocol.CommandProtocol.CommandRequest;
+import org.damazio.notifier.protocol.CommandProtocol.CommandRequest.CommandType;
+import org.damazio.notifier.protocol.CommandProtocol.CommandResponse;
+import org.damazio.notifier.protocol.CommandProtocol.CommandResponse.Builder;
 
+import android.content.Context;
 import android.util.Log;
 
 /**
@@ -42,37 +47,105 @@ import android.util.Log;
  */
 class CommandStreamHandler extends Thread {
 
-  private static final int BUFFER_SIZE = 256;
-  private final BufferedReader input;
+  private final InputStream input;
   private final OutputStream output;
   private final Closeable source;
+  private final Context context;
+  private final NotifierPreferences preferences;
 
-  CommandStreamHandler(InputStream input, OutputStream output, Closeable source) {
-    this.input = new BufferedReader(new InputStreamReader(input), BUFFER_SIZE);
+  CommandStreamHandler(Context context, InputStream input, OutputStream output, Closeable source) {
+    this.context = context;
+    this.input = input;
     this.output = output;
     this.source = source;
+    this.preferences = new NotifierPreferences(context);
   }
 
   @Override
   public void run() {
-    try {
-      String line;
-      while ((line = input.readLine()) != null) {
-        handleCommandLine(line);
+    long deviceId = Long.parseLong(DeviceIdProvider.getDeviceId(context), 16);
+
+    while (true) {
+      try {
+        CommandRequest req = CommandRequest.parseFrom(input);
+        CommandResponse.Builder responseBuilder = CommandResponse.newBuilder()
+            .setCommandId(req.getCommandId())
+            .setDeviceId(deviceId);
+
+        if (!req.isInitialized()) {
+          writeFailure(req, responseBuilder, "Incomplete command");  // i18n
+          continue;
+        }
+
+        Log.d(NotifierConstants.LOG_TAG, "Handling command: " + req);
+        if (req.getDeviceId() != deviceId) {
+          Log.e(NotifierConstants.LOG_TAG,
+              "Wrong device id: " + req.getDeviceId() + "; this=" + deviceId);
+          writeFailure(req, responseBuilder, "Wrong device ID");  // i18n
+          continue;
+        }
+
+        CommandHandler handler = getHandlerFor(req.getCommandType());
+        if (handler == null) {
+          Log.e(NotifierConstants.LOG_TAG, "No handler for command: " + req);
+          writeFailure(req, responseBuilder, "No handler");  // i18n
+          continue;
+        }
+        if (!handler.isEnabled(preferences)) {
+          Log.w(NotifierConstants.LOG_TAG, "Not handling disabled command: " + req);
+          writeFailure(req, responseBuilder, "Command disabled");  // i18n
+          continue;
+        }
+
+        boolean success = handler.handleCommand(req, responseBuilder);
+        responseBuilder.setSuccess(success);
+
+        if (!success) {
+          Log.e(NotifierConstants.LOG_TAG, "Command handling failed: " + req);
+        }
+
+        responseBuilder.build().writeTo(output);
+      } catch (IOException e) {
+        Log.w(NotifierConstants.LOG_TAG, "Error writing command output", e);
+        break;
       }
-    } catch (IOException e) {
-      // TODO
     }
 
+    closeSource();
+  }
+
+  private void writeFailure(CommandRequest req, Builder responseBuilder, String errorMessage) throws IOException {
+    CommandResponse response = responseBuilder.setSuccess(false)
+        .setErrorMessage(errorMessage)
+        .build();
+    response.writeTo(output);
+  }
+
+  private CommandHandler getHandlerFor(CommandType commandType) {
+    switch (commandType) {
+      case CALL:
+        return new CallCommandHandler(context);
+      case ANSWER:
+        return new AnswerCommandHandler(context);
+      case HANG_UP:
+        return new HangupCommandHandler(context);
+      case SEND_SMS:
+        return new SmsCommandHandler();
+      // TODO: Other types
+      default:
+        return null;
+    }
+  }
+
+  public void shutdown() {
+    closeSource();
+  }
+
+  private void closeSource() {
     try {
       source.close();
     } catch (IOException e) {
       Log.w(NotifierConstants.LOG_TAG, "Error closing source", e);
     }
-  }
-
-  private void handleCommandLine(String line) {
-    // TODO
-    Log.d(NotifierConstants.LOG_TAG, "Got command line: " + line);
   }
 }

@@ -346,11 +346,10 @@ public class NotifierMain extends PreferenceActivity {
     targetDevicePreference.setEntryValues(targetEntryValuesArray);
     targetDevicePreference.setEntries(targetEntriesArray);
 
-    // TODO: Re-enable after bugfix release
-//    ListPreference sourceDevicePreference =
-//      (ListPreference) findPreference(getString(R.string.bluetooth_source_key));
-//    sourceDevicePreference.setEntryValues(sourceEntryValuesArray);
-//    sourceDevicePreference.setEntries(sourceEntriesArray);
+    ListPreference sourceDevicePreference =
+      (ListPreference) findPreference(getString(R.string.bluetooth_source_key));
+    sourceDevicePreference.setEntryValues(sourceEntryValuesArray);
+    sourceDevicePreference.setEntries(sourceEntriesArray);
   }
 
   /**

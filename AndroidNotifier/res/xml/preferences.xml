@@ -200,7 +200,6 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   </PreferenceScreen>
 
   <!-- Commands -->
-  <!-- TODO: Re-enable after bugfix release
   <PreferenceScreen android:title="@string/commands_title">
     <CheckBoxPreference android:key="@string/command_enable_key"
                         android:title="@string/command_enable"
@@ -239,9 +238,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                         android:dependency="@string/command_enable_key"
                         android:summaryOn="@string/command_source_on"
                         android:summaryOff="@string/command_source_off" />
-
   </PreferenceScreen>
-  -->
 
   <!-- Security -->
   <PreferenceScreen android:title="@string/security_title">

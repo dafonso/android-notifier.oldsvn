@@ -32,6 +32,7 @@ import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.NotifierMain;
 import org.damazio.notifier.NotifierPreferences;
 import org.damazio.notifier.R;
+import org.damazio.notifier.command.CommandService;
 import org.damazio.notifier.notification.Notification;
 import org.damazio.notifier.notification.Notifier;
 
@@ -68,6 +69,7 @@ public class NotificationService extends Service {
   private NotifierPreferences preferences;
   private ServicePreferencesListener preferenceListener;
   private Notifier notifier;
+  private CommandService commandService;
   private Handler instanceHandler;
 
   private final VoicemailListener voicemailListener = new VoicemailListener(this);
@@ -116,9 +118,17 @@ public class NotificationService extends Service {
     super.onStart(intent, startId);
 
     synchronized (this) {
+      startNotificationService(intent);
+      startCommandService();
+    }
+  }
+
+  private void startNotificationService(Intent intent) {
+    synchronized (this) {
       preferences = new NotifierPreferences(this);
       if (!preferences.areNotificationsEnabled()) {
         Log.w(NotifierConstants.LOG_TAG, "Not starting service - notifications disabled");
+        // TODO: Don't stop if commands are enabled
         stopSelf();
         return;
       }
@@ -150,10 +160,34 @@ public class NotificationService extends Service {
     sendIntentNotification(intent);
   }
 
+  private void startCommandService() {
+    synchronized (this) {
+      commandService = new CommandService(this, preferences);
+      commandService.start();
+    }
+  }
+
   @Override
   public void onDestroy() {
     Log.i(NotifierConstants.LOG_TAG, "Notification service going down.");
 
+    synchronized (this) {
+      destroyNotificationService();
+      destroyCommandService();
+    }
+
+    super.onDestroy();
+  }
+
+  private void destroyCommandService() {
+    synchronized (this) {
+      if (commandService != null) {
+        commandService.shutdown();
+      }
+    }
+  }
+
+  private void destroyNotificationService() {
     synchronized (this) {
       if (preferenceListener != null) {
         preferences.unregisterOnSharedPreferenceChangeListener(preferenceListener);
@@ -171,8 +205,6 @@ public class NotificationService extends Service {
 
       started = false;
     }
-
-    super.onDestroy();
   }
 
   @Override
