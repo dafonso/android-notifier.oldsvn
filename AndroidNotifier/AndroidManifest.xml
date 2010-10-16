@@ -112,7 +112,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   <!-- Permissions for executing commands -->
   <uses-permission android:name="android.permission.CALL_PHONE" />
-  <uses-permission android:name="android.permission.SEND_SMS">
+  <uses-permission android:name="android.permission.SEND_SMS" />
 
   <!-- Permissions for notifying -->
   <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
