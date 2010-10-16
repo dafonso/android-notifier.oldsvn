@@ -350,7 +350,7 @@ public class NotifierPreferences {
     return preferences.getBoolean(context.getString(R.string.command_bluetooth_key), true);
   }
 
-  public boolean isWifiCommandEnabled() {
+  public boolean isIpCommandEnabled() {
     return preferences.getBoolean(context.getString(R.string.command_wifi_key), true);
   }
 

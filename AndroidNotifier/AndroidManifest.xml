@@ -110,6 +110,10 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <uses-permission android:name="android.permission.RECEIVE_MMS" />
   <uses-permission android:name="android.permission.RECEIVE_SMS" />
 
+  <!-- Permissions for executing commands -->
+  <uses-permission android:name="android.permission.CALL_PHONE" />
+  <uses-permission android:name="android.permission.SEND_SMS">
+
   <!-- Permissions for notifying -->
   <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
