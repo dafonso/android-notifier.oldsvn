@@ -31,7 +31,8 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   <application android:icon="@drawable/icon"
                android:label="@string/app_name"
-               android:backupAgent=".backup.NotifierBackupAgentHelper">
+               android:backupAgent=".backup.NotifierBackupAgentHelper"
+               android:debuggable="true">
     <!-- The activity which displays preferences and starts the service -->
     <activity android:name=".NotifierMain"
               android:label="@string/app_name">
