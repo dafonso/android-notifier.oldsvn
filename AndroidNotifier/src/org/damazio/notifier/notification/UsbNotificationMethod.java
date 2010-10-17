@@ -26,114 +26,163 @@ package org.damazio.notifier.notification;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.NotifierPreferences;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.LocalServerSocket;
 import android.net.LocalSocket;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.util.Log;
 
 /**
  * Notification method for sending notifications over USB.
- * 
- * TODO: Stop server when not connected to USB
  *
  * @author Leandro de Oliveira
+ * @author Rodrigo Damazio
  */
 class UsbNotificationMethod implements NotificationMethod {
 
   private static final String SOCKET_NAME = "androidnotifier";
   private static final int SHUTDOWN_TIMEOUT = 5 * 1000;
+  private static final String USB_LOCK_TAG = UsbNotificationMethod.class.getName();
 
+  private final Context context;
   private final NotifierPreferences preferences;
-  private LocalServerSocket serverSocket;
+
   private Thread serverThread;
   private boolean stopRequested;
-  private Map<String, LocalSocket> openSockets;
+  private LocalServerSocket serverSocket;
+  private List<LocalSocket> openSockets = new ArrayList<LocalSocket>();
+  private WakeLock wakeLock;
 
-  public UsbNotificationMethod(NotifierPreferences preferences) {
+  private final BroadcastReceiver powerReceiver = new BroadcastReceiver() {
+    @Override
+    public void onReceive(Context context, Intent intent) {
+      String action = intent.getAction();
+      // We abuse the power connected/disconnected as meaning USB connected/disconnected
+      if (Intent.ACTION_POWER_CONNECTED.equals(action)) {
+        startServer();
+      } else if (Intent.ACTION_POWER_DISCONNECTED.equals(action)) {
+        stopServer();
+      } else {
+        Log.e(NotifierConstants.LOG_TAG, "Got unexpected action: " + action);
+      }
+    }
+  };
+
+  public UsbNotificationMethod(Context context, NotifierPreferences preferences) {
+    this.context = context;
     this.preferences = preferences;
-    startServer();
+
+    // TODO: These constants are not available in cupcake
+    IntentFilter powerIntentFilter = new IntentFilter();
+    powerIntentFilter.addAction(Intent.ACTION_POWER_CONNECTED);
+    powerIntentFilter.addAction(Intent.ACTION_POWER_DISCONNECTED);
+    context.registerReceiver(powerReceiver, powerIntentFilter);
   }
 
   @Override
   public void sendNotification(byte[] payload, Object target, NotificationCallback callback,
       boolean isForeground) {
-    Throwable failure = null;
-    LocalSocket socket = openSockets.get(target);
-    if (socket != null) { // Socket may not be in the map here because getTargets() is not synchronized
-      synchronized (socket) {
-        try {
-          socket.setSendBufferSize(payload.length * 2);
-          OutputStream stream = socket.getOutputStream();
-          stream.write(payload);
-          stream.flush();
-        } catch (IOException e) {
-          failure = e;
-          Log.e(NotifierConstants.LOG_TAG, "Could not send notification over usb socket", e);
-          close(socket);
-          openSockets.remove(target);
-        }
+    LocalSocket socket = (LocalSocket) target;
+    synchronized (socket) {
+      try {
+        socket.setSendBufferSize(payload.length * 2);
+        OutputStream stream = socket.getOutputStream();
+        stream.write(payload);
+        stream.flush();
+        callback.notificationDone(target, null);
+      } catch (IOException e) {
+        Log.e(NotifierConstants.LOG_TAG, "Could not send notification over usb socket", e);
+        closeSocket(socket);
+        callback.notificationDone(target, e);
       }
     }
-    callback.notificationDone(target, failure);
   }
 
+  @Override
   public String getName() {
     return "usb";
   }
 
+  @Override
   public boolean isEnabled() {
     return preferences.isUsbMethodEnabled();
   }
 
   @Override
-  public Iterable<String> getTargets() {
-    return openSockets.keySet();
+  public Iterable<LocalSocket> getTargets() {
+    synchronized (openSockets) {
+      return new ArrayList<LocalSocket>(openSockets);
+    }
   }
 
   private void startServer() {
-    if (serverSocket == null) {
+    synchronized (this) {
+      if (serverSocket != null) {
+        return;
+      }
+
+      // Ensure the CPU keeps running while we listen for connections
+      PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+      wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, USB_LOCK_TAG);
+      wakeLock.acquire();
+
       Log.d(NotifierConstants.LOG_TAG, "Starting usb SocketServer");
       stopRequested = false;
-      openSockets = new HashMap<String, LocalSocket>();
       try {
         serverSocket = new LocalServerSocket(SOCKET_NAME);
-        serverThread = new Thread(new Runnable() {
+        serverThread = new Thread("usb-server-thread") {
           @Override
           public void run() {
             while (!stopRequested) {
               try {
                 LocalSocket socket = serverSocket.accept();
-                openSockets.put(Integer.toString(socket.hashCode()), socket);
+                synchronized (openSockets) {
+                  openSockets.add(socket);
+                }
               } catch (IOException e) {
                 Log.e(NotifierConstants.LOG_TAG, "Error handling usb socket connection", e);
               }
             }
-            for (LocalSocket socket : openSockets.values()) {
-              try {
-                socket.shutdownOutput();
-              } catch (IOException e) {
-                Log.w(NotifierConstants.LOG_TAG, "Error shutting down usb socket", e);
-              } finally {
-                close(socket);
+
+            synchronized (openSockets) {
+              for (LocalSocket socket : openSockets) {
+                try {
+                  socket.shutdownOutput();
+                } catch (IOException e) {
+                  Log.w(NotifierConstants.LOG_TAG, "Error shutting down usb socket", e);
+                } finally {
+                  closeSocket(socket);
+                }
               }
             }
           }
-        }, "usb-server-thread");
+        };
+
         serverThread.start();
       } catch (IOException e) {
         serverSocket = null;
         Log.e(NotifierConstants.LOG_TAG, "Could not start usb ServerSocket, usb notifications will not work", e);
+        stopServer();
       }
     }
   }
 
   private void stopServer() {
-    if (serverSocket != null) {
+    synchronized (this) {
+      if (serverSocket == null) {
+        return;
+      }
+
       Log.d(NotifierConstants.LOG_TAG, "Stopping usb SocketServer");
       stopRequested = true;
       try {
@@ -142,23 +191,38 @@ class UsbNotificationMethod implements NotificationMethod {
       } catch (InterruptedException e1) {
         Thread.currentThread().interrupt();
       } finally {
-        openSockets.clear();
+        synchronized (openSockets) {
+          openSockets.clear();
+        }
         try {
           serverSocket.close();
         } catch (IOException e) {
           Log.w(NotifierConstants.LOG_TAG, "Error closing usb ServerSocket", e);
         } finally {
           serverSocket = null;
+          wakeLock.release();
+          wakeLock = null;
         }
       }
     }
   }
 
-  private void close(LocalSocket socket) {
+  private void closeSocket(LocalSocket socket) {
     try {
-      socket.close();
+      synchronized (socket) {
+        socket.close();
+        synchronized(openSockets) {
+          openSockets.remove(socket);
+        }
+      }
     } catch (IOException ce) {
       Log.e(NotifierConstants.LOG_TAG, "Error closing usb socket", ce);
     }
+  }
+
+  @Override
+  public void shutdown() {
+    context.unregisterReceiver(powerReceiver);
+    stopServer();
   }
 }
