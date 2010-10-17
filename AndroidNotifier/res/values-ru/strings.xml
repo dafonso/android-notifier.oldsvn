@@ -16,7 +16,6 @@
     <string name="method_on">Уведомления будут отсылаться этим способом</string>
     <string name="method_off">Уведомления НЕ будут отсылаться этим способом</string>
     <string name="eclair_required">Поддерживается только Android 2.0 и выше</string>
-    <string name="not_yet_implemented">Еще не реализовано.</string>
 
     <!-- Wifi method -->
     <string name="ip_options">Настройки IP/Wifi</string>
