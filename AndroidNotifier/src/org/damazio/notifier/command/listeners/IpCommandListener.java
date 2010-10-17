@@ -74,4 +74,15 @@ public class IpCommandListener extends CommandListener {
     Log.d(NotifierConstants.LOG_TAG, "Accepted IP command connection");
     handleConnection(socket.getInputStream(), socket.getOutputStream(), socketChannel);
   }
+
+  @Override
+  public void shutdown() {
+    try {
+      serverSocketChannel.close();
+    } catch (IOException e) {
+      Log.e(NotifierConstants.LOG_TAG, "Error closing socket", e);
+    }
+
+    super.shutdown();
+  }
 }

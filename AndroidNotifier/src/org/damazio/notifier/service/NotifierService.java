@@ -34,9 +34,7 @@ import org.damazio.notifier.NotifierPreferences;
 import org.damazio.notifier.R;
 import org.damazio.notifier.command.CommandService;
 import org.damazio.notifier.notification.Notification;
-import org.damazio.notifier.notification.Notifier;
-import org.damazio.notifier.notification.events.BatteryReceiver;
-import org.damazio.notifier.notification.events.VoicemailListener;
+import org.damazio.notifier.notification.NotificationService;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
@@ -46,12 +44,8 @@ import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.os.Handler;
 import android.os.IBinder;
-import android.telephony.PhoneStateListener;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 
 /**
@@ -68,15 +62,10 @@ public class NotifierService extends Service {
    */
   private static final String EXTRA_NOTIFICATION = "org.damazio.notifier.service.EXTRA_NOTIFICATION";
 
-  private NotifierPreferences preferences;
+  private final NotifierPreferences preferences;
   private ServicePreferencesListener preferenceListener;
-  private Notifier notifier;
+  private NotificationService notificationService;
   private CommandService commandService;
-  private Handler instanceHandler;
-
-  private final VoicemailListener voicemailListener = new VoicemailListener(this);
-  private final BatteryReceiver batteryReceiver = new BatteryReceiver();
-  private boolean started;
 
   /**
    * Listener for changes to the preferences.
@@ -84,35 +73,17 @@ public class NotifierService extends Service {
   private class ServicePreferencesListener
       implements SharedPreferences.OnSharedPreferenceChangeListener {
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-      if (key.equals(getString(R.string.notifications_enabled_key))) {
-        if (!preferences.areNotificationsEnabled()) {
-          stopSelf();
-        }
+      if (key.equals(getString(R.string.notifications_enabled_key)) ||
+          key.equals(getString(R.string.command_enable_key))) {
+        updateServiceState();
       } else if (key.equals(getString(R.string.show_notification_icon_key))) {
         showOrHideLocalNotification();
       }
     }
   }
 
-  /**
-   * Sends the given notification.
-   */
-  private void sendNotification(final Notification notification) {
-    instanceHandler.post(new Runnable() {
-      public void run() {
-        notifier.sendNotification(notification);
-      }
-    });
-  }
-
-  /**
-   * If the given intent carries a bundled notification in its extras, sends it.
-   */
-  private void sendIntentNotification(Intent intent) {
-    Notification notification = intent.getParcelableExtra(EXTRA_NOTIFICATION);
-    if (notification != null) {
-      sendNotification(notification);
-    }
+  public NotifierService() {
+    this.preferences = new NotifierPreferences(this);
   }
 
   @Override
@@ -120,46 +91,70 @@ public class NotifierService extends Service {
     super.onStart(intent, startId);
 
     synchronized (this) {
-      startNotificationService(intent);
-      startCommandService();
-    }
-  }
+      updateServiceState();
 
-  private void startNotificationService(Intent intent) {
-    synchronized (this) {
-      preferences = new NotifierPreferences(this);
-      if (!preferences.areNotificationsEnabled()) {
-        Log.w(NotifierConstants.LOG_TAG, "Not starting service - notifications disabled");
-        // TODO: Don't stop if commands are enabled
-        stopSelf();
-        return;
-      }
-
-      if (started) {
-        Log.d(NotifierConstants.LOG_TAG, "Not starting service again");
-      } else {
-        Log.i(NotifierConstants.LOG_TAG, "Starting notification service");
-        started = true;
-        instanceHandler = new Handler();
-  
-        notifier = new Notifier(this, preferences);
-  
-        // Register the voicemail receiver
-        final TelephonyManager tm = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-        tm.listen(voicemailListener, PhoneStateListener.LISTEN_MESSAGE_WAITING_INDICATOR);
-  
-        // Register the battery receiver
-        // (can't be registered in the manifest for some reason)
-        registerReceiver(batteryReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-
-        showOrHideLocalNotification();
-  
+      if (preferenceListener == null) {
         preferenceListener = new ServicePreferencesListener();
         preferences.registerOnSharedPreferenceChangeListener(preferenceListener);
       }
+
+      showOrHideLocalNotification();
+
+      sendIntentNotification(intent);
+    }
+  }
+
+  @Override
+  public void onDestroy() {
+    Log.i(NotifierConstants.LOG_TAG, "Notifier service going down.");
+
+    synchronized (this) {
+      if (preferenceListener != null) {
+        preferences.unregisterOnSharedPreferenceChangeListener(preferenceListener);
+      }
+
+      stopNotificationService();
+      stopCommandService();
+
+      hideLocalNotification();
     }
 
-    sendIntentNotification(intent);
+    super.onDestroy();
+  }
+
+  /**
+   * Updates the service state according to preferences.
+   */
+  private void updateServiceState() {
+    synchronized (this) {
+      boolean notificationsEnabled = preferences.areNotificationsEnabled();
+      boolean commandsEnabled = preferences.isCommandEnabled();
+      if (!notificationsEnabled && !commandsEnabled) {
+        stopSelf();
+        return;
+      }
+  
+      if (notificationsEnabled) {
+        startNotificationService();
+      } else {
+        stopNotificationService();
+      }
+  
+      if (commandsEnabled) {
+        startCommandService();
+      } else {
+        stopCommandService();
+      }
+    }
+  }
+
+  private void startNotificationService() {
+    synchronized (this) {
+      if (notificationService == null) {
+        notificationService = new NotificationService(this, preferences);
+        notificationService.start();
+      }
+    }
   }
 
   private void startCommandService() {
@@ -169,44 +164,33 @@ public class NotifierService extends Service {
     }
   }
 
-  @Override
-  public void onDestroy() {
-    Log.i(NotifierConstants.LOG_TAG, "Notification service going down.");
-
+  /**
+   * If the given intent carries a bundled notification in its extras, sends it.
+   */
+  private void sendIntentNotification(Intent intent) {
+    Notification notification = intent.getParcelableExtra(EXTRA_NOTIFICATION);
     synchronized (this) {
-      notifier.shutdown();
-      destroyNotificationService();
-      destroyCommandService();
+      if (notification != null && notificationService != null) {
+        notificationService.sendNotification(notification);
+      }
     }
-
-    super.onDestroy();
   }
 
-  private void destroyCommandService() {
+  private void stopCommandService() {
     synchronized (this) {
       if (commandService != null) {
         commandService.shutdown();
+        commandService = null;
       }
     }
   }
 
-  private void destroyNotificationService() {
+  private void stopNotificationService() {
     synchronized (this) {
-      if (preferenceListener != null) {
-        preferences.unregisterOnSharedPreferenceChangeListener(preferenceListener);
+      if (notificationService != null) {
+        notificationService.shutdown();
+        notificationService = null;
       }
-      hideLocalNotification();
-
-      try {
-        unregisterReceiver(batteryReceiver);
-      } catch (IllegalArgumentException e) {
-        Log.w(NotifierConstants.LOG_TAG, "Unable to unregister battery listener", e);
-      }
-
-      final TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
-      tm.listen(voicemailListener, PhoneStateListener.LISTEN_NONE);
-
-      started = false;
     }
   }
 
@@ -214,6 +198,8 @@ public class NotifierService extends Service {
   public IBinder onBind(Intent arg0) {
 	return null;
   }
+
+  // Notification bar notification
 
   /**
    * Shows or hides the local notification, according to the user's preference.
@@ -274,6 +260,9 @@ public class NotifierService extends Service {
     context.startService(new Intent(context, NotifierService.class));
   }
 
+  /**
+   * Sends the given notification, first starting the service if necessary.
+   */
   public static void startAndSend(Context context, Notification notification) {
     Intent intent = new Intent(context, NotifierService.class);
     intent.putExtra(EXTRA_NOTIFICATION, notification);

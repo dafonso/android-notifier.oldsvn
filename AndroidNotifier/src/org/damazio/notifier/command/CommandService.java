@@ -49,6 +49,8 @@ public class CommandService implements OnSharedPreferenceChangeListener {
 
   private final Context context;
   private final NotifierPreferences preferences;
+
+  private DiscoveryService discoveryService;
   private BluetoothCommandListener bluetoothListener;
   private IpCommandListener ipListener;
   private WakeLock wakeLock;
@@ -76,8 +78,14 @@ public class CommandService implements OnSharedPreferenceChangeListener {
 
       startBluetoothListener();
       startIpListener();
+      startDiscoveryListener();
+    }
+  }
 
-      // TODO: Listen for discovery
+  private void startDiscoveryListener() {
+    if (discoveryService == null) {
+      discoveryService = new DiscoveryService(context);
+      discoveryService.start();
     }
   }
 
@@ -97,11 +105,19 @@ public class CommandService implements OnSharedPreferenceChangeListener {
 
   public void shutdown() {
     synchronized (this) {
+      shutdownDiscoveryListener();
       shutdownIpListener();
       shutdownBluetoothListener();
 
       wakeLock.release();
       wakeLock = null;
+    }
+  }
+
+  private void shutdownDiscoveryListener() {
+    if (discoveryService != null) {
+      discoveryService.shutdown();
+      discoveryService = null;
     }
   }
 

@@ -57,6 +57,8 @@ public class CommandHandlerFactory {
         return new HangupCommandHandler(context);
       case SEND_SMS:
         return new SmsCommandHandler();
+      case DISCOVER:
+        return new DiscoveryCommandHandler(context);
       // TODO: Other types
       default:
         return null;

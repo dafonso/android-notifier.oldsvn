@@ -88,4 +88,15 @@ public class BluetoothCommandListener extends CommandListener {
         connectedSocket.getOutputStream(),
         connectedSocket);
   }
+
+  @Override
+  public void shutdown() {
+    try {
+      socket.close();
+    } catch (IOException e) {
+      Log.e(NotifierConstants.LOG_TAG, "Error closing socket", e);
+    }
+
+    super.shutdown();
+  }
 }

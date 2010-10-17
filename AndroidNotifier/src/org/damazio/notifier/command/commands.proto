@@ -47,6 +47,15 @@ message Contact {
   // optional bytes picture = 5;
 }
 
+message DeviceAddresses {
+  // Zero or more IPv4 addresses for the device
+  // (in network order)
+  repeated bytes ip_address = 1;
+
+  // 6 bytes (the bluetooth mac address)
+  optional bytes bluetooth_mac = 2;
+}
+
 message CommandRequest {
   required fixed64 device_id = 1;
   required fixed64 command_id = 2;
@@ -58,6 +67,7 @@ message CommandRequest {
     SEND_SMS = 4;
     SEND_MMS = 5;
     QUERY = 6;
+    DISCOVER = 7;
   }
   required CommandType command_type = 3;
 
@@ -101,7 +111,11 @@ message CommandResponse {
     repeated Contact contacts = 1;
   }
   optional SearchResults search_results = 10;
+
+  optional DeviceAddresses discovery_result = 11;
 }
+
+// Discovery protocol for IP
 
 message CommandDiscoveryRequest {
   required fixed64 device_id = 1;
@@ -109,10 +123,5 @@ message CommandDiscoveryRequest {
 
 message CommandDiscoveryReply {
   required fixed64 device_id = 1;
-
-  // 12 bytes (the bluetooth mac address)
-  optional bytes bluetooth_mac = 2;
-
-  // Zero or more IPv4 addresses for the device
-  repeated bytes ip_address = 3;
+  required DeviceAddresses addresses = 2;
 }

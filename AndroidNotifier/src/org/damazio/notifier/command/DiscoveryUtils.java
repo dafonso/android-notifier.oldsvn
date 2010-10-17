@@ -22,55 +22,51 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.damazio.notifier.command.listeners;
+package org.damazio.notifier.command;
 
-import java.io.Closeable;
-import java.io.IOException;
+import java.net.InetAddress;
+import java.util.List;
 
-import org.damazio.notifier.NotifierConstants;
+import org.damazio.notifier.command.CommandProtocol.DeviceAddresses;
+import org.damazio.notifier.util.BluetoothDeviceUtils;
+import org.damazio.notifier.util.NetworkUtils;
 
 import android.content.Context;
-import android.net.LocalServerSocket;
-import android.net.LocalSocket;
-import android.util.Log;
+
+import com.google.protobuf.ByteString;
 
 /**
- * Command listener which receives commands over USB through adb.
+ * Utilities for device discovery.
  *
  * @author Rodrigo Damazio
  */
-public class UsbCommandListener extends CommandListener {
-  private static final String SOCKET_NAME = "androidnotifier-cmd";
-  private LocalServerSocket serverSocket;
+public class DiscoveryUtils {
+  private final BluetoothDeviceUtils bluetoothUtils = BluetoothDeviceUtils.getInstance();
+  private final NetworkUtils networkUtils;
 
-  protected UsbCommandListener(Context context) {
-    super(context);
+  public DiscoveryUtils(Context context) {
+    this.networkUtils = new NetworkUtils(context);
   }
 
-  @Override
-  protected void initialize() throws IOException {
-    serverSocket = new LocalServerSocket(SOCKET_NAME);
-  }
+  /**
+   * Returns a protocol buffer with all the device's addresses.
+   */
+  public DeviceAddresses getDeviceAddresses() {
+    DeviceAddresses.Builder addresses = DeviceAddresses.newBuilder();
 
-  @Override
-  protected void runOnce() throws IOException {
-    final LocalSocket socket = serverSocket.accept();
-    handleConnection(socket.getInputStream(), socket.getOutputStream(), new Closeable() {
-      @Override
-      public void close() throws IOException {
-        socket.close();
-      }
-    });
-  }
-
-  @Override
-  public void shutdown() {
-    try {
-      serverSocket.close();
-    } catch (IOException e) {
-      Log.e(NotifierConstants.LOG_TAG, "Error closing socket", e);
+    // Add IP addresses
+    List<InetAddress> allIps = networkUtils.getAllLocalIps();
+    for (InetAddress oneIp : allIps) {
+      byte[] address = oneIp.getAddress();
+      addresses.addIpAddress(ByteString.copyFrom(address));
     }
 
-    super.shutdown();
+    // Add bluetooth addresses
+    byte[] bluetoothMac = bluetoothUtils.getLocalMacAddress();
+    if (bluetoothMac != null) {
+      addresses.setBluetoothMac(ByteString.copyFrom(bluetoothMac));
+    }
+
+    return addresses.build();
   }
 }
