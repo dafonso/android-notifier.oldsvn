@@ -2583,6 +2583,632 @@ public final class CommandProtocol {
     // @@protoc_insertion_point(class_scope:AndroidNotifier.CommandResponse)
   }
   
+  public static final class CommandDiscoveryRequest extends
+      com.google.protobuf.GeneratedMessageLite {
+    // Use CommandDiscoveryRequest.newBuilder() to construct.
+    private CommandDiscoveryRequest() {
+      initFields();
+    }
+    private CommandDiscoveryRequest(boolean noInit) {}
+    
+    private static final CommandDiscoveryRequest defaultInstance;
+    public static CommandDiscoveryRequest getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public CommandDiscoveryRequest getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    // required fixed64 device_id = 1;
+    public static final int DEVICE_ID_FIELD_NUMBER = 1;
+    private boolean hasDeviceId;
+    private long deviceId_ = 0L;
+    public boolean hasDeviceId() { return hasDeviceId; }
+    public long getDeviceId() { return deviceId_; }
+    
+    private void initFields() {
+    }
+    public final boolean isInitialized() {
+      if (!hasDeviceId) return false;
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (hasDeviceId()) {
+        output.writeFixed64(1, getDeviceId());
+      }
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      if (hasDeviceId()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFixed64Size(1, getDeviceId());
+      }
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    public static org.damazio.notifier.command.CommandProtocol.CommandDiscoveryRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static org.damazio.notifier.command.CommandProtocol.CommandDiscoveryRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static org.damazio.notifier.command.CommandProtocol.CommandDiscoveryRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static org.damazio.notifier.command.CommandProtocol.CommandDiscoveryRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static org.damazio.notifier.command.CommandProtocol.CommandDiscoveryRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static org.damazio.notifier.command.CommandProtocol.CommandDiscoveryRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static org.damazio.notifier.command.CommandProtocol.CommandDiscoveryRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static org.damazio.notifier.command.CommandProtocol.CommandDiscoveryRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static org.damazio.notifier.command.CommandProtocol.CommandDiscoveryRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static org.damazio.notifier.command.CommandProtocol.CommandDiscoveryRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(org.damazio.notifier.command.CommandProtocol.CommandDiscoveryRequest prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          org.damazio.notifier.command.CommandProtocol.CommandDiscoveryRequest, Builder> {
+      private org.damazio.notifier.command.CommandProtocol.CommandDiscoveryRequest result;
+      
+      // Construct using org.damazio.notifier.command.CommandProtocol.CommandDiscoveryRequest.newBuilder()
+      private Builder() {}
+      
+      private static Builder create() {
+        Builder builder = new Builder();
+        builder.result = new org.damazio.notifier.command.CommandProtocol.CommandDiscoveryRequest();
+        return builder;
+      }
+      
+      protected org.damazio.notifier.command.CommandProtocol.CommandDiscoveryRequest internalGetResult() {
+        return result;
+      }
+      
+      public Builder clear() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "Cannot call clear() after build().");
+        }
+        result = new org.damazio.notifier.command.CommandProtocol.CommandDiscoveryRequest();
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(result);
+      }
+      
+      public org.damazio.notifier.command.CommandProtocol.CommandDiscoveryRequest getDefaultInstanceForType() {
+        return org.damazio.notifier.command.CommandProtocol.CommandDiscoveryRequest.getDefaultInstance();
+      }
+      
+      public boolean isInitialized() {
+        return result.isInitialized();
+      }
+      public org.damazio.notifier.command.CommandProtocol.CommandDiscoveryRequest build() {
+        if (result != null && !isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return buildPartial();
+      }
+      
+      private org.damazio.notifier.command.CommandProtocol.CommandDiscoveryRequest buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        if (!isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return buildPartial();
+      }
+      
+      public org.damazio.notifier.command.CommandProtocol.CommandDiscoveryRequest buildPartial() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "build() has already been called on this Builder.");
+        }
+        org.damazio.notifier.command.CommandProtocol.CommandDiscoveryRequest returnMe = result;
+        result = null;
+        return returnMe;
+      }
+      
+      public Builder mergeFrom(org.damazio.notifier.command.CommandProtocol.CommandDiscoveryRequest other) {
+        if (other == org.damazio.notifier.command.CommandProtocol.CommandDiscoveryRequest.getDefaultInstance()) return this;
+        if (other.hasDeviceId()) {
+          setDeviceId(other.getDeviceId());
+        }
+        return this;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              return this;
+            default: {
+              if (!parseUnknownField(input, extensionRegistry, tag)) {
+                return this;
+              }
+              break;
+            }
+            case 9: {
+              setDeviceId(input.readFixed64());
+              break;
+            }
+          }
+        }
+      }
+      
+      
+      // required fixed64 device_id = 1;
+      public boolean hasDeviceId() {
+        return result.hasDeviceId();
+      }
+      public long getDeviceId() {
+        return result.getDeviceId();
+      }
+      public Builder setDeviceId(long value) {
+        result.hasDeviceId = true;
+        result.deviceId_ = value;
+        return this;
+      }
+      public Builder clearDeviceId() {
+        result.hasDeviceId = false;
+        result.deviceId_ = 0L;
+        return this;
+      }
+      
+      // @@protoc_insertion_point(builder_scope:AndroidNotifier.CommandDiscoveryRequest)
+    }
+    
+    static {
+      defaultInstance = new CommandDiscoveryRequest(true);
+      org.damazio.notifier.command.CommandProtocol.internalForceInit();
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:AndroidNotifier.CommandDiscoveryRequest)
+  }
+  
+  public static final class CommandDiscoveryReply extends
+      com.google.protobuf.GeneratedMessageLite {
+    // Use CommandDiscoveryReply.newBuilder() to construct.
+    private CommandDiscoveryReply() {
+      initFields();
+    }
+    private CommandDiscoveryReply(boolean noInit) {}
+    
+    private static final CommandDiscoveryReply defaultInstance;
+    public static CommandDiscoveryReply getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public CommandDiscoveryReply getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    // required fixed64 device_id = 1;
+    public static final int DEVICE_ID_FIELD_NUMBER = 1;
+    private boolean hasDeviceId;
+    private long deviceId_ = 0L;
+    public boolean hasDeviceId() { return hasDeviceId; }
+    public long getDeviceId() { return deviceId_; }
+    
+    // optional bytes bluetooth_mac = 2;
+    public static final int BLUETOOTH_MAC_FIELD_NUMBER = 2;
+    private boolean hasBluetoothMac;
+    private com.google.protobuf.ByteString bluetoothMac_ = com.google.protobuf.ByteString.EMPTY;
+    public boolean hasBluetoothMac() { return hasBluetoothMac; }
+    public com.google.protobuf.ByteString getBluetoothMac() { return bluetoothMac_; }
+    
+    // repeated bytes ip_address = 3;
+    public static final int IP_ADDRESS_FIELD_NUMBER = 3;
+    private java.util.List<com.google.protobuf.ByteString> ipAddress_ =
+      java.util.Collections.emptyList();
+    public java.util.List<com.google.protobuf.ByteString> getIpAddressList() {
+      return ipAddress_;
+    }
+    public int getIpAddressCount() { return ipAddress_.size(); }
+    public com.google.protobuf.ByteString getIpAddress(int index) {
+      return ipAddress_.get(index);
+    }
+    
+    private void initFields() {
+    }
+    public final boolean isInitialized() {
+      if (!hasDeviceId) return false;
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (hasDeviceId()) {
+        output.writeFixed64(1, getDeviceId());
+      }
+      if (hasBluetoothMac()) {
+        output.writeBytes(2, getBluetoothMac());
+      }
+      for (com.google.protobuf.ByteString element : getIpAddressList()) {
+        output.writeBytes(3, element);
+      }
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      if (hasDeviceId()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFixed64Size(1, getDeviceId());
+      }
+      if (hasBluetoothMac()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getBluetoothMac());
+      }
+      {
+        int dataSize = 0;
+        for (com.google.protobuf.ByteString element : getIpAddressList()) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeBytesSizeNoTag(element);
+        }
+        size += dataSize;
+        size += 1 * getIpAddressList().size();
+      }
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    public static org.damazio.notifier.command.CommandProtocol.CommandDiscoveryReply parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static org.damazio.notifier.command.CommandProtocol.CommandDiscoveryReply parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static org.damazio.notifier.command.CommandProtocol.CommandDiscoveryReply parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static org.damazio.notifier.command.CommandProtocol.CommandDiscoveryReply parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static org.damazio.notifier.command.CommandProtocol.CommandDiscoveryReply parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static org.damazio.notifier.command.CommandProtocol.CommandDiscoveryReply parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static org.damazio.notifier.command.CommandProtocol.CommandDiscoveryReply parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static org.damazio.notifier.command.CommandProtocol.CommandDiscoveryReply parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static org.damazio.notifier.command.CommandProtocol.CommandDiscoveryReply parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static org.damazio.notifier.command.CommandProtocol.CommandDiscoveryReply parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(org.damazio.notifier.command.CommandProtocol.CommandDiscoveryReply prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          org.damazio.notifier.command.CommandProtocol.CommandDiscoveryReply, Builder> {
+      private org.damazio.notifier.command.CommandProtocol.CommandDiscoveryReply result;
+      
+      // Construct using org.damazio.notifier.command.CommandProtocol.CommandDiscoveryReply.newBuilder()
+      private Builder() {}
+      
+      private static Builder create() {
+        Builder builder = new Builder();
+        builder.result = new org.damazio.notifier.command.CommandProtocol.CommandDiscoveryReply();
+        return builder;
+      }
+      
+      protected org.damazio.notifier.command.CommandProtocol.CommandDiscoveryReply internalGetResult() {
+        return result;
+      }
+      
+      public Builder clear() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "Cannot call clear() after build().");
+        }
+        result = new org.damazio.notifier.command.CommandProtocol.CommandDiscoveryReply();
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(result);
+      }
+      
+      public org.damazio.notifier.command.CommandProtocol.CommandDiscoveryReply getDefaultInstanceForType() {
+        return org.damazio.notifier.command.CommandProtocol.CommandDiscoveryReply.getDefaultInstance();
+      }
+      
+      public boolean isInitialized() {
+        return result.isInitialized();
+      }
+      public org.damazio.notifier.command.CommandProtocol.CommandDiscoveryReply build() {
+        if (result != null && !isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return buildPartial();
+      }
+      
+      private org.damazio.notifier.command.CommandProtocol.CommandDiscoveryReply buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        if (!isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return buildPartial();
+      }
+      
+      public org.damazio.notifier.command.CommandProtocol.CommandDiscoveryReply buildPartial() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "build() has already been called on this Builder.");
+        }
+        if (result.ipAddress_ != java.util.Collections.EMPTY_LIST) {
+          result.ipAddress_ =
+            java.util.Collections.unmodifiableList(result.ipAddress_);
+        }
+        org.damazio.notifier.command.CommandProtocol.CommandDiscoveryReply returnMe = result;
+        result = null;
+        return returnMe;
+      }
+      
+      public Builder mergeFrom(org.damazio.notifier.command.CommandProtocol.CommandDiscoveryReply other) {
+        if (other == org.damazio.notifier.command.CommandProtocol.CommandDiscoveryReply.getDefaultInstance()) return this;
+        if (other.hasDeviceId()) {
+          setDeviceId(other.getDeviceId());
+        }
+        if (other.hasBluetoothMac()) {
+          setBluetoothMac(other.getBluetoothMac());
+        }
+        if (!other.ipAddress_.isEmpty()) {
+          if (result.ipAddress_.isEmpty()) {
+            result.ipAddress_ = new java.util.ArrayList<com.google.protobuf.ByteString>();
+          }
+          result.ipAddress_.addAll(other.ipAddress_);
+        }
+        return this;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              return this;
+            default: {
+              if (!parseUnknownField(input, extensionRegistry, tag)) {
+                return this;
+              }
+              break;
+            }
+            case 9: {
+              setDeviceId(input.readFixed64());
+              break;
+            }
+            case 18: {
+              setBluetoothMac(input.readBytes());
+              break;
+            }
+            case 26: {
+              addIpAddress(input.readBytes());
+              break;
+            }
+          }
+        }
+      }
+      
+      
+      // required fixed64 device_id = 1;
+      public boolean hasDeviceId() {
+        return result.hasDeviceId();
+      }
+      public long getDeviceId() {
+        return result.getDeviceId();
+      }
+      public Builder setDeviceId(long value) {
+        result.hasDeviceId = true;
+        result.deviceId_ = value;
+        return this;
+      }
+      public Builder clearDeviceId() {
+        result.hasDeviceId = false;
+        result.deviceId_ = 0L;
+        return this;
+      }
+      
+      // optional bytes bluetooth_mac = 2;
+      public boolean hasBluetoothMac() {
+        return result.hasBluetoothMac();
+      }
+      public com.google.protobuf.ByteString getBluetoothMac() {
+        return result.getBluetoothMac();
+      }
+      public Builder setBluetoothMac(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  result.hasBluetoothMac = true;
+        result.bluetoothMac_ = value;
+        return this;
+      }
+      public Builder clearBluetoothMac() {
+        result.hasBluetoothMac = false;
+        result.bluetoothMac_ = getDefaultInstance().getBluetoothMac();
+        return this;
+      }
+      
+      // repeated bytes ip_address = 3;
+      public java.util.List<com.google.protobuf.ByteString> getIpAddressList() {
+        return java.util.Collections.unmodifiableList(result.ipAddress_);
+      }
+      public int getIpAddressCount() {
+        return result.getIpAddressCount();
+      }
+      public com.google.protobuf.ByteString getIpAddress(int index) {
+        return result.getIpAddress(index);
+      }
+      public Builder setIpAddress(int index, com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  result.ipAddress_.set(index, value);
+        return this;
+      }
+      public Builder addIpAddress(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  if (result.ipAddress_.isEmpty()) {
+          result.ipAddress_ = new java.util.ArrayList<com.google.protobuf.ByteString>();
+        }
+        result.ipAddress_.add(value);
+        return this;
+      }
+      public Builder addAllIpAddress(
+          java.lang.Iterable<? extends com.google.protobuf.ByteString> values) {
+        if (result.ipAddress_.isEmpty()) {
+          result.ipAddress_ = new java.util.ArrayList<com.google.protobuf.ByteString>();
+        }
+        super.addAll(values, result.ipAddress_);
+        return this;
+      }
+      public Builder clearIpAddress() {
+        result.ipAddress_ = java.util.Collections.emptyList();
+        return this;
+      }
+      
+      // @@protoc_insertion_point(builder_scope:AndroidNotifier.CommandDiscoveryReply)
+    }
+    
+    static {
+      defaultInstance = new CommandDiscoveryReply(true);
+      org.damazio.notifier.command.CommandProtocol.internalForceInit();
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:AndroidNotifier.CommandDiscoveryReply)
+  }
+  
   
   static {
   }

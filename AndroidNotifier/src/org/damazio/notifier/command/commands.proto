@@ -102,3 +102,17 @@ message CommandResponse {
   }
   optional SearchResults search_results = 10;
 }
+
+message CommandDiscoveryRequest {
+  required fixed64 device_id = 1;
+}
+
+message CommandDiscoveryReply {
+  required fixed64 device_id = 1;
+
+  // 12 bytes (the bluetooth mac address)
+  optional bytes bluetooth_mac = 2;
+
+  // Zero or more IPv4 addresses for the device
+  repeated bytes ip_address = 3;
+}
