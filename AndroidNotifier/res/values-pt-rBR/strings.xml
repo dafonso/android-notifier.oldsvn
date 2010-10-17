@@ -42,7 +42,6 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <string name="method_on">Notificações serão enviadas por este método</string>
     <string name="method_off">Notificações NÃO serão enviadas por este método</string>
     <string name="eclair_required">Só suportado no Android 2.0 ou superior</string>
-    <string name="not_yet_implemented">Ainda não implementado.</string>
 
     <!-- Wifi method -->
     <string name="method_ip_summary_on">Notificações serão enviadas por IP. Garante que seu firewall aceita conexões na porta 10600.</string>

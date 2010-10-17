@@ -17,7 +17,6 @@
     <string name="method_on">Notificatie zullen op deze manier verzonden worden</string>
     <string name="method_off">Notificatie zal NIET volgens deze manier verzonden worden</string>
     <string name="eclair_required">Alleen Android 2.0 of hoger wordt ondersteund</string>
-    <string name="not_yet_implemented">Nog niet beschikbaar.</string>
 
     <!-- Wifi method -->
     <string name="method_ip">IP/wifi</string>

@@ -17,7 +17,6 @@
     <string name="method_on">Notifieringar kommer att skickas med den här metoden</string>
     <string name="method_off">Notifieringar kommer INTE att skickas med den här metoden</string>
     <string name="eclair_required">Stödjs endast i Android 2.0 eller senare</string>
-    <string name="not_yet_implemented">Inte inbyggt än</string>
 
     <!-- Wifi method -->
     <string name="method_ip">IP/Wifi</string>

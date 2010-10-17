@@ -45,7 +45,6 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <string name="method_on">Notifications will be sent with this method</string>
     <string name="method_off">Notifications will NOT be sent with this method</string>
     <string name="eclair_required">Only supported in Android 2.0 or above</string>
-    <string name="not_yet_implemented">Not yet implemented.</string>
 
     <!-- Wifi method -->
     <string name="method_ip">IP/Wifi</string>
