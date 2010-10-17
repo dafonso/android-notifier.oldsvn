@@ -49,7 +49,6 @@ class CallCommandHandler implements CommandHandler {
 
   @Override
   public boolean handleCommand(CommandRequest req, Builder responseBuilder) {
-    // TODO: Check if calls are enabled in prefs
     if (!req.hasCallOptions()) {
       Log.e(NotifierConstants.LOG_TAG, "Call options missing");
       responseBuilder.setErrorMessage("Call options missing");  // TODO: i18n

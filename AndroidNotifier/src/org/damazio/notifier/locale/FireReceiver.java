@@ -38,7 +38,7 @@ import android.util.Log;
 /**
  * Receiver which executes settings changes when requested by Locale.
  *
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
 public class FireReceiver extends BroadcastReceiver {
   @Override

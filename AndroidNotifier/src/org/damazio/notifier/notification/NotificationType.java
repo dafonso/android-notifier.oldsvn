@@ -27,7 +27,7 @@ package org.damazio.notifier.notification;
 /**
  * Enum for the type of notification.
  *
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
 public enum NotificationType {
   /** Phone ringing. */

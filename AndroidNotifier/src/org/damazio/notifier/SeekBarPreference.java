@@ -40,7 +40,7 @@ import android.widget.TextView;
  * http://android.hlidskialf.com/blog/code/android-seekbar-preference
  * and rewritten to be more responsive and flexible.
  * 
- * @author rdamazio
+ * @author Rodrigo Damazio
  * @author Matthew Wiggins
  */
 public class SeekBarPreference extends DialogPreference

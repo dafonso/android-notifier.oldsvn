@@ -30,7 +30,7 @@ import android.app.backup.SharedPreferencesBackupHelper;
 /**
  * Backup agent helper for the notifier's data.
  *
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
 public class NotifierBackupAgentHelper extends BackupAgentHelper {
   /**

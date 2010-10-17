@@ -53,7 +53,7 @@ import android.widget.Toast;
  * This activity displays the application's settings,
  * and allows the user to manipulate the service.
  *
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
 public class NotifierMain extends PreferenceActivity {
   private NotifierPreferences preferences;

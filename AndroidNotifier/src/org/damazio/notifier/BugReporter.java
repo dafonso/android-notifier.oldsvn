@@ -48,7 +48,7 @@ import android.widget.Toast;
  * Shows the user a form to report a bug, giving him easy access to the
  * application's log.
  *
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
 public class BugReporter {
   /** Pattern to extract the tag */

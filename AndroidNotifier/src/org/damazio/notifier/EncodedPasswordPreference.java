@@ -39,7 +39,7 @@ import android.widget.EditText;
  * An {@link EditTextPreference} which expects password input and saves a hashed,
  * base64-encoded version of the password.
  *
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
 public class EncodedPasswordPreference extends EditTextPreference {
 

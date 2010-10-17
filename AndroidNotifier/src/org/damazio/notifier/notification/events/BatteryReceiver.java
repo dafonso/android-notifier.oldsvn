@@ -41,7 +41,7 @@ import android.util.Log;
 /**
  * Receiver for battery state change events.
  *
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
 public class BatteryReceiver extends BroadcastReceiver {
   

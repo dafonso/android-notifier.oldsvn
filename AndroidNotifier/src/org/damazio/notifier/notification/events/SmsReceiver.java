@@ -40,7 +40,7 @@ import android.util.Log;
 /**
  * Receiver which catches SMS messages and notifies about them.
  *
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
 public class SmsReceiver extends BroadcastReceiver {
   private static final String ACTION = "android.provider.Telephony.SMS_RECEIVED";

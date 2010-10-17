@@ -34,7 +34,7 @@ import android.telephony.PhoneStateListener;
 /**
  * Receiver for "new voicemail" events.
  *
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
 public class VoicemailListener extends PhoneStateListener {
 

@@ -29,7 +29,7 @@ import android.os.Build;
 /**
  * Global constants for the application.
  *
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
 public class NotifierConstants {
 

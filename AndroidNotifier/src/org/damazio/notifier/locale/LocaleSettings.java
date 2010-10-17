@@ -34,7 +34,7 @@ import android.os.Bundle;
 /**
  * Wrapper for reading and writing Locale settings from/to a {@link Bundle}.
  *
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
 public class LocaleSettings {
   public enum OnOffKeep {

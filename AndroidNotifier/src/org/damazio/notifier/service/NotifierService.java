@@ -58,7 +58,7 @@ import android.util.Log;
  * Service which listens for relevant events and sends notifications about
  * them.
  *
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
 public class NotifierService extends Service {
  

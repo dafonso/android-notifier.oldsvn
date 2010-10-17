@@ -55,7 +55,7 @@ import android.widget.Toast;
  * Preference which displays a list of strings and lets the user add, edit or
  * remove elements. This list is displayed as a separate screen.
  * 
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
 public class EditableListPreference extends Preference implements AdapterView.OnItemClickListener {
 

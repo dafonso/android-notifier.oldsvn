@@ -45,7 +45,7 @@ import android.util.Log;
  * This does NOT fetch the MMS contents from the WAP server, so no real
  * MMS contents are sent in the notification.
  *
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
 public class MmsReceiver extends BroadcastReceiver {
   private static final String ACTION = "android.provider.Telephony.WAP_PUSH_RECEIVED";

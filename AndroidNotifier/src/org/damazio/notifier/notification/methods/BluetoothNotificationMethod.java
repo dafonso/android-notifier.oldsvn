@@ -46,7 +46,7 @@ import android.util.Log;
  * 
  * This class should only be loaded if we're running on API level 5 or above.
  *
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
 class BluetoothNotificationMethod implements NotificationMethod {
 

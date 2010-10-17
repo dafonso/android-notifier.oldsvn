@@ -37,7 +37,7 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
  * This class is API-version-safe and will provide a dummy implementation if
  * the device doesn't support backup services.
  *
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
 public abstract class BackupPreferencesListener implements OnSharedPreferenceChangeListener {
   

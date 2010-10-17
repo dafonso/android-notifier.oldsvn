@@ -41,7 +41,7 @@ import android.util.Log;
  * This can be used safely even in systems that don't support bluetooth,
  * in which case a dummy implementation will be used.
  *
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
 public abstract class BluetoothDeviceUtils {
   public static final String ANY_DEVICE = "any";
