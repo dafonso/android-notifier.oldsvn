@@ -31,11 +31,11 @@ import java.io.OutputStream;
 
 import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.NotifierPreferences;
+import org.damazio.notifier.command.CommandProtocol.CommandRequest;
+import org.damazio.notifier.command.CommandProtocol.CommandResponse;
+import org.damazio.notifier.command.handlers.CommandHandler;
+import org.damazio.notifier.command.handlers.CommandHandlerFactory;
 import org.damazio.notifier.notification.DeviceIdProvider;
-import org.damazio.notifier.protocol.CommandProtocol.CommandRequest;
-import org.damazio.notifier.protocol.CommandProtocol.CommandRequest.CommandType;
-import org.damazio.notifier.protocol.CommandProtocol.CommandResponse;
-import org.damazio.notifier.protocol.CommandProtocol.CommandResponse.Builder;
 
 import android.content.Context;
 import android.util.Log;
@@ -43,22 +43,24 @@ import android.util.Log;
 /**
  * Handler for the command protocol.
  *
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
-class CommandStreamHandler extends Thread {
+public class CommandStreamHandler extends Thread {
 
   private final InputStream input;
   private final OutputStream output;
   private final Closeable source;
   private final Context context;
   private final NotifierPreferences preferences;
+  private final CommandHandlerFactory handlerFactory;
 
-  CommandStreamHandler(Context context, InputStream input, OutputStream output, Closeable source) {
+  public CommandStreamHandler(Context context, InputStream input, OutputStream output, Closeable source) {
     this.context = context;
     this.input = input;
     this.output = output;
     this.source = source;
     this.preferences = new NotifierPreferences(context);
+    this.handlerFactory = new CommandHandlerFactory(context);
   }
 
   @Override
@@ -85,7 +87,7 @@ class CommandStreamHandler extends Thread {
           continue;
         }
 
-        CommandHandler handler = getHandlerFor(req.getCommandType());
+        CommandHandler handler = handlerFactory.createHandlerFor(req.getCommandType());
         if (handler == null) {
           Log.e(NotifierConstants.LOG_TAG, "No handler for command: " + req);
           writeFailure(req, responseBuilder, "No handler");  // i18n
@@ -114,27 +116,11 @@ class CommandStreamHandler extends Thread {
     closeSource();
   }
 
-  private void writeFailure(CommandRequest req, Builder responseBuilder, String errorMessage) throws IOException {
+  private void writeFailure(CommandRequest req, CommandResponse.Builder responseBuilder, String errorMessage) throws IOException {
     CommandResponse response = responseBuilder.setSuccess(false)
         .setErrorMessage(errorMessage)
         .build();
     response.writeTo(output);
-  }
-
-  private CommandHandler getHandlerFor(CommandType commandType) {
-    switch (commandType) {
-      case CALL:
-        return new CallCommandHandler(context);
-      case ANSWER:
-        return new AnswerCommandHandler(context);
-      case HANG_UP:
-        return new HangupCommandHandler(context);
-      case SEND_SMS:
-        return new SmsCommandHandler();
-      // TODO: Other types
-      default:
-        return null;
-    }
   }
 
   public void shutdown() {

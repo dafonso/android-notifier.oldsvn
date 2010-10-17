@@ -43,7 +43,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     </activity>
 
     <!-- The actual service which listens on events and sends notifications -->
-    <service android:name=".service.NotificationService"
+    <service android:name=".service.NotifierService"
              android:label="@string/service_name"
              android:icon="@drawable/icon" />
 
@@ -55,23 +55,23 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     </receiver>
 
     <!-- Event receivers (those that can be registered here) -->
-    <receiver android:name=".service.PhoneStateReceiver">
+    <receiver android:name=".notification.events.PhoneStateReceiver">
       <intent-filter>
         <action android:name="android.intent.action.PHONE_STATE" />
       </intent-filter>
     </receiver>
-    <receiver android:name=".service.SmsReceiver">
+    <receiver android:name=".notification.events.SmsReceiver">
       <intent-filter>
         <action android:name="android.provider.Telephony.SMS_RECEIVED" />
       </intent-filter>
     </receiver>
-    <receiver android:name=".service.MmsReceiver">
+    <receiver android:name=".notification.events.MmsReceiver">
       <intent-filter>
         <action android:name="android.provider.Telephony.WAP_PUSH_RECEIVED" />
         <data android:mimeType="application/vnd.wap.mms-message" />
       </intent-filter>
     </receiver>
-    <receiver android:name=".service.UserReceiver">
+    <receiver android:name=".notification.events.UserReceiver">
       <intent-filter>
         <action android:name="org.damazio.notifier.service.UserReceiver.USER_MESSAGE" />
       </intent-filter>

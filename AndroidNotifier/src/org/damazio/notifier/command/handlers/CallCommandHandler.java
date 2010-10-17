@@ -22,33 +22,53 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.damazio.notifier.service;
+package org.damazio.notifier.command.handlers;
 
 import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.NotifierPreferences;
+import org.damazio.notifier.command.CommandProtocol.CommandRequest;
+import org.damazio.notifier.command.CommandProtocol.CommandRequest.CallOptions;
+import org.damazio.notifier.command.CommandProtocol.CommandResponse.Builder;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 
 /**
- * Receiver for boot events, which starts the service if the user chose to have
- * it started at boot.
- *
- * @author rdamazio
+ * Command handlers which starts phone calls.
+ * 
+ * @author Rodrigo Damazio
  */
-public class BootServiceStarter extends BroadcastReceiver {
+class CallCommandHandler implements CommandHandler {
+  private final Context context;
+
+  CallCommandHandler(Context context) {
+    this.context = context;
+  }
+
   @Override
-  public void onReceive(final Context context, Intent intent) {
-    NotifierPreferences preferences = new NotifierPreferences(context);
-    if (!preferences.isStartAtBootEnabled()) {
-      Log.d(NotifierConstants.LOG_TAG, "Not starting at boot.");
-      return;
+  public boolean handleCommand(CommandRequest req, Builder responseBuilder) {
+    // TODO: Check if calls are enabled in prefs
+    if (!req.hasCallOptions()) {
+      Log.e(NotifierConstants.LOG_TAG, "Call options missing");
+      responseBuilder.setErrorMessage("Call options missing");  // TODO: i18n
+      return false;
     }
 
-    assert(intent.getAction().equals("android.intent.action.BOOT_COMPLETED"));
+    CallOptions callOptions = req.getCallOptions();
+    String phoneNumber = callOptions.getPhoneNumber();
+    Log.d(NotifierConstants.LOG_TAG, "Initiating call to " + phoneNumber);
 
-    NotifierService.start(context);
+    Intent intent = new Intent(Intent.ACTION_CALL);
+    intent.setData(Uri.parse("tel:" + phoneNumber));
+    context.startActivity(intent);
+
+    return true;
+  }
+
+  @Override
+  public boolean isEnabled(NotifierPreferences preferences) {
+    return preferences.isCallCommandEnabled();
   }
 }

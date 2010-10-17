@@ -30,7 +30,9 @@ import java.util.Set;
 
 import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.NotifierPreferences;
-import org.damazio.notifier.notification.NotificationMethod.NotificationCallback;
+import org.damazio.notifier.notification.methods.NotificationMethod;
+import org.damazio.notifier.notification.methods.NotificationMethods;
+import org.damazio.notifier.notification.methods.NotificationMethod.NotificationCallback;
 import org.damazio.notifier.util.Encryption;
 
 import android.content.Context;

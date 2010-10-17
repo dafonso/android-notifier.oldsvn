@@ -22,33 +22,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.damazio.notifier.service;
+package org.damazio.notifier.command.handlers;
 
-import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.NotifierPreferences;
+import org.damazio.notifier.command.CommandProtocol.CommandRequest;
+import org.damazio.notifier.command.CommandProtocol.CommandResponse.Builder;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 /**
- * Receiver for boot events, which starts the service if the user chose to have
- * it started at boot.
+ * Command handler which answers phone calls.
  *
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
-public class BootServiceStarter extends BroadcastReceiver {
+class AnswerCommandHandler implements CommandHandler {
+
+  private final Context context;
+
+  public AnswerCommandHandler(Context context) {
+    this.context = context;
+  }
+
   @Override
-  public void onReceive(final Context context, Intent intent) {
-    NotifierPreferences preferences = new NotifierPreferences(context);
-    if (!preferences.isStartAtBootEnabled()) {
-      Log.d(NotifierConstants.LOG_TAG, "Not starting at boot.");
-      return;
-    }
+  public boolean handleCommand(CommandRequest req, Builder responseBuilder) {
+    context.startActivity(new Intent(Intent.ACTION_ANSWER));
+    return true;
+  }
 
-    assert(intent.getAction().equals("android.intent.action.BOOT_COMPLETED"));
-
-    NotifierService.start(context);
+  @Override
+  public boolean isEnabled(NotifierPreferences preferences) {
+    return preferences.isCallCommandEnabled();
   }
 }

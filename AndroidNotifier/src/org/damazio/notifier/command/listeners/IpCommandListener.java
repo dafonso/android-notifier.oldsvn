@@ -22,33 +22,53 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.damazio.notifier.service;
+package org.damazio.notifier.command.listeners;
+
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
 
 import org.damazio.notifier.NotifierConstants;
-import org.damazio.notifier.NotifierPreferences;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 
 /**
- * Receiver for boot events, which starts the service if the user chose to have
- * it started at boot.
+ * Command listener which receives commands over IP (Wifi/3G).
  *
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
-public class BootServiceStarter extends BroadcastReceiver {
+public class IpCommandListener extends CommandListener {
+  private static final int PORT = 10601;
+
+  private ServerSocketChannel serverSocketChannel;
+
+  public IpCommandListener(Context context) {
+    super(context);
+  }
+
   @Override
-  public void onReceive(final Context context, Intent intent) {
-    NotifierPreferences preferences = new NotifierPreferences(context);
-    if (!preferences.isStartAtBootEnabled()) {
-      Log.d(NotifierConstants.LOG_TAG, "Not starting at boot.");
-      return;
-    }
+  protected void initialize() throws IOException {
+    serverSocketChannel = ServerSocketChannel.open();
+    ServerSocket serverSocket = serverSocketChannel.socket();
+    serverSocket.setReuseAddress(true);
+    serverSocket.setPerformancePreferences(1, 5, 0);
+    serverSocket.bind(new InetSocketAddress(PORT));
 
-    assert(intent.getAction().equals("android.intent.action.BOOT_COMPLETED"));
+    Log.i(NotifierConstants.LOG_TAG, "Listening for commands over IP");
+  }
 
-    NotifierService.start(context);
+  @Override
+  protected void runOnce() throws IOException {
+    final SocketChannel socketChannel = serverSocketChannel.accept();
+    
+    // TODO: IP filtering
+
+    Socket socket = socketChannel.socket();
+    Log.d(NotifierConstants.LOG_TAG, "Accepted IP command connection");
+    handleConnection(socket.getInputStream(), socket.getOutputStream(), socketChannel);
   }
 }

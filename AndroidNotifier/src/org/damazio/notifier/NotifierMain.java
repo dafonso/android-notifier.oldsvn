@@ -28,10 +28,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.damazio.notifier.backup.BackupPreferencesListener;
-import org.damazio.notifier.notification.BluetoothDeviceUtils;
 import org.damazio.notifier.notification.Notification;
 import org.damazio.notifier.notification.NotificationType;
-import org.damazio.notifier.service.NotificationService;
+import org.damazio.notifier.service.NotifierService;
+import org.damazio.notifier.util.BluetoothDeviceUtils;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -122,7 +122,7 @@ public class NotifierMain extends PreferenceActivity {
   private void maybeStartService() {
     if (preferences.isStartAtBootEnabled()) {
       // Ensure the service is started if it should have been auto-started
-      NotificationService.start(this);
+      NotifierService.start(this);
     }
   }
 
@@ -395,13 +395,13 @@ public class NotifierMain extends PreferenceActivity {
    * Toggles the service status between running and stopped.
    */
   private void setServiceStarted(boolean start) {
-    boolean isServiceRunning = NotificationService.isRunning(this);
+    boolean isServiceRunning = NotifierService.isRunning(this);
     int textId = -1;
     if (start && !isServiceRunning) {
-      NotificationService.start(this);
+      NotifierService.start(this);
       textId = R.string.service_started;
     } else if (!start && isServiceRunning) {
-      NotificationService.stop(this);
+      NotifierService.stop(this);
       textId = R.string.service_stopped;
     }
 
@@ -420,7 +420,7 @@ public class NotifierMain extends PreferenceActivity {
     String contents = getString(R.string.ping_contents);
     Notification notification =
         new Notification(this, NotificationType.PING, null, contents);
-    NotificationService.startAndSend(this, notification);
+    NotifierService.startAndSend(this, notification);
 
     Toast.makeText(this, R.string.ping_sent, Toast.LENGTH_LONG).show();
   }

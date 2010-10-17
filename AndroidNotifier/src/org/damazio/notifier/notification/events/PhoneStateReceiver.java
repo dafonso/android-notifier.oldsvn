@@ -22,33 +22,43 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.damazio.notifier.service;
+package org.damazio.notifier.notification.events;
 
 import org.damazio.notifier.NotifierConstants;
-import org.damazio.notifier.NotifierPreferences;
+import org.damazio.notifier.notification.Notification;
+import org.damazio.notifier.notification.NotificationType;
+import org.damazio.notifier.service.NotifierService;
+import org.damazio.notifier.util.CallerId;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 
 /**
- * Receiver for boot events, which starts the service if the user chose to have
- * it started at boot.
+ * Listener which can detect and notify when the phone rings.
  *
  * @author rdamazio
  */
-public class BootServiceStarter extends BroadcastReceiver {
+public class PhoneStateReceiver extends BroadcastReceiver {
   @Override
-  public void onReceive(final Context context, Intent intent) {
-    NotifierPreferences preferences = new NotifierPreferences(context);
-    if (!preferences.isStartAtBootEnabled()) {
-      Log.d(NotifierConstants.LOG_TAG, "Not starting at boot.");
+  public void onReceive(Context context, Intent intent) {
+    if (!intent.getAction().equals(TelephonyManager.ACTION_PHONE_STATE_CHANGED)) {
+      Log.e(NotifierConstants.LOG_TAG,
+          "Wrong intent received by phone state receiver - " + intent.getAction());
       return;
     }
 
-    assert(intent.getAction().equals("android.intent.action.BOOT_COMPLETED"));
+    String stateStr = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
+    if (TelephonyManager.EXTRA_STATE_RINGING.equals(stateStr)) {
+      CallerId callerId = CallerId.create(context);
 
-    NotifierService.start(context);
+      String incomingNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
+      String notificationContents = callerId.buildCallerIdString(incomingNumber);
+      Notification notification =
+          new Notification(context, NotificationType.RING, incomingNumber, notificationContents);
+      NotifierService.startAndSend(context, notification);
+    }
   }
 }
