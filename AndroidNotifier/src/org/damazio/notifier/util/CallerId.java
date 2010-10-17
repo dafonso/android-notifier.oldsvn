@@ -40,7 +40,7 @@ import android.util.Log;
  * Service which can look up information about an incoming caller,
  * and prepare it for display in the notification.
  *
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
 @SuppressWarnings("deprecation")
 public abstract class CallerId {

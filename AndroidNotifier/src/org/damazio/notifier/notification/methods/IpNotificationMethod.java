@@ -55,7 +55,7 @@ import android.util.Log;
  * Depending on user-configured options, these may be sent only over Wifi,
  * or over the cell phone network.
  *
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
 class IpNotificationMethod implements NotificationMethod {
 

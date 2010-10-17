@@ -43,7 +43,7 @@ import android.util.Log;
  * This class also includes utilities for encoding that byte array in a string-safe way
  * for storage.
  *
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
 public class Encryption {
 

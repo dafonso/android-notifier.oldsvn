@@ -35,7 +35,7 @@ import android.content.Context;
 /**
  * Factory for notification methods.
  *
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
 public class NotificationMethods {
   private NotificationMethods() { }

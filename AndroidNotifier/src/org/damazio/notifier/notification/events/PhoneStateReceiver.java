@@ -39,7 +39,7 @@ import android.util.Log;
 /**
  * Listener which can detect and notify when the phone rings.
  *
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
 public class PhoneStateReceiver extends BroadcastReceiver {
   @Override

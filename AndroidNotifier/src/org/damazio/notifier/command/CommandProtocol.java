@@ -228,7 +228,7 @@ public final class CommandProtocol {
           org.damazio.notifier.command.CommandProtocol.Contact, Builder> {
       private org.damazio.notifier.command.CommandProtocol.Contact result;
       
-      // Construct using org.damazio.notifier.protocol.CommandProtocol.Contact.newBuilder()
+      // Construct using org.damazio.notifier.command.CommandProtocol.Contact.newBuilder()
       private Builder() {}
       
       private static Builder create() {
@@ -636,7 +636,7 @@ public final class CommandProtocol {
             org.damazio.notifier.command.CommandProtocol.CommandRequest.CallOptions, Builder> {
         private org.damazio.notifier.command.CommandProtocol.CommandRequest.CallOptions result;
         
-        // Construct using org.damazio.notifier.protocol.CommandProtocol.CommandRequest.CallOptions.newBuilder()
+        // Construct using org.damazio.notifier.command.CommandProtocol.CommandRequest.CallOptions.newBuilder()
         private Builder() {}
         
         private static Builder create() {
@@ -907,7 +907,7 @@ public final class CommandProtocol {
             org.damazio.notifier.command.CommandProtocol.CommandRequest.SmsOptions, Builder> {
         private org.damazio.notifier.command.CommandProtocol.CommandRequest.SmsOptions result;
         
-        // Construct using org.damazio.notifier.protocol.CommandProtocol.CommandRequest.SmsOptions.newBuilder()
+        // Construct using org.damazio.notifier.command.CommandProtocol.CommandRequest.SmsOptions.newBuilder()
         private Builder() {}
         
         private static Builder create() {
@@ -1191,7 +1191,7 @@ public final class CommandProtocol {
             org.damazio.notifier.command.CommandProtocol.CommandRequest.QueryOptions, Builder> {
         private org.damazio.notifier.command.CommandProtocol.CommandRequest.QueryOptions result;
         
-        // Construct using org.damazio.notifier.protocol.CommandProtocol.CommandRequest.QueryOptions.newBuilder()
+        // Construct using org.damazio.notifier.command.CommandProtocol.CommandRequest.QueryOptions.newBuilder()
         private Builder() {}
         
         private static Builder create() {
@@ -1515,7 +1515,7 @@ public final class CommandProtocol {
           org.damazio.notifier.command.CommandProtocol.CommandRequest, Builder> {
       private org.damazio.notifier.command.CommandProtocol.CommandRequest result;
       
-      // Construct using org.damazio.notifier.protocol.CommandProtocol.CommandRequest.newBuilder()
+      // Construct using org.damazio.notifier.command.CommandProtocol.CommandRequest.newBuilder()
       private Builder() {}
       
       private static Builder create() {
@@ -1996,7 +1996,7 @@ public final class CommandProtocol {
             org.damazio.notifier.command.CommandProtocol.CommandResponse.SearchResults, Builder> {
         private org.damazio.notifier.command.CommandProtocol.CommandResponse.SearchResults result;
         
-        // Construct using org.damazio.notifier.protocol.CommandProtocol.CommandResponse.SearchResults.newBuilder()
+        // Construct using org.damazio.notifier.command.CommandProtocol.CommandResponse.SearchResults.newBuilder()
         private Builder() {}
         
         private static Builder create() {
@@ -2335,7 +2335,7 @@ public final class CommandProtocol {
           org.damazio.notifier.command.CommandProtocol.CommandResponse, Builder> {
       private org.damazio.notifier.command.CommandProtocol.CommandResponse result;
       
-      // Construct using org.damazio.notifier.protocol.CommandProtocol.CommandResponse.newBuilder()
+      // Construct using org.damazio.notifier.command.CommandProtocol.CommandResponse.newBuilder()
       private Builder() {}
       
       private static Builder create() {

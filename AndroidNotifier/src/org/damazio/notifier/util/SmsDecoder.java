@@ -35,7 +35,7 @@ import android.util.Log;
  * Class which handles decoding SMS messages in the proper way depending on the
  * version of Android being run.
  *
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
 public abstract class SmsDecoder {
   protected final Context context;

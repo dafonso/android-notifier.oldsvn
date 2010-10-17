@@ -35,7 +35,7 @@ import android.util.Log;
  * sending the given notification until the method is ready to send it.
  *
  * @param <T> is the target type
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
 abstract class MethodEnablingNotifier<T> extends CountDownTimer {
   private static final long MAX_MEDIUM_WAIT_TIME_MS = 60000;

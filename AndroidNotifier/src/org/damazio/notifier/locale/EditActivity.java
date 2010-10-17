@@ -44,7 +44,7 @@ import android.util.Log;
 /**
  * Activity displayed when the user wants to edit the Locale plugin settings.
  *
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
 public class EditActivity extends PreferenceActivity implements OnPreferenceChangeListener {
   private LocaleSettings settings;

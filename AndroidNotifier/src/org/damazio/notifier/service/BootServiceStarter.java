@@ -36,7 +36,7 @@ import android.util.Log;
  * Receiver for boot events, which starts the service if the user chose to have
  * it started at boot.
  *
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
 public class BootServiceStarter extends BroadcastReceiver {
   @Override

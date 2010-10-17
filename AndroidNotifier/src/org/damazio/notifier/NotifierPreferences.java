@@ -37,7 +37,7 @@ import android.util.Log;
 /**
  * Application preferences, used both by the service and by the settings UI.
  *
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
 public class NotifierPreferences {
   private final SharedPreferences preferences;

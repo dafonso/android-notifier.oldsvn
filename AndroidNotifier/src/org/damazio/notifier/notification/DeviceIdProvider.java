@@ -33,7 +33,7 @@ import android.util.Log;
 /**
  * Provider of unique IDs for the device.
  *
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
 public class DeviceIdProvider {
 

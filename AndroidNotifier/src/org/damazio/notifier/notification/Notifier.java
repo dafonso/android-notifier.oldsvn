@@ -43,7 +43,7 @@ import android.util.Log;
  * Notification manager, which distributes relevant notifications to all
  * notification methods.
  *
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
 public class Notifier {
 

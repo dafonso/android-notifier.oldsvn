@@ -28,6 +28,11 @@ import org.damazio.notifier.command.CommandProtocol.CommandRequest.CommandType;
 
 import android.content.Context;
 
+/**
+ * Factory for command handlers.
+ *
+ * @author Rodrigo Damazio
+ */
 public class CommandHandlerFactory {
 
   private final Context context;
@@ -36,6 +41,12 @@ public class CommandHandlerFactory {
     this.context = context;
   }
 
+  /**
+   * Creates and returns a command handler for the given command type.
+   *
+   * @param commandType the command type
+   * @return the handler, or null if unable to handle the type
+   */
   public CommandHandler createHandlerFor(CommandType commandType) {
     switch (commandType) {
       case CALL:

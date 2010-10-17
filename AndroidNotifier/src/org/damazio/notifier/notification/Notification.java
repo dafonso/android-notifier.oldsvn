@@ -31,7 +31,7 @@ import android.os.Parcelable;
 /**
  * Data object which represents a notification.
  *
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
 public class Notification implements Parcelable {
 

@@ -27,7 +27,7 @@ package org.damazio.notifier.notification.methods;
 /**
  * Interface that defines a method of sending notifications.
  *
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
 public interface NotificationMethod {
   
