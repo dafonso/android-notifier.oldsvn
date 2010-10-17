@@ -238,6 +238,13 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                         android:dependency="@string/command_enable_key"
                         android:summaryOn="@string/command_source_on"
                         android:summaryOff="@string/command_source_off" />
+
+    <CheckBoxPreference android:key="@string/command_usb_key"
+                        android:title="@string/command_usb"
+                        android:defaultValue="true"
+                        android:dependency="@string/command_enable_key"
+                        android:summaryOn="@string/command_source_on"
+                        android:summaryOff="@string/command_source_off" />
   </PreferenceScreen>
 
   <!-- Security -->

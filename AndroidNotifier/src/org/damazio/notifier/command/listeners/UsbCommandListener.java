@@ -24,54 +24,39 @@
  */
 package org.damazio.notifier.command.listeners;
 
+import java.io.Closeable;
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.nio.channels.ServerSocketChannel;
-import java.nio.channels.SocketChannel;
-
-import org.damazio.notifier.NotifierConstants;
 
 import android.content.Context;
-import android.util.Log;
+import android.net.LocalServerSocket;
+import android.net.LocalSocket;
 
 /**
- * Command listener which receives commands over IP (Wifi/3G).
+ * Command listener which receives commands over USB through adb.
  *
  * @author Rodrigo Damazio
  */
-public class IpCommandListener extends CommandListener {
-  private static final int PORT = 10601;
+public class UsbCommandListener extends CommandListener {
+  private static final String SOCKET_NAME = "androidnotifier-cmd";
+  private LocalServerSocket serverSocket;
 
-  private ServerSocketChannel serverSocketChannel;
-
-  public IpCommandListener(Context context) {
+  protected UsbCommandListener(Context context) {
     super(context);
   }
 
   @Override
   protected void initialize() throws IOException {
-    serverSocketChannel = ServerSocketChannel.open();
-    ServerSocket serverSocket = serverSocketChannel.socket();
-    serverSocket.setReuseAddress(true);
-    serverSocket.setPerformancePreferences(
-        1 /* connectionTime */,
-        5 /* latency */,
-        0 /* bandwidth */);
-    serverSocket.bind(new InetSocketAddress(PORT));
-
-    Log.i(NotifierConstants.LOG_TAG, "Listening for commands over IP");
+    serverSocket = new LocalServerSocket(SOCKET_NAME);
   }
 
   @Override
   protected void runOnce() throws IOException {
-    final SocketChannel socketChannel = serverSocketChannel.accept();
-    
-    // TODO: IP filtering
-
-    Socket socket = socketChannel.socket();
-    Log.d(NotifierConstants.LOG_TAG, "Accepted IP command connection");
-    handleConnection(socket.getInputStream(), socket.getOutputStream(), socketChannel);
+    final LocalSocket socket = serverSocket.accept();
+    handleConnection(socket.getInputStream(), socket.getOutputStream(), new Closeable() {
+      @Override
+      public void close() throws IOException {
+        socket.close();
+      }
+    });
   }
 }

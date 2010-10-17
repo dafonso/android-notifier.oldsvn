@@ -139,6 +139,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <string name="command_summary_off">This type of command will be IGNORED</string>
     <string name="command_bluetooth">Accept over bluetooth</string>
     <string name="command_wifi">Accept over Wifi</string>
+    <string name="command_usb">Accept over USB</string>
     <string name="command_source_on">Commands from this source will be executed</string>
     <string name="command_source_off">Commands from this source will be IGNORED</string>
     <string name="bluetooth_source_device">Source device</string>
