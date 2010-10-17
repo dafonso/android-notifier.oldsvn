@@ -39,10 +39,10 @@ import java.util.Collections;
 
 import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.NotifierPreferences;
+import org.damazio.notifier.util.NetworkUtils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
-import android.net.DhcpInfo;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiManager.WifiLock;
@@ -106,12 +106,14 @@ class IpNotificationMethod implements NotificationMethod {
   private final NotifierPreferences preferences;
   private final WifiManager wifi;
   private final ConnectivityManager connectivity;
+  private final NetworkUtils networkUtils;
 
   public IpNotificationMethod(Context context, NotifierPreferences preferences) {
     this.preferences = preferences;
     this.wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
     this.connectivity =
         (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    this.networkUtils = new NetworkUtils(context);
   }
 
   public void sendNotification(byte[] payload, Object targetObj, NotificationCallback callback,
@@ -237,23 +239,11 @@ class IpNotificationMethod implements NotificationMethod {
       // Send to 255.255.255.255
       return InetAddress.getByAddress(new byte[] { -1, -1, -1, -1 });
     } else if (addressStr.equals("dhcp")) {
-      // Get the DHCP info from Wi-fi
-      DhcpInfo dhcp = null;
-      if (wifi != null) {
-        dhcp = wifi.getDhcpInfo();
+      InetAddress broadcastAddress = networkUtils.getWifiDhcpBroadcastAddress();
+      if (broadcastAddress == null) {
+        throw new UnknownHostException("Unable to get DHCP brodcast address");
       }
-      if (dhcp == null) {
-        Log.e(NotifierConstants.LOG_TAG, "Could not obtain DHCP info");
-        throw new UnknownHostException("Unable to get DHCP info");
-      }
-
-      // Calculate the broadcast address
-      int broadcast = (dhcp.ipAddress & dhcp.netmask) | ~dhcp.netmask;
-      byte[] quads = new byte[4];
-      for (int k = 0; k < 4; k++) {
-        quads[k] = (byte) ((broadcast >> k * 8) & 0xFF);
-      }
-      return InetAddress.getByAddress(quads);
+      return broadcastAddress;
     } else {
       return InetAddress.getByName(addressStr);
     }

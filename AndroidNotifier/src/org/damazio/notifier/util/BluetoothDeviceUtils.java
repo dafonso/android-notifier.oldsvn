@@ -62,6 +62,11 @@ public abstract class BluetoothDeviceUtils {
     public Iterable<BluetoothDevice> findDevicesMatching(String targetDeviceAddress) {
       return Collections.EMPTY_LIST;
     }
+
+    @Override
+    public byte[] getLocalMacAddress() {
+      return null;
+    }
   }
 
   /**
@@ -194,6 +199,17 @@ public abstract class BluetoothDeviceUtils {
 
       return true;
     }
+
+    @Override
+    public byte[] getLocalMacAddress() {
+      String address = bluetoothAdapter.getAddress();
+      String[] addressBytesStr = address.split(":");
+      byte addressBytes[] = new byte[addressBytesStr.length];
+      for (int i = 0; i < addressBytesStr.length; i++) {
+        addressBytes[i] = (byte) Integer.parseInt(addressBytesStr[i], 16);
+      }
+      return addressBytes;
+    }
   }
 
   /**
@@ -236,6 +252,13 @@ public abstract class BluetoothDeviceUtils {
    */
   public abstract Iterable<BluetoothDevice> findDevicesMatching(String targetDeviceAddress);
 
+  /**
+   * Gets the MAC address for the local adapter.
+   *
+   * @return the mac address as bytes, or null if none available
+   */
+  public abstract byte[] getLocalMacAddress();
+  
   /**
    * @return whether the bluetooth method is supported on this device
    */

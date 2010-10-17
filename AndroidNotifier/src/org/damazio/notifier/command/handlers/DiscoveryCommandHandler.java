@@ -24,50 +24,42 @@
  */
 package org.damazio.notifier.command.handlers;
 
-import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.NotifierPreferences;
 import org.damazio.notifier.command.CommandProtocol.CommandRequest;
-import org.damazio.notifier.command.CommandProtocol.CommandRequest.CallOptions;
 import org.damazio.notifier.command.CommandProtocol.CommandResponse.Builder;
+import org.damazio.notifier.command.CommandProtocol.DeviceAddresses;
+import org.damazio.notifier.command.DiscoveryUtils;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.util.Log;
 
 /**
- * Command handlers which starts phone calls.
- * 
+ * Command handler which replies with all means of sending commands to the
+ * current device (IP addresses, bluetooth mac, etc.).
+ *
  * @author Rodrigo Damazio
  */
-class CallCommandHandler implements CommandHandler {
-  private final Context context;
+class DiscoveryCommandHandler implements CommandHandler {
+  private final DiscoveryUtils discoveryUtils;
 
-  CallCommandHandler(Context context) {
-    this.context = context;
+  DiscoveryCommandHandler(Context context) {
+    discoveryUtils = new DiscoveryUtils(context);
   }
 
   @Override
   public boolean handleCommand(CommandRequest req, Builder responseBuilder) {
-    if (!req.hasCallOptions()) {
-      Log.e(NotifierConstants.LOG_TAG, "Call options missing");
-      responseBuilder.setErrorMessage("Call options missing");  // TODO: i18n
-      return false;
+    DeviceAddresses addresses = discoveryUtils.getDeviceAddresses();
+
+    if (addresses.hasBluetoothMac() || addresses.getIpAddressCount() > 0) {
+      responseBuilder.setDiscoveryResult(addresses);
+      return true;
     }
 
-    CallOptions callOptions = req.getCallOptions();
-    String phoneNumber = callOptions.getPhoneNumber();
-    Log.d(NotifierConstants.LOG_TAG, "Initiating call to " + phoneNumber);
-
-    Intent intent = new Intent(Intent.ACTION_CALL);
-    intent.setData(Uri.parse("tel:" + Uri.encode(phoneNumber)));
-    context.startActivity(intent);
-
-    return true;
+    return false;
   }
 
   @Override
   public boolean isEnabled(NotifierPreferences preferences) {
-    return preferences.isCallCommandEnabled();
+    // Always enabled
+    return true;
   }
 }
