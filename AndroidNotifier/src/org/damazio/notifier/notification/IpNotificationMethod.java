@@ -321,4 +321,9 @@ class IpNotificationMethod implements NotificationMethod {
   public boolean isEnabled() {
     return preferences.isIpMethodEnabled();
   }
+
+  @Override
+  public void shutdown() {
+    // Nothing to do
+  }
 }

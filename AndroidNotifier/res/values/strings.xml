@@ -98,8 +98,6 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
     <!-- USB method -->
     <string name="method_usb">USB</string>
-    <string name="enable_usb_summary_on">Notifications will be sent over usb when the device is plugged in</string>
-    <string name="enable_usb_summary_off">Notifications won\'t be sent over usb</string>
 
     <!-- Security -->
     <string name="security_title">Security</string>

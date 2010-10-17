@@ -172,6 +172,7 @@ public class NotificationService extends Service {
     Log.i(NotifierConstants.LOG_TAG, "Notification service going down.");
 
     synchronized (this) {
+      notifier.shutdown();
       destroyNotificationService();
       destroyCommandService();
     }

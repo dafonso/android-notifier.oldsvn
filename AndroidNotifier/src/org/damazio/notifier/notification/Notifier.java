@@ -197,4 +197,10 @@ public class Notifier {
         return false;
     }
   }
+
+  public void shutdown() {
+    for (NotificationMethod method : allMethods) {
+      method.shutdown();
+    }
+  }
 }

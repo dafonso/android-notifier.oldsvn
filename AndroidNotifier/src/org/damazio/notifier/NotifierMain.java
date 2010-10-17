@@ -31,7 +31,6 @@ import org.damazio.notifier.backup.BackupPreferencesListener;
 import org.damazio.notifier.notification.BluetoothDeviceUtils;
 import org.damazio.notifier.notification.Notification;
 import org.damazio.notifier.notification.NotificationType;
-import org.damazio.notifier.notification.Notifier;
 import org.damazio.notifier.service.NotificationService;
 
 import android.app.AlertDialog;
@@ -57,7 +56,6 @@ import android.widget.Toast;
  * @author rdamazio
  */
 public class NotifierMain extends PreferenceActivity {
-  private Notifier notifier;
   private NotifierPreferences preferences;
   private BackupPreferencesListener backupPreferencesListener;
 
@@ -416,12 +414,8 @@ public class NotifierMain extends PreferenceActivity {
    * Sends a test notification.
    */
   private void sendTestNotification() {
-    // TODO: Send to the service instead
     // TODO: Warn if none of the selected methods are available
     //       (e.g. bluetooth and/or IP turned off)
-    if (notifier == null) {
-//      notifier = new Notifier(this, preferences);
-    }
 
     String contents = getString(R.string.ping_contents);
     Notification notification =

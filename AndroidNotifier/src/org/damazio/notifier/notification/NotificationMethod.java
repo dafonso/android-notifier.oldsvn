@@ -73,4 +73,9 @@ interface NotificationMethod {
    * @return whether this method is enabled and should be called
    */
   boolean isEnabled();
+
+  /**
+   * Frees any resources held by this method.
+   */
+  void shutdown();
 }

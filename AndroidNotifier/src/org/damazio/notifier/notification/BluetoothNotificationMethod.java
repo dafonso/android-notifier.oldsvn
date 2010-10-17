@@ -227,4 +227,9 @@ class BluetoothNotificationMethod implements NotificationMethod {
   public boolean isEnabled() {
     return preferences.isBluetoothMethodEnabled() && bluetoothAdapter != null;
   }
+
+  @Override
+  public void shutdown() {
+    // Nothing to do
+  }
 }
