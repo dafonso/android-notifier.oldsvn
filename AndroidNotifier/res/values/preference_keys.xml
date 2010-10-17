@@ -50,6 +50,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <string name="command_sms_key">commandSms</string>
   <string name="command_bluetooth_key">commandBluetooth</string>
   <string name="command_wifi_key">commandWifi</string>
+  <string name="command_usb_key">commandUsb</string>
   <string name="bluetooth_source_key">bluetoothSource</string>
   <string name="show_notification_icon_key">showNotificationIcon</string>
   <string name="battery_min_level_key">minBatteryLevel</string>
