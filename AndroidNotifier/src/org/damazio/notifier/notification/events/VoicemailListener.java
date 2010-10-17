@@ -22,33 +22,33 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.damazio.notifier.service;
+package org.damazio.notifier.notification.events;
 
-import org.damazio.notifier.NotifierConstants;
-import org.damazio.notifier.NotifierPreferences;
+import org.damazio.notifier.notification.Notification;
+import org.damazio.notifier.notification.NotificationType;
+import org.damazio.notifier.service.NotifierService;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
+import android.telephony.PhoneStateListener;
 
 /**
- * Receiver for boot events, which starts the service if the user chose to have
- * it started at boot.
+ * Receiver for "new voicemail" events.
  *
  * @author rdamazio
  */
-public class BootServiceStarter extends BroadcastReceiver {
+public class VoicemailListener extends PhoneStateListener {
+
+  private final Context context;
+
+  public VoicemailListener(Context context) {
+    this.context = context;
+  }
+
   @Override
-  public void onReceive(final Context context, Intent intent) {
-    NotifierPreferences preferences = new NotifierPreferences(context);
-    if (!preferences.isStartAtBootEnabled()) {
-      Log.d(NotifierConstants.LOG_TAG, "Not starting at boot.");
-      return;
+  public void onMessageWaitingIndicatorChanged(boolean mwi) {
+    if (mwi) {
+      Notification notification = new Notification(context, NotificationType.VOICEMAIL, null, null);
+      NotifierService.startAndSend(context, notification);
     }
-
-    assert(intent.getAction().equals("android.intent.action.BOOT_COMPLETED"));
-
-    NotifierService.start(context);
   }
 }

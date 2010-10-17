@@ -22,33 +22,33 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.damazio.notifier.service;
+package org.damazio.notifier.command.handlers;
 
-import org.damazio.notifier.NotifierConstants;
-import org.damazio.notifier.NotifierPreferences;
+import org.damazio.notifier.command.CommandProtocol.CommandRequest.CommandType;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 
-/**
- * Receiver for boot events, which starts the service if the user chose to have
- * it started at boot.
- *
- * @author rdamazio
- */
-public class BootServiceStarter extends BroadcastReceiver {
-  @Override
-  public void onReceive(final Context context, Intent intent) {
-    NotifierPreferences preferences = new NotifierPreferences(context);
-    if (!preferences.isStartAtBootEnabled()) {
-      Log.d(NotifierConstants.LOG_TAG, "Not starting at boot.");
-      return;
+public class CommandHandlerFactory {
+
+  private final Context context;
+
+  public CommandHandlerFactory(Context context) {
+    this.context = context;
+  }
+
+  public CommandHandler createHandlerFor(CommandType commandType) {
+    switch (commandType) {
+      case CALL:
+        return new CallCommandHandler(context);
+      case ANSWER:
+        return new AnswerCommandHandler(context);
+      case HANG_UP:
+        return new HangupCommandHandler(context);
+      case SEND_SMS:
+        return new SmsCommandHandler();
+      // TODO: Other types
+      default:
+        return null;
     }
-
-    assert(intent.getAction().equals("android.intent.action.BOOT_COMPLETED"));
-
-    NotifierService.start(context);
   }
 }

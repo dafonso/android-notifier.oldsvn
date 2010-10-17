@@ -22,33 +22,45 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.damazio.notifier.service;
+package org.damazio.notifier.notification.methods;
 
-import org.damazio.notifier.NotifierConstants;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.damazio.notifier.NotifierPreferences;
+import org.damazio.notifier.util.BluetoothDeviceUtils;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 
 /**
- * Receiver for boot events, which starts the service if the user chose to have
- * it started at boot.
+ * Factory for notification methods.
  *
  * @author rdamazio
  */
-public class BootServiceStarter extends BroadcastReceiver {
-  @Override
-  public void onReceive(final Context context, Intent intent) {
-    NotifierPreferences preferences = new NotifierPreferences(context);
-    if (!preferences.isStartAtBootEnabled()) {
-      Log.d(NotifierConstants.LOG_TAG, "Not starting at boot.");
-      return;
+public class NotificationMethods {
+  private NotificationMethods() { }
+
+  /**
+   * Create and return a set of all valid notification methods for the current
+   * environment.
+   *
+   * @param context the context to get information from
+   * @param preferences the preferences for the methods to use
+   * @return the set of notification methods
+   */
+  public static Set<NotificationMethod> getAllValidMethods(
+      Context context, NotifierPreferences preferences) {
+    HashSet<NotificationMethod> methods = new HashSet<NotificationMethod>();
+
+    // Methods supported in all versions
+    methods.add(new IpNotificationMethod(context, preferences));
+    methods.add(new UsbNotificationMethod(context, preferences));
+
+    // Methods supported only in 2.0 and above
+    if (BluetoothDeviceUtils.isBluetoothMethodSupported()) {
+      methods.add(new BluetoothNotificationMethod(context, preferences));
     }
 
-    assert(intent.getAction().equals("android.intent.action.BOOT_COMPLETED"));
-
-    NotifierService.start(context);
+    return methods;
   }
 }

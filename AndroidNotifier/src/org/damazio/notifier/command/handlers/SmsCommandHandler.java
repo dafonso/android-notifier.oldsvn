@@ -22,33 +22,51 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.damazio.notifier.service;
+package org.damazio.notifier.command.handlers;
 
 import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.NotifierPreferences;
+import org.damazio.notifier.command.CommandProtocol.CommandRequest;
+import org.damazio.notifier.command.CommandProtocol.CommandRequest.SmsOptions;
+import org.damazio.notifier.command.CommandProtocol.CommandResponse.Builder;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
+import android.telephony.SmsManager;
 import android.util.Log;
 
 /**
- * Receiver for boot events, which starts the service if the user chose to have
- * it started at boot.
+ * Command handler which sends SMSs.
  *
- * @author rdamazio
+ * @author Rodrigo Damazio
  */
-public class BootServiceStarter extends BroadcastReceiver {
+class SmsCommandHandler implements CommandHandler {
   @Override
-  public void onReceive(final Context context, Intent intent) {
-    NotifierPreferences preferences = new NotifierPreferences(context);
-    if (!preferences.isStartAtBootEnabled()) {
-      Log.d(NotifierConstants.LOG_TAG, "Not starting at boot.");
-      return;
+  public boolean handleCommand(CommandRequest req, Builder responseBuilder) {
+    if (!req.hasSmsOptions()) {
+      responseBuilder.setErrorMessage("Incomplete command");  // i18n
+      Log.e(NotifierConstants.LOG_TAG, "Missing SMS options");
+      return false;
     }
 
-    assert(intent.getAction().equals("android.intent.action.BOOT_COMPLETED"));
+    SmsOptions smsOptions = req.getSmsOptions();
+    String destination = smsOptions.getPhoneNumber();
+    String contents = smsOptions.getSmsMessage();
+    if (destination.length() == 0 || contents.length() == 0) {
+      responseBuilder.setErrorMessage("Missing number or contents");  // i18n
+      Log.e(NotifierConstants.LOG_TAG, "Missing SMS number or contents");
+      return false;
+    }
 
-    NotifierService.start(context);
+    // TODO: Cupcake compatibility
+    SmsManager smsManager = SmsManager.getDefault();
+
+    // TODO: Notification when sms is delivered
+    smsManager.sendTextMessage(destination, null, contents, null, null);
+
+    return true;
+  }
+
+  @Override
+  public boolean isEnabled(NotifierPreferences preferences) {
+    return preferences.isSmsCommandEnabled();
   }
 }

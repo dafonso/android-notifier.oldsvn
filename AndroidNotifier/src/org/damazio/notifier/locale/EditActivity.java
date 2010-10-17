@@ -31,7 +31,7 @@ import org.damazio.notifier.EditableListPreference;
 import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.R;
 import org.damazio.notifier.locale.LocaleSettings.OnOffKeep;
-import org.damazio.notifier.notification.BluetoothDeviceUtils;
+import org.damazio.notifier.util.BluetoothDeviceUtils;
 
 import android.content.Intent;
 import android.os.Bundle;

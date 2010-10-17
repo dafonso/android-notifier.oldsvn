@@ -27,7 +27,7 @@ package org.damazio.notifier.locale;
 import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.NotifierPreferences;
 import org.damazio.notifier.locale.LocaleSettings.OnOffKeep;
-import org.damazio.notifier.service.NotificationService;
+import org.damazio.notifier.service.NotifierService;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -64,12 +64,12 @@ public class FireReceiver extends BroadcastReceiver {
 
   private void setEnabledState(LocaleSettings settings, NotifierPreferences preferences, Context context) {
     OnOffKeep enabledState = settings.getEnabledState();
-    boolean running = NotificationService.isRunning(context);
+    boolean running = NotifierService.isRunning(context);
     switch (enabledState) {
       case ON:
         preferences.setNotificationsEnabled(true);
         if (!running) {
-          NotificationService.start(context);
+          NotifierService.start(context);
         }
         break;
       case OFF:
@@ -77,7 +77,7 @@ public class FireReceiver extends BroadcastReceiver {
 
         // Changing the preference should be enough for the service to suicide,
         // but we kill it just in case.
-        NotificationService.stop(context);
+        NotifierService.stop(context);
         break;
       default:
         return;

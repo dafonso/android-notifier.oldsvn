@@ -28,17 +28,30 @@ package org.damazio.notifier.command;
 
 import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.NotifierPreferences;
+import org.damazio.notifier.command.listeners.BluetoothCommandListener;
+import org.damazio.notifier.command.listeners.IpCommandListener;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.util.Log;
 
+/**
+ * Main command service.
+ * This is responsible for setting up isteners.
+ *
+ * @author Rodrigo Damazio
+ */
 public class CommandService implements OnSharedPreferenceChangeListener {
+  private static final String COMMANDS_LOCK_TAG = CommandService.class.getName();
+
   private final Context context;
   private final NotifierPreferences preferences;
   private BluetoothCommandListener bluetoothListener;
   private IpCommandListener ipListener;
+  private WakeLock wakeLock;
 
   public CommandService(Context context, NotifierPreferences preferences) {
     this.context = context;
@@ -52,6 +65,13 @@ public class CommandService implements OnSharedPreferenceChangeListener {
       if (!preferences.isCommandEnabled()) {
         Log.w(NotifierConstants.LOG_TAG, "Commands disabled, not starting");
         return;
+      }
+
+      // Ensure the CPU keeps running while we listen for connections
+      if (wakeLock == null) {
+        PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, COMMANDS_LOCK_TAG);
+        wakeLock.acquire();
       }
 
       startBluetoothListener();
@@ -79,6 +99,9 @@ public class CommandService implements OnSharedPreferenceChangeListener {
     synchronized (this) {
       shutdownIpListener();
       shutdownBluetoothListener();
+
+      wakeLock.release();
+      wakeLock = null;
     }
   }
 

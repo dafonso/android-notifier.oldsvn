@@ -24,8 +24,8 @@
  */
 package org.damazio.notifier;
 
-import org.damazio.notifier.notification.BluetoothDeviceUtils;
 import org.damazio.notifier.util.Base64;
+import org.damazio.notifier.util.BluetoothDeviceUtils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
