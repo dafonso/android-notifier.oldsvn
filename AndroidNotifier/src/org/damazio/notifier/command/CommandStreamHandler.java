@@ -100,11 +100,13 @@ public class CommandStreamHandler extends Thread {
             .setCommandId(req.getCommandId())
             .setDeviceId(deviceId);
 
+        // Check the request
         if (!req.isInitialized()) {
           writeFailure(req, responseBuilder, R.string.command_err_incomplete, output);
           continue;
         }
 
+        // Check that the command was meant for this device
         Log.d(NotifierConstants.LOG_TAG, "Handling command: " + req);
         if (req.getDeviceId() != deviceId) {
           Log.e(NotifierConstants.LOG_TAG,
@@ -113,26 +115,30 @@ public class CommandStreamHandler extends Thread {
           continue;
         }
 
+        // Create a handler for the command
         CommandHandler handler = handlerFactory.createHandlerFor(req.getCommandType());
         if (handler == null) {
           Log.e(NotifierConstants.LOG_TAG, "No handler for command: " + req);
           writeFailure(req, responseBuilder, R.string.command_err_unhandled, output);
           continue;
         }
+
+        // Check that handling of this command is eabled
         if (!handler.isEnabled(preferences)) {
           Log.w(NotifierConstants.LOG_TAG, "Not handling disabled command: " + req);
           writeFailure(req, responseBuilder, R.string.command_err_disabled, output);
           continue;
         }
 
+        // Handle the command
         boolean success = handler.handleCommand(req, responseBuilder);
         responseBuilder.setSuccess(success);
 
+        CommandResponse response = responseBuilder.build();
         if (!success) {
-          Log.e(NotifierConstants.LOG_TAG, "Command handling failed: " + req);
+          Log.e(NotifierConstants.LOG_TAG, "Command handling failed: req=" + req + "; resp=" + response);
         }
-
-        output.writeMessageNoTag(responseBuilder.build());
+        output.writeMessageNoTag(response);
       } catch (IOException e) {
         Log.w(NotifierConstants.LOG_TAG, "Error writing command output", e);
         break;

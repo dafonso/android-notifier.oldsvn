@@ -151,6 +151,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <string name="command_err_wrong_device">Command sent to wrong device</string>
     <string name="command_err_unhandled">No handler for command</string>
     <string name="command_err_disabled">Command disabled</string>
+    <string name="command_err_hangup_failed">Hangup failed: %s</string>
 
     <!-- Misc preferences -->
     <string name="misc_title">Miscelaneous</string>

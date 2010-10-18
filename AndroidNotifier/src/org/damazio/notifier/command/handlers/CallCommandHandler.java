@@ -26,6 +26,7 @@ package org.damazio.notifier.command.handlers;
 
 import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.NotifierPreferences;
+import org.damazio.notifier.R;
 import org.damazio.notifier.command.CommandProtocol.CommandRequest;
 import org.damazio.notifier.command.CommandProtocol.CommandRequest.CallOptions;
 import org.damazio.notifier.command.CommandProtocol.CommandResponse.Builder;
@@ -51,7 +52,7 @@ class CallCommandHandler implements CommandHandler {
   public boolean handleCommand(CommandRequest req, Builder responseBuilder) {
     if (!req.hasCallOptions()) {
       Log.e(NotifierConstants.LOG_TAG, "Call options missing");
-      responseBuilder.setErrorMessage("Call options missing");  // TODO: i18n
+      responseBuilder.setErrorMessage(context.getString(R.string.command_err_incomplete));
       return false;
     }
 
