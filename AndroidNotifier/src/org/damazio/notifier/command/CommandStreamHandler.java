@@ -28,20 +28,23 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.security.GeneralSecurityException;
 
 import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.NotifierPreferences;
+import org.damazio.notifier.R;
 import org.damazio.notifier.command.CommandProtocol.CommandRequest;
 import org.damazio.notifier.command.CommandProtocol.CommandResponse;
 import org.damazio.notifier.command.handlers.CommandHandler;
 import org.damazio.notifier.command.handlers.CommandHandlerFactory;
 import org.damazio.notifier.notification.DeviceIdProvider;
-
-import com.google.protobuf.CodedInputStream;
-import com.google.protobuf.CodedOutputStream;
+import org.damazio.notifier.util.Encryption;
 
 import android.content.Context;
 import android.util.Log;
+
+import com.google.protobuf.CodedInputStream;
+import com.google.protobuf.CodedOutputStream;
 
 /**
  * Handler for the command protocol.
@@ -50,17 +53,17 @@ import android.util.Log;
  */
 public class CommandStreamHandler extends Thread {
 
-  private final CodedInputStream input;
-  private final CodedOutputStream output;
-  private final Closeable source;
   private final Context context;
+  private final InputStream originalInput;
+  private final OutputStream originalOutput;
+  private final Closeable source;
   private final NotifierPreferences preferences;
   private final CommandHandlerFactory handlerFactory;
 
   public CommandStreamHandler(Context context, InputStream input, OutputStream output, Closeable source) {
     this.context = context;
-    this.input = CodedInputStream.newInstance(input);
-    this.output = CodedOutputStream.newInstance(output);
+    this.originalInput = input;
+    this.originalOutput = output;
     this.source = source;
     this.preferences = new NotifierPreferences(context);
     this.handlerFactory = new CommandHandlerFactory(context);
@@ -70,9 +73,26 @@ public class CommandStreamHandler extends Thread {
   public void run() {
     long deviceId = Long.parseLong(DeviceIdProvider.getDeviceId(context), 16);
 
+    // Wrap with encryption if necessary
+    InputStream inputStream = originalInput;
+    OutputStream outputStream = originalOutput;
+    if (preferences.isEncryptionEnabled()) {
+      Encryption encryption = new Encryption(preferences.getEncryptionKey());
+      try {
+        inputStream = encryption.wrapInputStream(inputStream);
+        outputStream = encryption.wrapOutputStream(outputStream);
+      } catch (GeneralSecurityException e) {
+        Log.w(NotifierConstants.LOG_TAG, "Unable to initialize encryption", e);
+        inputStream = originalInput;
+        outputStream = originalOutput;
+      }
+    }
+
+    CodedInputStream input = CodedInputStream.newInstance(inputStream);
+    CodedOutputStream output = CodedOutputStream.newInstance(outputStream);
+
     while (true) {
       try {
-        // TODO: Wrap stream with encryption
         CommandRequest.Builder requestBuilder = CommandRequest.newBuilder();
         input.readMessage(requestBuilder, null);
         CommandRequest req = requestBuilder.build();
@@ -81,7 +101,7 @@ public class CommandStreamHandler extends Thread {
             .setDeviceId(deviceId);
 
         if (!req.isInitialized()) {
-          writeFailure(req, responseBuilder, "Incomplete command");  // i18n
+          writeFailure(req, responseBuilder, R.string.command_err_incomplete, output);
           continue;
         }
 
@@ -89,19 +109,19 @@ public class CommandStreamHandler extends Thread {
         if (req.getDeviceId() != deviceId) {
           Log.e(NotifierConstants.LOG_TAG,
               "Wrong device id: " + req.getDeviceId() + "; this=" + deviceId);
-          writeFailure(req, responseBuilder, "Wrong device ID");  // i18n
+          writeFailure(req, responseBuilder, R.string.command_err_wrong_device, output);
           continue;
         }
 
         CommandHandler handler = handlerFactory.createHandlerFor(req.getCommandType());
         if (handler == null) {
           Log.e(NotifierConstants.LOG_TAG, "No handler for command: " + req);
-          writeFailure(req, responseBuilder, "No handler");  // i18n
+          writeFailure(req, responseBuilder, R.string.command_err_unhandled, output);
           continue;
         }
         if (!handler.isEnabled(preferences)) {
           Log.w(NotifierConstants.LOG_TAG, "Not handling disabled command: " + req);
-          writeFailure(req, responseBuilder, "Command disabled");  // i18n
+          writeFailure(req, responseBuilder, R.string.command_err_disabled, output);
           continue;
         }
 
@@ -122,11 +142,12 @@ public class CommandStreamHandler extends Thread {
     closeSource();
   }
 
-  private void writeFailure(CommandRequest req, CommandResponse.Builder responseBuilder, String errorMessage) throws IOException {
+  private void writeFailure(CommandRequest req, CommandResponse.Builder responseBuilder,
+      int errorMessageId, CodedOutputStream output) throws IOException {
     CommandResponse response = responseBuilder.setSuccess(false)
-        .setErrorMessage(errorMessage)
+        .setErrorMessage(context.getString(errorMessageId))
         .build();
-    response.writeTo(output);
+    output.writeMessageNoTag(response);
   }
 
   public void shutdown() {
