@@ -24,12 +24,16 @@
  */
 package org.damazio.notifier.util;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import javax.crypto.Cipher;
+import javax.crypto.CipherInputStream;
+import javax.crypto.CipherOutputStream;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -94,8 +98,7 @@ public class Encryption {
   }
 
   private byte[] doCipher(byte[] original, int mode) throws GeneralSecurityException {
-    Cipher cipher = Cipher.getInstance(ENCRYPTION_ALGORITHM);
-    cipher.init(mode, keySpec, new IvParameterSpec(iv));
+    Cipher cipher = createCipher(mode);
     return cipher.doFinal(original);
   }
 
@@ -108,5 +111,19 @@ public class Encryption {
       Log.e(NotifierConstants.LOG_TAG, "Algorithm not available", e);
       throw new IllegalArgumentException(e);
     }
+  }
+
+  public InputStream wrapInputStream(InputStream inputStream) throws GeneralSecurityException {
+    return new CipherInputStream(inputStream, createCipher(Cipher.DECRYPT_MODE));
+  }
+
+  public OutputStream wrapOutputStream(OutputStream outputStream) throws GeneralSecurityException {
+    return new CipherOutputStream(outputStream, createCipher(Cipher.ENCRYPT_MODE));
+  }
+
+  private Cipher createCipher(int mode) throws GeneralSecurityException {
+    Cipher cipher = Cipher.getInstance(ENCRYPTION_ALGORITHM);
+    cipher.init(mode, keySpec, new IvParameterSpec(iv));
+    return cipher;
   }
 }
