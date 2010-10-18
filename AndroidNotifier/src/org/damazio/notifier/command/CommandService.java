@@ -28,8 +28,10 @@ package org.damazio.notifier.command;
 
 import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.NotifierPreferences;
+import org.damazio.notifier.R;
 import org.damazio.notifier.command.listeners.BluetoothCommandListener;
 import org.damazio.notifier.command.listeners.IpCommandListener;
+import org.damazio.notifier.command.listeners.UsbCommandListener;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -53,13 +55,12 @@ public class CommandService implements OnSharedPreferenceChangeListener {
   private DiscoveryService discoveryService;
   private BluetoothCommandListener bluetoothListener;
   private IpCommandListener ipListener;
+  private UsbCommandListener usbListener;
   private WakeLock wakeLock;
 
   public CommandService(Context context, NotifierPreferences preferences) {
     this.context = context;
     this.preferences = preferences;
-
-    preferences.registerOnSharedPreferenceChangeListener(this);
   }
 
   public void start() {
@@ -76,9 +77,21 @@ public class CommandService implements OnSharedPreferenceChangeListener {
         wakeLock.acquire();
       }
 
-      startBluetoothListener();
-      startIpListener();
+      if (preferences.isBluetoothCommandEnabled()) {
+        startBluetoothListener();
+      }
+
+      if (preferences.isIpCommandEnabled()) {
+        startIpListener();
+      }
+
+      if (preferences.isUsbCommandEnabled()) {
+        startUsbListener();
+      }
+
       startDiscoveryListener();
+
+      preferences.registerOnSharedPreferenceChangeListener(this);
     }
   }
 
@@ -89,15 +102,21 @@ public class CommandService implements OnSharedPreferenceChangeListener {
     }
   }
 
+  private void startUsbListener() {
+    if (usbListener == null) {
+      usbListener = new UsbCommandListener(context);
+    }
+  }
+
   private void startIpListener() {
-    if (ipListener == null && preferences.isIpCommandEnabled()) {
+    if (ipListener == null) {
       ipListener = new IpCommandListener(context);
       ipListener.start();
     }
   }
 
   private void startBluetoothListener() {
-    if (bluetoothListener == null && preferences.isBluetoothCommandEnabled()) {
+    if (bluetoothListener == null) {
       bluetoothListener = new BluetoothCommandListener(context, preferences);
       bluetoothListener.start();
     }
@@ -105,12 +124,22 @@ public class CommandService implements OnSharedPreferenceChangeListener {
 
   public void shutdown() {
     synchronized (this) {
+      preferences.unregisterOnSharedPreferenceChangeListener(this);
+
       shutdownDiscoveryListener();
       shutdownIpListener();
       shutdownBluetoothListener();
+      shutdownUsbListener();
 
       wakeLock.release();
       wakeLock = null;
+    }
+  }
+
+  private void shutdownUsbListener() {
+    if (usbListener != null) {
+      usbListener.shutdown();
+      usbListener = null;
     }
   }
 
@@ -137,7 +166,26 @@ public class CommandService implements OnSharedPreferenceChangeListener {
 
   @Override
   public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-    // TODO Auto-generated method stub
-    
+    synchronized (this) {
+      if (key.equals(context.getString(R.string.command_bluetooth_key))) {
+        if (preferences.isBluetoothCommandEnabled()) {
+          startBluetoothListener();
+        } else {
+          shutdownBluetoothListener();
+        }
+      } else if (key.equals(context.getString(R.string.command_wifi_key))) {
+        if (preferences.isIpCommandEnabled()) {
+          startIpListener();
+        } else {
+          shutdownIpListener();
+        }
+      } else if (key.equals(context.getString(R.string.command_usb_key))) {
+        if (preferences.isUsbCommandEnabled()) {
+          startUsbListener();
+        } else {
+          shutdownUsbListener();
+        }
+      }
+    }
   }
 }

@@ -25,8 +25,11 @@
 package org.damazio.notifier.command;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.SocketException;
 
 import org.damazio.notifier.NotifierConstants;
@@ -59,11 +62,14 @@ class DiscoveryService extends Thread {
 
   @Override
   public void run() {
-    long deviceId = Long.parseLong(DeviceIdProvider.getDeviceId(context), 16);
+    long deviceId = new BigInteger(DeviceIdProvider.getDeviceId(context), 16).longValue();
     DiscoveryUtils discoveryUtils = new DiscoveryUtils(context);
 
     try {
-      DatagramSocket datagramSocket = new DatagramSocket(DISCOVERY_PORT);
+      DatagramSocket datagramSocket = new DatagramSocket(null);
+      datagramSocket.setReuseAddress(true);
+      datagramSocket.bind(new InetSocketAddress((InetAddress) null, DISCOVERY_PORT));
+      Log.i(NotifierConstants.LOG_TAG, "Listening for discovery");
 
       shouldShutdown = false;
       while (!shouldShutdown) {
@@ -96,9 +102,13 @@ class DiscoveryService extends Thread {
           Log.e(NotifierConstants.LOG_TAG, "Error during discovery", e);
         }
       }
+
+      datagramSocket.close();
+      Log.i(NotifierConstants.LOG_TAG, "No longer listening for discovery");
     } catch (SocketException e) {
       Log.e(NotifierConstants.LOG_TAG, "Unable to open discovery socket", e);
     }
+
   }
 
   void shutdown() {

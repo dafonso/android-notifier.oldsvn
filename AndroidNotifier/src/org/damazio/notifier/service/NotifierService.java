@@ -62,10 +62,12 @@ public class NotifierService extends Service {
    */
   private static final String EXTRA_NOTIFICATION = "org.damazio.notifier.service.EXTRA_NOTIFICATION";
 
-  private final NotifierPreferences preferences;
+  private NotifierPreferences preferences;
   private ServicePreferencesListener preferenceListener;
   private NotificationService notificationService;
   private CommandService commandService;
+
+  private boolean started = false;
 
   /**
    * Listener for changes to the preferences.
@@ -82,23 +84,28 @@ public class NotifierService extends Service {
     }
   }
 
-  public NotifierService() {
-    this.preferences = new NotifierPreferences(this);
-  }
-
   @Override
   public void onStart(Intent intent, int startId) {
     super.onStart(intent, startId);
 
+
     synchronized (this) {
-      updateServiceState();
+      if (!started) {
+        started = true;
 
-      if (preferenceListener == null) {
-        preferenceListener = new ServicePreferencesListener();
-        preferences.registerOnSharedPreferenceChangeListener(preferenceListener);
+        preferences = new NotifierPreferences(this);
+
+        if (!updateServiceState()) {
+          return;
+        }
+  
+        if (preferenceListener == null) {
+          preferenceListener = new ServicePreferencesListener();
+          preferences.registerOnSharedPreferenceChangeListener(preferenceListener);
+        }
+  
+        showOrHideLocalNotification();
       }
-
-      showOrHideLocalNotification();
 
       sendIntentNotification(intent);
     }
@@ -109,6 +116,8 @@ public class NotifierService extends Service {
     Log.i(NotifierConstants.LOG_TAG, "Notifier service going down.");
 
     synchronized (this) {
+      started = false;
+
       if (preferenceListener != null) {
         preferences.unregisterOnSharedPreferenceChangeListener(preferenceListener);
       }
@@ -124,14 +133,16 @@ public class NotifierService extends Service {
 
   /**
    * Updates the service state according to preferences.
+   * 
+   * @return true if the service will keep running, false otherwise
    */
-  private void updateServiceState() {
+  private boolean updateServiceState() {
     synchronized (this) {
       boolean notificationsEnabled = preferences.areNotificationsEnabled();
       boolean commandsEnabled = preferences.isCommandEnabled();
       if (!notificationsEnabled && !commandsEnabled) {
         stopSelf();
-        return;
+        return false;
       }
   
       if (notificationsEnabled) {
@@ -146,6 +157,7 @@ public class NotifierService extends Service {
         stopCommandService();
       }
     }
+    return true;
   }
 
   private void startNotificationService() {

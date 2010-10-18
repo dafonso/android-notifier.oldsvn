@@ -43,21 +43,24 @@ public class UsbCommandListener extends CommandListener {
   private static final String SOCKET_NAME = "androidnotifier-cmd";
   private LocalServerSocket serverSocket;
 
-  protected UsbCommandListener(Context context) {
+  public UsbCommandListener(Context context) {
     super(context);
   }
 
   @Override
   protected void initialize() throws IOException {
     serverSocket = new LocalServerSocket(SOCKET_NAME);
+    Log.i(NotifierConstants.LOG_TAG, "Listening for commands over USB");
   }
 
   @Override
   protected void runOnce() throws IOException {
     final LocalSocket socket = serverSocket.accept();
+    Log.d(NotifierConstants.LOG_TAG, "Accepted USB command connection");
     handleConnection(socket.getInputStream(), socket.getOutputStream(), new Closeable() {
       @Override
       public void close() throws IOException {
+        // LocalSocket doesn't implement Closeable :( so we need this wrapper
         socket.close();
       }
     });
@@ -65,6 +68,7 @@ public class UsbCommandListener extends CommandListener {
 
   @Override
   public void shutdown() {
+    Log.d(NotifierConstants.LOG_TAG, "No longer listening for USB commands");
     try {
       serverSocket.close();
     } catch (IOException e) {

@@ -48,9 +48,10 @@ import android.util.Log;
 public class BluetoothCommandListener extends CommandListener {
   private static final String COMMAND_UUID_STR = "E8D515B4-47C1-4813-B6D6-3EAB32F8953E";
   private static final UUID COMMAND_UUID = UUID.fromString(COMMAND_UUID_STR);
-  private BluetoothServerSocket socket;
 
   private final NotifierPreferences preferences;
+
+  private BluetoothServerSocket socket;
 
   public BluetoothCommandListener(Context context, NotifierPreferences preferences) {
     super(context);
@@ -91,8 +92,11 @@ public class BluetoothCommandListener extends CommandListener {
 
   @Override
   public void shutdown() {
+    Log.d(NotifierConstants.LOG_TAG, "No longer listening for bluetooth commands");
     try {
-      socket.close();
+      if (socket != null) {
+        socket.close();
+      }
     } catch (IOException e) {
       Log.e(NotifierConstants.LOG_TAG, "Error closing socket", e);
     }
