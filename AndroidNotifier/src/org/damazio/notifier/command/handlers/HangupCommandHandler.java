@@ -29,6 +29,7 @@ import java.lang.reflect.Method;
 
 import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.NotifierPreferences;
+import org.damazio.notifier.R;
 import org.damazio.notifier.command.CommandProtocol.CommandRequest;
 import org.damazio.notifier.command.CommandProtocol.CommandResponse;
 
@@ -45,8 +46,11 @@ class HangupCommandHandler implements CommandHandler {
 
   private Object telephonyService;
   private Method endCallMethod;
+  private final Context context;
 
   public HangupCommandHandler(Context context) {
+    this.context = context;
+
     try {
       // Obtain the real telephony service
       // TODO: Vomit all over this code
@@ -85,16 +89,16 @@ class HangupCommandHandler implements CommandHandler {
       }
 
       Log.w(NotifierConstants.LOG_TAG, "Hangup failed");
-      respBuilder.setErrorMessage("Hangup failed");  // TODO: i18n
+      respBuilder.setErrorMessage(context.getString(R.string.command_err_hangup_failed, "?"));
     } catch (IllegalArgumentException e) {
       Log.w(NotifierConstants.LOG_TAG, "Hangup failed", e);
-      respBuilder.setErrorMessage("Hangup failed: bad argument");  // TODO: i18n
+      respBuilder.setErrorMessage(context.getString(R.string.command_err_hangup_failed, e.getMessage()));
     } catch (IllegalAccessException e) {
       Log.w(NotifierConstants.LOG_TAG, "Hangup failed", e);
-      respBuilder.setErrorMessage("Hangup failed: bad access");  // TODO: i18n
+      respBuilder.setErrorMessage(context.getString(R.string.command_err_hangup_failed, e.getMessage()));
     } catch (InvocationTargetException e) {
       Log.w(NotifierConstants.LOG_TAG, "Hangup failed", e);
-      respBuilder.setErrorMessage("Hangup failed: bad call");  // TODO: i18n
+      respBuilder.setErrorMessage(context.getString(R.string.command_err_hangup_failed, e.getMessage()));
     }
 
     // If we got here, something failed
