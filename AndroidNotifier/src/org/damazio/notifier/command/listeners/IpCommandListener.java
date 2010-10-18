@@ -77,6 +77,7 @@ public class IpCommandListener extends CommandListener {
 
   @Override
   public void shutdown() {
+    Log.d(NotifierConstants.LOG_TAG, "No longer listening for IP commands");
     try {
       serverSocketChannel.close();
     } catch (IOException e) {

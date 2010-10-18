@@ -130,14 +130,22 @@ public class NotifierMain extends PreferenceActivity {
    * Configures preference actions related to the service.
    */
   private void configureServicePreferences() {
-    // Make the enable notifications preference start or stop the service
-    CheckBoxPreference enabledPreference =
+    // Make the enable notifications+commands preference start or stop the service
+    final CheckBoxPreference notificationsEnabledPreference =
         (CheckBoxPreference) findPreference(getString(R.string.notifications_enabled_key));
-    enabledPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+    final CheckBoxPreference commandsEnabledPreference =
+        (CheckBoxPreference) findPreference(getString(R.string.command_enable_key));
+    notificationsEnabledPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
       @Override
       public boolean onPreferenceChange(Preference preference, Object newValue) {
-        boolean enabled = (Boolean) newValue;
-        setServiceStarted(enabled);
+        setServiceStarted((Boolean) newValue || commandsEnabledPreference.isChecked());
+        return true;
+      }
+    });
+    commandsEnabledPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+      @Override
+      public boolean onPreferenceChange(Preference preference, Object newValue) {
+        setServiceStarted(notificationsEnabledPreference.isChecked() || (Boolean) newValue);
         return true;
       }
     });
@@ -283,18 +291,17 @@ public class NotifierMain extends PreferenceActivity {
   private void configureBluetoothPreferences() {
     CheckBoxPreference bluetoothPreference =
         (CheckBoxPreference) findPreference(getString(R.string.method_bluetooth_key));
-//    TODO: Re-enable after bugfix release
-//    CheckBoxPreference bluetoothCommandPreference =
-//        (CheckBoxPreference) findPreference(getString(R.string.command_bluetooth_key));
+    CheckBoxPreference bluetoothCommandPreference =
+        (CheckBoxPreference) findPreference(getString(R.string.command_bluetooth_key));
     if (!BluetoothDeviceUtils.isBluetoothMethodSupported()) {
       // Disallow enabling bluetooth, if it's not supported
       bluetoothPreference.setChecked(false);
       bluetoothPreference.setEnabled(false);
       bluetoothPreference.setSummaryOff(R.string.eclair_required);
 
-//      bluetoothCommandPreference.setChecked(false);
-//      bluetoothCommandPreference.setEnabled(false);
-//      bluetoothCommandPreference.setSummaryOff(R.string.eclair_required);
+      bluetoothCommandPreference.setChecked(false);
+      bluetoothCommandPreference.setEnabled(false);
+      bluetoothCommandPreference.setSummaryOff(R.string.eclair_required);
     } else {
       // Populate the list of bluetooth devices
       populateBluetoothDeviceList();

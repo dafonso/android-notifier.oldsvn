@@ -28,13 +28,8 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   xmlns:app="http://schemas.android.com/apk/res/org.damazio.notifier"
   android:title="@string/settings_title">
 
-  <!-- Service -->
-  <PreferenceScreen android:title="@string/notifications_title">
-    <CheckBoxPreference android:key="@string/notifications_enabled_key"
-                        android:title="@string/notifications_enabled"
-                        android:defaultValue="true"
-                        android:summaryOn="@string/notifications_enabled_summary_on"
-                        android:summaryOff="@string/notifications_enabled_summary_off" />
+  <PreferenceCategory android:title="@string/general_title">
+    <!-- Service -->
     <CheckBoxPreference android:key="@string/start_at_boot_key"
                         android:title="@string/start_at_boot"
                         android:defaultValue="true"
@@ -45,224 +40,243 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                         android:defaultValue="false"
                         android:summaryOn="@string/show_notification_icon_summary_on"
                         android:summaryOff="@string/show_notification_icon_summary_off" />
-  </PreferenceScreen>
 
-  <!-- Methods -->
-  <PreferenceScreen android:title="@string/methods_title">
-    <!-- IP/Wifi -->
-    <CheckBoxPreference android:key="@string/method_ip_key"
-                        android:title="@string/method_ip"
-                        android:defaultValue="true"
-                        android:summaryOn="@string/method_ip_summary_on"
-                        android:summaryOff="@string/method_off" />
-    <PreferenceScreen android:key="@string/method_ip_options_key"
-                      android:title="@string/ip_options"
-                      android:dependency="@string/method_ip_key">
-      <PreferenceCategory android:title="@string/method_ip_options_target">
-        <ListPreference android:key="@string/target_ip_address_key"
-                        android:title="@string/target_ip_address"
-                        android:entries="@array/targetIps"
-                        android:entryValues="@array/targetIpValues"
-                        android:defaultValue="global" />
-        <org.damazio.notifier.EditableListPreference
-                        android:key="@string/target_custom_ips_key"
-                        android:title="@string/custom_ip_title"
-                        app:editDialogTitle="@string/add_custom_ip_title"
-                        app:editDialogMessage="@string/enter_custom_ip"
-                        app:addButtonTitle="@string/add_custom_ip_title"
-                        app:removeButtonTitle="@string/remove_custom_ip"
-                        app:allowDuplicates="false" />
-      </PreferenceCategory>
-      <PreferenceCategory android:title="@string/method_ip_options_enabling">
-        <CheckBoxPreference android:key="@string/enable_wifi_key"
-                            android:title="@string/enable_wifi"
-                            android:summaryOn="@string/enable_wifi_summary_on"
-                            android:summaryOff="@string/enable_wifi_summary_off"
-                            android:defaultValue="false" />
-        <ListPreference android:key="@string/wifi_sleep_policy_key"
-                        android:title="@string/wifi_sleep_policy"
-                        android:summary="@string/wifi_sleep_policy_summary"
-                        android:entries="@array/wifiSleepPolicies"
-                        android:entryValues="@array/wifiSleepPolicyValues"
-                        android:persistent="false" />
-      </PreferenceCategory>
-      <PreferenceCategory android:title="@string/method_ip_options_protocol">
-        <CheckBoxPreference android:key="@string/send_udp_key"
-                            android:title="@string/send_udp"
-                            android:defaultValue="true"
-                            android:summaryOn="@string/send_udp_summary_on"
-                            android:summaryOff="@string/send_udp_summary_off" />
-        <CheckBoxPreference android:key="@string/send_tcp_key"
-                            android:title="@string/send_tcp"
-                            android:defaultValue="true"
-                            android:summaryOn="@string/send_tcp_summary_on"
-                            android:summaryOff="@string/send_tcp_summary_off" />
-        <CheckBoxPreference android:key="@string/allow_cell_send_key"
-                            android:title="@string/allow_cell_send"
-                            android:summaryOn="@string/allow_cell_send_summary_on"
-                            android:summaryOff="@string/allow_cell_send_summary_off"
-                            android:defaultValue="false" />
-      </PreferenceCategory>
-    </PreferenceScreen>
-
-    <!-- Bluetooth -->
-    <CheckBoxPreference android:key="@string/method_bluetooth_key"
-                        android:title="@string/method_bluetooth"
-                        android:defaultValue="true"
-                        android:summaryOn="@string/method_bluetooth_summary_on"
-                        android:summaryOff="@string/method_off" />
-
-    <PreferenceScreen android:key="@string/method_bluetooth_options_key"
-                      android:title="@string/bluetooth_options"
-                      android:dependency="@string/method_bluetooth_key">
-      <ListPreference android:key="@string/bluetooth_device_key"
-                      android:title="@string/target_bluetooth_device"
-                      android:summary="@string/target_bluetooth_device_summary"
-                      android:defaultValue="all" />
-
-      <Preference android:key="@string/bluetooth_pairing_key"
-                  android:title="@string/bluetooth_pairing"
-                  android:summary="@string/bluetooth_pairing_summary"
-                  android:persistent="false" />
-
-      <CheckBoxPreference android:key="@string/enable_bluetooth_key"
-                          android:title="@string/enable_bluetooth"
-                          android:summaryOn="@string/enable_bluetooth_summary_on"
-                          android:summaryOff="@string/enable_bluetooth_summary_off"
+    <!-- Security -->
+    <PreferenceScreen android:title="@string/security_title">
+      <CheckBoxPreference android:key="@string/enable_encryption_key"
+                          android:title="@string/enable_encryption"
+                          android:summaryOn="@string/enable_encryption_summary_on"
+                          android:summaryOff="@string/enable_encryption_summary_off"
                           android:defaultValue="false" />
+      <org.damazio.notifier.EncodedPasswordPreference
+                          android:key="@string/encryption_pass_key"
+                          android:title="@string/encryption_pass"
+                          android:summary="@string/encryption_pass_summary"
+                          android:dialogTitle="@string/encryption_pass"
+                          android:dialogMessage="@string/encryption_pass_entry"
+                          android:dependency="@string/enable_encryption_key"
+                          app:numHashes="10" />
+    </PreferenceScreen>
+  </PreferenceCategory>
+
+  <PreferenceCategory android:title="@string/notifications_title">
+    <CheckBoxPreference android:key="@string/notifications_enabled_key"
+                        android:title="@string/notifications_enabled"
+                        android:defaultValue="true"
+                        android:summaryOn="@string/notifications_enabled_summary_on"
+                        android:summaryOff="@string/notifications_enabled_summary_off" />
+
+    <!-- Methods -->
+    <PreferenceScreen android:title="@string/methods_title"
+                      android:dependency="@string/notifications_enabled_key">
+      <!-- IP/Wifi -->
+      <CheckBoxPreference android:key="@string/method_ip_key"
+                          android:title="@string/method_ip"
+                          android:defaultValue="true"
+                          android:summaryOn="@string/method_ip_summary_on"
+                          android:summaryOff="@string/method_off" />
+      <PreferenceScreen android:key="@string/method_ip_options_key"
+                        android:title="@string/ip_options"
+                        android:dependency="@string/method_ip_key">
+        <PreferenceCategory android:title="@string/method_ip_options_target">
+          <ListPreference android:key="@string/target_ip_address_key"
+                          android:title="@string/target_ip_address"
+                          android:entries="@array/targetIps"
+                          android:entryValues="@array/targetIpValues"
+                          android:defaultValue="global" />
+          <org.damazio.notifier.EditableListPreference
+                          android:key="@string/target_custom_ips_key"
+                          android:title="@string/custom_ip_title"
+                          app:editDialogTitle="@string/add_custom_ip_title"
+                          app:editDialogMessage="@string/enter_custom_ip"
+                          app:addButtonTitle="@string/add_custom_ip_title"
+                          app:removeButtonTitle="@string/remove_custom_ip"
+                          app:allowDuplicates="false" />
+        </PreferenceCategory>
+        <PreferenceCategory android:title="@string/method_ip_options_enabling">
+          <CheckBoxPreference android:key="@string/enable_wifi_key"
+                              android:title="@string/enable_wifi"
+                              android:summaryOn="@string/enable_wifi_summary_on"
+                              android:summaryOff="@string/enable_wifi_summary_off"
+                              android:defaultValue="false" />
+          <ListPreference android:key="@string/wifi_sleep_policy_key"
+                          android:title="@string/wifi_sleep_policy"
+                          android:summary="@string/wifi_sleep_policy_summary"
+                          android:entries="@array/wifiSleepPolicies"
+                          android:entryValues="@array/wifiSleepPolicyValues"
+                          android:persistent="false" />
+        </PreferenceCategory>
+        <PreferenceCategory android:title="@string/method_ip_options_protocol">
+          <CheckBoxPreference android:key="@string/send_udp_key"
+                              android:title="@string/send_udp"
+                              android:defaultValue="true"
+                              android:summaryOn="@string/send_udp_summary_on"
+                              android:summaryOff="@string/send_udp_summary_off" />
+          <CheckBoxPreference android:key="@string/send_tcp_key"
+                              android:title="@string/send_tcp"
+                              android:defaultValue="true"
+                              android:summaryOn="@string/send_tcp_summary_on"
+                              android:summaryOff="@string/send_tcp_summary_off" />
+          <CheckBoxPreference android:key="@string/allow_cell_send_key"
+                              android:title="@string/allow_cell_send"
+                              android:summaryOn="@string/allow_cell_send_summary_on"
+                              android:summaryOff="@string/allow_cell_send_summary_off"
+                              android:defaultValue="false" />
+        </PreferenceCategory>
+      </PreferenceScreen>
+
+      <!-- Bluetooth -->
+      <CheckBoxPreference android:key="@string/method_bluetooth_key"
+                          android:title="@string/method_bluetooth"
+                          android:defaultValue="true"
+                          android:summaryOn="@string/method_bluetooth_summary_on"
+                          android:summaryOff="@string/method_off" />
+
+      <PreferenceScreen android:key="@string/method_bluetooth_options_key"
+                        android:title="@string/bluetooth_options"
+                        android:dependency="@string/method_bluetooth_key">
+        <ListPreference android:key="@string/bluetooth_device_key"
+                        android:title="@string/target_bluetooth_device"
+                        android:summary="@string/target_bluetooth_device_summary"
+                        android:defaultValue="all" />
+
+        <Preference android:key="@string/bluetooth_pairing_key"
+                    android:title="@string/bluetooth_pairing"
+                    android:summary="@string/bluetooth_pairing_summary"
+                    android:persistent="false" />
+
+        <CheckBoxPreference android:key="@string/enable_bluetooth_key"
+                            android:title="@string/enable_bluetooth"
+                            android:summaryOn="@string/enable_bluetooth_summary_on"
+                            android:summaryOff="@string/enable_bluetooth_summary_off"
+                            android:defaultValue="false" />
+      </PreferenceScreen>
+
+      <!-- USB -->
+      <CheckBoxPreference android:key="@string/method_usb_key"
+                          android:title="@string/method_usb"
+                          android:defaultValue="false"
+                          android:summaryOn="@string/method_on"
+                          android:summaryOff="@string/method_off" />
     </PreferenceScreen>
 
-    <!-- USB -->
-    <CheckBoxPreference android:key="@string/method_usb_key"
-                        android:title="@string/method_usb"
-                        android:defaultValue="false"
-                        android:summaryOn="@string/method_on"
-                        android:summaryOff="@string/method_off" />
-  </PreferenceScreen>
-
-  <!-- Events -->
-  <PreferenceScreen android:title="@string/events_title">
-    <CheckBoxPreference android:key="@string/event_ring_key"
-                        android:title="@string/event_ring"
-                        android:defaultValue="true"
-                        android:summaryOn="@string/event_on"
-                        android:summaryOff="@string/event_off" />
-    <CheckBoxPreference android:key="@string/event_sms_key"
-                        android:title="@string/event_sms"
-                        android:defaultValue="true"
-                        android:summaryOn="@string/event_on"
-                        android:summaryOff="@string/event_off" />
-    <CheckBoxPreference android:key="@string/event_mms_key"
-                        android:title="@string/event_mms"
-                        android:defaultValue="true"
-                        android:summaryOn="@string/event_on"
-                        android:summaryOff="@string/event_off" />
-    <CheckBoxPreference android:key="@string/event_battery_key"
-                        android:title="@string/event_battery"
-                        android:defaultValue="true"
-                        android:summaryOn="@string/event_on"
-                        android:summaryOff="@string/event_off" />
-    <PreferenceScreen android:key="@string/event_battery_options_key"
-                      android:title="@string/event_battery_options"
-                      android:dependency="@string/event_battery_key">
-      <org.damazio.notifier.SeekBarPreference
-          android:key="@string/battery_min_level_key"
-          android:title="@string/battery_min_level"
-          android:summary="@string/battery_min_level_summary"
-          android:defaultValue="0"
-          app:dialogMessage="@string/battery_min_level_summary"
-          app:suffix=" %" />
-      <org.damazio.notifier.SeekBarPreference
-          android:key="@string/battery_max_level_key"
-          android:title="@string/battery_max_level"
-          android:summary="@string/battery_max_level_summary"
-          android:defaultValue="100"
-          app:dialogMessage="@string/battery_max_level_summary"
-          app:suffix=" %" />
-      <org.damazio.notifier.SeekBarPreference
-          android:key="@string/battery_min_level_change_key"
-          android:title="@string/battery_min_level_change"
-          android:summary="@string/battery_min_level_change_summary"
-          android:defaultValue="5"
-          app:dialogMessage="@string/battery_min_level_change_summary"
-          app:suffix=" %" />
+    <!-- Events -->
+    <PreferenceScreen android:title="@string/events_title"
+                      android:dependency="@string/notifications_enabled_key">
+      <CheckBoxPreference android:key="@string/event_ring_key"
+                          android:title="@string/event_ring"
+                          android:defaultValue="true"
+                          android:summaryOn="@string/event_on"
+                          android:summaryOff="@string/event_off" />
+      <CheckBoxPreference android:key="@string/event_sms_key"
+                          android:title="@string/event_sms"
+                          android:defaultValue="true"
+                          android:summaryOn="@string/event_on"
+                          android:summaryOff="@string/event_off" />
+      <CheckBoxPreference android:key="@string/event_mms_key"
+                          android:title="@string/event_mms"
+                          android:defaultValue="true"
+                          android:summaryOn="@string/event_on"
+                          android:summaryOff="@string/event_off" />
+      <CheckBoxPreference android:key="@string/event_battery_key"
+                          android:title="@string/event_battery"
+                          android:defaultValue="true"
+                          android:summaryOn="@string/event_on"
+                          android:summaryOff="@string/event_off" />
+      <PreferenceScreen android:key="@string/event_battery_options_key"
+                        android:title="@string/event_battery_options"
+                        android:dependency="@string/event_battery_key">
+        <org.damazio.notifier.SeekBarPreference
+            android:key="@string/battery_min_level_key"
+            android:title="@string/battery_min_level"
+            android:summary="@string/battery_min_level_summary"
+            android:defaultValue="0"
+            app:dialogMessage="@string/battery_min_level_summary"
+            app:suffix=" %" />
+        <org.damazio.notifier.SeekBarPreference
+            android:key="@string/battery_max_level_key"
+            android:title="@string/battery_max_level"
+            android:summary="@string/battery_max_level_summary"
+            android:defaultValue="100"
+            app:dialogMessage="@string/battery_max_level_summary"
+            app:suffix=" %" />
+        <org.damazio.notifier.SeekBarPreference
+            android:key="@string/battery_min_level_change_key"
+            android:title="@string/battery_min_level_change"
+            android:summary="@string/battery_min_level_change_summary"
+            android:defaultValue="5"
+            app:dialogMessage="@string/battery_min_level_change_summary"
+            app:suffix=" %" />
+      </PreferenceScreen>
+      <CheckBoxPreference android:key="@string/event_voicemail_key"
+                          android:title="@string/event_voicemail"
+                          android:defaultValue="true"
+                          android:summaryOn="@string/event_on"
+                          android:summaryOff="@string/event_off" />
+      <CheckBoxPreference android:key="@string/event_user_key"
+                          android:title="@string/event_user"
+                          android:defaultValue="true"
+                          android:summaryOn="@string/event_user_summary_on"
+                          android:summaryOff="@string/event_off" />
     </PreferenceScreen>
-    <CheckBoxPreference android:key="@string/event_voicemail_key"
-                        android:title="@string/event_voicemail"
-                        android:defaultValue="true"
-                        android:summaryOn="@string/event_on"
-                        android:summaryOff="@string/event_off" />
-    <CheckBoxPreference android:key="@string/event_user_key"
-                        android:title="@string/event_user"
-                        android:defaultValue="true"
-                        android:summaryOn="@string/event_user_summary_on"
-                        android:summaryOff="@string/event_off" />
-  </PreferenceScreen>
+  </PreferenceCategory>
 
   <!-- Commands -->
-  <PreferenceScreen android:title="@string/commands_title">
+  <PreferenceCategory android:title="@string/commands_title">
     <CheckBoxPreference android:key="@string/command_enable_key"
                         android:title="@string/command_enable"
                         android:defaultValue="true"
                         android:summaryOn="@string/command_enable_summary_on"
                         android:summaryOff="@string/command_enable_summary_off" />
-    <CheckBoxPreference android:key="@string/command_call_key"
-                        android:title="@string/command_call"
-                        android:defaultValue="true"
-                        android:dependency="@string/command_enable_key"
-                        android:summaryOn="@string/command_summary_on"
-                        android:summaryOff="@string/command_summary_off" />
-    <CheckBoxPreference android:key="@string/command_sms_key"
-                        android:title="@string/command_sms"
-                        android:defaultValue="true"
-                        android:dependency="@string/command_enable_key"
-                        android:summaryOn="@string/command_summary_on"
-                        android:summaryOff="@string/command_summary_off" />
 
-    <CheckBoxPreference android:key="@string/command_bluetooth_key"
-                        android:title="@string/command_bluetooth"
-                        android:defaultValue="true"
-                        android:dependency="@string/command_enable_key"
-                        android:summaryOn="@string/command_source_on"
-                        android:summaryOff="@string/command_source_off" />
+    <!-- Command methods -->
+    <PreferenceScreen android:title="@string/command_methods_title"
+                      android:dependency="@string/command_enable_key">
+      <CheckBoxPreference android:key="@string/command_bluetooth_key"
+                          android:title="@string/command_bluetooth"
+                          android:defaultValue="true"
+                          android:dependency="@string/command_enable_key"
+                          android:summaryOn="@string/command_source_on"
+                          android:summaryOff="@string/command_source_off" />
 
-    <ListPreference android:key="@string/bluetooth_source_key"
-                    android:title="@string/bluetooth_source_device"
-                    android:summary="@string/bluetooth_source_device_summary"
-                    android:defaultValue="any"
-                    android:dependency="@string/command_bluetooth_key" />
+      <ListPreference android:key="@string/bluetooth_source_key"
+                      android:title="@string/bluetooth_source_device"
+                      android:summary="@string/bluetooth_source_device_summary"
+                      android:defaultValue="any"
+                      android:dependency="@string/command_bluetooth_key" />
 
-    <CheckBoxPreference android:key="@string/command_wifi_key"
-                        android:title="@string/command_wifi"
-                        android:defaultValue="true"
-                        android:dependency="@string/command_enable_key"
-                        android:summaryOn="@string/command_source_on"
-                        android:summaryOff="@string/command_source_off" />
+      <CheckBoxPreference android:key="@string/command_wifi_key"
+                          android:title="@string/command_wifi"
+                          android:defaultValue="true"
+                          android:dependency="@string/command_enable_key"
+                          android:summaryOn="@string/command_source_on"
+                          android:summaryOff="@string/command_source_off" />
 
-    <CheckBoxPreference android:key="@string/command_usb_key"
-                        android:title="@string/command_usb"
-                        android:defaultValue="true"
-                        android:dependency="@string/command_enable_key"
-                        android:summaryOn="@string/command_source_on"
-                        android:summaryOff="@string/command_source_off" />
-  </PreferenceScreen>
+      <CheckBoxPreference android:key="@string/command_usb_key"
+                          android:title="@string/command_usb"
+                          android:defaultValue="true"
+                          android:dependency="@string/command_enable_key"
+                          android:summaryOn="@string/command_source_on"
+                          android:summaryOff="@string/command_source_off" />
+    </PreferenceScreen>
 
-  <!-- Security -->
-  <PreferenceScreen android:title="@string/security_title">
-    <CheckBoxPreference android:key="@string/enable_encryption_key"
-                        android:title="@string/enable_encryption"
-                        android:summaryOn="@string/enable_encryption_summary_on"
-                        android:summaryOff="@string/enable_encryption_summary_off"
-                        android:defaultValue="false" />
-    <org.damazio.notifier.EncodedPasswordPreference
-                        android:key="@string/encryption_pass_key"
-                        android:title="@string/encryption_pass"
-                        android:summary="@string/encryption_pass_summary"
-                        android:dialogTitle="@string/encryption_pass"
-                        android:dialogMessage="@string/encryption_pass_entry"
-                        android:dependency="@string/enable_encryption_key"
-                        app:numHashes="10" />
-  </PreferenceScreen>
+    <!-- Command types -->
+    <PreferenceScreen android:title="@string/command_types_title"
+                      android:dependency="@string/command_enable_key">
+      <CheckBoxPreference android:key="@string/command_call_key"
+                          android:title="@string/command_call"
+                          android:defaultValue="true"
+                          android:dependency="@string/command_enable_key"
+                          android:summaryOn="@string/command_summary_on"
+                          android:summaryOff="@string/command_summary_off" />
+      <CheckBoxPreference android:key="@string/command_sms_key"
+                          android:title="@string/command_sms"
+                          android:defaultValue="true"
+                          android:dependency="@string/command_enable_key"
+                          android:summaryOn="@string/command_summary_on"
+                          android:summaryOff="@string/command_summary_off" />
+    </PreferenceScreen>
+  </PreferenceCategory>
 
   <!-- Misc -->
   <PreferenceCategory android:title="@string/misc_title">

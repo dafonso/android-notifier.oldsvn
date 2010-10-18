@@ -37,6 +37,9 @@ import org.damazio.notifier.command.handlers.CommandHandler;
 import org.damazio.notifier.command.handlers.CommandHandlerFactory;
 import org.damazio.notifier.notification.DeviceIdProvider;
 
+import com.google.protobuf.CodedInputStream;
+import com.google.protobuf.CodedOutputStream;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -47,8 +50,8 @@ import android.util.Log;
  */
 public class CommandStreamHandler extends Thread {
 
-  private final InputStream input;
-  private final OutputStream output;
+  private final CodedInputStream input;
+  private final CodedOutputStream output;
   private final Closeable source;
   private final Context context;
   private final NotifierPreferences preferences;
@@ -56,8 +59,8 @@ public class CommandStreamHandler extends Thread {
 
   public CommandStreamHandler(Context context, InputStream input, OutputStream output, Closeable source) {
     this.context = context;
-    this.input = input;
-    this.output = output;
+    this.input = CodedInputStream.newInstance(input);
+    this.output = CodedOutputStream.newInstance(output);
     this.source = source;
     this.preferences = new NotifierPreferences(context);
     this.handlerFactory = new CommandHandlerFactory(context);
@@ -69,7 +72,10 @@ public class CommandStreamHandler extends Thread {
 
     while (true) {
       try {
-        CommandRequest req = CommandRequest.parseFrom(input);
+        // TODO: Wrap stream with encryption
+        CommandRequest.Builder requestBuilder = CommandRequest.newBuilder();
+        input.readMessage(requestBuilder, null);
+        CommandRequest req = requestBuilder.build();
         CommandResponse.Builder responseBuilder = CommandResponse.newBuilder()
             .setCommandId(req.getCommandId())
             .setDeviceId(deviceId);
@@ -106,7 +112,7 @@ public class CommandStreamHandler extends Thread {
           Log.e(NotifierConstants.LOG_TAG, "Command handling failed: " + req);
         }
 
-        responseBuilder.build().writeTo(output);
+        output.writeMessageNoTag(responseBuilder.build());
       } catch (IOException e) {
         Log.w(NotifierConstants.LOG_TAG, "Error writing command output", e);
         break;

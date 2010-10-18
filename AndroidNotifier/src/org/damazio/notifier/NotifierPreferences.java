@@ -346,6 +346,10 @@ public class NotifierPreferences {
     return preferences.getBoolean(context.getString(R.string.command_wifi_key), true);
   }
 
+  public boolean isUsbCommandEnabled() {
+    return preferences.getBoolean(context.getString(R.string.command_usb_key), true);
+  }
+
   /**
    * @return the address of the source bluetooth device, or "any"
    */

@@ -28,6 +28,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <string name="app_name">Remote Notifier</string>
     <string name="service_name">Remote Notification Service</string>
     <string name="settings_title">Remote Notifier Settings</string>
+    <string name="general_title">General settings</string>
 
     <!-- Notification settings -->
     <string name="notifications_title">Notifications</string>
@@ -133,10 +134,12 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <string name="command_enable">Accept commands</string>
     <string name="command_enable_summary_on">This device will expect commands from the desktop application</string>
     <string name="command_enable_summary_off">This device will IGNORE commands from the desktop application</string>
-    <string name="command_call">Start phone calls</string>
+    <string name="command_types_title">Command types</string>
+    <string name="command_call">Start/End phone calls</string>
     <string name="command_sms">Send SMS</string>
     <string name="command_summary_on">This type of command will be executed</string>
     <string name="command_summary_off">This type of command will be IGNORED</string>
+    <string name="command_methods_title">Command methods</string>
     <string name="command_bluetooth">Accept over bluetooth</string>
     <string name="command_wifi">Accept over Wifi</string>
     <string name="command_usb">Accept over USB</string>
