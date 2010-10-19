@@ -72,7 +72,7 @@ public class UsbCommandListener extends CommandListener {
     try {
       serverSocket.close();
     } catch (IOException e) {
-      Log.e(NotifierConstants.LOG_TAG, "Error closing socket", e);
+      Log.w(NotifierConstants.LOG_TAG, "Error closing socket", e);
     }
 
     super.shutdown();

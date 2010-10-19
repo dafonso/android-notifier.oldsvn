@@ -99,7 +99,7 @@ class DiscoveryService extends Thread {
           DatagramPacket replyPacket = new DatagramPacket(replyBytes, replyBytes.length, packet.getAddress(), DISCOVERY_PORT);
           datagramSocket.send(replyPacket);
         } catch (IOException e) {
-          Log.e(NotifierConstants.LOG_TAG, "Error during discovery", e);
+          Log.w(NotifierConstants.LOG_TAG, "Error during discovery", e);
         }
       }
 

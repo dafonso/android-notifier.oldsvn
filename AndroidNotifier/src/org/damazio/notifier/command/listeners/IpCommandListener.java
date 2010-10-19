@@ -67,7 +67,7 @@ public class IpCommandListener extends CommandListener {
   @Override
   protected void runOnce() throws IOException {
     final SocketChannel socketChannel = serverSocketChannel.accept();
-    
+
     // TODO: IP filtering
 
     Socket socket = socketChannel.socket();
@@ -81,7 +81,7 @@ public class IpCommandListener extends CommandListener {
     try {
       serverSocketChannel.close();
     } catch (IOException e) {
-      Log.e(NotifierConstants.LOG_TAG, "Error closing socket", e);
+      Log.w(NotifierConstants.LOG_TAG, "Error closing socket", e);
     }
 
     super.shutdown();

@@ -170,10 +170,10 @@ class IpNotificationMethod implements NotificationMethod {
       Log.i(NotifierConstants.LOG_TAG, "Sent notification over WiFi.");
     } catch (SocketException e) {
       callback.notificationDone(target, e);
-      Log.e(NotifierConstants.LOG_TAG, "Unable to open socket", e);
+      Log.w(NotifierConstants.LOG_TAG, "Unable to open socket", e);
     } catch (IOException e) {
       callback.notificationDone(target, e);
-      Log.e(NotifierConstants.LOG_TAG, "Unable to send TCP or UDP packet", e);
+      Log.w(NotifierConstants.LOG_TAG, "Unable to send TCP or UDP packet", e);
     }
   }
 

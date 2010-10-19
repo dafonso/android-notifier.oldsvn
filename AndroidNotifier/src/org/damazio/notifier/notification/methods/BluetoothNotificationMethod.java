@@ -186,7 +186,7 @@ class BluetoothNotificationMethod implements NotificationMethod {
             socket.close();
           } catch (IOException e1) {
             // Do nothing, we'll retry
-            Log.e(NotifierConstants.LOG_TAG, "Error closing bluetooth socket", e1);
+            Log.w(NotifierConstants.LOG_TAG, "Error closing bluetooth socket", e1);
           }
         }
 

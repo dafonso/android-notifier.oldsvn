@@ -176,7 +176,7 @@ public abstract class CallerId {
           new String[] { displayNameColumn, typeColumn, labelColumn },
           null, null, null);
     } catch (IllegalArgumentException e) {
-      Log.e(NotifierConstants.LOG_TAG, "Unable to look up caller ID", e);
+      Log.w(NotifierConstants.LOG_TAG, "Unable to look up caller ID", e);
       return null;
     }
 
