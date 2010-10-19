@@ -105,7 +105,7 @@ class UsbNotificationMethod implements NotificationMethod {
           Log.d(NotifierConstants.LOG_TAG, "A usb socket has been closed");
           throwableToReturn = null;
         } else {
-          Log.e(NotifierConstants.LOG_TAG, "Could not send notification over usb socket", e);
+          Log.w(NotifierConstants.LOG_TAG, "Could not send notification over usb socket", e);
           throwableToReturn = e;
         }
         closeSocket(socket);
@@ -162,7 +162,7 @@ class UsbNotificationMethod implements NotificationMethod {
                   break;
                 }
               } catch (IOException e) {
-                Log.e(NotifierConstants.LOG_TAG, "Error handling usb socket connection", e);
+                Log.w(NotifierConstants.LOG_TAG, "Error handling usb socket connection", e);
               }
             }
 
@@ -182,7 +182,7 @@ class UsbNotificationMethod implements NotificationMethod {
         serverThread.start();
       } catch (IOException e) {
         serverSocket = null;
-        Log.e(NotifierConstants.LOG_TAG, "Could not start usb ServerSocket, usb notifications will not work", e);
+        Log.w(NotifierConstants.LOG_TAG, "Could not start usb ServerSocket, usb notifications will not work", e);
         stopServer();
       }
     }
@@ -237,7 +237,7 @@ class UsbNotificationMethod implements NotificationMethod {
     try {
       socket.close();
     } catch (IOException ce) {
-      Log.e(NotifierConstants.LOG_TAG, "Error closing usb socket", ce);
+      Log.w(NotifierConstants.LOG_TAG, "Error closing usb socket", ce);
     }
   }
 

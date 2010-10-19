@@ -62,17 +62,17 @@ class HangupCommandHandler implements CommandHandler {
       telephonyService = asInterfaceMethod.invoke(iTelephonyClass, telephonyBinder);
       endCallMethod = telephonyService.getClass().getMethod("endCall");
     } catch (InvocationTargetException e) {
-      Log.e(NotifierConstants.LOG_TAG, "Failed to call hangup method", e);
+      Log.w(NotifierConstants.LOG_TAG, "Failed to call hangup method", e);
     } catch (ClassNotFoundException e) {
-      Log.e(NotifierConstants.LOG_TAG, "Failed to call hangup method", e);
+      Log.w(NotifierConstants.LOG_TAG, "Failed to call hangup method", e);
     } catch (SecurityException e) {
-      Log.e(NotifierConstants.LOG_TAG, "Failed to call hangup method", e);
+      Log.w(NotifierConstants.LOG_TAG, "Failed to call hangup method", e);
     } catch (NoSuchMethodException e) {
-      Log.e(NotifierConstants.LOG_TAG, "Failed to call hangup method", e);
+      Log.w(NotifierConstants.LOG_TAG, "Failed to call hangup method", e);
     } catch (IllegalArgumentException e) {
-      Log.e(NotifierConstants.LOG_TAG, "Failed to call hangup method", e);
+      Log.w(NotifierConstants.LOG_TAG, "Failed to call hangup method", e);
     } catch (IllegalAccessException e) {
-      Log.e(NotifierConstants.LOG_TAG, "Failed to call hangup method", e);
+      Log.w(NotifierConstants.LOG_TAG, "Failed to call hangup method", e);
     }
   }
 

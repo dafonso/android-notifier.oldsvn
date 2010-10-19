@@ -54,23 +54,35 @@ abstract class CommandListener extends Thread {
   protected CommandListener(Context context) {
     this.context = context;
   }
-  
+
   @Override
   public final void run() {
     shutdown = false;
 
-    try {
-      initialize();
-    } catch (IOException e) {
-      Log.e(NotifierConstants.LOG_TAG, "Unable to initialize", e);
-      return;
+    // Try to initialize for 5 minutes before giving up
+    for (int i = 0; i < 300; i++) {
+      try {
+        initialize();
+        break;
+      } catch (IOException e) {
+        if (i % 10 == 0) {
+          Log.w(NotifierConstants.LOG_TAG, "Unable to initialize", e);
+        }
+      }
+
+      try {
+        sleep(1000);
+      } catch (InterruptedException e1) {
+        // Shutting down already? kthxbye
+        return;
+      }
     }
 
     while (!shutdown) {
       try {
         runOnce();
       } catch (IOException e) {
-        Log.e(NotifierConstants.LOG_TAG, "Error accepting connection", e);
+        Log.w(NotifierConstants.LOG_TAG, "Error accepting connection", e);
       }
     }
   }

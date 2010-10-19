@@ -36,7 +36,7 @@ public class NetworkUtils {
         }
       }
     } catch (SocketException e) {
-      Log.e(NotifierConstants.LOG_TAG, "Unable to get network interfaces", e);
+      Log.w(NotifierConstants.LOG_TAG, "Unable to get network interfaces", e);
     }
 
     return addresses;
@@ -47,13 +47,13 @@ public class NetworkUtils {
 
     // Get the DHCP info from Wi-fi
     if (wifi == null) {
-      Log.e(NotifierConstants.LOG_TAG, "Could not obtain Wifi info");
+      Log.w(NotifierConstants.LOG_TAG, "Could not obtain Wifi info");
       return null;
     }
 
     DhcpInfo dhcp = wifi.getDhcpInfo();
     if (dhcp == null) {
-      Log.e(NotifierConstants.LOG_TAG, "Could not obtain DHCP info");
+      Log.w(NotifierConstants.LOG_TAG, "Could not obtain DHCP info");
       return null;
     }
 

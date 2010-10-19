@@ -95,7 +95,7 @@ public class BugReporter {
 
       Toast.makeText(context, R.string.report_bug_toast, Toast.LENGTH_LONG).show();
     } catch (IOException e) {
-      Log.e(NotifierConstants.LOG_TAG, "Unable to read logs", e);
+      Log.w(NotifierConstants.LOG_TAG, "Unable to read logs", e);
     }
 
     // Now open the bug report page

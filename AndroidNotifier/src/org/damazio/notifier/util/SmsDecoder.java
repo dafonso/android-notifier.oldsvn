@@ -57,7 +57,7 @@ public abstract class SmsDecoder {
       } catch (NullPointerException e) {
         // Workaround for Android bug
         // http://code.google.com/p/android/issues/detail?id=11345
-        Log.e(NotifierConstants.LOG_TAG, "Invalid PDU", e);
+        Log.w(NotifierConstants.LOG_TAG, "Invalid PDU", e);
       }
 
       if (message != null) {
@@ -97,7 +97,7 @@ public abstract class SmsDecoder {
       } catch (NullPointerException e) {
         // Workaround for Android bug
         // http://code.google.com/p/android/issues/detail?id=11345
-        Log.e(NotifierConstants.LOG_TAG, "Invalid PDU", e);
+        Log.w(NotifierConstants.LOG_TAG, "Invalid PDU", e);
       }
 
       if (message != null) {
