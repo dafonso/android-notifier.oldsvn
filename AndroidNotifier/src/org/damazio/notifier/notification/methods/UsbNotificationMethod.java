@@ -26,8 +26,7 @@ package org.damazio.notifier.notification.methods;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.NotifierPreferences;
@@ -36,9 +35,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.LocalServerSocket;
-import android.net.LocalSocket;
-import android.os.PowerManager;
+import android.net.*;
+import android.os.*;
 import android.os.PowerManager.WakeLock;
 import android.util.Log;
 
@@ -53,12 +51,12 @@ class UsbNotificationMethod implements NotificationMethod {
   private static final String SOCKET_NAME = "androidnotifier";
   private static final int SHUTDOWN_TIMEOUT = 5 * 1000;
   private static final String USB_LOCK_TAG = UsbNotificationMethod.class.getName();
+  private static final byte POISON_PILL = Byte.MAX_VALUE;
 
   private final Context context;
   private final NotifierPreferences preferences;
 
   private Thread serverThread;
-  private boolean stopRequested;
   private LocalServerSocket serverSocket;
   private List<LocalSocket> openSockets = new ArrayList<LocalSocket>();
   private WakeLock wakeLock;
@@ -67,11 +65,14 @@ class UsbNotificationMethod implements NotificationMethod {
     @Override
     public void onReceive(Context context, Intent intent) {
       String action = intent.getAction();
-      // We abuse the power connected/disconnected as meaning USB connected/disconnected
-      if (Intent.ACTION_POWER_CONNECTED.equals(action)) {
-        startServer();
-      } else if (Intent.ACTION_POWER_DISCONNECTED.equals(action)) {
-        stopServer();
+
+      if (Intent.ACTION_BATTERY_CHANGED.equals(action)) {
+        int plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0);
+        if (plugged == BatteryManager.BATTERY_PLUGGED_USB) {
+          startServer();
+        } else {
+          stopServer();
+        }
       } else {
         Log.e(NotifierConstants.LOG_TAG, "Got unexpected action: " + action);
       }
@@ -82,11 +83,9 @@ class UsbNotificationMethod implements NotificationMethod {
     this.context = context;
     this.preferences = preferences;
 
-    // TODO: These constants are not available in cupcake
-    IntentFilter powerIntentFilter = new IntentFilter();
-    powerIntentFilter.addAction(Intent.ACTION_POWER_CONNECTED);
-    powerIntentFilter.addAction(Intent.ACTION_POWER_DISCONNECTED);
-    context.registerReceiver(powerReceiver, powerIntentFilter);
+    IntentFilter batteryIntentFilter = new IntentFilter();
+    batteryIntentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
+    context.registerReceiver(powerReceiver, batteryIntentFilter);
   }
 
   @Override
@@ -101,9 +100,17 @@ class UsbNotificationMethod implements NotificationMethod {
         stream.flush();
         callback.notificationDone(target, null);
       } catch (IOException e) {
-        Log.e(NotifierConstants.LOG_TAG, "Could not send notification over usb socket", e);
+        Throwable throwableToReturn;
+        if ("Broken pipe".equals(e.getMessage())) {
+          Log.d(NotifierConstants.LOG_TAG, "A usb socket has been closed");
+          throwableToReturn = null;
+        } else {
+          Log.e(NotifierConstants.LOG_TAG, "Could not send notification over usb socket", e);
+          throwableToReturn = e;
+        }
         closeSocket(socket);
-        callback.notificationDone(target, e);
+        openSockets.remove(socket);
+        callback.notificationDone(target, throwableToReturn);
       }
     }
   }
@@ -137,33 +144,37 @@ class UsbNotificationMethod implements NotificationMethod {
       wakeLock.acquire();
 
       Log.d(NotifierConstants.LOG_TAG, "Starting usb SocketServer");
-      stopRequested = false;
       try {
         serverSocket = new LocalServerSocket(SOCKET_NAME);
         serverThread = new Thread("usb-server-thread") {
           @Override
           public void run() {
-            while (!stopRequested) {
+            for (;;) {
               try {
                 LocalSocket socket = serverSocket.accept();
                 synchronized (openSockets) {
                   openSockets.add(socket);
+                }
+
+                byte pill = (byte) socket.getInputStream().read();
+                if (pill == POISON_PILL) {
+                  Log.d(NotifierConstants.LOG_TAG, "Received poison pill on usb SocketServer");
+                  break;
                 }
               } catch (IOException e) {
                 Log.e(NotifierConstants.LOG_TAG, "Error handling usb socket connection", e);
               }
             }
 
-            synchronized (openSockets) {
-              for (LocalSocket socket : openSockets) {
-                try {
-                  socket.shutdownOutput();
-                } catch (IOException e) {
-                  Log.w(NotifierConstants.LOG_TAG, "Error shutting down usb socket", e);
-                } finally {
-                  closeSocket(socket);
+            try {
+              synchronized (openSockets) {
+                for (Iterator<LocalSocket> iterator = openSockets.iterator(); iterator.hasNext(); ) {
+                  closeSocket(iterator.next());
+                  iterator.remove();
                 }
               }
+            } catch (Throwable t) {
+              Log.e(NotifierConstants.LOG_TAG, "Error shutting down usb socket", t);
             }
           }
         };
@@ -184,10 +195,25 @@ class UsbNotificationMethod implements NotificationMethod {
       }
 
       Log.d(NotifierConstants.LOG_TAG, "Stopping usb SocketServer");
-      stopRequested = true;
+      LocalSocket poisonPillSocket = new LocalSocket();
       try {
-        serverThread.interrupt();
+        poisonPillSocket.connect(new LocalSocketAddress(SOCKET_NAME));
+        poisonPillSocket.getOutputStream().write(POISON_PILL);
+        poisonPillSocket.getOutputStream().flush();
+      } catch (IOException e) {
+        Log.e(NotifierConstants.LOG_TAG, "Could not stop usb SocketServer", e);
+        return;
+      } finally {
+        try {
+          poisonPillSocket.close();
+        } catch (IOException e) {
+          Log.w(NotifierConstants.LOG_TAG, "Could not close socket used to stop usb SocketServer");
+        }
+      }
+
+      try {
         serverThread.join(SHUTDOWN_TIMEOUT);
+        Log.d(NotifierConstants.LOG_TAG, "Stopped usb SocketServer successfully");
       } catch (InterruptedException e1) {
         Thread.currentThread().interrupt();
       } finally {
@@ -209,12 +235,7 @@ class UsbNotificationMethod implements NotificationMethod {
 
   private void closeSocket(LocalSocket socket) {
     try {
-      synchronized (socket) {
-        socket.close();
-        synchronized(openSockets) {
-          openSockets.remove(socket);
-        }
-      }
+      socket.close();
     } catch (IOException ce) {
       Log.e(NotifierConstants.LOG_TAG, "Error closing usb socket", ce);
     }
