@@ -19,10 +19,12 @@ package com.notifier.desktop.notification.usb;
 
 import static java.util.concurrent.TimeUnit.*;
 
+import java.io.*;
 import java.net.*;
 import java.util.concurrent.*;
 
 import org.jboss.netty.bootstrap.*;
+import org.jboss.netty.buffer.*;
 import org.jboss.netty.channel.*;
 import org.jboss.netty.channel.socket.nio.*;
 import org.slf4j.*;
@@ -87,6 +89,7 @@ public class UsbPortClient implements Runnable {
 					public void operationComplete(ChannelFuture future) throws Exception {
 						if (future.isSuccess()) {
 							channel = future.getChannel();
+							channel.write(ChannelBuffers.wrappedBuffer(new byte[] { 1 }));
 						}
 					}
 				});
@@ -118,7 +121,13 @@ public class UsbPortClient implements Runnable {
 				// We've been interrupted, nothing to do
 			} else {
 				logger.error("Error handling usb notification", e.getCause());
-				application.showError(Application.NAME + " USB Error", "An error occurred while receiving usb notification:\n" + e.getCause().getMessage());
+				e.getChannel().close();
+				channel = null;
+				if (e.getCause() instanceof IOException) {
+					tryToConnect(true);
+				} else {
+					application.showError(Application.NAME + " USB Error", "An error occurred while receiving usb notification:\n" + e.getCause().getMessage());
+				}
 			}
 		}
 	}
