@@ -664,1862 +664,6 @@ public final class Protocol {
     // @@protoc_insertion_point(class_scope:android_notifier.Notification)
   }
   
-  public static final class Search extends
-      com.google.protobuf.GeneratedMessageLite {
-    // Use Search.newBuilder() to construct.
-    private Search() {
-      initFields();
-    }
-    private Search(boolean noInit) {}
-    
-    private static final Search defaultInstance;
-    public static Search getDefaultInstance() {
-      return defaultInstance;
-    }
-    
-    public Search getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-    
-    public static final class Request extends
-        com.google.protobuf.GeneratedMessageLite {
-      // Use Request.newBuilder() to construct.
-      private Request() {
-        initFields();
-      }
-      private Request(boolean noInit) {}
-      
-      private static final Request defaultInstance;
-      public static Request getDefaultInstance() {
-        return defaultInstance;
-      }
-      
-      public Request getDefaultInstanceForType() {
-        return defaultInstance;
-      }
-      
-      // required fixed64 device_id = 1;
-      public static final int DEVICE_ID_FIELD_NUMBER = 1;
-      private boolean hasDeviceId;
-      private long deviceId_ = 0L;
-      public boolean hasDeviceId() { return hasDeviceId; }
-      public long getDeviceId() { return deviceId_; }
-      
-      // required fixed64 id = 2;
-      public static final int ID_FIELD_NUMBER = 2;
-      private boolean hasId;
-      private long id_ = 0L;
-      public boolean hasId() { return hasId; }
-      public long getId() { return id_; }
-      
-      // required string query = 3;
-      public static final int QUERY_FIELD_NUMBER = 3;
-      private boolean hasQuery;
-      private java.lang.String query_ = "";
-      public boolean hasQuery() { return hasQuery; }
-      public java.lang.String getQuery() { return query_; }
-      
-      private void initFields() {
-      }
-      public final boolean isInitialized() {
-        if (!hasDeviceId) return false;
-        if (!hasId) return false;
-        if (!hasQuery) return false;
-        return true;
-      }
-      
-      public void writeTo(com.google.protobuf.CodedOutputStream output)
-                          throws java.io.IOException {
-        getSerializedSize();
-        if (hasDeviceId()) {
-          output.writeFixed64(1, getDeviceId());
-        }
-        if (hasId()) {
-          output.writeFixed64(2, getId());
-        }
-        if (hasQuery()) {
-          output.writeString(3, getQuery());
-        }
-      }
-      
-      private int memoizedSerializedSize = -1;
-      public int getSerializedSize() {
-        int size = memoizedSerializedSize;
-        if (size != -1) return size;
-      
-        size = 0;
-        if (hasDeviceId()) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeFixed64Size(1, getDeviceId());
-        }
-        if (hasId()) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeFixed64Size(2, getId());
-        }
-        if (hasQuery()) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeStringSize(3, getQuery());
-        }
-        memoizedSerializedSize = size;
-        return size;
-      }
-      
-      public static com.notifier.protocol.Protocol.Search.Request parseFrom(
-          com.google.protobuf.ByteString data)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return newBuilder().mergeFrom(data).buildParsed();
-      }
-      public static com.notifier.protocol.Protocol.Search.Request parseFrom(
-          com.google.protobuf.ByteString data,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return newBuilder().mergeFrom(data, extensionRegistry)
-                 .buildParsed();
-      }
-      public static com.notifier.protocol.Protocol.Search.Request parseFrom(byte[] data)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return newBuilder().mergeFrom(data).buildParsed();
-      }
-      public static com.notifier.protocol.Protocol.Search.Request parseFrom(
-          byte[] data,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return newBuilder().mergeFrom(data, extensionRegistry)
-                 .buildParsed();
-      }
-      public static com.notifier.protocol.Protocol.Search.Request parseFrom(java.io.InputStream input)
-          throws java.io.IOException {
-        return newBuilder().mergeFrom(input).buildParsed();
-      }
-      public static com.notifier.protocol.Protocol.Search.Request parseFrom(
-          java.io.InputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        return newBuilder().mergeFrom(input, extensionRegistry)
-                 .buildParsed();
-      }
-      public static com.notifier.protocol.Protocol.Search.Request parseDelimitedFrom(java.io.InputStream input)
-          throws java.io.IOException {
-        Builder builder = newBuilder();
-        if (builder.mergeDelimitedFrom(input)) {
-          return builder.buildParsed();
-        } else {
-          return null;
-        }
-      }
-      public static com.notifier.protocol.Protocol.Search.Request parseDelimitedFrom(
-          java.io.InputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        Builder builder = newBuilder();
-        if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
-          return builder.buildParsed();
-        } else {
-          return null;
-        }
-      }
-      public static com.notifier.protocol.Protocol.Search.Request parseFrom(
-          com.google.protobuf.CodedInputStream input)
-          throws java.io.IOException {
-        return newBuilder().mergeFrom(input).buildParsed();
-      }
-      public static com.notifier.protocol.Protocol.Search.Request parseFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        return newBuilder().mergeFrom(input, extensionRegistry)
-                 .buildParsed();
-      }
-      
-      public static Builder newBuilder() { return Builder.create(); }
-      public Builder newBuilderForType() { return newBuilder(); }
-      public static Builder newBuilder(com.notifier.protocol.Protocol.Search.Request prototype) {
-        return newBuilder().mergeFrom(prototype);
-      }
-      public Builder toBuilder() { return newBuilder(this); }
-      
-      public static final class Builder extends
-          com.google.protobuf.GeneratedMessageLite.Builder<
-            com.notifier.protocol.Protocol.Search.Request, Builder> {
-        private com.notifier.protocol.Protocol.Search.Request result;
-        
-        // Construct using com.notifier.protocol.Protocol.Search.Request.newBuilder()
-        private Builder() {}
-        
-        private static Builder create() {
-          Builder builder = new Builder();
-          builder.result = new com.notifier.protocol.Protocol.Search.Request();
-          return builder;
-        }
-        
-        protected com.notifier.protocol.Protocol.Search.Request internalGetResult() {
-          return result;
-        }
-        
-        public Builder clear() {
-          if (result == null) {
-            throw new IllegalStateException(
-              "Cannot call clear() after build().");
-          }
-          result = new com.notifier.protocol.Protocol.Search.Request();
-          return this;
-        }
-        
-        public Builder clone() {
-          return create().mergeFrom(result);
-        }
-        
-        public com.notifier.protocol.Protocol.Search.Request getDefaultInstanceForType() {
-          return com.notifier.protocol.Protocol.Search.Request.getDefaultInstance();
-        }
-        
-        public boolean isInitialized() {
-          return result.isInitialized();
-        }
-        public com.notifier.protocol.Protocol.Search.Request build() {
-          if (result != null && !isInitialized()) {
-            throw newUninitializedMessageException(result);
-          }
-          return buildPartial();
-        }
-        
-        private com.notifier.protocol.Protocol.Search.Request buildParsed()
-            throws com.google.protobuf.InvalidProtocolBufferException {
-          if (!isInitialized()) {
-            throw newUninitializedMessageException(
-              result).asInvalidProtocolBufferException();
-          }
-          return buildPartial();
-        }
-        
-        public com.notifier.protocol.Protocol.Search.Request buildPartial() {
-          if (result == null) {
-            throw new IllegalStateException(
-              "build() has already been called on this Builder.");
-          }
-          com.notifier.protocol.Protocol.Search.Request returnMe = result;
-          result = null;
-          return returnMe;
-        }
-        
-        public Builder mergeFrom(com.notifier.protocol.Protocol.Search.Request other) {
-          if (other == com.notifier.protocol.Protocol.Search.Request.getDefaultInstance()) return this;
-          if (other.hasDeviceId()) {
-            setDeviceId(other.getDeviceId());
-          }
-          if (other.hasId()) {
-            setId(other.getId());
-          }
-          if (other.hasQuery()) {
-            setQuery(other.getQuery());
-          }
-          return this;
-        }
-        
-        public Builder mergeFrom(
-            com.google.protobuf.CodedInputStream input,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws java.io.IOException {
-          while (true) {
-            int tag = input.readTag();
-            switch (tag) {
-              case 0:
-                return this;
-              default: {
-                if (!parseUnknownField(input, extensionRegistry, tag)) {
-                  return this;
-                }
-                break;
-              }
-              case 9: {
-                setDeviceId(input.readFixed64());
-                break;
-              }
-              case 17: {
-                setId(input.readFixed64());
-                break;
-              }
-              case 26: {
-                setQuery(input.readString());
-                break;
-              }
-            }
-          }
-        }
-        
-        
-        // required fixed64 device_id = 1;
-        public boolean hasDeviceId() {
-          return result.hasDeviceId();
-        }
-        public long getDeviceId() {
-          return result.getDeviceId();
-        }
-        public Builder setDeviceId(long value) {
-          result.hasDeviceId = true;
-          result.deviceId_ = value;
-          return this;
-        }
-        public Builder clearDeviceId() {
-          result.hasDeviceId = false;
-          result.deviceId_ = 0L;
-          return this;
-        }
-        
-        // required fixed64 id = 2;
-        public boolean hasId() {
-          return result.hasId();
-        }
-        public long getId() {
-          return result.getId();
-        }
-        public Builder setId(long value) {
-          result.hasId = true;
-          result.id_ = value;
-          return this;
-        }
-        public Builder clearId() {
-          result.hasId = false;
-          result.id_ = 0L;
-          return this;
-        }
-        
-        // required string query = 3;
-        public boolean hasQuery() {
-          return result.hasQuery();
-        }
-        public java.lang.String getQuery() {
-          return result.getQuery();
-        }
-        public Builder setQuery(java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  result.hasQuery = true;
-          result.query_ = value;
-          return this;
-        }
-        public Builder clearQuery() {
-          result.hasQuery = false;
-          result.query_ = getDefaultInstance().getQuery();
-          return this;
-        }
-        
-        // @@protoc_insertion_point(builder_scope:android_notifier.Search.Request)
-      }
-      
-      static {
-        defaultInstance = new Request(true);
-        com.notifier.protocol.Protocol.internalForceInit();
-        defaultInstance.initFields();
-      }
-      
-      // @@protoc_insertion_point(class_scope:android_notifier.Search.Request)
-    }
-    
-    public static final class Response extends
-        com.google.protobuf.GeneratedMessageLite {
-      // Use Response.newBuilder() to construct.
-      private Response() {
-        initFields();
-      }
-      private Response(boolean noInit) {}
-      
-      private static final Response defaultInstance;
-      public static Response getDefaultInstance() {
-        return defaultInstance;
-      }
-      
-      public Response getDefaultInstanceForType() {
-        return defaultInstance;
-      }
-      
-      // required fixed64 device_id = 1;
-      public static final int DEVICE_ID_FIELD_NUMBER = 1;
-      private boolean hasDeviceId;
-      private long deviceId_ = 0L;
-      public boolean hasDeviceId() { return hasDeviceId; }
-      public long getDeviceId() { return deviceId_; }
-      
-      // required fixed64 id = 2;
-      public static final int ID_FIELD_NUMBER = 2;
-      private boolean hasId;
-      private long id_ = 0L;
-      public boolean hasId() { return hasId; }
-      public long getId() { return id_; }
-      
-      // repeated .android_notifier.Contact contacts = 3;
-      public static final int CONTACTS_FIELD_NUMBER = 3;
-      private java.util.List<com.notifier.protocol.Protocol.Contact> contacts_ =
-        java.util.Collections.emptyList();
-      public java.util.List<com.notifier.protocol.Protocol.Contact> getContactsList() {
-        return contacts_;
-      }
-      public int getContactsCount() { return contacts_.size(); }
-      public com.notifier.protocol.Protocol.Contact getContacts(int index) {
-        return contacts_.get(index);
-      }
-      
-      private void initFields() {
-      }
-      public final boolean isInitialized() {
-        if (!hasDeviceId) return false;
-        if (!hasId) return false;
-        for (com.notifier.protocol.Protocol.Contact element : getContactsList()) {
-          if (!element.isInitialized()) return false;
-        }
-        return true;
-      }
-      
-      public void writeTo(com.google.protobuf.CodedOutputStream output)
-                          throws java.io.IOException {
-        getSerializedSize();
-        if (hasDeviceId()) {
-          output.writeFixed64(1, getDeviceId());
-        }
-        if (hasId()) {
-          output.writeFixed64(2, getId());
-        }
-        for (com.notifier.protocol.Protocol.Contact element : getContactsList()) {
-          output.writeMessage(3, element);
-        }
-      }
-      
-      private int memoizedSerializedSize = -1;
-      public int getSerializedSize() {
-        int size = memoizedSerializedSize;
-        if (size != -1) return size;
-      
-        size = 0;
-        if (hasDeviceId()) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeFixed64Size(1, getDeviceId());
-        }
-        if (hasId()) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeFixed64Size(2, getId());
-        }
-        for (com.notifier.protocol.Protocol.Contact element : getContactsList()) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(3, element);
-        }
-        memoizedSerializedSize = size;
-        return size;
-      }
-      
-      public static com.notifier.protocol.Protocol.Search.Response parseFrom(
-          com.google.protobuf.ByteString data)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return newBuilder().mergeFrom(data).buildParsed();
-      }
-      public static com.notifier.protocol.Protocol.Search.Response parseFrom(
-          com.google.protobuf.ByteString data,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return newBuilder().mergeFrom(data, extensionRegistry)
-                 .buildParsed();
-      }
-      public static com.notifier.protocol.Protocol.Search.Response parseFrom(byte[] data)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return newBuilder().mergeFrom(data).buildParsed();
-      }
-      public static com.notifier.protocol.Protocol.Search.Response parseFrom(
-          byte[] data,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return newBuilder().mergeFrom(data, extensionRegistry)
-                 .buildParsed();
-      }
-      public static com.notifier.protocol.Protocol.Search.Response parseFrom(java.io.InputStream input)
-          throws java.io.IOException {
-        return newBuilder().mergeFrom(input).buildParsed();
-      }
-      public static com.notifier.protocol.Protocol.Search.Response parseFrom(
-          java.io.InputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        return newBuilder().mergeFrom(input, extensionRegistry)
-                 .buildParsed();
-      }
-      public static com.notifier.protocol.Protocol.Search.Response parseDelimitedFrom(java.io.InputStream input)
-          throws java.io.IOException {
-        Builder builder = newBuilder();
-        if (builder.mergeDelimitedFrom(input)) {
-          return builder.buildParsed();
-        } else {
-          return null;
-        }
-      }
-      public static com.notifier.protocol.Protocol.Search.Response parseDelimitedFrom(
-          java.io.InputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        Builder builder = newBuilder();
-        if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
-          return builder.buildParsed();
-        } else {
-          return null;
-        }
-      }
-      public static com.notifier.protocol.Protocol.Search.Response parseFrom(
-          com.google.protobuf.CodedInputStream input)
-          throws java.io.IOException {
-        return newBuilder().mergeFrom(input).buildParsed();
-      }
-      public static com.notifier.protocol.Protocol.Search.Response parseFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        return newBuilder().mergeFrom(input, extensionRegistry)
-                 .buildParsed();
-      }
-      
-      public static Builder newBuilder() { return Builder.create(); }
-      public Builder newBuilderForType() { return newBuilder(); }
-      public static Builder newBuilder(com.notifier.protocol.Protocol.Search.Response prototype) {
-        return newBuilder().mergeFrom(prototype);
-      }
-      public Builder toBuilder() { return newBuilder(this); }
-      
-      public static final class Builder extends
-          com.google.protobuf.GeneratedMessageLite.Builder<
-            com.notifier.protocol.Protocol.Search.Response, Builder> {
-        private com.notifier.protocol.Protocol.Search.Response result;
-        
-        // Construct using com.notifier.protocol.Protocol.Search.Response.newBuilder()
-        private Builder() {}
-        
-        private static Builder create() {
-          Builder builder = new Builder();
-          builder.result = new com.notifier.protocol.Protocol.Search.Response();
-          return builder;
-        }
-        
-        protected com.notifier.protocol.Protocol.Search.Response internalGetResult() {
-          return result;
-        }
-        
-        public Builder clear() {
-          if (result == null) {
-            throw new IllegalStateException(
-              "Cannot call clear() after build().");
-          }
-          result = new com.notifier.protocol.Protocol.Search.Response();
-          return this;
-        }
-        
-        public Builder clone() {
-          return create().mergeFrom(result);
-        }
-        
-        public com.notifier.protocol.Protocol.Search.Response getDefaultInstanceForType() {
-          return com.notifier.protocol.Protocol.Search.Response.getDefaultInstance();
-        }
-        
-        public boolean isInitialized() {
-          return result.isInitialized();
-        }
-        public com.notifier.protocol.Protocol.Search.Response build() {
-          if (result != null && !isInitialized()) {
-            throw newUninitializedMessageException(result);
-          }
-          return buildPartial();
-        }
-        
-        private com.notifier.protocol.Protocol.Search.Response buildParsed()
-            throws com.google.protobuf.InvalidProtocolBufferException {
-          if (!isInitialized()) {
-            throw newUninitializedMessageException(
-              result).asInvalidProtocolBufferException();
-          }
-          return buildPartial();
-        }
-        
-        public com.notifier.protocol.Protocol.Search.Response buildPartial() {
-          if (result == null) {
-            throw new IllegalStateException(
-              "build() has already been called on this Builder.");
-          }
-          if (result.contacts_ != java.util.Collections.EMPTY_LIST) {
-            result.contacts_ =
-              java.util.Collections.unmodifiableList(result.contacts_);
-          }
-          com.notifier.protocol.Protocol.Search.Response returnMe = result;
-          result = null;
-          return returnMe;
-        }
-        
-        public Builder mergeFrom(com.notifier.protocol.Protocol.Search.Response other) {
-          if (other == com.notifier.protocol.Protocol.Search.Response.getDefaultInstance()) return this;
-          if (other.hasDeviceId()) {
-            setDeviceId(other.getDeviceId());
-          }
-          if (other.hasId()) {
-            setId(other.getId());
-          }
-          if (!other.contacts_.isEmpty()) {
-            if (result.contacts_.isEmpty()) {
-              result.contacts_ = new java.util.ArrayList<com.notifier.protocol.Protocol.Contact>();
-            }
-            result.contacts_.addAll(other.contacts_);
-          }
-          return this;
-        }
-        
-        public Builder mergeFrom(
-            com.google.protobuf.CodedInputStream input,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws java.io.IOException {
-          while (true) {
-            int tag = input.readTag();
-            switch (tag) {
-              case 0:
-                return this;
-              default: {
-                if (!parseUnknownField(input, extensionRegistry, tag)) {
-                  return this;
-                }
-                break;
-              }
-              case 9: {
-                setDeviceId(input.readFixed64());
-                break;
-              }
-              case 17: {
-                setId(input.readFixed64());
-                break;
-              }
-              case 26: {
-                com.notifier.protocol.Protocol.Contact.Builder subBuilder = com.notifier.protocol.Protocol.Contact.newBuilder();
-                input.readMessage(subBuilder, extensionRegistry);
-                addContacts(subBuilder.buildPartial());
-                break;
-              }
-            }
-          }
-        }
-        
-        
-        // required fixed64 device_id = 1;
-        public boolean hasDeviceId() {
-          return result.hasDeviceId();
-        }
-        public long getDeviceId() {
-          return result.getDeviceId();
-        }
-        public Builder setDeviceId(long value) {
-          result.hasDeviceId = true;
-          result.deviceId_ = value;
-          return this;
-        }
-        public Builder clearDeviceId() {
-          result.hasDeviceId = false;
-          result.deviceId_ = 0L;
-          return this;
-        }
-        
-        // required fixed64 id = 2;
-        public boolean hasId() {
-          return result.hasId();
-        }
-        public long getId() {
-          return result.getId();
-        }
-        public Builder setId(long value) {
-          result.hasId = true;
-          result.id_ = value;
-          return this;
-        }
-        public Builder clearId() {
-          result.hasId = false;
-          result.id_ = 0L;
-          return this;
-        }
-        
-        // repeated .android_notifier.Contact contacts = 3;
-        public java.util.List<com.notifier.protocol.Protocol.Contact> getContactsList() {
-          return java.util.Collections.unmodifiableList(result.contacts_);
-        }
-        public int getContactsCount() {
-          return result.getContactsCount();
-        }
-        public com.notifier.protocol.Protocol.Contact getContacts(int index) {
-          return result.getContacts(index);
-        }
-        public Builder setContacts(int index, com.notifier.protocol.Protocol.Contact value) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          result.contacts_.set(index, value);
-          return this;
-        }
-        public Builder setContacts(int index, com.notifier.protocol.Protocol.Contact.Builder builderForValue) {
-          result.contacts_.set(index, builderForValue.build());
-          return this;
-        }
-        public Builder addContacts(com.notifier.protocol.Protocol.Contact value) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          if (result.contacts_.isEmpty()) {
-            result.contacts_ = new java.util.ArrayList<com.notifier.protocol.Protocol.Contact>();
-          }
-          result.contacts_.add(value);
-          return this;
-        }
-        public Builder addContacts(com.notifier.protocol.Protocol.Contact.Builder builderForValue) {
-          if (result.contacts_.isEmpty()) {
-            result.contacts_ = new java.util.ArrayList<com.notifier.protocol.Protocol.Contact>();
-          }
-          result.contacts_.add(builderForValue.build());
-          return this;
-        }
-        public Builder addAllContacts(
-            java.lang.Iterable<? extends com.notifier.protocol.Protocol.Contact> values) {
-          if (result.contacts_.isEmpty()) {
-            result.contacts_ = new java.util.ArrayList<com.notifier.protocol.Protocol.Contact>();
-          }
-          super.addAll(values, result.contacts_);
-          return this;
-        }
-        public Builder clearContacts() {
-          result.contacts_ = java.util.Collections.emptyList();
-          return this;
-        }
-        
-        // @@protoc_insertion_point(builder_scope:android_notifier.Search.Response)
-      }
-      
-      static {
-        defaultInstance = new Response(true);
-        com.notifier.protocol.Protocol.internalForceInit();
-        defaultInstance.initFields();
-      }
-      
-      // @@protoc_insertion_point(class_scope:android_notifier.Search.Response)
-    }
-    
-    private void initFields() {
-    }
-    public final boolean isInitialized() {
-      return true;
-    }
-    
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-    }
-    
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-    
-      size = 0;
-      memoizedSerializedSize = size;
-      return size;
-    }
-    
-    public static com.notifier.protocol.Protocol.Search parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
-    }
-    public static com.notifier.protocol.Protocol.Search parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
-    }
-    public static com.notifier.protocol.Protocol.Search parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
-    }
-    public static com.notifier.protocol.Protocol.Search parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
-    }
-    public static com.notifier.protocol.Protocol.Search parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
-    }
-    public static com.notifier.protocol.Protocol.Search parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
-    }
-    public static com.notifier.protocol.Protocol.Search parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
-    }
-    public static com.notifier.protocol.Protocol.Search parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
-    }
-    public static com.notifier.protocol.Protocol.Search parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
-    }
-    public static com.notifier.protocol.Protocol.Search parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
-    }
-    
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.notifier.protocol.Protocol.Search prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-    
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageLite.Builder<
-          com.notifier.protocol.Protocol.Search, Builder> {
-      private com.notifier.protocol.Protocol.Search result;
-      
-      // Construct using com.notifier.protocol.Protocol.Search.newBuilder()
-      private Builder() {}
-      
-      private static Builder create() {
-        Builder builder = new Builder();
-        builder.result = new com.notifier.protocol.Protocol.Search();
-        return builder;
-      }
-      
-      protected com.notifier.protocol.Protocol.Search internalGetResult() {
-        return result;
-      }
-      
-      public Builder clear() {
-        if (result == null) {
-          throw new IllegalStateException(
-            "Cannot call clear() after build().");
-        }
-        result = new com.notifier.protocol.Protocol.Search();
-        return this;
-      }
-      
-      public Builder clone() {
-        return create().mergeFrom(result);
-      }
-      
-      public com.notifier.protocol.Protocol.Search getDefaultInstanceForType() {
-        return com.notifier.protocol.Protocol.Search.getDefaultInstance();
-      }
-      
-      public boolean isInitialized() {
-        return result.isInitialized();
-      }
-      public com.notifier.protocol.Protocol.Search build() {
-        if (result != null && !isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return buildPartial();
-      }
-      
-      private com.notifier.protocol.Protocol.Search buildParsed()
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        if (!isInitialized()) {
-          throw newUninitializedMessageException(
-            result).asInvalidProtocolBufferException();
-        }
-        return buildPartial();
-      }
-      
-      public com.notifier.protocol.Protocol.Search buildPartial() {
-        if (result == null) {
-          throw new IllegalStateException(
-            "build() has already been called on this Builder.");
-        }
-        com.notifier.protocol.Protocol.Search returnMe = result;
-        result = null;
-        return returnMe;
-      }
-      
-      public Builder mergeFrom(com.notifier.protocol.Protocol.Search other) {
-        if (other == com.notifier.protocol.Protocol.Search.getDefaultInstance()) return this;
-        return this;
-      }
-      
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        while (true) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              return this;
-            default: {
-              if (!parseUnknownField(input, extensionRegistry, tag)) {
-                return this;
-              }
-              break;
-            }
-          }
-        }
-      }
-      
-      
-      // @@protoc_insertion_point(builder_scope:android_notifier.Search)
-    }
-    
-    static {
-      defaultInstance = new Search(true);
-      com.notifier.protocol.Protocol.internalForceInit();
-      defaultInstance.initFields();
-    }
-    
-    // @@protoc_insertion_point(class_scope:android_notifier.Search)
-  }
-  
-  public static final class SendSms extends
-      com.google.protobuf.GeneratedMessageLite {
-    // Use SendSms.newBuilder() to construct.
-    private SendSms() {
-      initFields();
-    }
-    private SendSms(boolean noInit) {}
-    
-    private static final SendSms defaultInstance;
-    public static SendSms getDefaultInstance() {
-      return defaultInstance;
-    }
-    
-    public SendSms getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-    
-    public static final class Request extends
-        com.google.protobuf.GeneratedMessageLite {
-      // Use Request.newBuilder() to construct.
-      private Request() {
-        initFields();
-      }
-      private Request(boolean noInit) {}
-      
-      private static final Request defaultInstance;
-      public static Request getDefaultInstance() {
-        return defaultInstance;
-      }
-      
-      public Request getDefaultInstanceForType() {
-        return defaultInstance;
-      }
-      
-      // required fixed64 device_id = 1;
-      public static final int DEVICE_ID_FIELD_NUMBER = 1;
-      private boolean hasDeviceId;
-      private long deviceId_ = 0L;
-      public boolean hasDeviceId() { return hasDeviceId; }
-      public long getDeviceId() { return deviceId_; }
-      
-      // required fixed64 id = 2;
-      public static final int ID_FIELD_NUMBER = 2;
-      private boolean hasId;
-      private long id_ = 0L;
-      public boolean hasId() { return hasId; }
-      public long getId() { return id_; }
-      
-      // required string phone_number = 3;
-      public static final int PHONE_NUMBER_FIELD_NUMBER = 3;
-      private boolean hasPhoneNumber;
-      private java.lang.String phoneNumber_ = "";
-      public boolean hasPhoneNumber() { return hasPhoneNumber; }
-      public java.lang.String getPhoneNumber() { return phoneNumber_; }
-      
-      // required string sms_message = 4;
-      public static final int SMS_MESSAGE_FIELD_NUMBER = 4;
-      private boolean hasSmsMessage;
-      private java.lang.String smsMessage_ = "";
-      public boolean hasSmsMessage() { return hasSmsMessage; }
-      public java.lang.String getSmsMessage() { return smsMessage_; }
-      
-      private void initFields() {
-      }
-      public final boolean isInitialized() {
-        if (!hasDeviceId) return false;
-        if (!hasId) return false;
-        if (!hasPhoneNumber) return false;
-        if (!hasSmsMessage) return false;
-        return true;
-      }
-      
-      public void writeTo(com.google.protobuf.CodedOutputStream output)
-                          throws java.io.IOException {
-        getSerializedSize();
-        if (hasDeviceId()) {
-          output.writeFixed64(1, getDeviceId());
-        }
-        if (hasId()) {
-          output.writeFixed64(2, getId());
-        }
-        if (hasPhoneNumber()) {
-          output.writeString(3, getPhoneNumber());
-        }
-        if (hasSmsMessage()) {
-          output.writeString(4, getSmsMessage());
-        }
-      }
-      
-      private int memoizedSerializedSize = -1;
-      public int getSerializedSize() {
-        int size = memoizedSerializedSize;
-        if (size != -1) return size;
-      
-        size = 0;
-        if (hasDeviceId()) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeFixed64Size(1, getDeviceId());
-        }
-        if (hasId()) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeFixed64Size(2, getId());
-        }
-        if (hasPhoneNumber()) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeStringSize(3, getPhoneNumber());
-        }
-        if (hasSmsMessage()) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeStringSize(4, getSmsMessage());
-        }
-        memoizedSerializedSize = size;
-        return size;
-      }
-      
-      public static com.notifier.protocol.Protocol.SendSms.Request parseFrom(
-          com.google.protobuf.ByteString data)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return newBuilder().mergeFrom(data).buildParsed();
-      }
-      public static com.notifier.protocol.Protocol.SendSms.Request parseFrom(
-          com.google.protobuf.ByteString data,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return newBuilder().mergeFrom(data, extensionRegistry)
-                 .buildParsed();
-      }
-      public static com.notifier.protocol.Protocol.SendSms.Request parseFrom(byte[] data)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return newBuilder().mergeFrom(data).buildParsed();
-      }
-      public static com.notifier.protocol.Protocol.SendSms.Request parseFrom(
-          byte[] data,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return newBuilder().mergeFrom(data, extensionRegistry)
-                 .buildParsed();
-      }
-      public static com.notifier.protocol.Protocol.SendSms.Request parseFrom(java.io.InputStream input)
-          throws java.io.IOException {
-        return newBuilder().mergeFrom(input).buildParsed();
-      }
-      public static com.notifier.protocol.Protocol.SendSms.Request parseFrom(
-          java.io.InputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        return newBuilder().mergeFrom(input, extensionRegistry)
-                 .buildParsed();
-      }
-      public static com.notifier.protocol.Protocol.SendSms.Request parseDelimitedFrom(java.io.InputStream input)
-          throws java.io.IOException {
-        Builder builder = newBuilder();
-        if (builder.mergeDelimitedFrom(input)) {
-          return builder.buildParsed();
-        } else {
-          return null;
-        }
-      }
-      public static com.notifier.protocol.Protocol.SendSms.Request parseDelimitedFrom(
-          java.io.InputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        Builder builder = newBuilder();
-        if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
-          return builder.buildParsed();
-        } else {
-          return null;
-        }
-      }
-      public static com.notifier.protocol.Protocol.SendSms.Request parseFrom(
-          com.google.protobuf.CodedInputStream input)
-          throws java.io.IOException {
-        return newBuilder().mergeFrom(input).buildParsed();
-      }
-      public static com.notifier.protocol.Protocol.SendSms.Request parseFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        return newBuilder().mergeFrom(input, extensionRegistry)
-                 .buildParsed();
-      }
-      
-      public static Builder newBuilder() { return Builder.create(); }
-      public Builder newBuilderForType() { return newBuilder(); }
-      public static Builder newBuilder(com.notifier.protocol.Protocol.SendSms.Request prototype) {
-        return newBuilder().mergeFrom(prototype);
-      }
-      public Builder toBuilder() { return newBuilder(this); }
-      
-      public static final class Builder extends
-          com.google.protobuf.GeneratedMessageLite.Builder<
-            com.notifier.protocol.Protocol.SendSms.Request, Builder> {
-        private com.notifier.protocol.Protocol.SendSms.Request result;
-        
-        // Construct using com.notifier.protocol.Protocol.SendSms.Request.newBuilder()
-        private Builder() {}
-        
-        private static Builder create() {
-          Builder builder = new Builder();
-          builder.result = new com.notifier.protocol.Protocol.SendSms.Request();
-          return builder;
-        }
-        
-        protected com.notifier.protocol.Protocol.SendSms.Request internalGetResult() {
-          return result;
-        }
-        
-        public Builder clear() {
-          if (result == null) {
-            throw new IllegalStateException(
-              "Cannot call clear() after build().");
-          }
-          result = new com.notifier.protocol.Protocol.SendSms.Request();
-          return this;
-        }
-        
-        public Builder clone() {
-          return create().mergeFrom(result);
-        }
-        
-        public com.notifier.protocol.Protocol.SendSms.Request getDefaultInstanceForType() {
-          return com.notifier.protocol.Protocol.SendSms.Request.getDefaultInstance();
-        }
-        
-        public boolean isInitialized() {
-          return result.isInitialized();
-        }
-        public com.notifier.protocol.Protocol.SendSms.Request build() {
-          if (result != null && !isInitialized()) {
-            throw newUninitializedMessageException(result);
-          }
-          return buildPartial();
-        }
-        
-        private com.notifier.protocol.Protocol.SendSms.Request buildParsed()
-            throws com.google.protobuf.InvalidProtocolBufferException {
-          if (!isInitialized()) {
-            throw newUninitializedMessageException(
-              result).asInvalidProtocolBufferException();
-          }
-          return buildPartial();
-        }
-        
-        public com.notifier.protocol.Protocol.SendSms.Request buildPartial() {
-          if (result == null) {
-            throw new IllegalStateException(
-              "build() has already been called on this Builder.");
-          }
-          com.notifier.protocol.Protocol.SendSms.Request returnMe = result;
-          result = null;
-          return returnMe;
-        }
-        
-        public Builder mergeFrom(com.notifier.protocol.Protocol.SendSms.Request other) {
-          if (other == com.notifier.protocol.Protocol.SendSms.Request.getDefaultInstance()) return this;
-          if (other.hasDeviceId()) {
-            setDeviceId(other.getDeviceId());
-          }
-          if (other.hasId()) {
-            setId(other.getId());
-          }
-          if (other.hasPhoneNumber()) {
-            setPhoneNumber(other.getPhoneNumber());
-          }
-          if (other.hasSmsMessage()) {
-            setSmsMessage(other.getSmsMessage());
-          }
-          return this;
-        }
-        
-        public Builder mergeFrom(
-            com.google.protobuf.CodedInputStream input,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws java.io.IOException {
-          while (true) {
-            int tag = input.readTag();
-            switch (tag) {
-              case 0:
-                return this;
-              default: {
-                if (!parseUnknownField(input, extensionRegistry, tag)) {
-                  return this;
-                }
-                break;
-              }
-              case 9: {
-                setDeviceId(input.readFixed64());
-                break;
-              }
-              case 17: {
-                setId(input.readFixed64());
-                break;
-              }
-              case 26: {
-                setPhoneNumber(input.readString());
-                break;
-              }
-              case 34: {
-                setSmsMessage(input.readString());
-                break;
-              }
-            }
-          }
-        }
-        
-        
-        // required fixed64 device_id = 1;
-        public boolean hasDeviceId() {
-          return result.hasDeviceId();
-        }
-        public long getDeviceId() {
-          return result.getDeviceId();
-        }
-        public Builder setDeviceId(long value) {
-          result.hasDeviceId = true;
-          result.deviceId_ = value;
-          return this;
-        }
-        public Builder clearDeviceId() {
-          result.hasDeviceId = false;
-          result.deviceId_ = 0L;
-          return this;
-        }
-        
-        // required fixed64 id = 2;
-        public boolean hasId() {
-          return result.hasId();
-        }
-        public long getId() {
-          return result.getId();
-        }
-        public Builder setId(long value) {
-          result.hasId = true;
-          result.id_ = value;
-          return this;
-        }
-        public Builder clearId() {
-          result.hasId = false;
-          result.id_ = 0L;
-          return this;
-        }
-        
-        // required string phone_number = 3;
-        public boolean hasPhoneNumber() {
-          return result.hasPhoneNumber();
-        }
-        public java.lang.String getPhoneNumber() {
-          return result.getPhoneNumber();
-        }
-        public Builder setPhoneNumber(java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  result.hasPhoneNumber = true;
-          result.phoneNumber_ = value;
-          return this;
-        }
-        public Builder clearPhoneNumber() {
-          result.hasPhoneNumber = false;
-          result.phoneNumber_ = getDefaultInstance().getPhoneNumber();
-          return this;
-        }
-        
-        // required string sms_message = 4;
-        public boolean hasSmsMessage() {
-          return result.hasSmsMessage();
-        }
-        public java.lang.String getSmsMessage() {
-          return result.getSmsMessage();
-        }
-        public Builder setSmsMessage(java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  result.hasSmsMessage = true;
-          result.smsMessage_ = value;
-          return this;
-        }
-        public Builder clearSmsMessage() {
-          result.hasSmsMessage = false;
-          result.smsMessage_ = getDefaultInstance().getSmsMessage();
-          return this;
-        }
-        
-        // @@protoc_insertion_point(builder_scope:android_notifier.SendSms.Request)
-      }
-      
-      static {
-        defaultInstance = new Request(true);
-        com.notifier.protocol.Protocol.internalForceInit();
-        defaultInstance.initFields();
-      }
-      
-      // @@protoc_insertion_point(class_scope:android_notifier.SendSms.Request)
-    }
-    
-    public static final class Response extends
-        com.google.protobuf.GeneratedMessageLite {
-      // Use Response.newBuilder() to construct.
-      private Response() {
-        initFields();
-      }
-      private Response(boolean noInit) {}
-      
-      private static final Response defaultInstance;
-      public static Response getDefaultInstance() {
-        return defaultInstance;
-      }
-      
-      public Response getDefaultInstanceForType() {
-        return defaultInstance;
-      }
-      
-      // required fixed64 device_id = 1;
-      public static final int DEVICE_ID_FIELD_NUMBER = 1;
-      private boolean hasDeviceId;
-      private long deviceId_ = 0L;
-      public boolean hasDeviceId() { return hasDeviceId; }
-      public long getDeviceId() { return deviceId_; }
-      
-      // required fixed64 id = 2;
-      public static final int ID_FIELD_NUMBER = 2;
-      private boolean hasId;
-      private long id_ = 0L;
-      public boolean hasId() { return hasId; }
-      public long getId() { return id_; }
-      
-      // required int32 result_code = 3;
-      public static final int RESULT_CODE_FIELD_NUMBER = 3;
-      private boolean hasResultCode;
-      private int resultCode_ = 0;
-      public boolean hasResultCode() { return hasResultCode; }
-      public int getResultCode() { return resultCode_; }
-      
-      private void initFields() {
-      }
-      public final boolean isInitialized() {
-        if (!hasDeviceId) return false;
-        if (!hasId) return false;
-        if (!hasResultCode) return false;
-        return true;
-      }
-      
-      public void writeTo(com.google.protobuf.CodedOutputStream output)
-                          throws java.io.IOException {
-        getSerializedSize();
-        if (hasDeviceId()) {
-          output.writeFixed64(1, getDeviceId());
-        }
-        if (hasId()) {
-          output.writeFixed64(2, getId());
-        }
-        if (hasResultCode()) {
-          output.writeInt32(3, getResultCode());
-        }
-      }
-      
-      private int memoizedSerializedSize = -1;
-      public int getSerializedSize() {
-        int size = memoizedSerializedSize;
-        if (size != -1) return size;
-      
-        size = 0;
-        if (hasDeviceId()) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeFixed64Size(1, getDeviceId());
-        }
-        if (hasId()) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeFixed64Size(2, getId());
-        }
-        if (hasResultCode()) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeInt32Size(3, getResultCode());
-        }
-        memoizedSerializedSize = size;
-        return size;
-      }
-      
-      public static com.notifier.protocol.Protocol.SendSms.Response parseFrom(
-          com.google.protobuf.ByteString data)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return newBuilder().mergeFrom(data).buildParsed();
-      }
-      public static com.notifier.protocol.Protocol.SendSms.Response parseFrom(
-          com.google.protobuf.ByteString data,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return newBuilder().mergeFrom(data, extensionRegistry)
-                 .buildParsed();
-      }
-      public static com.notifier.protocol.Protocol.SendSms.Response parseFrom(byte[] data)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return newBuilder().mergeFrom(data).buildParsed();
-      }
-      public static com.notifier.protocol.Protocol.SendSms.Response parseFrom(
-          byte[] data,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return newBuilder().mergeFrom(data, extensionRegistry)
-                 .buildParsed();
-      }
-      public static com.notifier.protocol.Protocol.SendSms.Response parseFrom(java.io.InputStream input)
-          throws java.io.IOException {
-        return newBuilder().mergeFrom(input).buildParsed();
-      }
-      public static com.notifier.protocol.Protocol.SendSms.Response parseFrom(
-          java.io.InputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        return newBuilder().mergeFrom(input, extensionRegistry)
-                 .buildParsed();
-      }
-      public static com.notifier.protocol.Protocol.SendSms.Response parseDelimitedFrom(java.io.InputStream input)
-          throws java.io.IOException {
-        Builder builder = newBuilder();
-        if (builder.mergeDelimitedFrom(input)) {
-          return builder.buildParsed();
-        } else {
-          return null;
-        }
-      }
-      public static com.notifier.protocol.Protocol.SendSms.Response parseDelimitedFrom(
-          java.io.InputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        Builder builder = newBuilder();
-        if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
-          return builder.buildParsed();
-        } else {
-          return null;
-        }
-      }
-      public static com.notifier.protocol.Protocol.SendSms.Response parseFrom(
-          com.google.protobuf.CodedInputStream input)
-          throws java.io.IOException {
-        return newBuilder().mergeFrom(input).buildParsed();
-      }
-      public static com.notifier.protocol.Protocol.SendSms.Response parseFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        return newBuilder().mergeFrom(input, extensionRegistry)
-                 .buildParsed();
-      }
-      
-      public static Builder newBuilder() { return Builder.create(); }
-      public Builder newBuilderForType() { return newBuilder(); }
-      public static Builder newBuilder(com.notifier.protocol.Protocol.SendSms.Response prototype) {
-        return newBuilder().mergeFrom(prototype);
-      }
-      public Builder toBuilder() { return newBuilder(this); }
-      
-      public static final class Builder extends
-          com.google.protobuf.GeneratedMessageLite.Builder<
-            com.notifier.protocol.Protocol.SendSms.Response, Builder> {
-        private com.notifier.protocol.Protocol.SendSms.Response result;
-        
-        // Construct using com.notifier.protocol.Protocol.SendSms.Response.newBuilder()
-        private Builder() {}
-        
-        private static Builder create() {
-          Builder builder = new Builder();
-          builder.result = new com.notifier.protocol.Protocol.SendSms.Response();
-          return builder;
-        }
-        
-        protected com.notifier.protocol.Protocol.SendSms.Response internalGetResult() {
-          return result;
-        }
-        
-        public Builder clear() {
-          if (result == null) {
-            throw new IllegalStateException(
-              "Cannot call clear() after build().");
-          }
-          result = new com.notifier.protocol.Protocol.SendSms.Response();
-          return this;
-        }
-        
-        public Builder clone() {
-          return create().mergeFrom(result);
-        }
-        
-        public com.notifier.protocol.Protocol.SendSms.Response getDefaultInstanceForType() {
-          return com.notifier.protocol.Protocol.SendSms.Response.getDefaultInstance();
-        }
-        
-        public boolean isInitialized() {
-          return result.isInitialized();
-        }
-        public com.notifier.protocol.Protocol.SendSms.Response build() {
-          if (result != null && !isInitialized()) {
-            throw newUninitializedMessageException(result);
-          }
-          return buildPartial();
-        }
-        
-        private com.notifier.protocol.Protocol.SendSms.Response buildParsed()
-            throws com.google.protobuf.InvalidProtocolBufferException {
-          if (!isInitialized()) {
-            throw newUninitializedMessageException(
-              result).asInvalidProtocolBufferException();
-          }
-          return buildPartial();
-        }
-        
-        public com.notifier.protocol.Protocol.SendSms.Response buildPartial() {
-          if (result == null) {
-            throw new IllegalStateException(
-              "build() has already been called on this Builder.");
-          }
-          com.notifier.protocol.Protocol.SendSms.Response returnMe = result;
-          result = null;
-          return returnMe;
-        }
-        
-        public Builder mergeFrom(com.notifier.protocol.Protocol.SendSms.Response other) {
-          if (other == com.notifier.protocol.Protocol.SendSms.Response.getDefaultInstance()) return this;
-          if (other.hasDeviceId()) {
-            setDeviceId(other.getDeviceId());
-          }
-          if (other.hasId()) {
-            setId(other.getId());
-          }
-          if (other.hasResultCode()) {
-            setResultCode(other.getResultCode());
-          }
-          return this;
-        }
-        
-        public Builder mergeFrom(
-            com.google.protobuf.CodedInputStream input,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws java.io.IOException {
-          while (true) {
-            int tag = input.readTag();
-            switch (tag) {
-              case 0:
-                return this;
-              default: {
-                if (!parseUnknownField(input, extensionRegistry, tag)) {
-                  return this;
-                }
-                break;
-              }
-              case 9: {
-                setDeviceId(input.readFixed64());
-                break;
-              }
-              case 17: {
-                setId(input.readFixed64());
-                break;
-              }
-              case 24: {
-                setResultCode(input.readInt32());
-                break;
-              }
-            }
-          }
-        }
-        
-        
-        // required fixed64 device_id = 1;
-        public boolean hasDeviceId() {
-          return result.hasDeviceId();
-        }
-        public long getDeviceId() {
-          return result.getDeviceId();
-        }
-        public Builder setDeviceId(long value) {
-          result.hasDeviceId = true;
-          result.deviceId_ = value;
-          return this;
-        }
-        public Builder clearDeviceId() {
-          result.hasDeviceId = false;
-          result.deviceId_ = 0L;
-          return this;
-        }
-        
-        // required fixed64 id = 2;
-        public boolean hasId() {
-          return result.hasId();
-        }
-        public long getId() {
-          return result.getId();
-        }
-        public Builder setId(long value) {
-          result.hasId = true;
-          result.id_ = value;
-          return this;
-        }
-        public Builder clearId() {
-          result.hasId = false;
-          result.id_ = 0L;
-          return this;
-        }
-        
-        // required int32 result_code = 3;
-        public boolean hasResultCode() {
-          return result.hasResultCode();
-        }
-        public int getResultCode() {
-          return result.getResultCode();
-        }
-        public Builder setResultCode(int value) {
-          result.hasResultCode = true;
-          result.resultCode_ = value;
-          return this;
-        }
-        public Builder clearResultCode() {
-          result.hasResultCode = false;
-          result.resultCode_ = 0;
-          return this;
-        }
-        
-        // @@protoc_insertion_point(builder_scope:android_notifier.SendSms.Response)
-      }
-      
-      static {
-        defaultInstance = new Response(true);
-        com.notifier.protocol.Protocol.internalForceInit();
-        defaultInstance.initFields();
-      }
-      
-      // @@protoc_insertion_point(class_scope:android_notifier.SendSms.Response)
-    }
-    
-    private void initFields() {
-    }
-    public final boolean isInitialized() {
-      return true;
-    }
-    
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-    }
-    
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-    
-      size = 0;
-      memoizedSerializedSize = size;
-      return size;
-    }
-    
-    public static com.notifier.protocol.Protocol.SendSms parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
-    }
-    public static com.notifier.protocol.Protocol.SendSms parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
-    }
-    public static com.notifier.protocol.Protocol.SendSms parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
-    }
-    public static com.notifier.protocol.Protocol.SendSms parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
-    }
-    public static com.notifier.protocol.Protocol.SendSms parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
-    }
-    public static com.notifier.protocol.Protocol.SendSms parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
-    }
-    public static com.notifier.protocol.Protocol.SendSms parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
-    }
-    public static com.notifier.protocol.Protocol.SendSms parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
-    }
-    public static com.notifier.protocol.Protocol.SendSms parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
-    }
-    public static com.notifier.protocol.Protocol.SendSms parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
-    }
-    
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.notifier.protocol.Protocol.SendSms prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-    
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageLite.Builder<
-          com.notifier.protocol.Protocol.SendSms, Builder> {
-      private com.notifier.protocol.Protocol.SendSms result;
-      
-      // Construct using com.notifier.protocol.Protocol.SendSms.newBuilder()
-      private Builder() {}
-      
-      private static Builder create() {
-        Builder builder = new Builder();
-        builder.result = new com.notifier.protocol.Protocol.SendSms();
-        return builder;
-      }
-      
-      protected com.notifier.protocol.Protocol.SendSms internalGetResult() {
-        return result;
-      }
-      
-      public Builder clear() {
-        if (result == null) {
-          throw new IllegalStateException(
-            "Cannot call clear() after build().");
-        }
-        result = new com.notifier.protocol.Protocol.SendSms();
-        return this;
-      }
-      
-      public Builder clone() {
-        return create().mergeFrom(result);
-      }
-      
-      public com.notifier.protocol.Protocol.SendSms getDefaultInstanceForType() {
-        return com.notifier.protocol.Protocol.SendSms.getDefaultInstance();
-      }
-      
-      public boolean isInitialized() {
-        return result.isInitialized();
-      }
-      public com.notifier.protocol.Protocol.SendSms build() {
-        if (result != null && !isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return buildPartial();
-      }
-      
-      private com.notifier.protocol.Protocol.SendSms buildParsed()
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        if (!isInitialized()) {
-          throw newUninitializedMessageException(
-            result).asInvalidProtocolBufferException();
-        }
-        return buildPartial();
-      }
-      
-      public com.notifier.protocol.Protocol.SendSms buildPartial() {
-        if (result == null) {
-          throw new IllegalStateException(
-            "build() has already been called on this Builder.");
-        }
-        com.notifier.protocol.Protocol.SendSms returnMe = result;
-        result = null;
-        return returnMe;
-      }
-      
-      public Builder mergeFrom(com.notifier.protocol.Protocol.SendSms other) {
-        if (other == com.notifier.protocol.Protocol.SendSms.getDefaultInstance()) return this;
-        return this;
-      }
-      
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        while (true) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              return this;
-            default: {
-              if (!parseUnknownField(input, extensionRegistry, tag)) {
-                return this;
-              }
-              break;
-            }
-          }
-        }
-      }
-      
-      
-      // @@protoc_insertion_point(builder_scope:android_notifier.SendSms)
-    }
-    
-    static {
-      defaultInstance = new SendSms(true);
-      com.notifier.protocol.Protocol.internalForceInit();
-      defaultInstance.initFields();
-    }
-    
-    // @@protoc_insertion_point(class_scope:android_notifier.SendSms)
-  }
-  
   public static final class Contact extends
       com.google.protobuf.GeneratedMessageLite {
     // Use Contact.newBuilder() to construct.
@@ -2587,34 +731,34 @@ public final class Protocol {
     public boolean hasName() { return hasName; }
     public java.lang.String getName() { return name_; }
     
-    // required .android_notifier.Contact.Type type = 2;
-    public static final int TYPE_FIELD_NUMBER = 2;
-    private boolean hasType;
-    private com.notifier.protocol.Protocol.Contact.Type type_;
-    public boolean hasType() { return hasType; }
-    public com.notifier.protocol.Protocol.Contact.Type getType() { return type_; }
-    
-    // required string number = 3;
-    public static final int NUMBER_FIELD_NUMBER = 3;
+    // required string number = 2;
+    public static final int NUMBER_FIELD_NUMBER = 2;
     private boolean hasNumber;
     private java.lang.String number_ = "";
     public boolean hasNumber() { return hasNumber; }
     public java.lang.String getNumber() { return number_; }
     
-    // optional bytes picture = 4;
-    public static final int PICTURE_FIELD_NUMBER = 4;
-    private boolean hasPicture;
-    private com.google.protobuf.ByteString picture_ = com.google.protobuf.ByteString.EMPTY;
-    public boolean hasPicture() { return hasPicture; }
-    public com.google.protobuf.ByteString getPicture() { return picture_; }
+    // required .android_notifier.Contact.Type type = 3;
+    public static final int TYPE_FIELD_NUMBER = 3;
+    private boolean hasType;
+    private com.notifier.protocol.Protocol.Contact.Type type_;
+    public boolean hasType() { return hasType; }
+    public com.notifier.protocol.Protocol.Contact.Type getType() { return type_; }
+    
+    // optional string other_type = 4;
+    public static final int OTHER_TYPE_FIELD_NUMBER = 4;
+    private boolean hasOtherType;
+    private java.lang.String otherType_ = "";
+    public boolean hasOtherType() { return hasOtherType; }
+    public java.lang.String getOtherType() { return otherType_; }
     
     private void initFields() {
       type_ = com.notifier.protocol.Protocol.Contact.Type.HOME;
     }
     public final boolean isInitialized() {
       if (!hasName) return false;
-      if (!hasType) return false;
       if (!hasNumber) return false;
+      if (!hasType) return false;
       return true;
     }
     
@@ -2624,14 +768,14 @@ public final class Protocol {
       if (hasName()) {
         output.writeString(1, getName());
       }
-      if (hasType()) {
-        output.writeEnum(2, getType().getNumber());
-      }
       if (hasNumber()) {
-        output.writeString(3, getNumber());
+        output.writeString(2, getNumber());
       }
-      if (hasPicture()) {
-        output.writeBytes(4, getPicture());
+      if (hasType()) {
+        output.writeEnum(3, getType().getNumber());
+      }
+      if (hasOtherType()) {
+        output.writeString(4, getOtherType());
       }
     }
     
@@ -2645,17 +789,17 @@ public final class Protocol {
         size += com.google.protobuf.CodedOutputStream
           .computeStringSize(1, getName());
       }
-      if (hasType()) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(2, getType().getNumber());
-      }
       if (hasNumber()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeStringSize(3, getNumber());
+          .computeStringSize(2, getNumber());
       }
-      if (hasPicture()) {
+      if (hasType()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(4, getPicture());
+          .computeEnumSize(3, getType().getNumber());
+      }
+      if (hasOtherType()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(4, getOtherType());
       }
       memoizedSerializedSize = size;
       return size;
@@ -2804,14 +948,14 @@ public final class Protocol {
         if (other.hasName()) {
           setName(other.getName());
         }
-        if (other.hasType()) {
-          setType(other.getType());
-        }
         if (other.hasNumber()) {
           setNumber(other.getNumber());
         }
-        if (other.hasPicture()) {
-          setPicture(other.getPicture());
+        if (other.hasType()) {
+          setType(other.getType());
+        }
+        if (other.hasOtherType()) {
+          setOtherType(other.getOtherType());
         }
         return this;
       }
@@ -2835,7 +979,11 @@ public final class Protocol {
               setName(input.readString());
               break;
             }
-            case 16: {
+            case 18: {
+              setNumber(input.readString());
+              break;
+            }
+            case 24: {
               int rawValue = input.readEnum();
               com.notifier.protocol.Protocol.Contact.Type value = com.notifier.protocol.Protocol.Contact.Type.valueOf(rawValue);
               if (value != null) {
@@ -2843,12 +991,8 @@ public final class Protocol {
               }
               break;
             }
-            case 26: {
-              setNumber(input.readString());
-              break;
-            }
             case 34: {
-              setPicture(input.readBytes());
+              setOtherType(input.readString());
               break;
             }
           }
@@ -2877,28 +1021,7 @@ public final class Protocol {
         return this;
       }
       
-      // required .android_notifier.Contact.Type type = 2;
-      public boolean hasType() {
-        return result.hasType();
-      }
-      public com.notifier.protocol.Protocol.Contact.Type getType() {
-        return result.getType();
-      }
-      public Builder setType(com.notifier.protocol.Protocol.Contact.Type value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        result.hasType = true;
-        result.type_ = value;
-        return this;
-      }
-      public Builder clearType() {
-        result.hasType = false;
-        result.type_ = com.notifier.protocol.Protocol.Contact.Type.HOME;
-        return this;
-      }
-      
-      // required string number = 3;
+      // required string number = 2;
       public boolean hasNumber() {
         return result.hasNumber();
       }
@@ -2919,24 +1042,45 @@ public final class Protocol {
         return this;
       }
       
-      // optional bytes picture = 4;
-      public boolean hasPicture() {
-        return result.hasPicture();
+      // required .android_notifier.Contact.Type type = 3;
+      public boolean hasType() {
+        return result.hasType();
       }
-      public com.google.protobuf.ByteString getPicture() {
-        return result.getPicture();
+      public com.notifier.protocol.Protocol.Contact.Type getType() {
+        return result.getType();
       }
-      public Builder setPicture(com.google.protobuf.ByteString value) {
+      public Builder setType(com.notifier.protocol.Protocol.Contact.Type value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        result.hasType = true;
+        result.type_ = value;
+        return this;
+      }
+      public Builder clearType() {
+        result.hasType = false;
+        result.type_ = com.notifier.protocol.Protocol.Contact.Type.HOME;
+        return this;
+      }
+      
+      // optional string other_type = 4;
+      public boolean hasOtherType() {
+        return result.hasOtherType();
+      }
+      public java.lang.String getOtherType() {
+        return result.getOtherType();
+      }
+      public Builder setOtherType(java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  result.hasPicture = true;
-        result.picture_ = value;
+  result.hasOtherType = true;
+        result.otherType_ = value;
         return this;
       }
-      public Builder clearPicture() {
-        result.hasPicture = false;
-        result.picture_ = getDefaultInstance().getPicture();
+      public Builder clearOtherType() {
+        result.hasOtherType = false;
+        result.otherType_ = getDefaultInstance().getOtherType();
         return this;
       }
       
@@ -2950,6 +1094,3119 @@ public final class Protocol {
     }
     
     // @@protoc_insertion_point(class_scope:android_notifier.Contact)
+  }
+  
+  public static final class DeviceAddresses extends
+      com.google.protobuf.GeneratedMessageLite {
+    // Use DeviceAddresses.newBuilder() to construct.
+    private DeviceAddresses() {
+      initFields();
+    }
+    private DeviceAddresses(boolean noInit) {}
+    
+    private static final DeviceAddresses defaultInstance;
+    public static DeviceAddresses getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public DeviceAddresses getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    // repeated bytes ip_address = 1;
+    public static final int IP_ADDRESS_FIELD_NUMBER = 1;
+    private java.util.List<com.google.protobuf.ByteString> ipAddress_ =
+      java.util.Collections.emptyList();
+    public java.util.List<com.google.protobuf.ByteString> getIpAddressList() {
+      return ipAddress_;
+    }
+    public int getIpAddressCount() { return ipAddress_.size(); }
+    public com.google.protobuf.ByteString getIpAddress(int index) {
+      return ipAddress_.get(index);
+    }
+    
+    // optional bytes bluetooth_mac = 2;
+    public static final int BLUETOOTH_MAC_FIELD_NUMBER = 2;
+    private boolean hasBluetoothMac;
+    private com.google.protobuf.ByteString bluetoothMac_ = com.google.protobuf.ByteString.EMPTY;
+    public boolean hasBluetoothMac() { return hasBluetoothMac; }
+    public com.google.protobuf.ByteString getBluetoothMac() { return bluetoothMac_; }
+    
+    private void initFields() {
+    }
+    public final boolean isInitialized() {
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      for (com.google.protobuf.ByteString element : getIpAddressList()) {
+        output.writeBytes(1, element);
+      }
+      if (hasBluetoothMac()) {
+        output.writeBytes(2, getBluetoothMac());
+      }
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      {
+        int dataSize = 0;
+        for (com.google.protobuf.ByteString element : getIpAddressList()) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeBytesSizeNoTag(element);
+        }
+        size += dataSize;
+        size += 1 * getIpAddressList().size();
+      }
+      if (hasBluetoothMac()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getBluetoothMac());
+      }
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    public static com.notifier.protocol.Protocol.DeviceAddresses parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.DeviceAddresses parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.DeviceAddresses parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.DeviceAddresses parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.DeviceAddresses parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.DeviceAddresses parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.DeviceAddresses parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.notifier.protocol.Protocol.DeviceAddresses parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.notifier.protocol.Protocol.DeviceAddresses parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.DeviceAddresses parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.notifier.protocol.Protocol.DeviceAddresses prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          com.notifier.protocol.Protocol.DeviceAddresses, Builder> {
+      private com.notifier.protocol.Protocol.DeviceAddresses result;
+      
+      // Construct using com.notifier.protocol.Protocol.DeviceAddresses.newBuilder()
+      private Builder() {}
+      
+      private static Builder create() {
+        Builder builder = new Builder();
+        builder.result = new com.notifier.protocol.Protocol.DeviceAddresses();
+        return builder;
+      }
+      
+      protected com.notifier.protocol.Protocol.DeviceAddresses internalGetResult() {
+        return result;
+      }
+      
+      public Builder clear() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "Cannot call clear() after build().");
+        }
+        result = new com.notifier.protocol.Protocol.DeviceAddresses();
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(result);
+      }
+      
+      public com.notifier.protocol.Protocol.DeviceAddresses getDefaultInstanceForType() {
+        return com.notifier.protocol.Protocol.DeviceAddresses.getDefaultInstance();
+      }
+      
+      public boolean isInitialized() {
+        return result.isInitialized();
+      }
+      public com.notifier.protocol.Protocol.DeviceAddresses build() {
+        if (result != null && !isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return buildPartial();
+      }
+      
+      private com.notifier.protocol.Protocol.DeviceAddresses buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        if (!isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return buildPartial();
+      }
+      
+      public com.notifier.protocol.Protocol.DeviceAddresses buildPartial() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "build() has already been called on this Builder.");
+        }
+        if (result.ipAddress_ != java.util.Collections.EMPTY_LIST) {
+          result.ipAddress_ =
+            java.util.Collections.unmodifiableList(result.ipAddress_);
+        }
+        com.notifier.protocol.Protocol.DeviceAddresses returnMe = result;
+        result = null;
+        return returnMe;
+      }
+      
+      public Builder mergeFrom(com.notifier.protocol.Protocol.DeviceAddresses other) {
+        if (other == com.notifier.protocol.Protocol.DeviceAddresses.getDefaultInstance()) return this;
+        if (!other.ipAddress_.isEmpty()) {
+          if (result.ipAddress_.isEmpty()) {
+            result.ipAddress_ = new java.util.ArrayList<com.google.protobuf.ByteString>();
+          }
+          result.ipAddress_.addAll(other.ipAddress_);
+        }
+        if (other.hasBluetoothMac()) {
+          setBluetoothMac(other.getBluetoothMac());
+        }
+        return this;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              return this;
+            default: {
+              if (!parseUnknownField(input, extensionRegistry, tag)) {
+                return this;
+              }
+              break;
+            }
+            case 10: {
+              addIpAddress(input.readBytes());
+              break;
+            }
+            case 18: {
+              setBluetoothMac(input.readBytes());
+              break;
+            }
+          }
+        }
+      }
+      
+      
+      // repeated bytes ip_address = 1;
+      public java.util.List<com.google.protobuf.ByteString> getIpAddressList() {
+        return java.util.Collections.unmodifiableList(result.ipAddress_);
+      }
+      public int getIpAddressCount() {
+        return result.getIpAddressCount();
+      }
+      public com.google.protobuf.ByteString getIpAddress(int index) {
+        return result.getIpAddress(index);
+      }
+      public Builder setIpAddress(int index, com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  result.ipAddress_.set(index, value);
+        return this;
+      }
+      public Builder addIpAddress(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  if (result.ipAddress_.isEmpty()) {
+          result.ipAddress_ = new java.util.ArrayList<com.google.protobuf.ByteString>();
+        }
+        result.ipAddress_.add(value);
+        return this;
+      }
+      public Builder addAllIpAddress(
+          java.lang.Iterable<? extends com.google.protobuf.ByteString> values) {
+        if (result.ipAddress_.isEmpty()) {
+          result.ipAddress_ = new java.util.ArrayList<com.google.protobuf.ByteString>();
+        }
+        super.addAll(values, result.ipAddress_);
+        return this;
+      }
+      public Builder clearIpAddress() {
+        result.ipAddress_ = java.util.Collections.emptyList();
+        return this;
+      }
+      
+      // optional bytes bluetooth_mac = 2;
+      public boolean hasBluetoothMac() {
+        return result.hasBluetoothMac();
+      }
+      public com.google.protobuf.ByteString getBluetoothMac() {
+        return result.getBluetoothMac();
+      }
+      public Builder setBluetoothMac(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  result.hasBluetoothMac = true;
+        result.bluetoothMac_ = value;
+        return this;
+      }
+      public Builder clearBluetoothMac() {
+        result.hasBluetoothMac = false;
+        result.bluetoothMac_ = getDefaultInstance().getBluetoothMac();
+        return this;
+      }
+      
+      // @@protoc_insertion_point(builder_scope:android_notifier.DeviceAddresses)
+    }
+    
+    static {
+      defaultInstance = new DeviceAddresses(true);
+      com.notifier.protocol.Protocol.internalForceInit();
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:android_notifier.DeviceAddresses)
+  }
+  
+  public static final class CommandRequest extends
+      com.google.protobuf.GeneratedMessageLite {
+    // Use CommandRequest.newBuilder() to construct.
+    private CommandRequest() {
+      initFields();
+    }
+    private CommandRequest(boolean noInit) {}
+    
+    private static final CommandRequest defaultInstance;
+    public static CommandRequest getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public CommandRequest getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public enum CommandType
+        implements com.google.protobuf.Internal.EnumLite {
+      CALL(0, 1),
+      ANSWER(1, 2),
+      HANG_UP(2, 3),
+      SEND_SMS(3, 4),
+      SEND_MMS(4, 5),
+      QUERY(5, 6),
+      DISCOVER(6, 7),
+      ;
+      
+      
+      public final int getNumber() { return value; }
+      
+      public static CommandType valueOf(int value) {
+        switch (value) {
+          case 1: return CALL;
+          case 2: return ANSWER;
+          case 3: return HANG_UP;
+          case 4: return SEND_SMS;
+          case 5: return SEND_MMS;
+          case 6: return QUERY;
+          case 7: return DISCOVER;
+          default: return null;
+        }
+      }
+      
+      public static com.google.protobuf.Internal.EnumLiteMap<CommandType>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static com.google.protobuf.Internal.EnumLiteMap<CommandType>
+          internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<CommandType>() {
+              public CommandType findValueByNumber(int number) {
+                return CommandType.valueOf(number)
+      ;        }
+            };
+      
+      private final int index;
+      private final int value;
+      private CommandType(int index, int value) {
+        this.index = index;
+        this.value = value;
+      }
+      
+      // @@protoc_insertion_point(enum_scope:android_notifier.CommandRequest.CommandType)
+    }
+    
+    public static final class CallOptions extends
+        com.google.protobuf.GeneratedMessageLite {
+      // Use CallOptions.newBuilder() to construct.
+      private CallOptions() {
+        initFields();
+      }
+      private CallOptions(boolean noInit) {}
+      
+      private static final CallOptions defaultInstance;
+      public static CallOptions getDefaultInstance() {
+        return defaultInstance;
+      }
+      
+      public CallOptions getDefaultInstanceForType() {
+        return defaultInstance;
+      }
+      
+      // required string phone_number = 1;
+      public static final int PHONE_NUMBER_FIELD_NUMBER = 1;
+      private boolean hasPhoneNumber;
+      private java.lang.String phoneNumber_ = "";
+      public boolean hasPhoneNumber() { return hasPhoneNumber; }
+      public java.lang.String getPhoneNumber() { return phoneNumber_; }
+      
+      private void initFields() {
+      }
+      public final boolean isInitialized() {
+        if (!hasPhoneNumber) return false;
+        return true;
+      }
+      
+      public void writeTo(com.google.protobuf.CodedOutputStream output)
+                          throws java.io.IOException {
+        getSerializedSize();
+        if (hasPhoneNumber()) {
+          output.writeString(1, getPhoneNumber());
+        }
+      }
+      
+      private int memoizedSerializedSize = -1;
+      public int getSerializedSize() {
+        int size = memoizedSerializedSize;
+        if (size != -1) return size;
+      
+        size = 0;
+        if (hasPhoneNumber()) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeStringSize(1, getPhoneNumber());
+        }
+        memoizedSerializedSize = size;
+        return size;
+      }
+      
+      public static com.notifier.protocol.Protocol.CommandRequest.CallOptions parseFrom(
+          com.google.protobuf.ByteString data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return newBuilder().mergeFrom(data).buildParsed();
+      }
+      public static com.notifier.protocol.Protocol.CommandRequest.CallOptions parseFrom(
+          com.google.protobuf.ByteString data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return newBuilder().mergeFrom(data, extensionRegistry)
+                 .buildParsed();
+      }
+      public static com.notifier.protocol.Protocol.CommandRequest.CallOptions parseFrom(byte[] data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return newBuilder().mergeFrom(data).buildParsed();
+      }
+      public static com.notifier.protocol.Protocol.CommandRequest.CallOptions parseFrom(
+          byte[] data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return newBuilder().mergeFrom(data, extensionRegistry)
+                 .buildParsed();
+      }
+      public static com.notifier.protocol.Protocol.CommandRequest.CallOptions parseFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return newBuilder().mergeFrom(input).buildParsed();
+      }
+      public static com.notifier.protocol.Protocol.CommandRequest.CallOptions parseFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return newBuilder().mergeFrom(input, extensionRegistry)
+                 .buildParsed();
+      }
+      public static com.notifier.protocol.Protocol.CommandRequest.CallOptions parseDelimitedFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        Builder builder = newBuilder();
+        if (builder.mergeDelimitedFrom(input)) {
+          return builder.buildParsed();
+        } else {
+          return null;
+        }
+      }
+      public static com.notifier.protocol.Protocol.CommandRequest.CallOptions parseDelimitedFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        Builder builder = newBuilder();
+        if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+          return builder.buildParsed();
+        } else {
+          return null;
+        }
+      }
+      public static com.notifier.protocol.Protocol.CommandRequest.CallOptions parseFrom(
+          com.google.protobuf.CodedInputStream input)
+          throws java.io.IOException {
+        return newBuilder().mergeFrom(input).buildParsed();
+      }
+      public static com.notifier.protocol.Protocol.CommandRequest.CallOptions parseFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return newBuilder().mergeFrom(input, extensionRegistry)
+                 .buildParsed();
+      }
+      
+      public static Builder newBuilder() { return Builder.create(); }
+      public Builder newBuilderForType() { return newBuilder(); }
+      public static Builder newBuilder(com.notifier.protocol.Protocol.CommandRequest.CallOptions prototype) {
+        return newBuilder().mergeFrom(prototype);
+      }
+      public Builder toBuilder() { return newBuilder(this); }
+      
+      public static final class Builder extends
+          com.google.protobuf.GeneratedMessageLite.Builder<
+            com.notifier.protocol.Protocol.CommandRequest.CallOptions, Builder> {
+        private com.notifier.protocol.Protocol.CommandRequest.CallOptions result;
+        
+        // Construct using com.notifier.protocol.Protocol.CommandRequest.CallOptions.newBuilder()
+        private Builder() {}
+        
+        private static Builder create() {
+          Builder builder = new Builder();
+          builder.result = new com.notifier.protocol.Protocol.CommandRequest.CallOptions();
+          return builder;
+        }
+        
+        protected com.notifier.protocol.Protocol.CommandRequest.CallOptions internalGetResult() {
+          return result;
+        }
+        
+        public Builder clear() {
+          if (result == null) {
+            throw new IllegalStateException(
+              "Cannot call clear() after build().");
+          }
+          result = new com.notifier.protocol.Protocol.CommandRequest.CallOptions();
+          return this;
+        }
+        
+        public Builder clone() {
+          return create().mergeFrom(result);
+        }
+        
+        public com.notifier.protocol.Protocol.CommandRequest.CallOptions getDefaultInstanceForType() {
+          return com.notifier.protocol.Protocol.CommandRequest.CallOptions.getDefaultInstance();
+        }
+        
+        public boolean isInitialized() {
+          return result.isInitialized();
+        }
+        public com.notifier.protocol.Protocol.CommandRequest.CallOptions build() {
+          if (result != null && !isInitialized()) {
+            throw newUninitializedMessageException(result);
+          }
+          return buildPartial();
+        }
+        
+        private com.notifier.protocol.Protocol.CommandRequest.CallOptions buildParsed()
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          if (!isInitialized()) {
+            throw newUninitializedMessageException(
+              result).asInvalidProtocolBufferException();
+          }
+          return buildPartial();
+        }
+        
+        public com.notifier.protocol.Protocol.CommandRequest.CallOptions buildPartial() {
+          if (result == null) {
+            throw new IllegalStateException(
+              "build() has already been called on this Builder.");
+          }
+          com.notifier.protocol.Protocol.CommandRequest.CallOptions returnMe = result;
+          result = null;
+          return returnMe;
+        }
+        
+        public Builder mergeFrom(com.notifier.protocol.Protocol.CommandRequest.CallOptions other) {
+          if (other == com.notifier.protocol.Protocol.CommandRequest.CallOptions.getDefaultInstance()) return this;
+          if (other.hasPhoneNumber()) {
+            setPhoneNumber(other.getPhoneNumber());
+          }
+          return this;
+        }
+        
+        public Builder mergeFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          while (true) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                return this;
+              default: {
+                if (!parseUnknownField(input, extensionRegistry, tag)) {
+                  return this;
+                }
+                break;
+              }
+              case 10: {
+                setPhoneNumber(input.readString());
+                break;
+              }
+            }
+          }
+        }
+        
+        
+        // required string phone_number = 1;
+        public boolean hasPhoneNumber() {
+          return result.hasPhoneNumber();
+        }
+        public java.lang.String getPhoneNumber() {
+          return result.getPhoneNumber();
+        }
+        public Builder setPhoneNumber(java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  result.hasPhoneNumber = true;
+          result.phoneNumber_ = value;
+          return this;
+        }
+        public Builder clearPhoneNumber() {
+          result.hasPhoneNumber = false;
+          result.phoneNumber_ = getDefaultInstance().getPhoneNumber();
+          return this;
+        }
+        
+        // @@protoc_insertion_point(builder_scope:android_notifier.CommandRequest.CallOptions)
+      }
+      
+      static {
+        defaultInstance = new CallOptions(true);
+        com.notifier.protocol.Protocol.internalForceInit();
+        defaultInstance.initFields();
+      }
+      
+      // @@protoc_insertion_point(class_scope:android_notifier.CommandRequest.CallOptions)
+    }
+    
+    public static final class SmsOptions extends
+        com.google.protobuf.GeneratedMessageLite {
+      // Use SmsOptions.newBuilder() to construct.
+      private SmsOptions() {
+        initFields();
+      }
+      private SmsOptions(boolean noInit) {}
+      
+      private static final SmsOptions defaultInstance;
+      public static SmsOptions getDefaultInstance() {
+        return defaultInstance;
+      }
+      
+      public SmsOptions getDefaultInstanceForType() {
+        return defaultInstance;
+      }
+      
+      // required string phone_number = 1;
+      public static final int PHONE_NUMBER_FIELD_NUMBER = 1;
+      private boolean hasPhoneNumber;
+      private java.lang.String phoneNumber_ = "";
+      public boolean hasPhoneNumber() { return hasPhoneNumber; }
+      public java.lang.String getPhoneNumber() { return phoneNumber_; }
+      
+      // required string sms_message = 2;
+      public static final int SMS_MESSAGE_FIELD_NUMBER = 2;
+      private boolean hasSmsMessage;
+      private java.lang.String smsMessage_ = "";
+      public boolean hasSmsMessage() { return hasSmsMessage; }
+      public java.lang.String getSmsMessage() { return smsMessage_; }
+      
+      private void initFields() {
+      }
+      public final boolean isInitialized() {
+        if (!hasPhoneNumber) return false;
+        if (!hasSmsMessage) return false;
+        return true;
+      }
+      
+      public void writeTo(com.google.protobuf.CodedOutputStream output)
+                          throws java.io.IOException {
+        getSerializedSize();
+        if (hasPhoneNumber()) {
+          output.writeString(1, getPhoneNumber());
+        }
+        if (hasSmsMessage()) {
+          output.writeString(2, getSmsMessage());
+        }
+      }
+      
+      private int memoizedSerializedSize = -1;
+      public int getSerializedSize() {
+        int size = memoizedSerializedSize;
+        if (size != -1) return size;
+      
+        size = 0;
+        if (hasPhoneNumber()) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeStringSize(1, getPhoneNumber());
+        }
+        if (hasSmsMessage()) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeStringSize(2, getSmsMessage());
+        }
+        memoizedSerializedSize = size;
+        return size;
+      }
+      
+      public static com.notifier.protocol.Protocol.CommandRequest.SmsOptions parseFrom(
+          com.google.protobuf.ByteString data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return newBuilder().mergeFrom(data).buildParsed();
+      }
+      public static com.notifier.protocol.Protocol.CommandRequest.SmsOptions parseFrom(
+          com.google.protobuf.ByteString data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return newBuilder().mergeFrom(data, extensionRegistry)
+                 .buildParsed();
+      }
+      public static com.notifier.protocol.Protocol.CommandRequest.SmsOptions parseFrom(byte[] data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return newBuilder().mergeFrom(data).buildParsed();
+      }
+      public static com.notifier.protocol.Protocol.CommandRequest.SmsOptions parseFrom(
+          byte[] data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return newBuilder().mergeFrom(data, extensionRegistry)
+                 .buildParsed();
+      }
+      public static com.notifier.protocol.Protocol.CommandRequest.SmsOptions parseFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return newBuilder().mergeFrom(input).buildParsed();
+      }
+      public static com.notifier.protocol.Protocol.CommandRequest.SmsOptions parseFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return newBuilder().mergeFrom(input, extensionRegistry)
+                 .buildParsed();
+      }
+      public static com.notifier.protocol.Protocol.CommandRequest.SmsOptions parseDelimitedFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        Builder builder = newBuilder();
+        if (builder.mergeDelimitedFrom(input)) {
+          return builder.buildParsed();
+        } else {
+          return null;
+        }
+      }
+      public static com.notifier.protocol.Protocol.CommandRequest.SmsOptions parseDelimitedFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        Builder builder = newBuilder();
+        if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+          return builder.buildParsed();
+        } else {
+          return null;
+        }
+      }
+      public static com.notifier.protocol.Protocol.CommandRequest.SmsOptions parseFrom(
+          com.google.protobuf.CodedInputStream input)
+          throws java.io.IOException {
+        return newBuilder().mergeFrom(input).buildParsed();
+      }
+      public static com.notifier.protocol.Protocol.CommandRequest.SmsOptions parseFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return newBuilder().mergeFrom(input, extensionRegistry)
+                 .buildParsed();
+      }
+      
+      public static Builder newBuilder() { return Builder.create(); }
+      public Builder newBuilderForType() { return newBuilder(); }
+      public static Builder newBuilder(com.notifier.protocol.Protocol.CommandRequest.SmsOptions prototype) {
+        return newBuilder().mergeFrom(prototype);
+      }
+      public Builder toBuilder() { return newBuilder(this); }
+      
+      public static final class Builder extends
+          com.google.protobuf.GeneratedMessageLite.Builder<
+            com.notifier.protocol.Protocol.CommandRequest.SmsOptions, Builder> {
+        private com.notifier.protocol.Protocol.CommandRequest.SmsOptions result;
+        
+        // Construct using com.notifier.protocol.Protocol.CommandRequest.SmsOptions.newBuilder()
+        private Builder() {}
+        
+        private static Builder create() {
+          Builder builder = new Builder();
+          builder.result = new com.notifier.protocol.Protocol.CommandRequest.SmsOptions();
+          return builder;
+        }
+        
+        protected com.notifier.protocol.Protocol.CommandRequest.SmsOptions internalGetResult() {
+          return result;
+        }
+        
+        public Builder clear() {
+          if (result == null) {
+            throw new IllegalStateException(
+              "Cannot call clear() after build().");
+          }
+          result = new com.notifier.protocol.Protocol.CommandRequest.SmsOptions();
+          return this;
+        }
+        
+        public Builder clone() {
+          return create().mergeFrom(result);
+        }
+        
+        public com.notifier.protocol.Protocol.CommandRequest.SmsOptions getDefaultInstanceForType() {
+          return com.notifier.protocol.Protocol.CommandRequest.SmsOptions.getDefaultInstance();
+        }
+        
+        public boolean isInitialized() {
+          return result.isInitialized();
+        }
+        public com.notifier.protocol.Protocol.CommandRequest.SmsOptions build() {
+          if (result != null && !isInitialized()) {
+            throw newUninitializedMessageException(result);
+          }
+          return buildPartial();
+        }
+        
+        private com.notifier.protocol.Protocol.CommandRequest.SmsOptions buildParsed()
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          if (!isInitialized()) {
+            throw newUninitializedMessageException(
+              result).asInvalidProtocolBufferException();
+          }
+          return buildPartial();
+        }
+        
+        public com.notifier.protocol.Protocol.CommandRequest.SmsOptions buildPartial() {
+          if (result == null) {
+            throw new IllegalStateException(
+              "build() has already been called on this Builder.");
+          }
+          com.notifier.protocol.Protocol.CommandRequest.SmsOptions returnMe = result;
+          result = null;
+          return returnMe;
+        }
+        
+        public Builder mergeFrom(com.notifier.protocol.Protocol.CommandRequest.SmsOptions other) {
+          if (other == com.notifier.protocol.Protocol.CommandRequest.SmsOptions.getDefaultInstance()) return this;
+          if (other.hasPhoneNumber()) {
+            setPhoneNumber(other.getPhoneNumber());
+          }
+          if (other.hasSmsMessage()) {
+            setSmsMessage(other.getSmsMessage());
+          }
+          return this;
+        }
+        
+        public Builder mergeFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          while (true) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                return this;
+              default: {
+                if (!parseUnknownField(input, extensionRegistry, tag)) {
+                  return this;
+                }
+                break;
+              }
+              case 10: {
+                setPhoneNumber(input.readString());
+                break;
+              }
+              case 18: {
+                setSmsMessage(input.readString());
+                break;
+              }
+            }
+          }
+        }
+        
+        
+        // required string phone_number = 1;
+        public boolean hasPhoneNumber() {
+          return result.hasPhoneNumber();
+        }
+        public java.lang.String getPhoneNumber() {
+          return result.getPhoneNumber();
+        }
+        public Builder setPhoneNumber(java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  result.hasPhoneNumber = true;
+          result.phoneNumber_ = value;
+          return this;
+        }
+        public Builder clearPhoneNumber() {
+          result.hasPhoneNumber = false;
+          result.phoneNumber_ = getDefaultInstance().getPhoneNumber();
+          return this;
+        }
+        
+        // required string sms_message = 2;
+        public boolean hasSmsMessage() {
+          return result.hasSmsMessage();
+        }
+        public java.lang.String getSmsMessage() {
+          return result.getSmsMessage();
+        }
+        public Builder setSmsMessage(java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  result.hasSmsMessage = true;
+          result.smsMessage_ = value;
+          return this;
+        }
+        public Builder clearSmsMessage() {
+          result.hasSmsMessage = false;
+          result.smsMessage_ = getDefaultInstance().getSmsMessage();
+          return this;
+        }
+        
+        // @@protoc_insertion_point(builder_scope:android_notifier.CommandRequest.SmsOptions)
+      }
+      
+      static {
+        defaultInstance = new SmsOptions(true);
+        com.notifier.protocol.Protocol.internalForceInit();
+        defaultInstance.initFields();
+      }
+      
+      // @@protoc_insertion_point(class_scope:android_notifier.CommandRequest.SmsOptions)
+    }
+    
+    public static final class QueryOptions extends
+        com.google.protobuf.GeneratedMessageLite {
+      // Use QueryOptions.newBuilder() to construct.
+      private QueryOptions() {
+        initFields();
+      }
+      private QueryOptions(boolean noInit) {}
+      
+      private static final QueryOptions defaultInstance;
+      public static QueryOptions getDefaultInstance() {
+        return defaultInstance;
+      }
+      
+      public QueryOptions getDefaultInstanceForType() {
+        return defaultInstance;
+      }
+      
+      // required string query = 1;
+      public static final int QUERY_FIELD_NUMBER = 1;
+      private boolean hasQuery;
+      private java.lang.String query_ = "";
+      public boolean hasQuery() { return hasQuery; }
+      public java.lang.String getQuery() { return query_; }
+      
+      private void initFields() {
+      }
+      public final boolean isInitialized() {
+        if (!hasQuery) return false;
+        return true;
+      }
+      
+      public void writeTo(com.google.protobuf.CodedOutputStream output)
+                          throws java.io.IOException {
+        getSerializedSize();
+        if (hasQuery()) {
+          output.writeString(1, getQuery());
+        }
+      }
+      
+      private int memoizedSerializedSize = -1;
+      public int getSerializedSize() {
+        int size = memoizedSerializedSize;
+        if (size != -1) return size;
+      
+        size = 0;
+        if (hasQuery()) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeStringSize(1, getQuery());
+        }
+        memoizedSerializedSize = size;
+        return size;
+      }
+      
+      public static com.notifier.protocol.Protocol.CommandRequest.QueryOptions parseFrom(
+          com.google.protobuf.ByteString data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return newBuilder().mergeFrom(data).buildParsed();
+      }
+      public static com.notifier.protocol.Protocol.CommandRequest.QueryOptions parseFrom(
+          com.google.protobuf.ByteString data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return newBuilder().mergeFrom(data, extensionRegistry)
+                 .buildParsed();
+      }
+      public static com.notifier.protocol.Protocol.CommandRequest.QueryOptions parseFrom(byte[] data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return newBuilder().mergeFrom(data).buildParsed();
+      }
+      public static com.notifier.protocol.Protocol.CommandRequest.QueryOptions parseFrom(
+          byte[] data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return newBuilder().mergeFrom(data, extensionRegistry)
+                 .buildParsed();
+      }
+      public static com.notifier.protocol.Protocol.CommandRequest.QueryOptions parseFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return newBuilder().mergeFrom(input).buildParsed();
+      }
+      public static com.notifier.protocol.Protocol.CommandRequest.QueryOptions parseFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return newBuilder().mergeFrom(input, extensionRegistry)
+                 .buildParsed();
+      }
+      public static com.notifier.protocol.Protocol.CommandRequest.QueryOptions parseDelimitedFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        Builder builder = newBuilder();
+        if (builder.mergeDelimitedFrom(input)) {
+          return builder.buildParsed();
+        } else {
+          return null;
+        }
+      }
+      public static com.notifier.protocol.Protocol.CommandRequest.QueryOptions parseDelimitedFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        Builder builder = newBuilder();
+        if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+          return builder.buildParsed();
+        } else {
+          return null;
+        }
+      }
+      public static com.notifier.protocol.Protocol.CommandRequest.QueryOptions parseFrom(
+          com.google.protobuf.CodedInputStream input)
+          throws java.io.IOException {
+        return newBuilder().mergeFrom(input).buildParsed();
+      }
+      public static com.notifier.protocol.Protocol.CommandRequest.QueryOptions parseFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return newBuilder().mergeFrom(input, extensionRegistry)
+                 .buildParsed();
+      }
+      
+      public static Builder newBuilder() { return Builder.create(); }
+      public Builder newBuilderForType() { return newBuilder(); }
+      public static Builder newBuilder(com.notifier.protocol.Protocol.CommandRequest.QueryOptions prototype) {
+        return newBuilder().mergeFrom(prototype);
+      }
+      public Builder toBuilder() { return newBuilder(this); }
+      
+      public static final class Builder extends
+          com.google.protobuf.GeneratedMessageLite.Builder<
+            com.notifier.protocol.Protocol.CommandRequest.QueryOptions, Builder> {
+        private com.notifier.protocol.Protocol.CommandRequest.QueryOptions result;
+        
+        // Construct using com.notifier.protocol.Protocol.CommandRequest.QueryOptions.newBuilder()
+        private Builder() {}
+        
+        private static Builder create() {
+          Builder builder = new Builder();
+          builder.result = new com.notifier.protocol.Protocol.CommandRequest.QueryOptions();
+          return builder;
+        }
+        
+        protected com.notifier.protocol.Protocol.CommandRequest.QueryOptions internalGetResult() {
+          return result;
+        }
+        
+        public Builder clear() {
+          if (result == null) {
+            throw new IllegalStateException(
+              "Cannot call clear() after build().");
+          }
+          result = new com.notifier.protocol.Protocol.CommandRequest.QueryOptions();
+          return this;
+        }
+        
+        public Builder clone() {
+          return create().mergeFrom(result);
+        }
+        
+        public com.notifier.protocol.Protocol.CommandRequest.QueryOptions getDefaultInstanceForType() {
+          return com.notifier.protocol.Protocol.CommandRequest.QueryOptions.getDefaultInstance();
+        }
+        
+        public boolean isInitialized() {
+          return result.isInitialized();
+        }
+        public com.notifier.protocol.Protocol.CommandRequest.QueryOptions build() {
+          if (result != null && !isInitialized()) {
+            throw newUninitializedMessageException(result);
+          }
+          return buildPartial();
+        }
+        
+        private com.notifier.protocol.Protocol.CommandRequest.QueryOptions buildParsed()
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          if (!isInitialized()) {
+            throw newUninitializedMessageException(
+              result).asInvalidProtocolBufferException();
+          }
+          return buildPartial();
+        }
+        
+        public com.notifier.protocol.Protocol.CommandRequest.QueryOptions buildPartial() {
+          if (result == null) {
+            throw new IllegalStateException(
+              "build() has already been called on this Builder.");
+          }
+          com.notifier.protocol.Protocol.CommandRequest.QueryOptions returnMe = result;
+          result = null;
+          return returnMe;
+        }
+        
+        public Builder mergeFrom(com.notifier.protocol.Protocol.CommandRequest.QueryOptions other) {
+          if (other == com.notifier.protocol.Protocol.CommandRequest.QueryOptions.getDefaultInstance()) return this;
+          if (other.hasQuery()) {
+            setQuery(other.getQuery());
+          }
+          return this;
+        }
+        
+        public Builder mergeFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          while (true) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                return this;
+              default: {
+                if (!parseUnknownField(input, extensionRegistry, tag)) {
+                  return this;
+                }
+                break;
+              }
+              case 10: {
+                setQuery(input.readString());
+                break;
+              }
+            }
+          }
+        }
+        
+        
+        // required string query = 1;
+        public boolean hasQuery() {
+          return result.hasQuery();
+        }
+        public java.lang.String getQuery() {
+          return result.getQuery();
+        }
+        public Builder setQuery(java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  result.hasQuery = true;
+          result.query_ = value;
+          return this;
+        }
+        public Builder clearQuery() {
+          result.hasQuery = false;
+          result.query_ = getDefaultInstance().getQuery();
+          return this;
+        }
+        
+        // @@protoc_insertion_point(builder_scope:android_notifier.CommandRequest.QueryOptions)
+      }
+      
+      static {
+        defaultInstance = new QueryOptions(true);
+        com.notifier.protocol.Protocol.internalForceInit();
+        defaultInstance.initFields();
+      }
+      
+      // @@protoc_insertion_point(class_scope:android_notifier.CommandRequest.QueryOptions)
+    }
+    
+    // required fixed64 device_id = 1;
+    public static final int DEVICE_ID_FIELD_NUMBER = 1;
+    private boolean hasDeviceId;
+    private long deviceId_ = 0L;
+    public boolean hasDeviceId() { return hasDeviceId; }
+    public long getDeviceId() { return deviceId_; }
+    
+    // required fixed64 command_id = 2;
+    public static final int COMMAND_ID_FIELD_NUMBER = 2;
+    private boolean hasCommandId;
+    private long commandId_ = 0L;
+    public boolean hasCommandId() { return hasCommandId; }
+    public long getCommandId() { return commandId_; }
+    
+    // required .android_notifier.CommandRequest.CommandType command_type = 3;
+    public static final int COMMAND_TYPE_FIELD_NUMBER = 3;
+    private boolean hasCommandType;
+    private com.notifier.protocol.Protocol.CommandRequest.CommandType commandType_;
+    public boolean hasCommandType() { return hasCommandType; }
+    public com.notifier.protocol.Protocol.CommandRequest.CommandType getCommandType() { return commandType_; }
+    
+    // optional .android_notifier.CommandRequest.CallOptions call_options = 10;
+    public static final int CALL_OPTIONS_FIELD_NUMBER = 10;
+    private boolean hasCallOptions;
+    private com.notifier.protocol.Protocol.CommandRequest.CallOptions callOptions_;
+    public boolean hasCallOptions() { return hasCallOptions; }
+    public com.notifier.protocol.Protocol.CommandRequest.CallOptions getCallOptions() { return callOptions_; }
+    
+    // optional .android_notifier.CommandRequest.SmsOptions sms_options = 11;
+    public static final int SMS_OPTIONS_FIELD_NUMBER = 11;
+    private boolean hasSmsOptions;
+    private com.notifier.protocol.Protocol.CommandRequest.SmsOptions smsOptions_;
+    public boolean hasSmsOptions() { return hasSmsOptions; }
+    public com.notifier.protocol.Protocol.CommandRequest.SmsOptions getSmsOptions() { return smsOptions_; }
+    
+    // optional .android_notifier.CommandRequest.QueryOptions query_options = 12;
+    public static final int QUERY_OPTIONS_FIELD_NUMBER = 12;
+    private boolean hasQueryOptions;
+    private com.notifier.protocol.Protocol.CommandRequest.QueryOptions queryOptions_;
+    public boolean hasQueryOptions() { return hasQueryOptions; }
+    public com.notifier.protocol.Protocol.CommandRequest.QueryOptions getQueryOptions() { return queryOptions_; }
+    
+    private void initFields() {
+      commandType_ = com.notifier.protocol.Protocol.CommandRequest.CommandType.CALL;
+      callOptions_ = com.notifier.protocol.Protocol.CommandRequest.CallOptions.getDefaultInstance();
+      smsOptions_ = com.notifier.protocol.Protocol.CommandRequest.SmsOptions.getDefaultInstance();
+      queryOptions_ = com.notifier.protocol.Protocol.CommandRequest.QueryOptions.getDefaultInstance();
+    }
+    public final boolean isInitialized() {
+      if (!hasDeviceId) return false;
+      if (!hasCommandId) return false;
+      if (!hasCommandType) return false;
+      if (hasCallOptions()) {
+        if (!getCallOptions().isInitialized()) return false;
+      }
+      if (hasSmsOptions()) {
+        if (!getSmsOptions().isInitialized()) return false;
+      }
+      if (hasQueryOptions()) {
+        if (!getQueryOptions().isInitialized()) return false;
+      }
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (hasDeviceId()) {
+        output.writeFixed64(1, getDeviceId());
+      }
+      if (hasCommandId()) {
+        output.writeFixed64(2, getCommandId());
+      }
+      if (hasCommandType()) {
+        output.writeEnum(3, getCommandType().getNumber());
+      }
+      if (hasCallOptions()) {
+        output.writeMessage(10, getCallOptions());
+      }
+      if (hasSmsOptions()) {
+        output.writeMessage(11, getSmsOptions());
+      }
+      if (hasQueryOptions()) {
+        output.writeMessage(12, getQueryOptions());
+      }
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      if (hasDeviceId()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFixed64Size(1, getDeviceId());
+      }
+      if (hasCommandId()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFixed64Size(2, getCommandId());
+      }
+      if (hasCommandType()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(3, getCommandType().getNumber());
+      }
+      if (hasCallOptions()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(10, getCallOptions());
+      }
+      if (hasSmsOptions()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(11, getSmsOptions());
+      }
+      if (hasQueryOptions()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(12, getQueryOptions());
+      }
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    public static com.notifier.protocol.Protocol.CommandRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.CommandRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.CommandRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.CommandRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.CommandRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.CommandRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.CommandRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.notifier.protocol.Protocol.CommandRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.notifier.protocol.Protocol.CommandRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.CommandRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.notifier.protocol.Protocol.CommandRequest prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          com.notifier.protocol.Protocol.CommandRequest, Builder> {
+      private com.notifier.protocol.Protocol.CommandRequest result;
+      
+      // Construct using com.notifier.protocol.Protocol.CommandRequest.newBuilder()
+      private Builder() {}
+      
+      private static Builder create() {
+        Builder builder = new Builder();
+        builder.result = new com.notifier.protocol.Protocol.CommandRequest();
+        return builder;
+      }
+      
+      protected com.notifier.protocol.Protocol.CommandRequest internalGetResult() {
+        return result;
+      }
+      
+      public Builder clear() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "Cannot call clear() after build().");
+        }
+        result = new com.notifier.protocol.Protocol.CommandRequest();
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(result);
+      }
+      
+      public com.notifier.protocol.Protocol.CommandRequest getDefaultInstanceForType() {
+        return com.notifier.protocol.Protocol.CommandRequest.getDefaultInstance();
+      }
+      
+      public boolean isInitialized() {
+        return result.isInitialized();
+      }
+      public com.notifier.protocol.Protocol.CommandRequest build() {
+        if (result != null && !isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return buildPartial();
+      }
+      
+      private com.notifier.protocol.Protocol.CommandRequest buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        if (!isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return buildPartial();
+      }
+      
+      public com.notifier.protocol.Protocol.CommandRequest buildPartial() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "build() has already been called on this Builder.");
+        }
+        com.notifier.protocol.Protocol.CommandRequest returnMe = result;
+        result = null;
+        return returnMe;
+      }
+      
+      public Builder mergeFrom(com.notifier.protocol.Protocol.CommandRequest other) {
+        if (other == com.notifier.protocol.Protocol.CommandRequest.getDefaultInstance()) return this;
+        if (other.hasDeviceId()) {
+          setDeviceId(other.getDeviceId());
+        }
+        if (other.hasCommandId()) {
+          setCommandId(other.getCommandId());
+        }
+        if (other.hasCommandType()) {
+          setCommandType(other.getCommandType());
+        }
+        if (other.hasCallOptions()) {
+          mergeCallOptions(other.getCallOptions());
+        }
+        if (other.hasSmsOptions()) {
+          mergeSmsOptions(other.getSmsOptions());
+        }
+        if (other.hasQueryOptions()) {
+          mergeQueryOptions(other.getQueryOptions());
+        }
+        return this;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              return this;
+            default: {
+              if (!parseUnknownField(input, extensionRegistry, tag)) {
+                return this;
+              }
+              break;
+            }
+            case 9: {
+              setDeviceId(input.readFixed64());
+              break;
+            }
+            case 17: {
+              setCommandId(input.readFixed64());
+              break;
+            }
+            case 24: {
+              int rawValue = input.readEnum();
+              com.notifier.protocol.Protocol.CommandRequest.CommandType value = com.notifier.protocol.Protocol.CommandRequest.CommandType.valueOf(rawValue);
+              if (value != null) {
+                setCommandType(value);
+              }
+              break;
+            }
+            case 82: {
+              com.notifier.protocol.Protocol.CommandRequest.CallOptions.Builder subBuilder = com.notifier.protocol.Protocol.CommandRequest.CallOptions.newBuilder();
+              if (hasCallOptions()) {
+                subBuilder.mergeFrom(getCallOptions());
+              }
+              input.readMessage(subBuilder, extensionRegistry);
+              setCallOptions(subBuilder.buildPartial());
+              break;
+            }
+            case 90: {
+              com.notifier.protocol.Protocol.CommandRequest.SmsOptions.Builder subBuilder = com.notifier.protocol.Protocol.CommandRequest.SmsOptions.newBuilder();
+              if (hasSmsOptions()) {
+                subBuilder.mergeFrom(getSmsOptions());
+              }
+              input.readMessage(subBuilder, extensionRegistry);
+              setSmsOptions(subBuilder.buildPartial());
+              break;
+            }
+            case 98: {
+              com.notifier.protocol.Protocol.CommandRequest.QueryOptions.Builder subBuilder = com.notifier.protocol.Protocol.CommandRequest.QueryOptions.newBuilder();
+              if (hasQueryOptions()) {
+                subBuilder.mergeFrom(getQueryOptions());
+              }
+              input.readMessage(subBuilder, extensionRegistry);
+              setQueryOptions(subBuilder.buildPartial());
+              break;
+            }
+          }
+        }
+      }
+      
+      
+      // required fixed64 device_id = 1;
+      public boolean hasDeviceId() {
+        return result.hasDeviceId();
+      }
+      public long getDeviceId() {
+        return result.getDeviceId();
+      }
+      public Builder setDeviceId(long value) {
+        result.hasDeviceId = true;
+        result.deviceId_ = value;
+        return this;
+      }
+      public Builder clearDeviceId() {
+        result.hasDeviceId = false;
+        result.deviceId_ = 0L;
+        return this;
+      }
+      
+      // required fixed64 command_id = 2;
+      public boolean hasCommandId() {
+        return result.hasCommandId();
+      }
+      public long getCommandId() {
+        return result.getCommandId();
+      }
+      public Builder setCommandId(long value) {
+        result.hasCommandId = true;
+        result.commandId_ = value;
+        return this;
+      }
+      public Builder clearCommandId() {
+        result.hasCommandId = false;
+        result.commandId_ = 0L;
+        return this;
+      }
+      
+      // required .android_notifier.CommandRequest.CommandType command_type = 3;
+      public boolean hasCommandType() {
+        return result.hasCommandType();
+      }
+      public com.notifier.protocol.Protocol.CommandRequest.CommandType getCommandType() {
+        return result.getCommandType();
+      }
+      public Builder setCommandType(com.notifier.protocol.Protocol.CommandRequest.CommandType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        result.hasCommandType = true;
+        result.commandType_ = value;
+        return this;
+      }
+      public Builder clearCommandType() {
+        result.hasCommandType = false;
+        result.commandType_ = com.notifier.protocol.Protocol.CommandRequest.CommandType.CALL;
+        return this;
+      }
+      
+      // optional .android_notifier.CommandRequest.CallOptions call_options = 10;
+      public boolean hasCallOptions() {
+        return result.hasCallOptions();
+      }
+      public com.notifier.protocol.Protocol.CommandRequest.CallOptions getCallOptions() {
+        return result.getCallOptions();
+      }
+      public Builder setCallOptions(com.notifier.protocol.Protocol.CommandRequest.CallOptions value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        result.hasCallOptions = true;
+        result.callOptions_ = value;
+        return this;
+      }
+      public Builder setCallOptions(com.notifier.protocol.Protocol.CommandRequest.CallOptions.Builder builderForValue) {
+        result.hasCallOptions = true;
+        result.callOptions_ = builderForValue.build();
+        return this;
+      }
+      public Builder mergeCallOptions(com.notifier.protocol.Protocol.CommandRequest.CallOptions value) {
+        if (result.hasCallOptions() &&
+            result.callOptions_ != com.notifier.protocol.Protocol.CommandRequest.CallOptions.getDefaultInstance()) {
+          result.callOptions_ =
+            com.notifier.protocol.Protocol.CommandRequest.CallOptions.newBuilder(result.callOptions_).mergeFrom(value).buildPartial();
+        } else {
+          result.callOptions_ = value;
+        }
+        result.hasCallOptions = true;
+        return this;
+      }
+      public Builder clearCallOptions() {
+        result.hasCallOptions = false;
+        result.callOptions_ = com.notifier.protocol.Protocol.CommandRequest.CallOptions.getDefaultInstance();
+        return this;
+      }
+      
+      // optional .android_notifier.CommandRequest.SmsOptions sms_options = 11;
+      public boolean hasSmsOptions() {
+        return result.hasSmsOptions();
+      }
+      public com.notifier.protocol.Protocol.CommandRequest.SmsOptions getSmsOptions() {
+        return result.getSmsOptions();
+      }
+      public Builder setSmsOptions(com.notifier.protocol.Protocol.CommandRequest.SmsOptions value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        result.hasSmsOptions = true;
+        result.smsOptions_ = value;
+        return this;
+      }
+      public Builder setSmsOptions(com.notifier.protocol.Protocol.CommandRequest.SmsOptions.Builder builderForValue) {
+        result.hasSmsOptions = true;
+        result.smsOptions_ = builderForValue.build();
+        return this;
+      }
+      public Builder mergeSmsOptions(com.notifier.protocol.Protocol.CommandRequest.SmsOptions value) {
+        if (result.hasSmsOptions() &&
+            result.smsOptions_ != com.notifier.protocol.Protocol.CommandRequest.SmsOptions.getDefaultInstance()) {
+          result.smsOptions_ =
+            com.notifier.protocol.Protocol.CommandRequest.SmsOptions.newBuilder(result.smsOptions_).mergeFrom(value).buildPartial();
+        } else {
+          result.smsOptions_ = value;
+        }
+        result.hasSmsOptions = true;
+        return this;
+      }
+      public Builder clearSmsOptions() {
+        result.hasSmsOptions = false;
+        result.smsOptions_ = com.notifier.protocol.Protocol.CommandRequest.SmsOptions.getDefaultInstance();
+        return this;
+      }
+      
+      // optional .android_notifier.CommandRequest.QueryOptions query_options = 12;
+      public boolean hasQueryOptions() {
+        return result.hasQueryOptions();
+      }
+      public com.notifier.protocol.Protocol.CommandRequest.QueryOptions getQueryOptions() {
+        return result.getQueryOptions();
+      }
+      public Builder setQueryOptions(com.notifier.protocol.Protocol.CommandRequest.QueryOptions value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        result.hasQueryOptions = true;
+        result.queryOptions_ = value;
+        return this;
+      }
+      public Builder setQueryOptions(com.notifier.protocol.Protocol.CommandRequest.QueryOptions.Builder builderForValue) {
+        result.hasQueryOptions = true;
+        result.queryOptions_ = builderForValue.build();
+        return this;
+      }
+      public Builder mergeQueryOptions(com.notifier.protocol.Protocol.CommandRequest.QueryOptions value) {
+        if (result.hasQueryOptions() &&
+            result.queryOptions_ != com.notifier.protocol.Protocol.CommandRequest.QueryOptions.getDefaultInstance()) {
+          result.queryOptions_ =
+            com.notifier.protocol.Protocol.CommandRequest.QueryOptions.newBuilder(result.queryOptions_).mergeFrom(value).buildPartial();
+        } else {
+          result.queryOptions_ = value;
+        }
+        result.hasQueryOptions = true;
+        return this;
+      }
+      public Builder clearQueryOptions() {
+        result.hasQueryOptions = false;
+        result.queryOptions_ = com.notifier.protocol.Protocol.CommandRequest.QueryOptions.getDefaultInstance();
+        return this;
+      }
+      
+      // @@protoc_insertion_point(builder_scope:android_notifier.CommandRequest)
+    }
+    
+    static {
+      defaultInstance = new CommandRequest(true);
+      com.notifier.protocol.Protocol.internalForceInit();
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:android_notifier.CommandRequest)
+  }
+  
+  public static final class CommandResponse extends
+      com.google.protobuf.GeneratedMessageLite {
+    // Use CommandResponse.newBuilder() to construct.
+    private CommandResponse() {
+      initFields();
+    }
+    private CommandResponse(boolean noInit) {}
+    
+    private static final CommandResponse defaultInstance;
+    public static CommandResponse getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public CommandResponse getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final class SearchResults extends
+        com.google.protobuf.GeneratedMessageLite {
+      // Use SearchResults.newBuilder() to construct.
+      private SearchResults() {
+        initFields();
+      }
+      private SearchResults(boolean noInit) {}
+      
+      private static final SearchResults defaultInstance;
+      public static SearchResults getDefaultInstance() {
+        return defaultInstance;
+      }
+      
+      public SearchResults getDefaultInstanceForType() {
+        return defaultInstance;
+      }
+      
+      // repeated .android_notifier.Contact contacts = 1;
+      public static final int CONTACTS_FIELD_NUMBER = 1;
+      private java.util.List<com.notifier.protocol.Protocol.Contact> contacts_ =
+        java.util.Collections.emptyList();
+      public java.util.List<com.notifier.protocol.Protocol.Contact> getContactsList() {
+        return contacts_;
+      }
+      public int getContactsCount() { return contacts_.size(); }
+      public com.notifier.protocol.Protocol.Contact getContacts(int index) {
+        return contacts_.get(index);
+      }
+      
+      private void initFields() {
+      }
+      public final boolean isInitialized() {
+        for (com.notifier.protocol.Protocol.Contact element : getContactsList()) {
+          if (!element.isInitialized()) return false;
+        }
+        return true;
+      }
+      
+      public void writeTo(com.google.protobuf.CodedOutputStream output)
+                          throws java.io.IOException {
+        getSerializedSize();
+        for (com.notifier.protocol.Protocol.Contact element : getContactsList()) {
+          output.writeMessage(1, element);
+        }
+      }
+      
+      private int memoizedSerializedSize = -1;
+      public int getSerializedSize() {
+        int size = memoizedSerializedSize;
+        if (size != -1) return size;
+      
+        size = 0;
+        for (com.notifier.protocol.Protocol.Contact element : getContactsList()) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeMessageSize(1, element);
+        }
+        memoizedSerializedSize = size;
+        return size;
+      }
+      
+      public static com.notifier.protocol.Protocol.CommandResponse.SearchResults parseFrom(
+          com.google.protobuf.ByteString data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return newBuilder().mergeFrom(data).buildParsed();
+      }
+      public static com.notifier.protocol.Protocol.CommandResponse.SearchResults parseFrom(
+          com.google.protobuf.ByteString data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return newBuilder().mergeFrom(data, extensionRegistry)
+                 .buildParsed();
+      }
+      public static com.notifier.protocol.Protocol.CommandResponse.SearchResults parseFrom(byte[] data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return newBuilder().mergeFrom(data).buildParsed();
+      }
+      public static com.notifier.protocol.Protocol.CommandResponse.SearchResults parseFrom(
+          byte[] data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return newBuilder().mergeFrom(data, extensionRegistry)
+                 .buildParsed();
+      }
+      public static com.notifier.protocol.Protocol.CommandResponse.SearchResults parseFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return newBuilder().mergeFrom(input).buildParsed();
+      }
+      public static com.notifier.protocol.Protocol.CommandResponse.SearchResults parseFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return newBuilder().mergeFrom(input, extensionRegistry)
+                 .buildParsed();
+      }
+      public static com.notifier.protocol.Protocol.CommandResponse.SearchResults parseDelimitedFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        Builder builder = newBuilder();
+        if (builder.mergeDelimitedFrom(input)) {
+          return builder.buildParsed();
+        } else {
+          return null;
+        }
+      }
+      public static com.notifier.protocol.Protocol.CommandResponse.SearchResults parseDelimitedFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        Builder builder = newBuilder();
+        if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+          return builder.buildParsed();
+        } else {
+          return null;
+        }
+      }
+      public static com.notifier.protocol.Protocol.CommandResponse.SearchResults parseFrom(
+          com.google.protobuf.CodedInputStream input)
+          throws java.io.IOException {
+        return newBuilder().mergeFrom(input).buildParsed();
+      }
+      public static com.notifier.protocol.Protocol.CommandResponse.SearchResults parseFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return newBuilder().mergeFrom(input, extensionRegistry)
+                 .buildParsed();
+      }
+      
+      public static Builder newBuilder() { return Builder.create(); }
+      public Builder newBuilderForType() { return newBuilder(); }
+      public static Builder newBuilder(com.notifier.protocol.Protocol.CommandResponse.SearchResults prototype) {
+        return newBuilder().mergeFrom(prototype);
+      }
+      public Builder toBuilder() { return newBuilder(this); }
+      
+      public static final class Builder extends
+          com.google.protobuf.GeneratedMessageLite.Builder<
+            com.notifier.protocol.Protocol.CommandResponse.SearchResults, Builder> {
+        private com.notifier.protocol.Protocol.CommandResponse.SearchResults result;
+        
+        // Construct using com.notifier.protocol.Protocol.CommandResponse.SearchResults.newBuilder()
+        private Builder() {}
+        
+        private static Builder create() {
+          Builder builder = new Builder();
+          builder.result = new com.notifier.protocol.Protocol.CommandResponse.SearchResults();
+          return builder;
+        }
+        
+        protected com.notifier.protocol.Protocol.CommandResponse.SearchResults internalGetResult() {
+          return result;
+        }
+        
+        public Builder clear() {
+          if (result == null) {
+            throw new IllegalStateException(
+              "Cannot call clear() after build().");
+          }
+          result = new com.notifier.protocol.Protocol.CommandResponse.SearchResults();
+          return this;
+        }
+        
+        public Builder clone() {
+          return create().mergeFrom(result);
+        }
+        
+        public com.notifier.protocol.Protocol.CommandResponse.SearchResults getDefaultInstanceForType() {
+          return com.notifier.protocol.Protocol.CommandResponse.SearchResults.getDefaultInstance();
+        }
+        
+        public boolean isInitialized() {
+          return result.isInitialized();
+        }
+        public com.notifier.protocol.Protocol.CommandResponse.SearchResults build() {
+          if (result != null && !isInitialized()) {
+            throw newUninitializedMessageException(result);
+          }
+          return buildPartial();
+        }
+        
+        private com.notifier.protocol.Protocol.CommandResponse.SearchResults buildParsed()
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          if (!isInitialized()) {
+            throw newUninitializedMessageException(
+              result).asInvalidProtocolBufferException();
+          }
+          return buildPartial();
+        }
+        
+        public com.notifier.protocol.Protocol.CommandResponse.SearchResults buildPartial() {
+          if (result == null) {
+            throw new IllegalStateException(
+              "build() has already been called on this Builder.");
+          }
+          if (result.contacts_ != java.util.Collections.EMPTY_LIST) {
+            result.contacts_ =
+              java.util.Collections.unmodifiableList(result.contacts_);
+          }
+          com.notifier.protocol.Protocol.CommandResponse.SearchResults returnMe = result;
+          result = null;
+          return returnMe;
+        }
+        
+        public Builder mergeFrom(com.notifier.protocol.Protocol.CommandResponse.SearchResults other) {
+          if (other == com.notifier.protocol.Protocol.CommandResponse.SearchResults.getDefaultInstance()) return this;
+          if (!other.contacts_.isEmpty()) {
+            if (result.contacts_.isEmpty()) {
+              result.contacts_ = new java.util.ArrayList<com.notifier.protocol.Protocol.Contact>();
+            }
+            result.contacts_.addAll(other.contacts_);
+          }
+          return this;
+        }
+        
+        public Builder mergeFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          while (true) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                return this;
+              default: {
+                if (!parseUnknownField(input, extensionRegistry, tag)) {
+                  return this;
+                }
+                break;
+              }
+              case 10: {
+                com.notifier.protocol.Protocol.Contact.Builder subBuilder = com.notifier.protocol.Protocol.Contact.newBuilder();
+                input.readMessage(subBuilder, extensionRegistry);
+                addContacts(subBuilder.buildPartial());
+                break;
+              }
+            }
+          }
+        }
+        
+        
+        // repeated .android_notifier.Contact contacts = 1;
+        public java.util.List<com.notifier.protocol.Protocol.Contact> getContactsList() {
+          return java.util.Collections.unmodifiableList(result.contacts_);
+        }
+        public int getContactsCount() {
+          return result.getContactsCount();
+        }
+        public com.notifier.protocol.Protocol.Contact getContacts(int index) {
+          return result.getContacts(index);
+        }
+        public Builder setContacts(int index, com.notifier.protocol.Protocol.Contact value) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          result.contacts_.set(index, value);
+          return this;
+        }
+        public Builder setContacts(int index, com.notifier.protocol.Protocol.Contact.Builder builderForValue) {
+          result.contacts_.set(index, builderForValue.build());
+          return this;
+        }
+        public Builder addContacts(com.notifier.protocol.Protocol.Contact value) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          if (result.contacts_.isEmpty()) {
+            result.contacts_ = new java.util.ArrayList<com.notifier.protocol.Protocol.Contact>();
+          }
+          result.contacts_.add(value);
+          return this;
+        }
+        public Builder addContacts(com.notifier.protocol.Protocol.Contact.Builder builderForValue) {
+          if (result.contacts_.isEmpty()) {
+            result.contacts_ = new java.util.ArrayList<com.notifier.protocol.Protocol.Contact>();
+          }
+          result.contacts_.add(builderForValue.build());
+          return this;
+        }
+        public Builder addAllContacts(
+            java.lang.Iterable<? extends com.notifier.protocol.Protocol.Contact> values) {
+          if (result.contacts_.isEmpty()) {
+            result.contacts_ = new java.util.ArrayList<com.notifier.protocol.Protocol.Contact>();
+          }
+          super.addAll(values, result.contacts_);
+          return this;
+        }
+        public Builder clearContacts() {
+          result.contacts_ = java.util.Collections.emptyList();
+          return this;
+        }
+        
+        // @@protoc_insertion_point(builder_scope:android_notifier.CommandResponse.SearchResults)
+      }
+      
+      static {
+        defaultInstance = new SearchResults(true);
+        com.notifier.protocol.Protocol.internalForceInit();
+        defaultInstance.initFields();
+      }
+      
+      // @@protoc_insertion_point(class_scope:android_notifier.CommandResponse.SearchResults)
+    }
+    
+    // required fixed64 device_id = 1;
+    public static final int DEVICE_ID_FIELD_NUMBER = 1;
+    private boolean hasDeviceId;
+    private long deviceId_ = 0L;
+    public boolean hasDeviceId() { return hasDeviceId; }
+    public long getDeviceId() { return deviceId_; }
+    
+    // required fixed64 command_id = 2;
+    public static final int COMMAND_ID_FIELD_NUMBER = 2;
+    private boolean hasCommandId;
+    private long commandId_ = 0L;
+    public boolean hasCommandId() { return hasCommandId; }
+    public long getCommandId() { return commandId_; }
+    
+    // optional bool success = 3 [default = false];
+    public static final int SUCCESS_FIELD_NUMBER = 3;
+    private boolean hasSuccess;
+    private boolean success_ = false;
+    public boolean hasSuccess() { return hasSuccess; }
+    public boolean getSuccess() { return success_; }
+    
+    // optional string errorMessage = 4;
+    public static final int ERRORMESSAGE_FIELD_NUMBER = 4;
+    private boolean hasErrorMessage;
+    private java.lang.String errorMessage_ = "";
+    public boolean hasErrorMessage() { return hasErrorMessage; }
+    public java.lang.String getErrorMessage() { return errorMessage_; }
+    
+    // optional .android_notifier.CommandResponse.SearchResults search_results = 10;
+    public static final int SEARCH_RESULTS_FIELD_NUMBER = 10;
+    private boolean hasSearchResults;
+    private com.notifier.protocol.Protocol.CommandResponse.SearchResults searchResults_;
+    public boolean hasSearchResults() { return hasSearchResults; }
+    public com.notifier.protocol.Protocol.CommandResponse.SearchResults getSearchResults() { return searchResults_; }
+    
+    // optional .android_notifier.DeviceAddresses discovery_result = 11;
+    public static final int DISCOVERY_RESULT_FIELD_NUMBER = 11;
+    private boolean hasDiscoveryResult;
+    private com.notifier.protocol.Protocol.DeviceAddresses discoveryResult_;
+    public boolean hasDiscoveryResult() { return hasDiscoveryResult; }
+    public com.notifier.protocol.Protocol.DeviceAddresses getDiscoveryResult() { return discoveryResult_; }
+    
+    private void initFields() {
+      searchResults_ = com.notifier.protocol.Protocol.CommandResponse.SearchResults.getDefaultInstance();
+      discoveryResult_ = com.notifier.protocol.Protocol.DeviceAddresses.getDefaultInstance();
+    }
+    public final boolean isInitialized() {
+      if (!hasDeviceId) return false;
+      if (!hasCommandId) return false;
+      if (hasSearchResults()) {
+        if (!getSearchResults().isInitialized()) return false;
+      }
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (hasDeviceId()) {
+        output.writeFixed64(1, getDeviceId());
+      }
+      if (hasCommandId()) {
+        output.writeFixed64(2, getCommandId());
+      }
+      if (hasSuccess()) {
+        output.writeBool(3, getSuccess());
+      }
+      if (hasErrorMessage()) {
+        output.writeString(4, getErrorMessage());
+      }
+      if (hasSearchResults()) {
+        output.writeMessage(10, getSearchResults());
+      }
+      if (hasDiscoveryResult()) {
+        output.writeMessage(11, getDiscoveryResult());
+      }
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      if (hasDeviceId()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFixed64Size(1, getDeviceId());
+      }
+      if (hasCommandId()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFixed64Size(2, getCommandId());
+      }
+      if (hasSuccess()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(3, getSuccess());
+      }
+      if (hasErrorMessage()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(4, getErrorMessage());
+      }
+      if (hasSearchResults()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(10, getSearchResults());
+      }
+      if (hasDiscoveryResult()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(11, getDiscoveryResult());
+      }
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    public static com.notifier.protocol.Protocol.CommandResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.CommandResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.CommandResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.CommandResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.CommandResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.CommandResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.CommandResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.notifier.protocol.Protocol.CommandResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.notifier.protocol.Protocol.CommandResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.CommandResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.notifier.protocol.Protocol.CommandResponse prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          com.notifier.protocol.Protocol.CommandResponse, Builder> {
+      private com.notifier.protocol.Protocol.CommandResponse result;
+      
+      // Construct using com.notifier.protocol.Protocol.CommandResponse.newBuilder()
+      private Builder() {}
+      
+      private static Builder create() {
+        Builder builder = new Builder();
+        builder.result = new com.notifier.protocol.Protocol.CommandResponse();
+        return builder;
+      }
+      
+      protected com.notifier.protocol.Protocol.CommandResponse internalGetResult() {
+        return result;
+      }
+      
+      public Builder clear() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "Cannot call clear() after build().");
+        }
+        result = new com.notifier.protocol.Protocol.CommandResponse();
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(result);
+      }
+      
+      public com.notifier.protocol.Protocol.CommandResponse getDefaultInstanceForType() {
+        return com.notifier.protocol.Protocol.CommandResponse.getDefaultInstance();
+      }
+      
+      public boolean isInitialized() {
+        return result.isInitialized();
+      }
+      public com.notifier.protocol.Protocol.CommandResponse build() {
+        if (result != null && !isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return buildPartial();
+      }
+      
+      private com.notifier.protocol.Protocol.CommandResponse buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        if (!isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return buildPartial();
+      }
+      
+      public com.notifier.protocol.Protocol.CommandResponse buildPartial() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "build() has already been called on this Builder.");
+        }
+        com.notifier.protocol.Protocol.CommandResponse returnMe = result;
+        result = null;
+        return returnMe;
+      }
+      
+      public Builder mergeFrom(com.notifier.protocol.Protocol.CommandResponse other) {
+        if (other == com.notifier.protocol.Protocol.CommandResponse.getDefaultInstance()) return this;
+        if (other.hasDeviceId()) {
+          setDeviceId(other.getDeviceId());
+        }
+        if (other.hasCommandId()) {
+          setCommandId(other.getCommandId());
+        }
+        if (other.hasSuccess()) {
+          setSuccess(other.getSuccess());
+        }
+        if (other.hasErrorMessage()) {
+          setErrorMessage(other.getErrorMessage());
+        }
+        if (other.hasSearchResults()) {
+          mergeSearchResults(other.getSearchResults());
+        }
+        if (other.hasDiscoveryResult()) {
+          mergeDiscoveryResult(other.getDiscoveryResult());
+        }
+        return this;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              return this;
+            default: {
+              if (!parseUnknownField(input, extensionRegistry, tag)) {
+                return this;
+              }
+              break;
+            }
+            case 9: {
+              setDeviceId(input.readFixed64());
+              break;
+            }
+            case 17: {
+              setCommandId(input.readFixed64());
+              break;
+            }
+            case 24: {
+              setSuccess(input.readBool());
+              break;
+            }
+            case 34: {
+              setErrorMessage(input.readString());
+              break;
+            }
+            case 82: {
+              com.notifier.protocol.Protocol.CommandResponse.SearchResults.Builder subBuilder = com.notifier.protocol.Protocol.CommandResponse.SearchResults.newBuilder();
+              if (hasSearchResults()) {
+                subBuilder.mergeFrom(getSearchResults());
+              }
+              input.readMessage(subBuilder, extensionRegistry);
+              setSearchResults(subBuilder.buildPartial());
+              break;
+            }
+            case 90: {
+              com.notifier.protocol.Protocol.DeviceAddresses.Builder subBuilder = com.notifier.protocol.Protocol.DeviceAddresses.newBuilder();
+              if (hasDiscoveryResult()) {
+                subBuilder.mergeFrom(getDiscoveryResult());
+              }
+              input.readMessage(subBuilder, extensionRegistry);
+              setDiscoveryResult(subBuilder.buildPartial());
+              break;
+            }
+          }
+        }
+      }
+      
+      
+      // required fixed64 device_id = 1;
+      public boolean hasDeviceId() {
+        return result.hasDeviceId();
+      }
+      public long getDeviceId() {
+        return result.getDeviceId();
+      }
+      public Builder setDeviceId(long value) {
+        result.hasDeviceId = true;
+        result.deviceId_ = value;
+        return this;
+      }
+      public Builder clearDeviceId() {
+        result.hasDeviceId = false;
+        result.deviceId_ = 0L;
+        return this;
+      }
+      
+      // required fixed64 command_id = 2;
+      public boolean hasCommandId() {
+        return result.hasCommandId();
+      }
+      public long getCommandId() {
+        return result.getCommandId();
+      }
+      public Builder setCommandId(long value) {
+        result.hasCommandId = true;
+        result.commandId_ = value;
+        return this;
+      }
+      public Builder clearCommandId() {
+        result.hasCommandId = false;
+        result.commandId_ = 0L;
+        return this;
+      }
+      
+      // optional bool success = 3 [default = false];
+      public boolean hasSuccess() {
+        return result.hasSuccess();
+      }
+      public boolean getSuccess() {
+        return result.getSuccess();
+      }
+      public Builder setSuccess(boolean value) {
+        result.hasSuccess = true;
+        result.success_ = value;
+        return this;
+      }
+      public Builder clearSuccess() {
+        result.hasSuccess = false;
+        result.success_ = false;
+        return this;
+      }
+      
+      // optional string errorMessage = 4;
+      public boolean hasErrorMessage() {
+        return result.hasErrorMessage();
+      }
+      public java.lang.String getErrorMessage() {
+        return result.getErrorMessage();
+      }
+      public Builder setErrorMessage(java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  result.hasErrorMessage = true;
+        result.errorMessage_ = value;
+        return this;
+      }
+      public Builder clearErrorMessage() {
+        result.hasErrorMessage = false;
+        result.errorMessage_ = getDefaultInstance().getErrorMessage();
+        return this;
+      }
+      
+      // optional .android_notifier.CommandResponse.SearchResults search_results = 10;
+      public boolean hasSearchResults() {
+        return result.hasSearchResults();
+      }
+      public com.notifier.protocol.Protocol.CommandResponse.SearchResults getSearchResults() {
+        return result.getSearchResults();
+      }
+      public Builder setSearchResults(com.notifier.protocol.Protocol.CommandResponse.SearchResults value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        result.hasSearchResults = true;
+        result.searchResults_ = value;
+        return this;
+      }
+      public Builder setSearchResults(com.notifier.protocol.Protocol.CommandResponse.SearchResults.Builder builderForValue) {
+        result.hasSearchResults = true;
+        result.searchResults_ = builderForValue.build();
+        return this;
+      }
+      public Builder mergeSearchResults(com.notifier.protocol.Protocol.CommandResponse.SearchResults value) {
+        if (result.hasSearchResults() &&
+            result.searchResults_ != com.notifier.protocol.Protocol.CommandResponse.SearchResults.getDefaultInstance()) {
+          result.searchResults_ =
+            com.notifier.protocol.Protocol.CommandResponse.SearchResults.newBuilder(result.searchResults_).mergeFrom(value).buildPartial();
+        } else {
+          result.searchResults_ = value;
+        }
+        result.hasSearchResults = true;
+        return this;
+      }
+      public Builder clearSearchResults() {
+        result.hasSearchResults = false;
+        result.searchResults_ = com.notifier.protocol.Protocol.CommandResponse.SearchResults.getDefaultInstance();
+        return this;
+      }
+      
+      // optional .android_notifier.DeviceAddresses discovery_result = 11;
+      public boolean hasDiscoveryResult() {
+        return result.hasDiscoveryResult();
+      }
+      public com.notifier.protocol.Protocol.DeviceAddresses getDiscoveryResult() {
+        return result.getDiscoveryResult();
+      }
+      public Builder setDiscoveryResult(com.notifier.protocol.Protocol.DeviceAddresses value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        result.hasDiscoveryResult = true;
+        result.discoveryResult_ = value;
+        return this;
+      }
+      public Builder setDiscoveryResult(com.notifier.protocol.Protocol.DeviceAddresses.Builder builderForValue) {
+        result.hasDiscoveryResult = true;
+        result.discoveryResult_ = builderForValue.build();
+        return this;
+      }
+      public Builder mergeDiscoveryResult(com.notifier.protocol.Protocol.DeviceAddresses value) {
+        if (result.hasDiscoveryResult() &&
+            result.discoveryResult_ != com.notifier.protocol.Protocol.DeviceAddresses.getDefaultInstance()) {
+          result.discoveryResult_ =
+            com.notifier.protocol.Protocol.DeviceAddresses.newBuilder(result.discoveryResult_).mergeFrom(value).buildPartial();
+        } else {
+          result.discoveryResult_ = value;
+        }
+        result.hasDiscoveryResult = true;
+        return this;
+      }
+      public Builder clearDiscoveryResult() {
+        result.hasDiscoveryResult = false;
+        result.discoveryResult_ = com.notifier.protocol.Protocol.DeviceAddresses.getDefaultInstance();
+        return this;
+      }
+      
+      // @@protoc_insertion_point(builder_scope:android_notifier.CommandResponse)
+    }
+    
+    static {
+      defaultInstance = new CommandResponse(true);
+      com.notifier.protocol.Protocol.internalForceInit();
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:android_notifier.CommandResponse)
+  }
+  
+  public static final class CommandDiscoveryRequest extends
+      com.google.protobuf.GeneratedMessageLite {
+    // Use CommandDiscoveryRequest.newBuilder() to construct.
+    private CommandDiscoveryRequest() {
+      initFields();
+    }
+    private CommandDiscoveryRequest(boolean noInit) {}
+    
+    private static final CommandDiscoveryRequest defaultInstance;
+    public static CommandDiscoveryRequest getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public CommandDiscoveryRequest getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    // required fixed64 device_id = 1;
+    public static final int DEVICE_ID_FIELD_NUMBER = 1;
+    private boolean hasDeviceId;
+    private long deviceId_ = 0L;
+    public boolean hasDeviceId() { return hasDeviceId; }
+    public long getDeviceId() { return deviceId_; }
+    
+    private void initFields() {
+    }
+    public final boolean isInitialized() {
+      if (!hasDeviceId) return false;
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (hasDeviceId()) {
+        output.writeFixed64(1, getDeviceId());
+      }
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      if (hasDeviceId()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFixed64Size(1, getDeviceId());
+      }
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    public static com.notifier.protocol.Protocol.CommandDiscoveryRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.CommandDiscoveryRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.CommandDiscoveryRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.CommandDiscoveryRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.CommandDiscoveryRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.CommandDiscoveryRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.CommandDiscoveryRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.notifier.protocol.Protocol.CommandDiscoveryRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.notifier.protocol.Protocol.CommandDiscoveryRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.CommandDiscoveryRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.notifier.protocol.Protocol.CommandDiscoveryRequest prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          com.notifier.protocol.Protocol.CommandDiscoveryRequest, Builder> {
+      private com.notifier.protocol.Protocol.CommandDiscoveryRequest result;
+      
+      // Construct using com.notifier.protocol.Protocol.CommandDiscoveryRequest.newBuilder()
+      private Builder() {}
+      
+      private static Builder create() {
+        Builder builder = new Builder();
+        builder.result = new com.notifier.protocol.Protocol.CommandDiscoveryRequest();
+        return builder;
+      }
+      
+      protected com.notifier.protocol.Protocol.CommandDiscoveryRequest internalGetResult() {
+        return result;
+      }
+      
+      public Builder clear() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "Cannot call clear() after build().");
+        }
+        result = new com.notifier.protocol.Protocol.CommandDiscoveryRequest();
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(result);
+      }
+      
+      public com.notifier.protocol.Protocol.CommandDiscoveryRequest getDefaultInstanceForType() {
+        return com.notifier.protocol.Protocol.CommandDiscoveryRequest.getDefaultInstance();
+      }
+      
+      public boolean isInitialized() {
+        return result.isInitialized();
+      }
+      public com.notifier.protocol.Protocol.CommandDiscoveryRequest build() {
+        if (result != null && !isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return buildPartial();
+      }
+      
+      private com.notifier.protocol.Protocol.CommandDiscoveryRequest buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        if (!isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return buildPartial();
+      }
+      
+      public com.notifier.protocol.Protocol.CommandDiscoveryRequest buildPartial() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "build() has already been called on this Builder.");
+        }
+        com.notifier.protocol.Protocol.CommandDiscoveryRequest returnMe = result;
+        result = null;
+        return returnMe;
+      }
+      
+      public Builder mergeFrom(com.notifier.protocol.Protocol.CommandDiscoveryRequest other) {
+        if (other == com.notifier.protocol.Protocol.CommandDiscoveryRequest.getDefaultInstance()) return this;
+        if (other.hasDeviceId()) {
+          setDeviceId(other.getDeviceId());
+        }
+        return this;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              return this;
+            default: {
+              if (!parseUnknownField(input, extensionRegistry, tag)) {
+                return this;
+              }
+              break;
+            }
+            case 9: {
+              setDeviceId(input.readFixed64());
+              break;
+            }
+          }
+        }
+      }
+      
+      
+      // required fixed64 device_id = 1;
+      public boolean hasDeviceId() {
+        return result.hasDeviceId();
+      }
+      public long getDeviceId() {
+        return result.getDeviceId();
+      }
+      public Builder setDeviceId(long value) {
+        result.hasDeviceId = true;
+        result.deviceId_ = value;
+        return this;
+      }
+      public Builder clearDeviceId() {
+        result.hasDeviceId = false;
+        result.deviceId_ = 0L;
+        return this;
+      }
+      
+      // @@protoc_insertion_point(builder_scope:android_notifier.CommandDiscoveryRequest)
+    }
+    
+    static {
+      defaultInstance = new CommandDiscoveryRequest(true);
+      com.notifier.protocol.Protocol.internalForceInit();
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:android_notifier.CommandDiscoveryRequest)
+  }
+  
+  public static final class CommandDiscoveryReply extends
+      com.google.protobuf.GeneratedMessageLite {
+    // Use CommandDiscoveryReply.newBuilder() to construct.
+    private CommandDiscoveryReply() {
+      initFields();
+    }
+    private CommandDiscoveryReply(boolean noInit) {}
+    
+    private static final CommandDiscoveryReply defaultInstance;
+    public static CommandDiscoveryReply getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public CommandDiscoveryReply getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    // required fixed64 device_id = 1;
+    public static final int DEVICE_ID_FIELD_NUMBER = 1;
+    private boolean hasDeviceId;
+    private long deviceId_ = 0L;
+    public boolean hasDeviceId() { return hasDeviceId; }
+    public long getDeviceId() { return deviceId_; }
+    
+    // required .android_notifier.DeviceAddresses addresses = 2;
+    public static final int ADDRESSES_FIELD_NUMBER = 2;
+    private boolean hasAddresses;
+    private com.notifier.protocol.Protocol.DeviceAddresses addresses_;
+    public boolean hasAddresses() { return hasAddresses; }
+    public com.notifier.protocol.Protocol.DeviceAddresses getAddresses() { return addresses_; }
+    
+    private void initFields() {
+      addresses_ = com.notifier.protocol.Protocol.DeviceAddresses.getDefaultInstance();
+    }
+    public final boolean isInitialized() {
+      if (!hasDeviceId) return false;
+      if (!hasAddresses) return false;
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (hasDeviceId()) {
+        output.writeFixed64(1, getDeviceId());
+      }
+      if (hasAddresses()) {
+        output.writeMessage(2, getAddresses());
+      }
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      if (hasDeviceId()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFixed64Size(1, getDeviceId());
+      }
+      if (hasAddresses()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, getAddresses());
+      }
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    public static com.notifier.protocol.Protocol.CommandDiscoveryReply parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.CommandDiscoveryReply parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.CommandDiscoveryReply parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.CommandDiscoveryReply parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.CommandDiscoveryReply parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.CommandDiscoveryReply parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.CommandDiscoveryReply parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.notifier.protocol.Protocol.CommandDiscoveryReply parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.notifier.protocol.Protocol.CommandDiscoveryReply parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.notifier.protocol.Protocol.CommandDiscoveryReply parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.notifier.protocol.Protocol.CommandDiscoveryReply prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          com.notifier.protocol.Protocol.CommandDiscoveryReply, Builder> {
+      private com.notifier.protocol.Protocol.CommandDiscoveryReply result;
+      
+      // Construct using com.notifier.protocol.Protocol.CommandDiscoveryReply.newBuilder()
+      private Builder() {}
+      
+      private static Builder create() {
+        Builder builder = new Builder();
+        builder.result = new com.notifier.protocol.Protocol.CommandDiscoveryReply();
+        return builder;
+      }
+      
+      protected com.notifier.protocol.Protocol.CommandDiscoveryReply internalGetResult() {
+        return result;
+      }
+      
+      public Builder clear() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "Cannot call clear() after build().");
+        }
+        result = new com.notifier.protocol.Protocol.CommandDiscoveryReply();
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(result);
+      }
+      
+      public com.notifier.protocol.Protocol.CommandDiscoveryReply getDefaultInstanceForType() {
+        return com.notifier.protocol.Protocol.CommandDiscoveryReply.getDefaultInstance();
+      }
+      
+      public boolean isInitialized() {
+        return result.isInitialized();
+      }
+      public com.notifier.protocol.Protocol.CommandDiscoveryReply build() {
+        if (result != null && !isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return buildPartial();
+      }
+      
+      private com.notifier.protocol.Protocol.CommandDiscoveryReply buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        if (!isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return buildPartial();
+      }
+      
+      public com.notifier.protocol.Protocol.CommandDiscoveryReply buildPartial() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "build() has already been called on this Builder.");
+        }
+        com.notifier.protocol.Protocol.CommandDiscoveryReply returnMe = result;
+        result = null;
+        return returnMe;
+      }
+      
+      public Builder mergeFrom(com.notifier.protocol.Protocol.CommandDiscoveryReply other) {
+        if (other == com.notifier.protocol.Protocol.CommandDiscoveryReply.getDefaultInstance()) return this;
+        if (other.hasDeviceId()) {
+          setDeviceId(other.getDeviceId());
+        }
+        if (other.hasAddresses()) {
+          mergeAddresses(other.getAddresses());
+        }
+        return this;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              return this;
+            default: {
+              if (!parseUnknownField(input, extensionRegistry, tag)) {
+                return this;
+              }
+              break;
+            }
+            case 9: {
+              setDeviceId(input.readFixed64());
+              break;
+            }
+            case 18: {
+              com.notifier.protocol.Protocol.DeviceAddresses.Builder subBuilder = com.notifier.protocol.Protocol.DeviceAddresses.newBuilder();
+              if (hasAddresses()) {
+                subBuilder.mergeFrom(getAddresses());
+              }
+              input.readMessage(subBuilder, extensionRegistry);
+              setAddresses(subBuilder.buildPartial());
+              break;
+            }
+          }
+        }
+      }
+      
+      
+      // required fixed64 device_id = 1;
+      public boolean hasDeviceId() {
+        return result.hasDeviceId();
+      }
+      public long getDeviceId() {
+        return result.getDeviceId();
+      }
+      public Builder setDeviceId(long value) {
+        result.hasDeviceId = true;
+        result.deviceId_ = value;
+        return this;
+      }
+      public Builder clearDeviceId() {
+        result.hasDeviceId = false;
+        result.deviceId_ = 0L;
+        return this;
+      }
+      
+      // required .android_notifier.DeviceAddresses addresses = 2;
+      public boolean hasAddresses() {
+        return result.hasAddresses();
+      }
+      public com.notifier.protocol.Protocol.DeviceAddresses getAddresses() {
+        return result.getAddresses();
+      }
+      public Builder setAddresses(com.notifier.protocol.Protocol.DeviceAddresses value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        result.hasAddresses = true;
+        result.addresses_ = value;
+        return this;
+      }
+      public Builder setAddresses(com.notifier.protocol.Protocol.DeviceAddresses.Builder builderForValue) {
+        result.hasAddresses = true;
+        result.addresses_ = builderForValue.build();
+        return this;
+      }
+      public Builder mergeAddresses(com.notifier.protocol.Protocol.DeviceAddresses value) {
+        if (result.hasAddresses() &&
+            result.addresses_ != com.notifier.protocol.Protocol.DeviceAddresses.getDefaultInstance()) {
+          result.addresses_ =
+            com.notifier.protocol.Protocol.DeviceAddresses.newBuilder(result.addresses_).mergeFrom(value).buildPartial();
+        } else {
+          result.addresses_ = value;
+        }
+        result.hasAddresses = true;
+        return this;
+      }
+      public Builder clearAddresses() {
+        result.hasAddresses = false;
+        result.addresses_ = com.notifier.protocol.Protocol.DeviceAddresses.getDefaultInstance();
+        return this;
+      }
+      
+      // @@protoc_insertion_point(builder_scope:android_notifier.CommandDiscoveryReply)
+    }
+    
+    static {
+      defaultInstance = new CommandDiscoveryReply(true);
+      com.notifier.protocol.Protocol.internalForceInit();
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:android_notifier.CommandDiscoveryReply)
   }
   
   
