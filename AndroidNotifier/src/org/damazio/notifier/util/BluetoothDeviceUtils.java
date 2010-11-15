@@ -27,6 +27,7 @@ package org.damazio.notifier.util;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.damazio.notifier.NotifierConstants;
@@ -53,7 +54,14 @@ public abstract class BluetoothDeviceUtils {
    */
   private static class DummyImpl extends BluetoothDeviceUtils {
     @Override
-    public void populateDeviceLists(List<String> deviceNames, List<String> deviceAddresses) {
+    public void populateDeviceLists(List<String> deviceNames, List<String> deviceAddresses,
+        Map<String, String> addressToNameMap) {
+      deviceNames.clear();
+      deviceAddresses.clear();
+      if (addressToNameMap != null) {
+        addressToNameMap.clear();
+      }
+
       // Do nothing - no devices to add
     }
 
@@ -84,16 +92,29 @@ public abstract class BluetoothDeviceUtils {
     }
 
     @Override
-    public void populateDeviceLists(List<String> deviceNames, List<String> deviceAddresses) {
+    public void populateDeviceLists(List<String> deviceNames, List<String> deviceAddresses,
+        Map<String, String> addressToNameMap) {
       ensureNotDiscovering();
+      deviceNames.clear();
+      deviceAddresses.clear();
+      if (addressToNameMap != null) {
+        addressToNameMap.clear();
+      }
 
       Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
       for (BluetoothDevice device : pairedDevices) {
         BluetoothClass bluetoothClass = device.getBluetoothClass();
         if (bluetoothClass != null &&
             bluetoothClass.getMajorDeviceClass() == BluetoothClass.Device.Major.COMPUTER) {
-          deviceAddresses.add(device.getAddress());
-          deviceNames.add(device.getName());
+          String address = device.getAddress();
+          String name = device.getName();
+
+          deviceAddresses.add(address);
+          deviceNames.add(name);
+
+          if (addressToNameMap != null) {
+            addressToNameMap.put(address, name);
+          }
         }
       }
     }
@@ -239,8 +260,11 @@ public abstract class BluetoothDeviceUtils {
    *
    * @param deviceNames the list to populate with user-visible names
    * @param deviceAddresses the list to populate with device addresses
+   * @param addressToNameMap if not null, a map to be filled out with the device address to
+   *        name mapping
    */
-  public abstract void populateDeviceLists(List<String> deviceNames, List<String> deviceAddresses);
+  public abstract void populateDeviceLists(List<String> deviceNames, List<String> deviceAddresses,
+      Map<String, String> addressToNameMap);
 
   /**
    * Finds the bluetooth device with the given address.

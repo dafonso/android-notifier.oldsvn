@@ -29,6 +29,7 @@ import org.damazio.notifier.NotifierPreferences;
 import org.damazio.notifier.command.CommandProtocol.CommandRequest;
 import org.damazio.notifier.command.CommandProtocol.CommandRequest.SmsOptions;
 import org.damazio.notifier.command.CommandProtocol.CommandResponse.Builder;
+import org.damazio.notifier.util.SmsSender;
 
 import android.telephony.SmsManager;
 import android.util.Log;
@@ -39,6 +40,8 @@ import android.util.Log;
  * @author Rodrigo Damazio
  */
 class SmsCommandHandler implements CommandHandler {
+  private final SmsSender sender = SmsSender.create();
+
   @Override
   public boolean handleCommand(CommandRequest req, Builder responseBuilder) {
     if (!req.hasSmsOptions()) {
@@ -56,11 +59,7 @@ class SmsCommandHandler implements CommandHandler {
       return false;
     }
 
-    // TODO: Cupcake compatibility
-    SmsManager smsManager = SmsManager.getDefault();
-
-    // TODO: Notification when sms is delivered
-    smsManager.sendTextMessage(destination, null, contents, null, null);
+    sender.sendSms(destination, contents);
 
     return true;
   }
