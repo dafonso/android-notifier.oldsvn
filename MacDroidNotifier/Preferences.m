@@ -274,9 +274,6 @@ const NSInteger kPairingRequired = 1;
 }
 
 - (void)updateDevicesMenuWithDefaults:(NSUserDefaults *)defaults {
-  if ([[mainMenu itemAtIndex:0] isSeparatorItem])
-    [mainMenu removeItemAtIndex:0];
-/* TODO: Re-enable commands
   // Clear previous paired devices
   while ([mainMenu numberOfItems]) {
     NSMenuItem *item = [mainMenu itemAtIndex:0];
@@ -288,6 +285,7 @@ const NSInteger kPairingRequired = 1;
   }
 
   // Populate the paired devices into the menu
+  // TODO: Also add all matching bluetooth paired devices
   NSArray *pairedDevices = [defaults arrayForKey:kPreferencesPairedDevicesKey];
   for (uint i = 0; i < [pairedDevices count]; i++) {
     NSDictionary *pairedDevice = [pairedDevices objectAtIndex:i];    
@@ -311,7 +309,6 @@ const NSInteger kPairingRequired = 1;
       [item setRepresentedObject:pairedDeviceId];
     }
   }
- */
 }  
 
 @end

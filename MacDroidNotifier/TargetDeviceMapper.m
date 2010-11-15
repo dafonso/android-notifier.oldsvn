@@ -25,9 +25,30 @@
 //  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 //  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#import "BluetoothDeviceMapper.h"
+#import "TargetDeviceMapper.h"
 
+#import "Commands.pb.h"
 
-@implementation BluetoothDeviceMapper
+@implementation TargetDeviceMapper
+
+- (id)init {
+  if (self = [super init]) {
+    addressCache = [[NSMutableDictionary alloc] init];
+  }
+  return self;
+}
+
+- (void) dealloc {
+  [addressCache release];
+  [super dealloc];
+}
+- (void)cacheDevice:(int64_t)deviceId
+      withAddresses:(DeviceAddresses*)addresses {
+  [addressCache setObject:addresses forKey:[NSNumber numberWithLongLong:deviceId]];
+}
+
+- (DeviceAddresses*)addressesForDevice:(int64_t)deviceId {
+  return [addressCache objectForKey:[NSNumber numberWithLongLong:deviceId]];
+}
 
 @end

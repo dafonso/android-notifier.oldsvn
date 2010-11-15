@@ -32,7 +32,8 @@
 
 @interface BluetoothCommandSender : NSObject<CommandSender> {
  @private
-  NSMutableArray *pendingCommands;
+  // Map of device ID to an array of pending commands
+  NSMutableDictionary *pendingCommandMap;
 }
 
 @end

@@ -27,9 +27,13 @@
 
 #import "CommandDispatcher.h"
 
-#import "Command.h"
+#import "CodedOutputStream.h"
+#import "Commands.pb.h"
 #import "CommandSender.h"
 #import "BluetoothCommandSender.h"
+#import "IpCommandSender.h"
+#import "TargetDeviceMapper.h"
+#import "UsbCommandSender.h"
 
 @implementation CommandDispatcher
 
@@ -37,23 +41,64 @@
   if (self = [super init]) {
     senders = [[NSArray arrayWithObjects:
         [[[BluetoothCommandSender alloc] init] autorelease],
+        [[[IpCommandSender alloc] init] autorelease],
+        [[[UsbCommandSender alloc] init] autorelease],
         nil] retain];
+    deviceMapper = [[TargetDeviceMapper alloc] init];
   }
   return self;
 }
 
 - (void)dealloc {
   [senders release];
+  [deviceMapper release];
   [super dealloc];
 }
 
-- (void)dispatchCommand:(Command *)cmd {
-  NSLog(@"Dispatching command: %@ (serialized=%@)", cmd, [cmd serialized]);
+- (NSData*)serializeCommand:(CommandRequest*)cmd {
+  NSOutputStream *stream = [NSOutputStream outputStreamToMemory];
+  [stream open];
 
+  PBCodedOutputStream* codedStream = [PBCodedOutputStream streamWithOutputStream:stream];
+  [codedStream writeMessageNoTag:cmd];
+  [codedStream flush];
+
+  NSData *data = [stream propertyForKey:NSStreamDataWrittenToMemoryStreamKey];
+  [stream close];
+  return data;
+}
+
+- (void)sendCommand:(CommandRequest *)cmd toAddresses:(DeviceAddresses *)addresses {
+  NSData* serialized = [self serializeCommand:cmd];
+  NSLog(@"Dispatching command: %@", serialized);
   for (id<CommandSender> sender in senders) {
     if ([sender isEnabled]) {
-      [sender sendCommand:cmd];
+      [sender sendCommandData:serialized
+                  toAddresses:addresses];
     }
+  }
+}
+
+- (void)discoverAddressesFor:(int64_t)deviceId thenSendCommand:(CommandRequest *)cmd {
+  // TODO: Non-fake data
+  NSString* addressStr = @"00:23:76:f5:b4:d0";
+  BluetoothDeviceAddress deviceAddress;
+  IOBluetoothNSStringToDeviceAddress(addressStr, &deviceAddress);
+  
+  DeviceAddresses_Builder *addrBuilder = [DeviceAddresses builder];
+  [addrBuilder setBluetoothMac:[NSData dataWithBytes:deviceAddress.data length:6]];
+  DeviceAddresses *addr = [addrBuilder build];
+
+  [self sendCommand:cmd toAddresses:addr];
+}
+
+- (void)dispatchCommand:(CommandRequest *)cmd {
+  int64_t deviceId = [cmd deviceId];
+  DeviceAddresses* addresses = [deviceMapper addressesForDevice:deviceId];
+  if (!addresses) {
+    [self discoverAddressesFor:deviceId thenSendCommand:cmd];
+  } else {
+    [self sendCommand:cmd toAddresses:addresses];
   }
 }
 
