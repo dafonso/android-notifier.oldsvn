@@ -27,13 +27,15 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class Command;
+@class CommandRequest;
+@class TargetDeviceMapper;
 
 @interface CommandDispatcher : NSObject {
  @private
   NSArray *senders;
+  TargetDeviceMapper *deviceMapper;
 }
 
-- (void)dispatchCommand:(Command *)cmd;
+- (void)dispatchCommand:(CommandRequest *)cmd;
 
 @end

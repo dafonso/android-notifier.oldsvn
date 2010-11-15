@@ -27,12 +27,14 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class DeviceAddresses;
 
-@interface BluetoothDeviceMapper : NSObject {
-
+@interface TargetDeviceMapper : NSObject {
+ @private
+  NSMutableDictionary *addressCache;
 }
 
-- (void)cacheDevice:(NSString*)deviceId withMac:(NSString*)macAddress;
-- (NSString*)findMacForDevice:(NSString*)deviceId;
+- (void)cacheDevice:(int64_t)deviceId withAddresses:(DeviceAddresses*)addresses;
+- (DeviceAddresses*)addressesForDevice:(int64_t)deviceId;
 
 @end

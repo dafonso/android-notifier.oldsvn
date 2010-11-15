@@ -27,7 +27,8 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class Command;
+@class CommandRequest;
+@class DeviceAddresses;
 
 @protocol CommandResponseListener
   // TODO
@@ -36,6 +37,6 @@
 @protocol CommandSender
 
 - (BOOL)isEnabled;
-- (void)sendCommand:(Command *)cmd;
+- (void)sendCommandData:(NSData *)cmd toAddresses:(DeviceAddresses *)addresses;
 
 @end

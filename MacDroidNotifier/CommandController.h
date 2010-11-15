@@ -46,6 +46,7 @@
 - (IBAction)showStartCallDialog:(id)sender;
 - (IBAction)showSendSmsDialog:(id)sender;
 - (IBAction)startCall:(id)sender;
+- (IBAction)answerCall:(id)sender;
 - (IBAction)sendSms:(id)sender;
 - (IBAction)hangUp:(id)sender;
 

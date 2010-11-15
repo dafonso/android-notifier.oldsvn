@@ -27,10 +27,16 @@
 
 #import "CommandController.h"
 
-#import "Command.h"
+#include <stdlib.h>
+
+#import "Commands.pb.h"
 #import "CommandDispatcher.h"
 
 @implementation CommandController
+
+- (void)awakeFromNib {
+  srand((int) time(NULL));
+}
 
 - (IBAction)showStartCallDialog:(id)sender {
   NSMenuItem *item = sender;
@@ -47,26 +53,51 @@
   [sendSmsWindow makeKeyAndOrderFront:sender];
 }
 
+- (CommandRequest_Builder*)commandWithDeviceId:(NSString*) deviceId {
+  // Parse the device ID
+  uint64_t deviceIdNumber;
+  NSScanner* deviceIdScanner = [NSScanner scannerWithString:deviceId];
+  [deviceIdScanner scanHexLongLong:&deviceIdNumber];
+
+  CommandRequest_Builder* builder = [CommandRequest builder];
+  [builder setCommandId:(((uint64_t) rand()) << 32 | rand())];
+  [builder setDeviceId:deviceIdNumber];
+  return builder;
+}
+
 - (IBAction)startCall:(id)sender {
   NSString *number = [dialNumber stringValue];
   [dialWindow close];
 
-  Command *cmd = [Command commandWithDeviceId:lastDialDeviceId
-                                         type:DIAL
-                                        data1:number
-                                        data2:nil];
-  [dispatcher dispatchCommand:cmd];
+  CommandRequest_CallOptions_Builder* callOptionsBuilder =
+  [CommandRequest_CallOptions builder];
+  [callOptionsBuilder setPhoneNumber:number];
+
+  CommandRequest_Builder* builder = [self commandWithDeviceId:lastDialDeviceId];
+  [builder setCommandType:CommandRequest_CommandTypeCall];
+  [builder setCallOptionsBuilder:callOptionsBuilder];
+
+  [dispatcher dispatchCommand:[builder build]];
+}
+
+- (IBAction)answerCall:(id)sender {
+  NSMenuItem *item = sender;
+  NSString *deviceId = [item representedObject];
+
+  CommandRequest_Builder* builder = [self commandWithDeviceId:deviceId];
+  [builder setCommandType:CommandRequest_CommandTypeAnswer];
+  
+  [dispatcher dispatchCommand:[builder build]];
 }
 
 - (IBAction)hangUp:(id)sender {
   NSMenuItem *item = sender;
   NSString *deviceId = [item representedObject];
 
-  Command *cmd = [Command commandWithDeviceId:deviceId
-                                         type:HANGUP
-                                        data1:nil
-                                        data2:nil];
-  [dispatcher dispatchCommand:cmd];
+  CommandRequest_Builder* builder = [self commandWithDeviceId:deviceId];
+  [builder setCommandType:CommandRequest_CommandTypeHangUp];
+  
+  [dispatcher dispatchCommand:[builder build]];
 }
 
 - (IBAction)sendSms:(id)sender {
@@ -74,11 +105,16 @@
   NSString *contents = [sendSmsContents stringValue];
   [sendSmsWindow close];
 
-  Command *cmd = [Command commandWithDeviceId:lastSmsDeviceId
-                                         type:SEND_SMS
-                                        data1:number
-                                        data2:contents];
-  [dispatcher dispatchCommand:cmd];
+  CommandRequest_SmsOptions_Builder* smsOptionsBuilder =
+      [CommandRequest_SmsOptions builder];
+  [smsOptionsBuilder setPhoneNumber:number];
+  [smsOptionsBuilder setSmsMessage:contents];
+
+  CommandRequest_Builder* builder = [self commandWithDeviceId:lastSmsDeviceId];
+  [builder setCommandType:CommandRequest_CommandTypeSendSms];
+  [builder setSmsOptionsBuilder:smsOptionsBuilder];
+
+  [dispatcher dispatchCommand:[builder build]];
 }
 
 @end

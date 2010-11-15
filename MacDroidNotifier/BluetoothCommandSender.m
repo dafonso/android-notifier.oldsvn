@@ -26,44 +26,68 @@
 //  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import "BluetoothCommandSender.h"
-#import "Command.h"
+#import "Commands.pb.h"
 #import <IOBluetooth/IOBluetooth.h>
 
 // Our UUID: E8D515B4-47C1-4813-B6D6-3EAB32F8953E
 static const char kCommandUuidBytes[] = {
-  0xE8, 0xD5, 0x15, 0xB4, 0x47, 0xC1, 0x48, 0x13,
-  0xB6, 0xD6, 0x3E, 0xAB, 0x32, 0xF8, 0x95, 0x3E };
+    0xE8, 0xD5, 0x15, 0xB4, 0x47, 0xC1, 0x48, 0x13,
+    0xB6, 0xD6, 0x3E, 0xAB, 0x32, 0xF8, 0x95, 0x3E };
 static const int kCommandUuidSize = 16;
 
 @interface BluetoothCommandSender (Private)
 - (IOBluetoothSDPServiceRecord *)findRemoteServiceInDevice:(IOBluetoothDevice*) device;
 - (BOOL)openChannelToService:(IOBluetoothSDPServiceRecord*)service
                     onDevice:(IOBluetoothDevice*)device;
-- (void)sendPendingCommands;
+- (void)sendPendingCommandsToAddress:(BluetoothDeviceAddress)address;
 @end
 
 @implementation BluetoothCommandSender
+
+- (id)init {
+  if (self = [super init]) {
+    pendingCommandMap = [[NSMutableDictionary dictionaryWithCapacity:5] retain];
+  }
+  return self;
+}
+
+- (void)dealloc {
+  [pendingCommandMap release];
+  [super dealloc];
+}
 
 - (BOOL)isEnabled {
   // TODO: From preferences
   return YES;
 }
 
-- (void)sendCommand:(Command *)cmd {
+- (void)sendCommandData:(NSData *)cmd toAddresses:(DeviceAddresses *)addresses {
+  // Get the bluetooth address in the proper format
+  NSData *btMac = [addresses bluetoothMac];
+  if ([btMac length] != 6) {
+    NSLog(@"Bad bluetooth address: %@", btMac);
+    return;
+  }
+  BluetoothDeviceAddress btAddress;
+  memcpy(btAddress.data, [btMac bytes], 6);
+
   // Enqueue the command
-  @synchronized (pendingCommands) {
+  @synchronized (pendingCommandMap) {
+    NSMutableArray *pendingCommands =
+        [pendingCommandMap objectForKey:btMac];
+    if (!pendingCommands) {
+      pendingCommands = [NSMutableArray array];
+      [pendingCommandMap setObject:pendingCommands forKey:btMac];
+    }
     [pendingCommands addObject:cmd];
   }
-  [self sendPendingCommands];
+
+  [self sendPendingCommandsToAddress:btAddress];
 }
 
-- (void)sendPendingCommands {
+- (void)sendPendingCommandsToAddress:(BluetoothDeviceAddress)address {
   // Find the device to send to
-  // TODO: Get device address from preferences
-  NSString* addressStr = @"00:23:76:f5:b4:d0";
-  BluetoothDeviceAddress deviceAddress;
-  IOBluetoothNSStringToDeviceAddress(addressStr, &deviceAddress);
-  IOBluetoothDevice* device = [IOBluetoothDevice withAddress:&deviceAddress];
+  IOBluetoothDevice* device = [IOBluetoothDevice withAddress:&address];
   if (!device) {
     NSLog(@"Couldn't find device");
     return;
@@ -72,11 +96,14 @@ static const int kCommandUuidSize = 16;
   // Look up the service, if we don't find it try updating SDP
   IOBluetoothSDPServiceRecord *service = [self findRemoteServiceInDevice:device];
   if (!service) {
+    NSLog(@"No service, querying SDP");
     [device performSDPQuery:self];
+    return;
   }
 
   // If we can't open the channel, it could be because SDP is outdated (e.g. channel ID changed)
   if (![self openChannelToService:service onDevice:device]) {
+    NSLog(@"No channel, querying SDP");
     [device performSDPQuery:self];
   }
 }
@@ -122,12 +149,36 @@ static const int kCommandUuidSize = 16;
 
 - (void)rfcommChannelOpenComplete:(IOBluetoothRFCOMMChannel*)rfcommChannel
                            status:(IOReturn)error {
-  NSLog(@"Commands channel open, mtu=%d", [rfcommChannel getMTU]);
-  NSLog(@"TODO: Write commands");
-  @synchronized (pendingCommands) {
-    [pendingCommands removeAllObjects];
+  if (error != kIOReturnSuccess) {
+    NSLog(@"Failed to open channel, error %d", error);
+    return;
   }
+
+  IOBluetoothDevice *device = [rfcommChannel getDevice];
+  const BluetoothDeviceAddress *address = [device getAddress];
+  NSData *addressData = [NSData dataWithBytes:address->data length:6];
+
+  NSArray *pendingCommands;
+  @synchronized (pendingCommandMap) {
+    pendingCommands = [[pendingCommandMap objectForKey:addressData] retain];
+    [pendingCommandMap removeObjectForKey:addressData];
+  }
+
+  if (pendingCommands) {
+    NSLog(@"Commands channel open, mtu=%d, pending=%d",
+        [rfcommChannel getMTU], [pendingCommands count]);
+    for (NSData* serialized in pendingCommands) {
+      void* bytes = (void*) [serialized bytes];
+      size_t len = [serialized length];
+      [rfcommChannel writeSync:bytes length:len];
+      NSLog(@"Sent one command");
+    }
+  }
+
+  // TODO: Keep the channel for a few seconds in case there are more commands to send
+  NSLog(@"Closing channel");
   [rfcommChannel closeChannel];
+  [pendingCommands release];
 }
 
 - (void)rfcommChannelClosed:(IOBluetoothRFCOMMChannel*)rfcommChannel {
