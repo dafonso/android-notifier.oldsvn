@@ -31,7 +31,6 @@ import org.damazio.notifier.command.CommandProtocol.CommandRequest.SmsOptions;
 import org.damazio.notifier.command.CommandProtocol.CommandResponse.Builder;
 import org.damazio.notifier.util.SmsSender;
 
-import android.telephony.SmsManager;
 import android.util.Log;
 
 /**

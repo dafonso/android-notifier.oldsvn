@@ -28,6 +28,7 @@ import java.io.Closeable;
 import java.io.IOException;
 
 import org.damazio.notifier.NotifierConstants;
+import org.damazio.notifier.command.CommandHistory;
 
 import android.content.Context;
 import android.net.LocalServerSocket;
@@ -43,8 +44,8 @@ public class UsbCommandListener extends CommandListener {
   private static final String SOCKET_NAME = "androidnotifier-cmd";
   private LocalServerSocket serverSocket;
 
-  public UsbCommandListener(Context context) {
-    super(context);
+  public UsbCommandListener(Context context, CommandHistory history) {
+    super(context, history);
   }
 
   @Override
@@ -69,10 +70,12 @@ public class UsbCommandListener extends CommandListener {
   @Override
   public void shutdown() {
     Log.d(NotifierConstants.LOG_TAG, "No longer listening for USB commands");
-    try {
-      serverSocket.close();
-    } catch (IOException e) {
-      Log.w(NotifierConstants.LOG_TAG, "Error closing socket", e);
+    if (serverSocket != null) {
+      try {
+        serverSocket.close();
+      } catch (IOException e) {
+        Log.w(NotifierConstants.LOG_TAG, "Error closing socket", e);
+      }
     }
 
     super.shutdown();

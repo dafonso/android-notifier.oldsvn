@@ -29,11 +29,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.ref.WeakReference;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.damazio.notifier.NotifierConstants;
+import org.damazio.notifier.command.CommandHistory;
 import org.damazio.notifier.command.CommandStreamHandler;
 
 import android.content.Context;
@@ -49,10 +50,12 @@ abstract class CommandListener extends Thread {
   private final Context context;
   private boolean shutdown;
   private Set<WeakReference<CommandStreamHandler>> streamHandlers =
-      new TreeSet<WeakReference<CommandStreamHandler>>();
+      new HashSet<WeakReference<CommandStreamHandler>>();
+  private final CommandHistory history;
 
-  protected CommandListener(Context context) {
+  protected CommandListener(Context context, CommandHistory history) {
     this.context = context;
+    this.history = history;
   }
 
   @Override
@@ -111,7 +114,7 @@ abstract class CommandListener extends Thread {
    * @param closeable the interface to close the connection
    */
   protected void handleConnection(InputStream input, OutputStream output, Closeable closeable) {
-    CommandStreamHandler newHandler = new CommandStreamHandler(context, input, output, closeable);
+    CommandStreamHandler newHandler = new CommandStreamHandler(context, history, input, output, closeable);
     synchronized (streamHandlers) {
       streamHandlers.add(new WeakReference<CommandStreamHandler>(newHandler));
       newHandler.start();

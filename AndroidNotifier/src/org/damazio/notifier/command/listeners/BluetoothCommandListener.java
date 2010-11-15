@@ -29,6 +29,7 @@ import java.util.UUID;
 
 import org.damazio.notifier.NotifierConstants;
 import org.damazio.notifier.NotifierPreferences;
+import org.damazio.notifier.command.CommandHistory;
 import org.damazio.notifier.util.BluetoothDeviceUtils;
 
 import android.bluetooth.BluetoothAdapter;
@@ -53,8 +54,8 @@ public class BluetoothCommandListener extends CommandListener {
 
   private BluetoothServerSocket socket;
 
-  public BluetoothCommandListener(Context context, NotifierPreferences preferences) {
-    super(context);
+  public BluetoothCommandListener(Context context, CommandHistory history, NotifierPreferences preferences) {
+    super(context, history);
 
     this.preferences = preferences;
   }
@@ -93,12 +94,12 @@ public class BluetoothCommandListener extends CommandListener {
   @Override
   public void shutdown() {
     Log.d(NotifierConstants.LOG_TAG, "No longer listening for bluetooth commands");
-    try {
-      if (socket != null) {
+    if (socket != null) {
+      try {
         socket.close();
+      } catch (IOException e) {
+        Log.w(NotifierConstants.LOG_TAG, "Error closing socket", e);
       }
-    } catch (IOException e) {
-      Log.w(NotifierConstants.LOG_TAG, "Error closing socket", e);
     }
 
     super.shutdown();
