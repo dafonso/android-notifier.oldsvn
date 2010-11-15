@@ -326,12 +326,12 @@ public class NotifierMain extends PreferenceActivity {
     List<String> sourceEntries = new ArrayList<String>();
     List<String> sourceEntryValues = new ArrayList<String>();
 
-    // First value is "any"
-    sourceEntries.add(getString(R.string.bluetooth_device_any));
-    sourceEntryValues.add(BluetoothDeviceUtils.ANY_DEVICE);
-
     // Other values are actual devices
-    BluetoothDeviceUtils.getInstance().populateDeviceLists(sourceEntries, sourceEntryValues);
+    BluetoothDeviceUtils.getInstance().populateDeviceLists(sourceEntries, sourceEntryValues, null);
+
+    // First value is "any"
+    sourceEntries.add(0, getString(R.string.bluetooth_device_any));
+    sourceEntryValues.add(0, BluetoothDeviceUtils.ANY_DEVICE);
 
     // Create a separate list for the target devices
     List<String> targetEntries = new ArrayList<String>(sourceEntries);

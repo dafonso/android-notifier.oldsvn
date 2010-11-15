@@ -25,7 +25,9 @@
 package org.damazio.notifier.locale;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.damazio.notifier.EditableListPreference;
 import org.damazio.notifier.NotifierConstants;
@@ -48,6 +50,7 @@ import android.util.Log;
  */
 public class EditActivity extends PreferenceActivity implements OnPreferenceChangeListener {
   private LocaleSettings settings;
+  private final Map<String, String> targetAddressToNameMap = new HashMap<String, String>();
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -97,16 +100,17 @@ public class EditActivity extends PreferenceActivity implements OnPreferenceChan
     List<String> targetEntries = new ArrayList<String>();
     List<String> targetEntryValues = new ArrayList<String>();
 
-    // Special values are "keep", "any", then "all"
-    targetEntries.add(getString(R.string.locale_enabled_keep));
-    targetEntryValues.add(getString(R.string.locale_enabled_keep_value));
-    targetEntries.add(getString(R.string.bluetooth_device_any));
-    targetEntryValues.add(BluetoothDeviceUtils.ANY_DEVICE);
-    targetEntries.add(getString(R.string.bluetooth_device_all));
-    targetEntryValues.add(BluetoothDeviceUtils.ALL_DEVICES);
-
     // Other values are actual devices
-    BluetoothDeviceUtils.getInstance().populateDeviceLists(targetEntries, targetEntryValues);
+    BluetoothDeviceUtils.getInstance().populateDeviceLists(
+        targetEntries, targetEntryValues, targetAddressToNameMap);
+    
+    // Special values are "keep", "any", then "all"
+    targetEntries.add(0, getString(R.string.locale_enabled_keep));
+    targetEntryValues.add(0, getString(R.string.locale_enabled_keep_value));
+    targetEntries.add(1, getString(R.string.bluetooth_device_any));
+    targetEntryValues.add(1, BluetoothDeviceUtils.ANY_DEVICE);
+    targetEntries.add(2, getString(R.string.bluetooth_device_all));
+    targetEntryValues.add(2, BluetoothDeviceUtils.ALL_DEVICES);
 
     bluetoothTargetPreference.setEntryValues(
         targetEntryValues.toArray(new CharSequence[targetEntryValues.size()]));
@@ -139,7 +143,13 @@ public class EditActivity extends PreferenceActivity implements OnPreferenceChan
     } else if (getString(R.string.locale_custom_ip_key).equals(key)) {
       settings.setCustomIps((String[]) newValue);
     } else if (getString(R.string.locale_bt_target_key).equals(key)) {
-      settings.setBluetoothTarget((String) newValue);
+      // Use the device's name, not MAC address
+      String targetMac = (String) newValue;
+      String targetName = targetAddressToNameMap.get(targetMac);
+      if (targetName == null) {
+        targetName = targetMac;
+      }
+      settings.setBluetoothTarget(targetName);
     }
 
     updateLocaleResult();
