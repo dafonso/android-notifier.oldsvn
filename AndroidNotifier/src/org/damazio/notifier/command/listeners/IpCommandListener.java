@@ -32,6 +32,7 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 
 import org.damazio.notifier.NotifierConstants;
+import org.damazio.notifier.command.CommandHistory;
 
 import android.content.Context;
 import android.util.Log;
@@ -46,8 +47,8 @@ public class IpCommandListener extends CommandListener {
 
   private ServerSocketChannel serverSocketChannel;
 
-  public IpCommandListener(Context context) {
-    super(context);
+  public IpCommandListener(Context context, CommandHistory history) {
+    super(context, history);
   }
 
   @Override
@@ -78,10 +79,12 @@ public class IpCommandListener extends CommandListener {
   @Override
   public void shutdown() {
     Log.d(NotifierConstants.LOG_TAG, "No longer listening for IP commands");
-    try {
-      serverSocketChannel.close();
-    } catch (IOException e) {
-      Log.w(NotifierConstants.LOG_TAG, "Error closing socket", e);
+    if (serverSocketChannel != null) {
+      try {
+        serverSocketChannel.close();
+      } catch (IOException e) {
+        Log.w(NotifierConstants.LOG_TAG, "Error closing socket", e);
+      }
     }
 
     super.shutdown();

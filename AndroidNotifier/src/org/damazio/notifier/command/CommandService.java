@@ -51,6 +51,7 @@ public class CommandService implements OnSharedPreferenceChangeListener {
 
   private final Context context;
   private final NotifierPreferences preferences;
+  private final CommandHistory history;
 
   private DiscoveryService discoveryService;
   private BluetoothCommandListener bluetoothListener;
@@ -61,6 +62,7 @@ public class CommandService implements OnSharedPreferenceChangeListener {
   public CommandService(Context context, NotifierPreferences preferences) {
     this.context = context;
     this.preferences = preferences;
+    this.history = new CommandHistory();
   }
 
   public void start() {
@@ -104,20 +106,20 @@ public class CommandService implements OnSharedPreferenceChangeListener {
 
   private void startUsbListener() {
     if (usbListener == null) {
-      usbListener = new UsbCommandListener(context);
+      usbListener = new UsbCommandListener(context, history);
     }
   }
 
   private void startIpListener() {
     if (ipListener == null) {
-      ipListener = new IpCommandListener(context);
+      ipListener = new IpCommandListener(context, history);
       ipListener.start();
     }
   }
 
   private void startBluetoothListener() {
     if (bluetoothListener == null) {
-      bluetoothListener = new BluetoothCommandListener(context, preferences);
+      bluetoothListener = new BluetoothCommandListener(context, history, preferences);
       bluetoothListener.start();
     }
   }

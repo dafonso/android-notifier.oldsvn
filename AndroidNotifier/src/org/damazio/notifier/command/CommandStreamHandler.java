@@ -28,6 +28,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.security.GeneralSecurityException;
 
 import org.damazio.notifier.NotifierConstants;
@@ -59,9 +60,11 @@ public class CommandStreamHandler extends Thread {
   private final Closeable source;
   private final NotifierPreferences preferences;
   private final CommandHandlerFactory handlerFactory;
+  private final CommandHistory history;
 
-  public CommandStreamHandler(Context context, InputStream input, OutputStream output, Closeable source) {
+  public CommandStreamHandler(Context context, CommandHistory history, InputStream input, OutputStream output, Closeable source) {
     this.context = context;
+    this.history = history;
     this.originalInput = input;
     this.originalOutput = output;
     this.source = source;
@@ -71,7 +74,9 @@ public class CommandStreamHandler extends Thread {
 
   @Override
   public void run() {
-    long deviceId = Long.parseLong(DeviceIdProvider.getDeviceId(context), 16);
+    // Parse an unsigned long
+    String deviceIdStr = DeviceIdProvider.getDeviceId(context);
+    long deviceId = new BigInteger(deviceIdStr, 16).longValue();
 
     // Wrap with encryption if necessary
     InputStream inputStream = originalInput;
@@ -115,6 +120,13 @@ public class CommandStreamHandler extends Thread {
           continue;
         }
 
+        // Check that command wasn't already received (will happen if it's sent with more than one
+        // method).
+        if (!history.logRecentCommand(req.getCommandId())) {
+          // Duplicate command, ignore
+          continue;
+        }
+
         // Create a handler for the command
         CommandHandler handler = handlerFactory.createHandlerFor(req.getCommandType());
         if (handler == null) {
@@ -140,7 +152,7 @@ public class CommandStreamHandler extends Thread {
         }
         output.writeMessageNoTag(response);
       } catch (IOException e) {
-        Log.w(NotifierConstants.LOG_TAG, "Error writing command output", e);
+        Log.w(NotifierConstants.LOG_TAG, "Error in command I/O", e);
         break;
       }
     }

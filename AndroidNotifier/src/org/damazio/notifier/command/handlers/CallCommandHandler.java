@@ -61,6 +61,7 @@ class CallCommandHandler implements CommandHandler {
     Log.d(NotifierConstants.LOG_TAG, "Initiating call to " + phoneNumber);
 
     Intent intent = new Intent(Intent.ACTION_CALL);
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     intent.setData(Uri.parse("tel:" + Uri.encode(phoneNumber)));
     context.startActivity(intent);
 
