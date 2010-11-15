@@ -1,5 +1,5 @@
 //
-//  BluetoothDeviceMapper.m
+//  TargetDeviceMapper.m
 //  MacDroidNotifier
 //
 //  Copyright 2010 Rodrigo Damazio <rodrigo@damazio.org>
