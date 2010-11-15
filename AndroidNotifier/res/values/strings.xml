@@ -175,13 +175,13 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
     <!-- Notification contents -->
     <string name="ping_contents">Test notification</string>
-    <string name="sms_contents">SMS from %s: %s</string>
+    <string name="sms_contents">SMS from %1$s: %2$s</string>
     <string name="mms_contents">MMS from %s</string>
     <string name="unknown_number">Unknown number</string>
 
     <!-- These are composed, like "Charging, remaining charge: 75%".
          The %d%% is expected to be at the end. -->
-    <string name="battery_level">%s, remaining charge: %d%%</string>
+    <string name="battery_level">%1$s, remaining charge: %2$d%%</string>
     <string name="battery_level_unknown">%s, remaining charge unknown</string>
     <string name="battery_charging">Charging</string>
     <string name="battery_discharging">Discharging</string>

@@ -71,10 +71,10 @@
 
     <!-- Notification contents -->
     <string name="ping_contents">测试通告</string>
-    <string name="sms_contents">短信来自 %s: %s</string>
+    <string name="sms_contents">短信来自 %1$s: %2$s</string>
     <string name="mms_contents">彩信来自 %s</string>
     <string name="battery_level_separator">，</string>
-    <string name="battery_level">%s，手机电量: %d%%</string>
+    <string name="battery_level">%1$s，手机电量: %2$d%%</string>
     <string name="battery_level_unknown">%s，获取手机电量失败</string>
     <string name="battery_charging">正在充电</string>
     <string name="battery_discharging">正在放电</string>
