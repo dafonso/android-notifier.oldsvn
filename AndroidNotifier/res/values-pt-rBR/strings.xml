@@ -136,10 +136,10 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
     <!-- Notification contents -->
     <string name="ping_contents">Notificação de teste</string>
-    <string name="sms_contents">SMS de %s: %s</string>
+    <string name="sms_contents">SMS de %1$s: %2$s</string>
     <string name="mms_contents">MMS de %s</string>
     <string name="unknown_number">Número desconhecido</string>
-    <string name="battery_level">%s, carga restante: %d%%</string>
+    <string name="battery_level">%1$s, carga restante: %2$d%%</string>
     <string name="battery_level_unknown">%s, nível de bateria desconhecido</string>
     <string name="battery_charging">Carregando</string>
     <string name="battery_discharging">Descarregando</string>

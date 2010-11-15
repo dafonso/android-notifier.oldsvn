@@ -132,13 +132,13 @@
 
     <!-- Notification contents -->
     <string name="ping_contents">Test notificatie</string>
-    <string name="sms_contents">SMS van %s: %s</string>
+    <string name="sms_contents">SMS van %1$s: %2$s</string>
     <string name="mms_contents">MMS van %s</string>
     <string name="unknown_number">Onbekend nummer</string>
 
     <!-- These are composed, like "Charging, remaining charge: 75%".
          The %d%% is expected to be at the end. -->
-    <string name="battery_level">%s tijd tot opgeladen: %d%%</string>
+    <string name="battery_level">%1$s tijd tot opgeladen: %2$d%%</string>
     <string name="battery_level_unknown">%s, oplaadtijd onbekend</string>
     <string name="battery_charging">Opladen</string>
     <string name="battery_discharging">Ontladen</string>

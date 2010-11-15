@@ -119,13 +119,13 @@
 	
     <!-- Notification contents -->
     <string name="ping_contents">Testa rapport</string>
-    <string name="sms_contents">SMS från %s: %s</string>
+    <string name="sms_contents">SMS från %1$s: %2$s</string>
     <string name="mms_contents">MMS från %s</string>
     <string name="unknown_number">Okänt nummer</string>
 
     <!-- These are composed, like "Charging, remaining charge: 75%".
          The %d%% is expected to be at the end. -->
-    <string name="battery_level">%s, Återstående batteri: %d%%</string>
+    <string name="battery_level">%1$s, Återstående batteri: %2$d%%</string>
     <string name="battery_level_unknown">%s, Återstående batter är okänt</string>
     <string name="battery_charging">Laddar</string>
     <string name="battery_discharging">Urladdning</string>
