@@ -185,6 +185,7 @@ public class Main {
 
 	private static boolean getExclusiveExecutionLock() throws IOException {
 		File lockFile = new File(OperatingSystems.getWorkDirectory(), Application.ARTIFACT_ID + ".lock");
+		Files.createParentDirs(lockFile);
 		lockFile.createNewFile();
 		final RandomAccessFile randomAccessFile = new RandomAccessFile(lockFile, "rw");
 		final FileChannel fileChannel = randomAccessFile.getChannel();
