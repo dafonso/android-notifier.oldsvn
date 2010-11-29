@@ -41,6 +41,7 @@ public class GrowlNotificationBroadcaster extends RestartableService implements 
 
 	public static final String APPLICATION_ICON = "app-icon.png";
 
+	private static final int GROWL_CONNECTION_ATTEMPTS = 10;
 	private static final long NOTIFY_TIMEOUT = 1;
 	private static final long SHUTDOWN_TIMEOUT = 10;
 
@@ -261,7 +262,7 @@ public class GrowlNotificationBroadcaster extends RestartableService implements 
 		public void onCommunicationError(Throwable t) {
 			logger.error("Error communicating with GNTP server", t);
 			if (t instanceof ConnectException &&
-				growlConnectionRetries > 7 &&
+				growlConnectionRetries > GROWL_CONNECTION_ATTEMPTS &&
 				!notifiedGrowlNotRunning) {
 				notifiedGrowlNotRunning = true;
 				application.showError(NOTIFICATION_ERROR_TITLE, "Growl is not running.");
