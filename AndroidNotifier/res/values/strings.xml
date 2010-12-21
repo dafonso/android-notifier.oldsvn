@@ -154,7 +154,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <string name="command_err_hangup_failed">Hangup failed: %s</string>
 
     <!-- Misc preferences -->
-    <string name="misc_title">Miscelaneous</string>
+    <string name="misc_title">Miscellaneous</string>
     <string name="send_test_notification">Send test notification</string>
     <string name="test_notification_summary">Useful for testing and pairing</string>
     <string name="ping_sent">Test notification sent</string>
