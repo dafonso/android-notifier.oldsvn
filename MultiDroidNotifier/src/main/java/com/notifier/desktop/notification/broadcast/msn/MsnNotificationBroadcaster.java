@@ -29,7 +29,10 @@ import net.sf.jml.impl.*;
 import com.google.common.base.*;
 import com.google.inject.*;
 import com.notifier.desktop.*;
+import com.notifier.desktop.notification.*;
+import com.notifier.desktop.notification.broadcast.*;
 
+@Singleton
 public class MsnNotificationBroadcaster extends RestartableService implements InstantMessagingNotificationBroadcaster {
 
 	private static final Logger logger = LoggerFactory.getLogger(MsnNotificationBroadcaster.class);

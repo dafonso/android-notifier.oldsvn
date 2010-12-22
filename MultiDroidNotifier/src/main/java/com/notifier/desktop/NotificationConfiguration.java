@@ -17,6 +17,8 @@
  */
 package com.notifier.desktop;
 
+import com.notifier.desktop.notification.*;
+
 public class NotificationConfiguration {
 
 	private final Notification.Type type;

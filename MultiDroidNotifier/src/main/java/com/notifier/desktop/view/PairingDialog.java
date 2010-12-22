@@ -22,8 +22,6 @@ import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 import org.slf4j.*;
 
-import com.notifier.desktop.*;
-
 public class PairingDialog extends Dialog {
 
 	private static final Logger logger = LoggerFactory.getLogger(PairingDialog.class);

@@ -1096,56 +1096,100 @@ public final class Protocol {
     // @@protoc_insertion_point(class_scope:android_notifier.Contact)
   }
   
-  public static final class DeviceAddresses extends
+  public static final class Discovery extends
       com.google.protobuf.GeneratedMessageLite {
-    // Use DeviceAddresses.newBuilder() to construct.
-    private DeviceAddresses() {
+    // Use Discovery.newBuilder() to construct.
+    private Discovery() {
       initFields();
     }
-    private DeviceAddresses(boolean noInit) {}
+    private Discovery(boolean noInit) {}
     
-    private static final DeviceAddresses defaultInstance;
-    public static DeviceAddresses getDefaultInstance() {
+    private static final Discovery defaultInstance;
+    public static Discovery getDefaultInstance() {
       return defaultInstance;
     }
     
-    public DeviceAddresses getDefaultInstanceForType() {
+    public Discovery getDefaultInstanceForType() {
       return defaultInstance;
     }
     
-    // repeated bytes ip_address = 1;
-    public static final int IP_ADDRESS_FIELD_NUMBER = 1;
-    private java.util.List<com.google.protobuf.ByteString> ipAddress_ =
+    // required string desktop_id = 1;
+    public static final int DESKTOP_ID_FIELD_NUMBER = 1;
+    private boolean hasDesktopId;
+    private java.lang.String desktopId_ = "";
+    public boolean hasDesktopId() { return hasDesktopId; }
+    public java.lang.String getDesktopId() { return desktopId_; }
+    
+    // required bytes ip_address = 2;
+    public static final int IP_ADDRESS_FIELD_NUMBER = 2;
+    private boolean hasIpAddress;
+    private com.google.protobuf.ByteString ipAddress_ = com.google.protobuf.ByteString.EMPTY;
+    public boolean hasIpAddress() { return hasIpAddress; }
+    public com.google.protobuf.ByteString getIpAddress() { return ipAddress_; }
+    
+    // required int32 ip_port = 3;
+    public static final int IP_PORT_FIELD_NUMBER = 3;
+    private boolean hasIpPort;
+    private int ipPort_ = 0;
+    public boolean hasIpPort() { return hasIpPort; }
+    public int getIpPort() { return ipPort_; }
+    
+    // optional string bluetooth_address = 4;
+    public static final int BLUETOOTH_ADDRESS_FIELD_NUMBER = 4;
+    private boolean hasBluetoothAddress;
+    private java.lang.String bluetoothAddress_ = "";
+    public boolean hasBluetoothAddress() { return hasBluetoothAddress; }
+    public java.lang.String getBluetoothAddress() { return bluetoothAddress_; }
+    
+    // required bool only_paired = 5;
+    public static final int ONLY_PAIRED_FIELD_NUMBER = 5;
+    private boolean hasOnlyPaired;
+    private boolean onlyPaired_ = false;
+    public boolean hasOnlyPaired() { return hasOnlyPaired; }
+    public boolean getOnlyPaired() { return onlyPaired_; }
+    
+    // repeated string paired_device_ids = 6;
+    public static final int PAIRED_DEVICE_IDS_FIELD_NUMBER = 6;
+    private java.util.List<java.lang.String> pairedDeviceIds_ =
       java.util.Collections.emptyList();
-    public java.util.List<com.google.protobuf.ByteString> getIpAddressList() {
-      return ipAddress_;
+    public java.util.List<java.lang.String> getPairedDeviceIdsList() {
+      return pairedDeviceIds_;
     }
-    public int getIpAddressCount() { return ipAddress_.size(); }
-    public com.google.protobuf.ByteString getIpAddress(int index) {
-      return ipAddress_.get(index);
+    public int getPairedDeviceIdsCount() { return pairedDeviceIds_.size(); }
+    public java.lang.String getPairedDeviceIds(int index) {
+      return pairedDeviceIds_.get(index);
     }
-    
-    // optional bytes bluetooth_mac = 2;
-    public static final int BLUETOOTH_MAC_FIELD_NUMBER = 2;
-    private boolean hasBluetoothMac;
-    private com.google.protobuf.ByteString bluetoothMac_ = com.google.protobuf.ByteString.EMPTY;
-    public boolean hasBluetoothMac() { return hasBluetoothMac; }
-    public com.google.protobuf.ByteString getBluetoothMac() { return bluetoothMac_; }
     
     private void initFields() {
     }
     public final boolean isInitialized() {
+      if (!hasDesktopId) return false;
+      if (!hasIpAddress) return false;
+      if (!hasIpPort) return false;
+      if (!hasOnlyPaired) return false;
       return true;
     }
     
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       getSerializedSize();
-      for (com.google.protobuf.ByteString element : getIpAddressList()) {
-        output.writeBytes(1, element);
+      if (hasDesktopId()) {
+        output.writeString(1, getDesktopId());
       }
-      if (hasBluetoothMac()) {
-        output.writeBytes(2, getBluetoothMac());
+      if (hasIpAddress()) {
+        output.writeBytes(2, getIpAddress());
+      }
+      if (hasIpPort()) {
+        output.writeInt32(3, getIpPort());
+      }
+      if (hasBluetoothAddress()) {
+        output.writeString(4, getBluetoothAddress());
+      }
+      if (hasOnlyPaired()) {
+        output.writeBool(5, getOnlyPaired());
+      }
+      for (java.lang.String element : getPairedDeviceIdsList()) {
+        output.writeString(6, element);
       }
     }
     
@@ -1155,58 +1199,74 @@ public final class Protocol {
       if (size != -1) return size;
     
       size = 0;
+      if (hasDesktopId()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(1, getDesktopId());
+      }
+      if (hasIpAddress()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getIpAddress());
+      }
+      if (hasIpPort()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(3, getIpPort());
+      }
+      if (hasBluetoothAddress()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(4, getBluetoothAddress());
+      }
+      if (hasOnlyPaired()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(5, getOnlyPaired());
+      }
       {
         int dataSize = 0;
-        for (com.google.protobuf.ByteString element : getIpAddressList()) {
+        for (java.lang.String element : getPairedDeviceIdsList()) {
           dataSize += com.google.protobuf.CodedOutputStream
-            .computeBytesSizeNoTag(element);
+            .computeStringSizeNoTag(element);
         }
         size += dataSize;
-        size += 1 * getIpAddressList().size();
-      }
-      if (hasBluetoothMac()) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, getBluetoothMac());
+        size += 1 * getPairedDeviceIdsList().size();
       }
       memoizedSerializedSize = size;
       return size;
     }
     
-    public static com.notifier.protocol.Protocol.DeviceAddresses parseFrom(
+    public static com.notifier.protocol.Protocol.Discovery parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return newBuilder().mergeFrom(data).buildParsed();
     }
-    public static com.notifier.protocol.Protocol.DeviceAddresses parseFrom(
+    public static com.notifier.protocol.Protocol.Discovery parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return newBuilder().mergeFrom(data, extensionRegistry)
                .buildParsed();
     }
-    public static com.notifier.protocol.Protocol.DeviceAddresses parseFrom(byte[] data)
+    public static com.notifier.protocol.Protocol.Discovery parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return newBuilder().mergeFrom(data).buildParsed();
     }
-    public static com.notifier.protocol.Protocol.DeviceAddresses parseFrom(
+    public static com.notifier.protocol.Protocol.Discovery parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return newBuilder().mergeFrom(data, extensionRegistry)
                .buildParsed();
     }
-    public static com.notifier.protocol.Protocol.DeviceAddresses parseFrom(java.io.InputStream input)
+    public static com.notifier.protocol.Protocol.Discovery parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return newBuilder().mergeFrom(input).buildParsed();
     }
-    public static com.notifier.protocol.Protocol.DeviceAddresses parseFrom(
+    public static com.notifier.protocol.Protocol.Discovery parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return newBuilder().mergeFrom(input, extensionRegistry)
                .buildParsed();
     }
-    public static com.notifier.protocol.Protocol.DeviceAddresses parseDelimitedFrom(java.io.InputStream input)
+    public static com.notifier.protocol.Protocol.Discovery parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       Builder builder = newBuilder();
       if (builder.mergeDelimitedFrom(input)) {
@@ -1215,7 +1275,7 @@ public final class Protocol {
         return null;
       }
     }
-    public static com.notifier.protocol.Protocol.DeviceAddresses parseDelimitedFrom(
+    public static com.notifier.protocol.Protocol.Discovery parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -1226,12 +1286,12 @@ public final class Protocol {
         return null;
       }
     }
-    public static com.notifier.protocol.Protocol.DeviceAddresses parseFrom(
+    public static com.notifier.protocol.Protocol.Discovery parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return newBuilder().mergeFrom(input).buildParsed();
     }
-    public static com.notifier.protocol.Protocol.DeviceAddresses parseFrom(
+    public static com.notifier.protocol.Protocol.Discovery parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -1241,26 +1301,26 @@ public final class Protocol {
     
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.notifier.protocol.Protocol.DeviceAddresses prototype) {
+    public static Builder newBuilder(com.notifier.protocol.Protocol.Discovery prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
     
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageLite.Builder<
-          com.notifier.protocol.Protocol.DeviceAddresses, Builder> {
-      private com.notifier.protocol.Protocol.DeviceAddresses result;
+          com.notifier.protocol.Protocol.Discovery, Builder> {
+      private com.notifier.protocol.Protocol.Discovery result;
       
-      // Construct using com.notifier.protocol.Protocol.DeviceAddresses.newBuilder()
+      // Construct using com.notifier.protocol.Protocol.Discovery.newBuilder()
       private Builder() {}
       
       private static Builder create() {
         Builder builder = new Builder();
-        builder.result = new com.notifier.protocol.Protocol.DeviceAddresses();
+        builder.result = new com.notifier.protocol.Protocol.Discovery();
         return builder;
       }
       
-      protected com.notifier.protocol.Protocol.DeviceAddresses internalGetResult() {
+      protected com.notifier.protocol.Protocol.Discovery internalGetResult() {
         return result;
       }
       
@@ -1269,7 +1329,7 @@ public final class Protocol {
           throw new IllegalStateException(
             "Cannot call clear() after build().");
         }
-        result = new com.notifier.protocol.Protocol.DeviceAddresses();
+        result = new com.notifier.protocol.Protocol.Discovery();
         return this;
       }
       
@@ -1277,21 +1337,21 @@ public final class Protocol {
         return create().mergeFrom(result);
       }
       
-      public com.notifier.protocol.Protocol.DeviceAddresses getDefaultInstanceForType() {
-        return com.notifier.protocol.Protocol.DeviceAddresses.getDefaultInstance();
+      public com.notifier.protocol.Protocol.Discovery getDefaultInstanceForType() {
+        return com.notifier.protocol.Protocol.Discovery.getDefaultInstance();
       }
       
       public boolean isInitialized() {
         return result.isInitialized();
       }
-      public com.notifier.protocol.Protocol.DeviceAddresses build() {
+      public com.notifier.protocol.Protocol.Discovery build() {
         if (result != null && !isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return buildPartial();
       }
       
-      private com.notifier.protocol.Protocol.DeviceAddresses buildParsed()
+      private com.notifier.protocol.Protocol.Discovery buildParsed()
           throws com.google.protobuf.InvalidProtocolBufferException {
         if (!isInitialized()) {
           throw newUninitializedMessageException(
@@ -1300,30 +1360,42 @@ public final class Protocol {
         return buildPartial();
       }
       
-      public com.notifier.protocol.Protocol.DeviceAddresses buildPartial() {
+      public com.notifier.protocol.Protocol.Discovery buildPartial() {
         if (result == null) {
           throw new IllegalStateException(
             "build() has already been called on this Builder.");
         }
-        if (result.ipAddress_ != java.util.Collections.EMPTY_LIST) {
-          result.ipAddress_ =
-            java.util.Collections.unmodifiableList(result.ipAddress_);
+        if (result.pairedDeviceIds_ != java.util.Collections.EMPTY_LIST) {
+          result.pairedDeviceIds_ =
+            java.util.Collections.unmodifiableList(result.pairedDeviceIds_);
         }
-        com.notifier.protocol.Protocol.DeviceAddresses returnMe = result;
+        com.notifier.protocol.Protocol.Discovery returnMe = result;
         result = null;
         return returnMe;
       }
       
-      public Builder mergeFrom(com.notifier.protocol.Protocol.DeviceAddresses other) {
-        if (other == com.notifier.protocol.Protocol.DeviceAddresses.getDefaultInstance()) return this;
-        if (!other.ipAddress_.isEmpty()) {
-          if (result.ipAddress_.isEmpty()) {
-            result.ipAddress_ = new java.util.ArrayList<com.google.protobuf.ByteString>();
-          }
-          result.ipAddress_.addAll(other.ipAddress_);
+      public Builder mergeFrom(com.notifier.protocol.Protocol.Discovery other) {
+        if (other == com.notifier.protocol.Protocol.Discovery.getDefaultInstance()) return this;
+        if (other.hasDesktopId()) {
+          setDesktopId(other.getDesktopId());
         }
-        if (other.hasBluetoothMac()) {
-          setBluetoothMac(other.getBluetoothMac());
+        if (other.hasIpAddress()) {
+          setIpAddress(other.getIpAddress());
+        }
+        if (other.hasIpPort()) {
+          setIpPort(other.getIpPort());
+        }
+        if (other.hasBluetoothAddress()) {
+          setBluetoothAddress(other.getBluetoothAddress());
+        }
+        if (other.hasOnlyPaired()) {
+          setOnlyPaired(other.getOnlyPaired());
+        }
+        if (!other.pairedDeviceIds_.isEmpty()) {
+          if (result.pairedDeviceIds_.isEmpty()) {
+            result.pairedDeviceIds_ = new java.util.ArrayList<java.lang.String>();
+          }
+          result.pairedDeviceIds_.addAll(other.pairedDeviceIds_);
         }
         return this;
       }
@@ -1344,11 +1416,27 @@ public final class Protocol {
               break;
             }
             case 10: {
-              addIpAddress(input.readBytes());
+              setDesktopId(input.readString());
               break;
             }
             case 18: {
-              setBluetoothMac(input.readBytes());
+              setIpAddress(input.readBytes());
+              break;
+            }
+            case 24: {
+              setIpPort(input.readInt32());
+              break;
+            }
+            case 34: {
+              setBluetoothAddress(input.readString());
+              break;
+            }
+            case 40: {
+              setOnlyPaired(input.readBool());
+              break;
+            }
+            case 50: {
+              addPairedDeviceIds(input.readString());
               break;
             }
           }
@@ -1356,77 +1444,155 @@ public final class Protocol {
       }
       
       
-      // repeated bytes ip_address = 1;
-      public java.util.List<com.google.protobuf.ByteString> getIpAddressList() {
-        return java.util.Collections.unmodifiableList(result.ipAddress_);
+      // required string desktop_id = 1;
+      public boolean hasDesktopId() {
+        return result.hasDesktopId();
       }
-      public int getIpAddressCount() {
-        return result.getIpAddressCount();
+      public java.lang.String getDesktopId() {
+        return result.getDesktopId();
       }
-      public com.google.protobuf.ByteString getIpAddress(int index) {
-        return result.getIpAddress(index);
-      }
-      public Builder setIpAddress(int index, com.google.protobuf.ByteString value) {
+      public Builder setDesktopId(java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  result.ipAddress_.set(index, value);
+  result.hasDesktopId = true;
+        result.desktopId_ = value;
         return this;
       }
-      public Builder addIpAddress(com.google.protobuf.ByteString value) {
+      public Builder clearDesktopId() {
+        result.hasDesktopId = false;
+        result.desktopId_ = getDefaultInstance().getDesktopId();
+        return this;
+      }
+      
+      // required bytes ip_address = 2;
+      public boolean hasIpAddress() {
+        return result.hasIpAddress();
+      }
+      public com.google.protobuf.ByteString getIpAddress() {
+        return result.getIpAddress();
+      }
+      public Builder setIpAddress(com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  if (result.ipAddress_.isEmpty()) {
-          result.ipAddress_ = new java.util.ArrayList<com.google.protobuf.ByteString>();
-        }
-        result.ipAddress_.add(value);
-        return this;
-      }
-      public Builder addAllIpAddress(
-          java.lang.Iterable<? extends com.google.protobuf.ByteString> values) {
-        if (result.ipAddress_.isEmpty()) {
-          result.ipAddress_ = new java.util.ArrayList<com.google.protobuf.ByteString>();
-        }
-        super.addAll(values, result.ipAddress_);
+  result.hasIpAddress = true;
+        result.ipAddress_ = value;
         return this;
       }
       public Builder clearIpAddress() {
-        result.ipAddress_ = java.util.Collections.emptyList();
+        result.hasIpAddress = false;
+        result.ipAddress_ = getDefaultInstance().getIpAddress();
         return this;
       }
       
-      // optional bytes bluetooth_mac = 2;
-      public boolean hasBluetoothMac() {
-        return result.hasBluetoothMac();
+      // required int32 ip_port = 3;
+      public boolean hasIpPort() {
+        return result.hasIpPort();
       }
-      public com.google.protobuf.ByteString getBluetoothMac() {
-        return result.getBluetoothMac();
+      public int getIpPort() {
+        return result.getIpPort();
       }
-      public Builder setBluetoothMac(com.google.protobuf.ByteString value) {
+      public Builder setIpPort(int value) {
+        result.hasIpPort = true;
+        result.ipPort_ = value;
+        return this;
+      }
+      public Builder clearIpPort() {
+        result.hasIpPort = false;
+        result.ipPort_ = 0;
+        return this;
+      }
+      
+      // optional string bluetooth_address = 4;
+      public boolean hasBluetoothAddress() {
+        return result.hasBluetoothAddress();
+      }
+      public java.lang.String getBluetoothAddress() {
+        return result.getBluetoothAddress();
+      }
+      public Builder setBluetoothAddress(java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  result.hasBluetoothMac = true;
-        result.bluetoothMac_ = value;
+  result.hasBluetoothAddress = true;
+        result.bluetoothAddress_ = value;
         return this;
       }
-      public Builder clearBluetoothMac() {
-        result.hasBluetoothMac = false;
-        result.bluetoothMac_ = getDefaultInstance().getBluetoothMac();
+      public Builder clearBluetoothAddress() {
+        result.hasBluetoothAddress = false;
+        result.bluetoothAddress_ = getDefaultInstance().getBluetoothAddress();
         return this;
       }
       
-      // @@protoc_insertion_point(builder_scope:android_notifier.DeviceAddresses)
+      // required bool only_paired = 5;
+      public boolean hasOnlyPaired() {
+        return result.hasOnlyPaired();
+      }
+      public boolean getOnlyPaired() {
+        return result.getOnlyPaired();
+      }
+      public Builder setOnlyPaired(boolean value) {
+        result.hasOnlyPaired = true;
+        result.onlyPaired_ = value;
+        return this;
+      }
+      public Builder clearOnlyPaired() {
+        result.hasOnlyPaired = false;
+        result.onlyPaired_ = false;
+        return this;
+      }
+      
+      // repeated string paired_device_ids = 6;
+      public java.util.List<java.lang.String> getPairedDeviceIdsList() {
+        return java.util.Collections.unmodifiableList(result.pairedDeviceIds_);
+      }
+      public int getPairedDeviceIdsCount() {
+        return result.getPairedDeviceIdsCount();
+      }
+      public java.lang.String getPairedDeviceIds(int index) {
+        return result.getPairedDeviceIds(index);
+      }
+      public Builder setPairedDeviceIds(int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  result.pairedDeviceIds_.set(index, value);
+        return this;
+      }
+      public Builder addPairedDeviceIds(java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  if (result.pairedDeviceIds_.isEmpty()) {
+          result.pairedDeviceIds_ = new java.util.ArrayList<java.lang.String>();
+        }
+        result.pairedDeviceIds_.add(value);
+        return this;
+      }
+      public Builder addAllPairedDeviceIds(
+          java.lang.Iterable<? extends java.lang.String> values) {
+        if (result.pairedDeviceIds_.isEmpty()) {
+          result.pairedDeviceIds_ = new java.util.ArrayList<java.lang.String>();
+        }
+        super.addAll(values, result.pairedDeviceIds_);
+        return this;
+      }
+      public Builder clearPairedDeviceIds() {
+        result.pairedDeviceIds_ = java.util.Collections.emptyList();
+        return this;
+      }
+      
+      // @@protoc_insertion_point(builder_scope:android_notifier.Discovery)
     }
     
     static {
-      defaultInstance = new DeviceAddresses(true);
+      defaultInstance = new Discovery(true);
       com.notifier.protocol.Protocol.internalForceInit();
       defaultInstance.initFields();
     }
     
-    // @@protoc_insertion_point(class_scope:android_notifier.DeviceAddresses)
+    // @@protoc_insertion_point(class_scope:android_notifier.Discovery)
   }
   
   public static final class CommandRequest extends
@@ -3185,16 +3351,8 @@ public final class Protocol {
     public boolean hasSearchResults() { return hasSearchResults; }
     public com.notifier.protocol.Protocol.CommandResponse.SearchResults getSearchResults() { return searchResults_; }
     
-    // optional .android_notifier.DeviceAddresses discovery_result = 11;
-    public static final int DISCOVERY_RESULT_FIELD_NUMBER = 11;
-    private boolean hasDiscoveryResult;
-    private com.notifier.protocol.Protocol.DeviceAddresses discoveryResult_;
-    public boolean hasDiscoveryResult() { return hasDiscoveryResult; }
-    public com.notifier.protocol.Protocol.DeviceAddresses getDiscoveryResult() { return discoveryResult_; }
-    
     private void initFields() {
       searchResults_ = com.notifier.protocol.Protocol.CommandResponse.SearchResults.getDefaultInstance();
-      discoveryResult_ = com.notifier.protocol.Protocol.DeviceAddresses.getDefaultInstance();
     }
     public final boolean isInitialized() {
       if (!hasDeviceId) return false;
@@ -3223,9 +3381,6 @@ public final class Protocol {
       if (hasSearchResults()) {
         output.writeMessage(10, getSearchResults());
       }
-      if (hasDiscoveryResult()) {
-        output.writeMessage(11, getDiscoveryResult());
-      }
     }
     
     private int memoizedSerializedSize = -1;
@@ -3253,10 +3408,6 @@ public final class Protocol {
       if (hasSearchResults()) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(10, getSearchResults());
-      }
-      if (hasDiscoveryResult()) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(11, getDiscoveryResult());
       }
       memoizedSerializedSize = size;
       return size;
@@ -3417,9 +3568,6 @@ public final class Protocol {
         if (other.hasSearchResults()) {
           mergeSearchResults(other.getSearchResults());
         }
-        if (other.hasDiscoveryResult()) {
-          mergeDiscoveryResult(other.getDiscoveryResult());
-        }
         return this;
       }
       
@@ -3461,15 +3609,6 @@ public final class Protocol {
               }
               input.readMessage(subBuilder, extensionRegistry);
               setSearchResults(subBuilder.buildPartial());
-              break;
-            }
-            case 90: {
-              com.notifier.protocol.Protocol.DeviceAddresses.Builder subBuilder = com.notifier.protocol.Protocol.DeviceAddresses.newBuilder();
-              if (hasDiscoveryResult()) {
-                subBuilder.mergeFrom(getDiscoveryResult());
-              }
-              input.readMessage(subBuilder, extensionRegistry);
-              setDiscoveryResult(subBuilder.buildPartial());
               break;
             }
           }
@@ -3589,43 +3728,6 @@ public final class Protocol {
         return this;
       }
       
-      // optional .android_notifier.DeviceAddresses discovery_result = 11;
-      public boolean hasDiscoveryResult() {
-        return result.hasDiscoveryResult();
-      }
-      public com.notifier.protocol.Protocol.DeviceAddresses getDiscoveryResult() {
-        return result.getDiscoveryResult();
-      }
-      public Builder setDiscoveryResult(com.notifier.protocol.Protocol.DeviceAddresses value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        result.hasDiscoveryResult = true;
-        result.discoveryResult_ = value;
-        return this;
-      }
-      public Builder setDiscoveryResult(com.notifier.protocol.Protocol.DeviceAddresses.Builder builderForValue) {
-        result.hasDiscoveryResult = true;
-        result.discoveryResult_ = builderForValue.build();
-        return this;
-      }
-      public Builder mergeDiscoveryResult(com.notifier.protocol.Protocol.DeviceAddresses value) {
-        if (result.hasDiscoveryResult() &&
-            result.discoveryResult_ != com.notifier.protocol.Protocol.DeviceAddresses.getDefaultInstance()) {
-          result.discoveryResult_ =
-            com.notifier.protocol.Protocol.DeviceAddresses.newBuilder(result.discoveryResult_).mergeFrom(value).buildPartial();
-        } else {
-          result.discoveryResult_ = value;
-        }
-        result.hasDiscoveryResult = true;
-        return this;
-      }
-      public Builder clearDiscoveryResult() {
-        result.hasDiscoveryResult = false;
-        result.discoveryResult_ = com.notifier.protocol.Protocol.DeviceAddresses.getDefaultInstance();
-        return this;
-      }
-      
       // @@protoc_insertion_point(builder_scope:android_notifier.CommandResponse)
     }
     
@@ -3636,577 +3738,6 @@ public final class Protocol {
     }
     
     // @@protoc_insertion_point(class_scope:android_notifier.CommandResponse)
-  }
-  
-  public static final class CommandDiscoveryRequest extends
-      com.google.protobuf.GeneratedMessageLite {
-    // Use CommandDiscoveryRequest.newBuilder() to construct.
-    private CommandDiscoveryRequest() {
-      initFields();
-    }
-    private CommandDiscoveryRequest(boolean noInit) {}
-    
-    private static final CommandDiscoveryRequest defaultInstance;
-    public static CommandDiscoveryRequest getDefaultInstance() {
-      return defaultInstance;
-    }
-    
-    public CommandDiscoveryRequest getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-    
-    // required fixed64 device_id = 1;
-    public static final int DEVICE_ID_FIELD_NUMBER = 1;
-    private boolean hasDeviceId;
-    private long deviceId_ = 0L;
-    public boolean hasDeviceId() { return hasDeviceId; }
-    public long getDeviceId() { return deviceId_; }
-    
-    private void initFields() {
-    }
-    public final boolean isInitialized() {
-      if (!hasDeviceId) return false;
-      return true;
-    }
-    
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (hasDeviceId()) {
-        output.writeFixed64(1, getDeviceId());
-      }
-    }
-    
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-    
-      size = 0;
-      if (hasDeviceId()) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeFixed64Size(1, getDeviceId());
-      }
-      memoizedSerializedSize = size;
-      return size;
-    }
-    
-    public static com.notifier.protocol.Protocol.CommandDiscoveryRequest parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
-    }
-    public static com.notifier.protocol.Protocol.CommandDiscoveryRequest parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
-    }
-    public static com.notifier.protocol.Protocol.CommandDiscoveryRequest parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
-    }
-    public static com.notifier.protocol.Protocol.CommandDiscoveryRequest parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
-    }
-    public static com.notifier.protocol.Protocol.CommandDiscoveryRequest parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
-    }
-    public static com.notifier.protocol.Protocol.CommandDiscoveryRequest parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
-    }
-    public static com.notifier.protocol.Protocol.CommandDiscoveryRequest parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
-    }
-    public static com.notifier.protocol.Protocol.CommandDiscoveryRequest parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
-    }
-    public static com.notifier.protocol.Protocol.CommandDiscoveryRequest parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
-    }
-    public static com.notifier.protocol.Protocol.CommandDiscoveryRequest parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
-    }
-    
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.notifier.protocol.Protocol.CommandDiscoveryRequest prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-    
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageLite.Builder<
-          com.notifier.protocol.Protocol.CommandDiscoveryRequest, Builder> {
-      private com.notifier.protocol.Protocol.CommandDiscoveryRequest result;
-      
-      // Construct using com.notifier.protocol.Protocol.CommandDiscoveryRequest.newBuilder()
-      private Builder() {}
-      
-      private static Builder create() {
-        Builder builder = new Builder();
-        builder.result = new com.notifier.protocol.Protocol.CommandDiscoveryRequest();
-        return builder;
-      }
-      
-      protected com.notifier.protocol.Protocol.CommandDiscoveryRequest internalGetResult() {
-        return result;
-      }
-      
-      public Builder clear() {
-        if (result == null) {
-          throw new IllegalStateException(
-            "Cannot call clear() after build().");
-        }
-        result = new com.notifier.protocol.Protocol.CommandDiscoveryRequest();
-        return this;
-      }
-      
-      public Builder clone() {
-        return create().mergeFrom(result);
-      }
-      
-      public com.notifier.protocol.Protocol.CommandDiscoveryRequest getDefaultInstanceForType() {
-        return com.notifier.protocol.Protocol.CommandDiscoveryRequest.getDefaultInstance();
-      }
-      
-      public boolean isInitialized() {
-        return result.isInitialized();
-      }
-      public com.notifier.protocol.Protocol.CommandDiscoveryRequest build() {
-        if (result != null && !isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return buildPartial();
-      }
-      
-      private com.notifier.protocol.Protocol.CommandDiscoveryRequest buildParsed()
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        if (!isInitialized()) {
-          throw newUninitializedMessageException(
-            result).asInvalidProtocolBufferException();
-        }
-        return buildPartial();
-      }
-      
-      public com.notifier.protocol.Protocol.CommandDiscoveryRequest buildPartial() {
-        if (result == null) {
-          throw new IllegalStateException(
-            "build() has already been called on this Builder.");
-        }
-        com.notifier.protocol.Protocol.CommandDiscoveryRequest returnMe = result;
-        result = null;
-        return returnMe;
-      }
-      
-      public Builder mergeFrom(com.notifier.protocol.Protocol.CommandDiscoveryRequest other) {
-        if (other == com.notifier.protocol.Protocol.CommandDiscoveryRequest.getDefaultInstance()) return this;
-        if (other.hasDeviceId()) {
-          setDeviceId(other.getDeviceId());
-        }
-        return this;
-      }
-      
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        while (true) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              return this;
-            default: {
-              if (!parseUnknownField(input, extensionRegistry, tag)) {
-                return this;
-              }
-              break;
-            }
-            case 9: {
-              setDeviceId(input.readFixed64());
-              break;
-            }
-          }
-        }
-      }
-      
-      
-      // required fixed64 device_id = 1;
-      public boolean hasDeviceId() {
-        return result.hasDeviceId();
-      }
-      public long getDeviceId() {
-        return result.getDeviceId();
-      }
-      public Builder setDeviceId(long value) {
-        result.hasDeviceId = true;
-        result.deviceId_ = value;
-        return this;
-      }
-      public Builder clearDeviceId() {
-        result.hasDeviceId = false;
-        result.deviceId_ = 0L;
-        return this;
-      }
-      
-      // @@protoc_insertion_point(builder_scope:android_notifier.CommandDiscoveryRequest)
-    }
-    
-    static {
-      defaultInstance = new CommandDiscoveryRequest(true);
-      com.notifier.protocol.Protocol.internalForceInit();
-      defaultInstance.initFields();
-    }
-    
-    // @@protoc_insertion_point(class_scope:android_notifier.CommandDiscoveryRequest)
-  }
-  
-  public static final class CommandDiscoveryReply extends
-      com.google.protobuf.GeneratedMessageLite {
-    // Use CommandDiscoveryReply.newBuilder() to construct.
-    private CommandDiscoveryReply() {
-      initFields();
-    }
-    private CommandDiscoveryReply(boolean noInit) {}
-    
-    private static final CommandDiscoveryReply defaultInstance;
-    public static CommandDiscoveryReply getDefaultInstance() {
-      return defaultInstance;
-    }
-    
-    public CommandDiscoveryReply getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-    
-    // required fixed64 device_id = 1;
-    public static final int DEVICE_ID_FIELD_NUMBER = 1;
-    private boolean hasDeviceId;
-    private long deviceId_ = 0L;
-    public boolean hasDeviceId() { return hasDeviceId; }
-    public long getDeviceId() { return deviceId_; }
-    
-    // required .android_notifier.DeviceAddresses addresses = 2;
-    public static final int ADDRESSES_FIELD_NUMBER = 2;
-    private boolean hasAddresses;
-    private com.notifier.protocol.Protocol.DeviceAddresses addresses_;
-    public boolean hasAddresses() { return hasAddresses; }
-    public com.notifier.protocol.Protocol.DeviceAddresses getAddresses() { return addresses_; }
-    
-    private void initFields() {
-      addresses_ = com.notifier.protocol.Protocol.DeviceAddresses.getDefaultInstance();
-    }
-    public final boolean isInitialized() {
-      if (!hasDeviceId) return false;
-      if (!hasAddresses) return false;
-      return true;
-    }
-    
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (hasDeviceId()) {
-        output.writeFixed64(1, getDeviceId());
-      }
-      if (hasAddresses()) {
-        output.writeMessage(2, getAddresses());
-      }
-    }
-    
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-    
-      size = 0;
-      if (hasDeviceId()) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeFixed64Size(1, getDeviceId());
-      }
-      if (hasAddresses()) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, getAddresses());
-      }
-      memoizedSerializedSize = size;
-      return size;
-    }
-    
-    public static com.notifier.protocol.Protocol.CommandDiscoveryReply parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
-    }
-    public static com.notifier.protocol.Protocol.CommandDiscoveryReply parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
-    }
-    public static com.notifier.protocol.Protocol.CommandDiscoveryReply parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
-    }
-    public static com.notifier.protocol.Protocol.CommandDiscoveryReply parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
-    }
-    public static com.notifier.protocol.Protocol.CommandDiscoveryReply parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
-    }
-    public static com.notifier.protocol.Protocol.CommandDiscoveryReply parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
-    }
-    public static com.notifier.protocol.Protocol.CommandDiscoveryReply parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
-    }
-    public static com.notifier.protocol.Protocol.CommandDiscoveryReply parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
-    }
-    public static com.notifier.protocol.Protocol.CommandDiscoveryReply parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
-    }
-    public static com.notifier.protocol.Protocol.CommandDiscoveryReply parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
-    }
-    
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.notifier.protocol.Protocol.CommandDiscoveryReply prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-    
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageLite.Builder<
-          com.notifier.protocol.Protocol.CommandDiscoveryReply, Builder> {
-      private com.notifier.protocol.Protocol.CommandDiscoveryReply result;
-      
-      // Construct using com.notifier.protocol.Protocol.CommandDiscoveryReply.newBuilder()
-      private Builder() {}
-      
-      private static Builder create() {
-        Builder builder = new Builder();
-        builder.result = new com.notifier.protocol.Protocol.CommandDiscoveryReply();
-        return builder;
-      }
-      
-      protected com.notifier.protocol.Protocol.CommandDiscoveryReply internalGetResult() {
-        return result;
-      }
-      
-      public Builder clear() {
-        if (result == null) {
-          throw new IllegalStateException(
-            "Cannot call clear() after build().");
-        }
-        result = new com.notifier.protocol.Protocol.CommandDiscoveryReply();
-        return this;
-      }
-      
-      public Builder clone() {
-        return create().mergeFrom(result);
-      }
-      
-      public com.notifier.protocol.Protocol.CommandDiscoveryReply getDefaultInstanceForType() {
-        return com.notifier.protocol.Protocol.CommandDiscoveryReply.getDefaultInstance();
-      }
-      
-      public boolean isInitialized() {
-        return result.isInitialized();
-      }
-      public com.notifier.protocol.Protocol.CommandDiscoveryReply build() {
-        if (result != null && !isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return buildPartial();
-      }
-      
-      private com.notifier.protocol.Protocol.CommandDiscoveryReply buildParsed()
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        if (!isInitialized()) {
-          throw newUninitializedMessageException(
-            result).asInvalidProtocolBufferException();
-        }
-        return buildPartial();
-      }
-      
-      public com.notifier.protocol.Protocol.CommandDiscoveryReply buildPartial() {
-        if (result == null) {
-          throw new IllegalStateException(
-            "build() has already been called on this Builder.");
-        }
-        com.notifier.protocol.Protocol.CommandDiscoveryReply returnMe = result;
-        result = null;
-        return returnMe;
-      }
-      
-      public Builder mergeFrom(com.notifier.protocol.Protocol.CommandDiscoveryReply other) {
-        if (other == com.notifier.protocol.Protocol.CommandDiscoveryReply.getDefaultInstance()) return this;
-        if (other.hasDeviceId()) {
-          setDeviceId(other.getDeviceId());
-        }
-        if (other.hasAddresses()) {
-          mergeAddresses(other.getAddresses());
-        }
-        return this;
-      }
-      
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        while (true) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              return this;
-            default: {
-              if (!parseUnknownField(input, extensionRegistry, tag)) {
-                return this;
-              }
-              break;
-            }
-            case 9: {
-              setDeviceId(input.readFixed64());
-              break;
-            }
-            case 18: {
-              com.notifier.protocol.Protocol.DeviceAddresses.Builder subBuilder = com.notifier.protocol.Protocol.DeviceAddresses.newBuilder();
-              if (hasAddresses()) {
-                subBuilder.mergeFrom(getAddresses());
-              }
-              input.readMessage(subBuilder, extensionRegistry);
-              setAddresses(subBuilder.buildPartial());
-              break;
-            }
-          }
-        }
-      }
-      
-      
-      // required fixed64 device_id = 1;
-      public boolean hasDeviceId() {
-        return result.hasDeviceId();
-      }
-      public long getDeviceId() {
-        return result.getDeviceId();
-      }
-      public Builder setDeviceId(long value) {
-        result.hasDeviceId = true;
-        result.deviceId_ = value;
-        return this;
-      }
-      public Builder clearDeviceId() {
-        result.hasDeviceId = false;
-        result.deviceId_ = 0L;
-        return this;
-      }
-      
-      // required .android_notifier.DeviceAddresses addresses = 2;
-      public boolean hasAddresses() {
-        return result.hasAddresses();
-      }
-      public com.notifier.protocol.Protocol.DeviceAddresses getAddresses() {
-        return result.getAddresses();
-      }
-      public Builder setAddresses(com.notifier.protocol.Protocol.DeviceAddresses value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        result.hasAddresses = true;
-        result.addresses_ = value;
-        return this;
-      }
-      public Builder setAddresses(com.notifier.protocol.Protocol.DeviceAddresses.Builder builderForValue) {
-        result.hasAddresses = true;
-        result.addresses_ = builderForValue.build();
-        return this;
-      }
-      public Builder mergeAddresses(com.notifier.protocol.Protocol.DeviceAddresses value) {
-        if (result.hasAddresses() &&
-            result.addresses_ != com.notifier.protocol.Protocol.DeviceAddresses.getDefaultInstance()) {
-          result.addresses_ =
-            com.notifier.protocol.Protocol.DeviceAddresses.newBuilder(result.addresses_).mergeFrom(value).buildPartial();
-        } else {
-          result.addresses_ = value;
-        }
-        result.hasAddresses = true;
-        return this;
-      }
-      public Builder clearAddresses() {
-        result.hasAddresses = false;
-        result.addresses_ = com.notifier.protocol.Protocol.DeviceAddresses.getDefaultInstance();
-        return this;
-      }
-      
-      // @@protoc_insertion_point(builder_scope:android_notifier.CommandDiscoveryReply)
-    }
-    
-    static {
-      defaultInstance = new CommandDiscoveryReply(true);
-      com.notifier.protocol.Protocol.internalForceInit();
-      defaultInstance.initFields();
-    }
-    
-    // @@protoc_insertion_point(class_scope:android_notifier.CommandDiscoveryReply)
   }
   
   

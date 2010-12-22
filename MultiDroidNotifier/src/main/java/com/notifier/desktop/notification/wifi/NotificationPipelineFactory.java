@@ -25,6 +25,8 @@ import org.jboss.netty.handler.timeout.*;
 import org.jboss.netty.util.*;
 
 import com.notifier.desktop.*;
+import com.notifier.desktop.notification.*;
+import com.notifier.desktop.notification.parsing.*;
 
 public class NotificationPipelineFactory implements ChannelPipelineFactory {
 

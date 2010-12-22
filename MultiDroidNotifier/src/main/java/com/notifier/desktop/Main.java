@@ -17,32 +17,22 @@
  */
 package com.notifier.desktop;
 
-import static java.util.concurrent.TimeUnit.*;
-
 import java.io.*;
 import java.nio.channels.*;
 import java.util.*;
-import java.util.concurrent.*;
 
 import org.apache.commons.cli.*;
 import org.slf4j.*;
 
 import com.google.common.io.*;
-import com.google.common.util.concurrent.*;
 import com.google.inject.*;
-import com.notifier.desktop.annotation.*;
-import com.notifier.desktop.app.*;
-import com.notifier.desktop.notification.*;
-import com.notifier.desktop.notification.bluetooth.*;
-import com.notifier.desktop.notification.broadcast.*;
-import com.notifier.desktop.notification.broadcast.msn.*;
-import com.notifier.desktop.notification.upnp.*;
-import com.notifier.desktop.notification.usb.*;
-import com.notifier.desktop.notification.wifi.*;
-import com.notifier.desktop.parsing.*;
+import com.notifier.desktop.os.*;
 import com.notifier.desktop.service.*;
-import com.notifier.desktop.tray.*;
+import com.notifier.desktop.service.impl.*;
 import com.notifier.desktop.view.*;
+import com.notifier.desktop.view.impl.*;
+
+import static java.util.concurrent.TimeUnit.*;
 
 public class Main {
 
@@ -105,59 +95,12 @@ public class Main {
 				showMessage("There can be only one instance of " + Application.NAME + " running at a time");
 				return;
 			}
-			Injector injector = Guice.createInjector(Stage.PRODUCTION, new Module());
+			Injector injector = Guice.createInjector(Stage.PRODUCTION, new ApplicationModule());
 			Application application = injector.getInstance(Application.class);
 			application.start(trayIcon, showPreferences);
 		} catch (Throwable t) {
 			System.out.println(t.getMessage());
 			logger.error("Error starting", t);
-		}
-	}
-
-	public static class Module extends AbstractModule {
-		@Override
-		protected void configure() {
-			bind(Application.class).to(ApplicationImpl.class).in(Singleton.class);
-			bind(NotificationManager.class).to(NotificationManagerImpl.class).in(Singleton.class);
-			bind(new TypeLiteral<NotificationParser<byte[]>>() {}).to(MultiNotificationParser.class).in(Singleton.class);
-
-			bind(NotificationBroadcaster.class).annotatedWith(Tray.class).to(TrayNotificationBroadcaster.class).in(Singleton.class);
-			bind(NotificationBroadcaster.class).annotatedWith(Growl.class).to(GrowlNotificationBroadcaster.class).in(Singleton.class);
-			bind(NotificationBroadcaster.class).annotatedWith(Libnotify.class).to(LibnotifyNotificationBroadcaster.class).in(Singleton.class);
-			bind(InstantMessagingNotificationBroadcaster.class).annotatedWith(Msn.class).to(MsnNotificationBroadcaster.class).in(Singleton.class);
-
-			bind(NotificationReceiver.class).annotatedWith(Tcp.class).to(TcpNotificationReceiver.class).in(Singleton.class);
-			bind(NotificationReceiver.class).annotatedWith(Udp.class).to(UdpNotificationReceiver.class).in(Singleton.class);
-			bind(NotificationReceiver.class).annotatedWith(Upnp.class).to(UpnpNotificationReceiver.class).in(Singleton.class);
-			bind(NotificationReceiver.class).annotatedWith(Bluetooth.class).to(BluetoothNotificationReceiver.class).in(Singleton.class);
-			bind(UsbNotificationReceiver.class).to(UsbNotificationReceiverImpl.class).in(Singleton.class);
-			bind(UsbPortForwarder.class);
-			bind(UsbPortClient.class);
-
-			bind(PreferencesDialog.class);
-			bind(TrayManager.class).to(SwtTrayManager.class).in(Singleton.class);
-			bind(SwtManager.class).to(SwtManagerImpl.class).in(Singleton.class);
-
-			bind(OperatingSystemProcessManager.class).to(OperatingSystemProcessManagerImpl.class).in(Singleton.class);
-			bind(UpdateManager.class).to(UpdateManagerImpl.class).in(Singleton.class);
-			bind(ServiceServer.class).to(ServiceServerImpl.class).in(Singleton.class);
-
-			ThreadFactoryBuilder threadFactoryBuilder = new ThreadFactoryBuilder();
-			threadFactoryBuilder.setNameFormat("task-%s");
-			threadFactoryBuilder.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-				@Override
-				public void uncaughtException(Thread t, Throwable e) {
-					logger.error("Uncaught exception", e);
-				}
-			});
-			bind(ExecutorService.class).toInstance(Executors.newCachedThreadPool(threadFactoryBuilder.build()));
-		}
-
-		@Provides
-		ApplicationPreferences providePreferences() {
-			ApplicationPreferences preferences = new ApplicationPreferences();
-			preferences.read();
-			return preferences;
 		}
 	}
 

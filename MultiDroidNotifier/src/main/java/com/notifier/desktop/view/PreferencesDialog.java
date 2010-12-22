@@ -34,8 +34,14 @@ import com.google.inject.*;
 import com.notifier.desktop.*;
 import com.notifier.desktop.ApplicationPreferences.Group;
 import com.notifier.desktop.annotation.*;
-import com.notifier.desktop.app.*;
-import com.notifier.desktop.app.OperatingSystems.*;
+import com.notifier.desktop.device.*;
+import com.notifier.desktop.network.*;
+import com.notifier.desktop.notification.*;
+import com.notifier.desktop.notification.broadcast.*;
+import com.notifier.desktop.notification.parsing.*;
+import com.notifier.desktop.os.*;
+import com.notifier.desktop.os.OperatingSystems.*;
+import com.notifier.desktop.transport.usb.*;
 import com.notifier.desktop.util.*;
 
 public class PreferencesDialog extends Dialog {
@@ -52,10 +58,12 @@ public class PreferencesDialog extends Dialog {
 
 	private @Inject Application application;
 	private @Inject ApplicationPreferences preferences;
+	private @Inject DeviceManager deviceManager;
 	private @Inject NotificationManager notificationManager;
+	private @Inject NetworkManager networkManager;
 	private @Inject NotificationParser<byte[]> notificationParser;
 	private @Inject @Msn InstantMessagingNotificationBroadcaster msnBroadcaster;
-	private @Inject UsbNotificationReceiver usbReceiverConfiguration;
+	private @Inject UsbTransport usbTransport;
 	private @Inject ExecutorService executorService;
 
 	private SwtManager swtManager;
@@ -94,7 +102,7 @@ public class PreferencesDialog extends Dialog {
 
 	private Button okButton;
 
-	private BiMap<Long, String> pairedDevices;
+	private BiMap<String, String> pairedDevices;
 
 	@Inject
 	public PreferencesDialog(SwtManager swtManager) {
@@ -224,9 +232,9 @@ public class PreferencesDialog extends Dialog {
 			// This description is for information and help configuring the android app
 			// This app will bind to all available network interfaces to maximize chances of success
 			String hostDescription;
-			String localHostName = InetAddresses.getLocalHostName();
-			String localHostAddress = InetAddresses.getLocalHostAddress();
-			if (localHostName == null && localHostAddress == null) {
+			String localHostName = networkManager.getLocalHostName();
+			String localHostAddress = networkManager.getLocalHostAddress().getHostAddress();
+			if (localHostAddress == null) {
 				hostDescription = "";
 			} else {
 				hostDescription = "(";
@@ -242,7 +250,7 @@ public class PreferencesDialog extends Dialog {
 				public void handleEvent(Event event) {
 					final boolean enabled = wifiCheckbox.getSelection();
 					if (!enabled && preferences.isReceptionWithUpnp()) {
-						application.adjustUpnpReceiver(false);
+						application.adjustUpnpManager(false);
 						preferences.setReceptionWithUpnp(false);
 						swtManager.update(new Runnable() {
 							@Override
@@ -253,7 +261,7 @@ public class PreferencesDialog extends Dialog {
 							}
 						});
 					}
-					Future<Service.State> future = application.adjustWifiReceiver(enabled);
+					Future<Service.State> future = application.adjustWifiTransport(enabled);
 					new ServiceAdjustListener(future, wifiCheckbox, new PreferenceSetter() {
 						@Override
 						public void onSuccess() {
@@ -281,7 +289,7 @@ public class PreferencesDialog extends Dialog {
 				@Override
 				public void handleEvent(Event event) {
 					final boolean enabled = internetCheckbox.getSelection();
-					Future<Service.State> future = application.adjustUpnpReceiver(enabled);
+					Future<Service.State> future = application.adjustUpnpManager(enabled);
 					new ServiceAdjustListener(future, internetCheckbox, new PreferenceSetter() {
 						@Override
 						public void onSuccess() {
@@ -314,7 +322,7 @@ public class PreferencesDialog extends Dialog {
 				@Override
 				public void handleEvent(Event event) {
 					final boolean enabled = bluetoothCheckbox.getSelection();
-					Future<Service.State> future = application.adjustBluetoothReceiver(enabled);
+					Future<Service.State> future = application.adjustBluetoothTransport(enabled);
 					new ServiceAdjustListener(future, bluetoothCheckbox, new PreferenceSetter() {
 						@Override
 						public void onSuccess() {
@@ -347,7 +355,7 @@ public class PreferencesDialog extends Dialog {
 							return;
 						}
 					}
-					Future<Service.State> future = application.adjustUsbReceiver(enabled);
+					Future<Service.State> future = application.adjustUsbTransport(enabled);
 					new ServiceAdjustListener(future, usbCheckbox, new PreferenceSetter() {
 						@Override
 						public void onSuccess() {
@@ -726,7 +734,7 @@ public class PreferencesDialog extends Dialog {
 			anyDeviceRadioButton.addListener(SWT.Selection, new Listener() {
 				@Override
 				public void handleEvent(Event event) {
-					notificationManager.setReceptionFromAnyDevice(anyDeviceRadioButton.getSelection());
+					deviceManager.setReceptionFromAnyDevice(anyDeviceRadioButton.getSelection());
 					preferences.setReceptionFromAnyDevice(anyDeviceRadioButton.getSelection());
 					devicesList.setEnabled(false);
 					addDeviceButton.setEnabled(false);
@@ -744,7 +752,7 @@ public class PreferencesDialog extends Dialog {
 			onlyDeviceRadioButton.addListener(SWT.Selection, new Listener() {
 				@Override
 				public void handleEvent(Event event) {
-					notificationManager.setReceptionFromAnyDevice(!onlyDeviceRadioButton.getSelection());
+					deviceManager.setReceptionFromAnyDevice(!onlyDeviceRadioButton.getSelection());
 					preferences.setReceptionFromAnyDevice(!onlyDeviceRadioButton.getSelection());
 					devicesList.setEnabled(true);
 					addDeviceButton.setEnabled(true);
@@ -779,15 +787,15 @@ public class PreferencesDialog extends Dialog {
 					dialog.open(new Listener() {
 						@Override
 						public void handleEvent(Event cancelEvent) {
-							notificationManager.cancelWaitForPairing();
+							deviceManager.cancelWaitForPairing();
 							dialog.close();
 						}
 					});
-					notificationManager.waitForPairing(new NotificationManager.PairingListener() {
+					deviceManager.waitForPairing(new DeviceManager.PairingListener() {
 						@Override
-						public void onPairingSuccessful(final long deviceId) {
+						public void onPairingSuccessful(final String deviceId) {
 							if (!preferences.getAllowedDevicesIds().contains(deviceId)) {
-								notificationManager.cancelWaitForPairing();
+								deviceManager.cancelWaitForPairing();
 								swtManager.update(new Runnable() {
 									@Override
 									public void run() {
@@ -802,7 +810,7 @@ public class PreferencesDialog extends Dialog {
 												preferences.addAllowedDeviceId(deviceId, name);
 												pairedDevices.put(deviceId, name);
 												devicesList.add(name);
-												notificationManager.setPairedDevices(preferences.getAllowedDevices());
+												deviceManager.setPairedDevices(preferences.getAllowedDevices());
 												deviceDialog.close();
 												return true;
 											}
@@ -828,10 +836,10 @@ public class PreferencesDialog extends Dialog {
 					String[] items = devicesList.getSelection();
 					if (items.length > 0) {
 						String deviceName = items[0];
-						long deviceId = pairedDevices.inverse().get(deviceName);
+						String deviceId = pairedDevices.inverse().get(deviceName);
 						preferences.removeAllowedDeviceId(deviceId, deviceName);
 						devicesList.remove(deviceName);
-						notificationManager.setPairedDevices(preferences.getAllowedDevices());
+						deviceManager.setPairedDevices(preferences.getAllowedDevices());
 					}
 				}
 			});
@@ -1037,7 +1045,7 @@ public class PreferencesDialog extends Dialog {
 		String path = dialog.open();
 		if (path != null) {
 			try {
-				usbReceiverConfiguration.setSdkHome(path);
+				usbTransport.setSdkHome(path);
 				preferences.setAndroidSdkHome(path);
 			} catch (Exception e) {
 				application.showError("Android SDK Error", e.getMessage());

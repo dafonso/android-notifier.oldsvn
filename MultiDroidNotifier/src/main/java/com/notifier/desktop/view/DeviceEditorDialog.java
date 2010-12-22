@@ -22,14 +22,12 @@ import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 import org.slf4j.*;
 
-import com.notifier.desktop.*;
-
 public class DeviceEditorDialog extends Dialog {
 
 	private static final Logger logger = LoggerFactory.getLogger(DeviceEditorDialog.class);
 
 	private final SwtManager swtManager;
-	private final long deviceId;
+	private final String deviceId;
 	private final String suggestedDeviceName;
 
 	private Shell dialogShell;
@@ -37,7 +35,7 @@ public class DeviceEditorDialog extends Dialog {
 	private Text deviceNameText;
 	private Button okButton;
 
-	public DeviceEditorDialog(SwtManager swtManager, long deviceId, String suggestedDeviceName) {
+	public DeviceEditorDialog(SwtManager swtManager, String deviceId, String suggestedDeviceName) {
 		super(swtManager.getShell(), SWT.NULL);
 		this.swtManager = swtManager;
 		this.deviceId = deviceId;
