@@ -21,7 +21,7 @@ import org.jboss.netty.buffer.*;
 import org.jboss.netty.channel.*;
 import org.jboss.netty.handler.codec.oneone.*;
 
-import com.notifier.desktop.*;
+import com.notifier.desktop.notification.parsing.*;
 
 public class NotificationDecoder extends OneToOneDecoder {
 

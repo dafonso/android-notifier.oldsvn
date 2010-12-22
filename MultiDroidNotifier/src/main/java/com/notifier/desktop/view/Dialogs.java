@@ -21,7 +21,7 @@ import org.eclipse.swt.*;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.*;
 
-import com.notifier.desktop.*;
+import com.google.common.base.*;
 
 public class Dialogs {
 
@@ -51,6 +51,7 @@ public class Dialogs {
 	}
 
 	private static int showDialog(final SwtManager swtManager, final String title, final String message, boolean later, final int style) {
+		Preconditions.checkNotNull(message);
 		if (later) {
 			swtManager.update(new Runnable() {
 				@Override

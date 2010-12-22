@@ -18,7 +18,6 @@
 package com.notifier.desktop;
 
 import java.io.*;
-import java.math.*;
 import java.util.*;
 import java.util.prefs.*;
 
@@ -26,6 +25,7 @@ import org.slf4j.*;
 
 import com.google.common.base.*;
 import com.google.common.collect.*;
+import com.notifier.desktop.notification.*;
 
 public class ApplicationPreferences {
 
@@ -87,7 +87,7 @@ public class ApplicationPreferences {
 	private boolean displayWithMsn;
 
 	private boolean receptionFromAnyDevice;
-	private Set<Long> allowedDevicesIds;
+	private Set<String> allowedDevicesIds;
 	private List<String> allowedDevicesNames;
 
 	private Map<String, Object> notificationsSettings;
@@ -129,25 +129,13 @@ public class ApplicationPreferences {
 		displayWithMsn = prefs.getBoolean(DISPLAY_WITH_MSN, false);
 
 		receptionFromAnyDevice = prefs.getBoolean(RECEPTION_FROM_ANY_DEVICE, true);
-		Iterable<String> allowedIds = ALLOWED_DEVICES_SPLITTER.split(prefs.get(ALLOWED_DEVICES_IDS, ""));
-		Iterable<Long> allowedIdNumbers = Iterables.transform(allowedIds, new Function<String, Long>() {
-			@Override
-			public Long apply(String from) {
-				try {
-					return Long.parseLong(from);
-				} catch (NumberFormatException e) {
-					// If reading older preferences, ids will be in hex format
-					return new BigInteger(from, 16).longValue();
-				}
-			}
-		});
-		allowedDevicesIds = Sets.newTreeSet(allowedIdNumbers);
+		allowedDevicesIds = Sets.newHashSet(ALLOWED_DEVICES_SPLITTER.split(prefs.get(ALLOWED_DEVICES_IDS, "")));
 
 		allowedDevicesNames = Lists.newArrayList(ALLOWED_DEVICES_SPLITTER.split(prefs.get(ALLOWED_DEVICES_NAMES, "")));
 		if (allowedDevicesNames.size() != allowedDevicesIds.size()) { // Can happen if updating from older versions
 			allowedDevicesNames.clear();
-			for (Long deviceId : allowedDevicesIds) {
-				allowedDevicesNames.add(Long.toHexString(deviceId));
+			for (String deviceId : allowedDevicesIds) {
+				allowedDevicesNames.add(deviceId);
 			}
 		}
 
@@ -232,7 +220,7 @@ public class ApplicationPreferences {
 		}
 	}
 
-	public boolean addAllowedDeviceId(Long deviceId, String name) {
+	public boolean addAllowedDeviceId(String deviceId, String name) {
 		boolean added = allowedDevicesIds.add(deviceId);
 		if (added) {
 			allowedDevicesNames.add(name);
@@ -240,14 +228,14 @@ public class ApplicationPreferences {
 		return added;
 	}
 
-	public void removeAllowedDeviceId(Long deviceId, String name) {
+	public void removeAllowedDeviceId(String deviceId, String name) {
 		allowedDevicesIds.remove(deviceId);
 		allowedDevicesNames.remove(name);
 	}
 
-	public Map<Long, String> getAllowedDevices() {
-		Map<Long, String> devices = Maps.newHashMap();
-		Iterator<Long> ids = allowedDevicesIds.iterator();
+	public Map<String, String> getAllowedDevices() {
+		Map<String, String> devices = Maps.newHashMap();
+		Iterator<String> ids = allowedDevicesIds.iterator();
 		Iterator<String> names = allowedDevicesNames.iterator();
 		while (ids.hasNext()) {
 			devices.put(ids.next(), names.next());
@@ -436,7 +424,7 @@ public class ApplicationPreferences {
 		this.receptionFromAnyDevice = receptionFromAnyDevice;
 	}
 
-	public Set<Long> getAllowedDevicesIds() {
+	public Set<String> getAllowedDevicesIds() {
 		return ImmutableSet.copyOf(allowedDevicesIds);
 	}
 

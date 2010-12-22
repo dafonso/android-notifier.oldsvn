@@ -44,13 +44,13 @@ message Contact {
   // optional bytes picture = 5;
 }
 
-message DeviceAddresses {
-  // Zero or more IPv4 addresses for the device
-  // (in network order)
-  repeated bytes ip_address = 1;
-
-  // 6 bytes (the bluetooth mac address)
-  optional bytes bluetooth_mac = 2;
+message Discovery {
+  required string desktop_id = 1;
+  required bytes ip_address = 2;
+  required int32 ip_port = 3;
+  optional string bluetooth_address = 4;
+  required bool only_paired = 5;
+  repeated string paired_device_ids = 6;
 }
 
 message CommandRequest {
@@ -108,17 +108,4 @@ message CommandResponse {
     repeated Contact contacts = 1;
   }
   optional SearchResults search_results = 10;
-
-  optional DeviceAddresses discovery_result = 11;
-}
-
-// Discovery protocol for IP
-
-message CommandDiscoveryRequest {
-  required fixed64 device_id = 1;
-}
-
-message CommandDiscoveryReply {
-  required fixed64 device_id = 1;
-  required DeviceAddresses addresses = 2;
 }

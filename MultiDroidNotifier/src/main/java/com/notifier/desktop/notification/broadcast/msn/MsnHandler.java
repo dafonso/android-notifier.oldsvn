@@ -26,6 +26,7 @@ import org.slf4j.*;
 import com.google.common.base.Service.*;
 import com.google.common.io.*;
 import com.notifier.desktop.*;
+import com.notifier.desktop.notification.*;
 
 import net.sf.jml.*;
 import net.sf.jml.event.*;

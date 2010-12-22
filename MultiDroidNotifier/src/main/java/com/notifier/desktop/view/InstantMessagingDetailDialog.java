@@ -25,8 +25,7 @@ import org.eclipse.swt.widgets.*;
 import org.slf4j.*;
 
 import com.google.common.base.*;
-import com.notifier.desktop.*;
-import com.notifier.desktop.app.*;
+import com.notifier.desktop.os.*;
 
 public class InstantMessagingDetailDialog extends Dialog {
 

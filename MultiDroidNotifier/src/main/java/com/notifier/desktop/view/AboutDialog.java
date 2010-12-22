@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.*;
 import org.slf4j.*;
 
 import com.notifier.desktop.*;
+import com.notifier.desktop.update.*;
 
 public class AboutDialog extends org.eclipse.swt.widgets.Dialog {
 

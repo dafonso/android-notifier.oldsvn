@@ -23,6 +23,7 @@ import org.jboss.netty.channel.socket.*;
 import org.slf4j.*;
 
 import com.notifier.desktop.*;
+import com.notifier.desktop.notification.*;
 
 public class NotificationChannelHandler extends SimpleChannelHandler {
 
