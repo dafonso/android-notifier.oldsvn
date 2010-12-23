@@ -62,8 +62,14 @@ public class NioWifiTransport extends RestartableService implements WifiTranspor
 	private ChannelFactory udpFactory;
 	private ConnectionlessBootstrap udpBootstrap;
 
+	// UDP Notifications
+	private ChannelFactory udpNotificationFactory;
+	private ConnectionlessBootstrap udpNotificationBootstrap;
+	private ChannelGroup udpNotificationChannels;
+
 	public NioWifiTransport() {
 		tcpChannels = new DefaultChannelGroup("TCP");
+		udpNotificationChannels = new DefaultChannelGroup("UDP-Notification");
 	}
 
 	@Override
@@ -92,12 +98,14 @@ public class NioWifiTransport extends RestartableService implements WifiTranspor
 	protected void doStart() throws Exception {
 		startTcp();
 		startUdp();
+		startUdpNotification();
 	}
 
 	@Override
 	protected void doStop() throws Exception {
 		stopTcp();
 		stopUdp();
+		stopUdpNotification();
 	}
 
 	protected void startTcp() throws IOException {
@@ -152,6 +160,20 @@ public class NioWifiTransport extends RestartableService implements WifiTranspor
 	protected void stopUdp() {
 		if (udpFactory != null) {
 			udpFactory.releaseExternalResources();
+		}
+	}
+
+	protected void startUdpNotification() {
+		udpNotificationFactory = new OioDatagramChannelFactory(Executors.newCachedThreadPool());
+		udpNotificationBootstrap = new ConnectionlessBootstrap(udpNotificationFactory);
+		udpNotificationBootstrap.setPipelineFactory(new NotificationPipelineFactory(udpNotificationChannels, application, notificationManager, notificationParser, false, false));
+		udpNotificationBootstrap.bind(new InetSocketAddress(PREFERRED_PORT));
+	}
+
+	protected void stopUdpNotification() {
+		if (udpNotificationFactory != null) {
+			udpNotificationChannels.close().awaitUninterruptibly(SHUTDOWN_TIMEOUT);
+			udpNotificationFactory.releaseExternalResources();
 		}
 	}
 }
