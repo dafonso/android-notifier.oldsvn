@@ -33,7 +33,7 @@ public class DeviceManagerImpl extends RestartableService implements DeviceManag
 	private static final Logger logger = LoggerFactory.getLogger(DeviceManagerImpl.class);
 
 	private boolean receptionFromAnyDevice;
-	private Map<String, String> allowedDevices;
+	private Map<String, String> pairedDevices;
 
 	private AtomicBoolean waitingForPairing;
 	private PairingListener pairingListener;
@@ -42,7 +42,7 @@ public class DeviceManagerImpl extends RestartableService implements DeviceManag
 	public DeviceManagerImpl(Provider<ApplicationPreferences> preferencesProvider) {
 		ApplicationPreferences prefs = preferencesProvider.get();
 		this.receptionFromAnyDevice = prefs.isReceptionFromAnyDevice();
-		this.allowedDevices = prefs.getAllowedDevices();
+		this.pairedDevices = prefs.getAllowedDevices();
 		this.waitingForPairing = new AtomicBoolean();
 	}
 
@@ -79,6 +79,16 @@ public class DeviceManagerImpl extends RestartableService implements DeviceManag
 	}
 
 	@Override
+	public void pairDevice(String deviceId, String deviceName) {
+		pairedDevices.put(deviceId, deviceName);
+	}
+
+	@Override
+	public void unpairDevice(String deviceId) {
+		pairedDevices.remove(deviceId);
+	}
+
+	@Override
 	public boolean isReceptionFromAnyDevice() {
 		return receptionFromAnyDevice;
 	}
@@ -89,13 +99,18 @@ public class DeviceManagerImpl extends RestartableService implements DeviceManag
 	}
 
 	@Override
-	public Map<String, String> getPairedDevices() {
-		return allowedDevices;
+	public Collection<String> getPairedDeviceIds() {
+		return pairedDevices.keySet();
 	}
 
 	@Override
-	public void setPairedDevices(Map<String, String> allowedDevices) {
-		this.allowedDevices = allowedDevices;
+	public boolean isAllowedDeviceId(String deviceId) {
+		return isReceptionFromAnyDevice() || pairedDevices.containsKey(deviceId);
+	}
+
+	@Override
+	public String getDeviceName(String deviceId) {
+		return isReceptionFromAnyDevice() ? null : pairedDevices.get(deviceId);
 	}
 
 }

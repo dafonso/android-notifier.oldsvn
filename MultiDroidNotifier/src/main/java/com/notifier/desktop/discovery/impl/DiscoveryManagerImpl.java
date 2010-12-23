@@ -68,7 +68,7 @@ public class DiscoveryManagerImpl extends RestartableService implements Discover
 		String bluetoothAddress = bluetoothTransport.getAddress();
 
 		boolean onlyPaired = !deviceManager.isReceptionFromAnyDevice();
-		Collection<String> pairedDeviceIds = deviceManager.getPairedDevices().keySet();
+		Collection<String> pairedDeviceIds = deviceManager.getPairedDeviceIds();
 
 		if (ipAddress == null || macAddress == null) {
 			return null;
