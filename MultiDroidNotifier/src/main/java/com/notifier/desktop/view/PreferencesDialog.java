@@ -810,7 +810,7 @@ public class PreferencesDialog extends Dialog {
 												preferences.addAllowedDeviceId(deviceId, name);
 												pairedDevices.put(deviceId, name);
 												devicesList.add(name);
-												deviceManager.setPairedDevices(preferences.getAllowedDevices());
+												deviceManager.pairDevice(deviceId, name);
 												deviceDialog.close();
 												return true;
 											}
@@ -839,7 +839,7 @@ public class PreferencesDialog extends Dialog {
 						String deviceId = pairedDevices.inverse().get(deviceName);
 						preferences.removeAllowedDeviceId(deviceId, deviceName);
 						devicesList.remove(deviceName);
-						deviceManager.setPairedDevices(preferences.getAllowedDevices());
+						deviceManager.unpairDevice(deviceId);
 					}
 				}
 			});

@@ -28,12 +28,15 @@ public interface DeviceManager extends Service, Named {
 	void cancelWaitForPairing();
 	boolean isWaitingForPairing();
 	void onPairingSuccessful(String deviceId);
+	void pairDevice(String deviceId, String deviceName);
+	void unpairDevice(String deviceId);
 
 	void setReceptionFromAnyDevice(boolean enabled);
 	boolean isReceptionFromAnyDevice();
 
-	void setPairedDevices(Map<String, String> allowedDevices);
-	Map<String, String> getPairedDevices();
+	Collection<String> getPairedDeviceIds();
+	boolean isAllowedDeviceId(String deviceId);
+	String getDeviceName(String deviceId);
 
 	interface PairingListener {
 		void onPairingSuccessful(String deviceId);

@@ -128,7 +128,7 @@ public class NotificationManagerImpl implements NotificationManager {
 		}
 
 		if (config.isEnabled()) {
-			String deviceName = deviceManager.isReceptionFromAnyDevice() ? null : deviceManager.getPairedDevices().get(notification.getDeviceId());
+			String deviceName = deviceManager.getDeviceName(notification.getDeviceId());
 			doBroadcast(notification, deviceName);
 			if (config.isSendToClipboard()) {
 				sendNotificationToClipboard(notification);
@@ -142,8 +142,7 @@ public class NotificationManagerImpl implements NotificationManager {
 	}
 
 	protected void doBroadcast(Notification notification, String deviceName) {
-		if (deviceManager.isReceptionFromAnyDevice() ||
-			deviceManager.getPairedDevices().containsKey(notification.getDeviceId())) {
+		if (deviceManager.isAllowedDeviceId(notification.getDeviceId())) {
 			for (NotificationBroadcaster broadcaster : broadcasters) {
 				try {
 					broadcaster.broadcast(notification, deviceName, privateMode);
