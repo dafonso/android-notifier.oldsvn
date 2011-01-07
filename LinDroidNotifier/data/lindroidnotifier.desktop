@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=Android Notifier
-Comment=Receive notifications from your Android phone on the desktop
-Exec=lindroidnotifier
-Terminal=false
-Type=Application
-StartupNotify=false
-Categories=Utility
